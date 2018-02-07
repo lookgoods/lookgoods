@@ -8,25 +8,24 @@ import {
 import TabMenu from '../shares/TabMenu'
 import NavBar from '../shares/NavBar'
 
-export default class HomePage extends Component {
+export default class GlobalPage extends Component {
   constructor (props) {
     super(props)
   
   }
-  
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
-          <Text>eiei2</Text>
+          <Text>phasin</Text>
         </View>
         <View style={styles.coverFooter}>
-          <TabMenu/>
+          {/* <TabMenu/> */}
         </View>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
-            <NavBar titleName="HomePage"/>
+            <NavBar titleName="GlobalPage"/>
           </View>
         </View>
       </View>
@@ -69,6 +68,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 2
+    zIndex: 0
   }
 })
