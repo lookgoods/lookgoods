@@ -12,6 +12,11 @@ export default class TabMenu extends Component {
     }
   }
 
+  async changeGloblPage(){
+    await this.setState({ menuSelected: 'global' })
+    await Actions.globalPage()
+  }
+
   render () {
     return (
       <View style={styles.container}>
@@ -21,16 +26,14 @@ export default class TabMenu extends Component {
             onPress={() => {   
               console.log('1')           
               this.setState({ menuSelected: 'home' })
+              Actions.homePage()
             }}
           >
             <Text>Home</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.menu, this.state.menuSelected === 'global' ? styles.selected : {}]}
-            onPress={() => {
-              console.log('2')      
-              this.setState({ menuSelected: 'global' })
-            }}
+            onPress={() => this.changeGloblPage()}
           >
             <Text>Global</Text>
           </TouchableOpacity>
