@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
 import {
   Platform,
   StyleSheet,
   Text,
   View
 } from 'react-native'
-import TabMenu from '../shares/TabMenu'
+import React, { Component } from 'react'
+
 import NavBar from '../shares/NavBar'
 
 export default class HomePage extends Component {
@@ -14,15 +14,11 @@ export default class HomePage extends Component {
   
   }
   
-
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
-          <Text>eiei2</Text>
-        </View>
-        <View style={styles.coverFooter}>
-          <TabMenu/>
+          <Text>HomePage</Text>
         </View>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
@@ -30,7 +26,7 @@ export default class HomePage extends Component {
           </View>
         </View>
       </View>
-    );
+    )
   }
 }
 
