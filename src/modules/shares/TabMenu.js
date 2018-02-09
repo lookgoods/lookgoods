@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import NotificationPage from '../notification/NotificationPage'
 import TabNavigator from 'react-native-tab-navigator'
 import UserPage from '../user/UserPage'
+import { colors } from '../../constant/mixins'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
@@ -25,40 +26,40 @@ export default class TabMenu extends Component {
         <TabNavigator.Item
           selected={this.state.selectedTab === 'home'}
           title="Home"
-          selectedTitleStyle={{color: "#3496f0"}}
+          selectedTitleStyle={{color: colors.blue}}
           onPress={() => this.setState({selectedTab: 'home'})}
-          renderIcon={() => <Icon name="home" size={this.px2dp(22)} color="#666"/>}
-          renderSelectedIcon={() => <Icon name="home" size={this.px2dp(22)} color="#3496f0"/>}
+          renderIcon={() => <Icon name="home" size={this.px2dp(22)} color={colors.gray}/>}
+          renderSelectedIcon={() => <Icon name="home" size={this.px2dp(22)} color={colors.blue}/>}
         >
           <HomePage/>
         </TabNavigator.Item>
         <TabNavigator.Item
           selected={this.state.selectedTab === 'global'}
           title="Global"
-          selectedTitleStyle={{color: "#3496f0"}}
+          selectedTitleStyle={{color: colors.blue}}
           onPress={() => this.setState({selectedTab: 'global'})}
-          renderIcon={() => <Icon name="globe" size={this.px2dp(22)} color="#666"/>}
-          renderSelectedIcon={() => <Icon name="globe" size={this.px2dp(22)} color="#3496f0"/>}
+          renderIcon={() => <Icon name="globe" size={this.px2dp(22)} color={colors.gray}/>}
+          renderSelectedIcon={() => <Icon name="globe" size={this.px2dp(22)} color={colors.blue}/>}
         >
           <GlobalPage/>
         </TabNavigator.Item>
         <TabNavigator.Item
           selected={this.state.selectedTab === 'notification'}
           title="Notification"
-          selectedTitleStyle={{color: "#3496f0"}}
+          selectedTitleStyle={{color: colors.blue}}
           onPress={() => this.setState({selectedTab: 'notification'})}
-          renderIcon={() => <Icon name="bell" size={this.px2dp(22)} color="#666"/>}
-          renderSelectedIcon={() => <Icon name="bell" size={this.px2dp(22)} color="#3496f0"/>}
+          renderIcon={() => <Icon name="bell" size={this.px2dp(22)} color={colors.gray}/>}
+          renderSelectedIcon={() => <Icon name="bell" size={this.px2dp(22)} color={colors.blue}/>}
         >
           <NotificationPage/>
         </TabNavigator.Item>
         <TabNavigator.Item
           selected={this.state.selectedTab === 'user'}
           title="Profile"
-          selectedTitleStyle={{color: "#3496f0"}}
+          selectedTitleStyle={{color: colors.blue}}
           onPress={() => this.setState({selectedTab: 'user'})}
-          renderIcon={() => <Icon name="user" size={this.px2dp(22)} color="#666"/>}
-          renderSelectedIcon={() => <Icon name="user" size={this.px2dp(22)} color="#3496f0"/>}
+          renderIcon={() => <Icon name="user" size={this.px2dp(22)} color={colors.gray}/>}
+          renderSelectedIcon={() => <Icon name="user" size={this.px2dp(22)} color={colors.blue}/>}
         >
           <UserPage/>
         </TabNavigator.Item>
@@ -72,6 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: colors.white,
   }
 })
