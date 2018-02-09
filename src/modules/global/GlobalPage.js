@@ -21,7 +21,7 @@ export default class GlobalPage extends Component {
           <Text>phasin</Text>
         </View>
         <View style={styles.coverFooter}>
-          {/* <TabMenu/> */}
+          <TabMenu/>
         </View>
         <View style={styles.header}>
           <View style={styles.platformHeader}>

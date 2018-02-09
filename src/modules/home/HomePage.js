@@ -13,7 +13,6 @@ export default class HomePage extends Component {
     super(props)
   
   }
-  
 
   render() {
     return (
