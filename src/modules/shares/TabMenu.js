@@ -1,71 +1,68 @@
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { Actions, ActionConst } from 'react-native-router-flux'
 
-// import Animation from 'lottie-react-native'
+import GlobalPage from '../global/GlobalPage'
+import HomePage from '../home/HomePage'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import NotificationPage from '../notification/NotificationPage'
+import TabNavigator from 'react-native-tab-navigator'
+import UserPage from '../user/UserPage'
 
+const deviceWidth = Dimensions.get('window').width
+const basePx = 375
 export default class TabMenu extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      menuSelected: 'home'
-    }
+  state= {
+    selectedTab: 'home'
   }
 
-  async changeGloblPage(){
-    await this.setState({ menuSelected: 'global' })
-    await Actions.globalPage()
+  px2dp(px) {
+    return px * deviceWidth / basePx
   }
 
   render () {
     return (
-      <View style={styles.container}>
-        <View style={styles.blockCenter}>
-          <TouchableOpacity 
-            style={[styles.menu, this.state.menuSelected === 'home' ? styles.selected : {}]} 
-            onPress={() => {   
-              console.log('1')           
-              this.setState({ menuSelected: 'home' })
-              Actions.homePage()
-            }}
-          >
-            <Text>Home</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.menu, this.state.menuSelected === 'global' ? styles.selected : {}]}
-            onPress={() => this.changeGloblPage()}
-          >
-            <Text>Global</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.menu, this.state.menuSelected === 'add' ? styles.selected : {}]}
-            onPress={() => {
-              console.log('3')      
-              this.setState({ menuSelected: 'add' })
-            }}
-          >
-            <Text>Add</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.menu, this.state.menuSelected === 'notification' ? styles.selected : {}]}
-            onPress={() => {
-              console.log('4')      
-              this.setState({ menuSelected: 'notification' })
-            }}
-          >
-            <Text>Noti</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.menu, this.state.menuSelected === 'user' ? styles.selected : {}]}
-            onPress={() => {
-              console.log('5')      
-              this.setState({ menuSelected: 'user' })
-            }}
-          >
-            <Text>User</Text>
-          </TouchableOpacity>
-        </View>  
-      </View>    
+      <TabNavigator style={styles.container}>
+        <TabNavigator.Item
+          selected={this.state.selectedTab === 'home'}
+          title="Home"
+          selectedTitleStyle={{color: "#3496f0"}}
+          onPress={() => this.setState({selectedTab: 'home'})}
+          renderIcon={() => <Icon name="home" size={this.px2dp(22)} color="#666"/>}
+          renderSelectedIcon={() => <Icon name="home" size={this.px2dp(22)} color="#3496f0"/>}
+        >
+          <HomePage/>
+        </TabNavigator.Item>
+        <TabNavigator.Item
+          selected={this.state.selectedTab === 'global'}
+          title="Global"
+          selectedTitleStyle={{color: "#3496f0"}}
+          onPress={() => this.setState({selectedTab: 'global'})}
+          renderIcon={() => <Icon name="globe" size={this.px2dp(22)} color="#666"/>}
+          renderSelectedIcon={() => <Icon name="globe" size={this.px2dp(22)} color="#3496f0"/>}
+        >
+          <GlobalPage/>
+        </TabNavigator.Item>
+        <TabNavigator.Item
+          selected={this.state.selectedTab === 'notification'}
+          title="Notification"
+          selectedTitleStyle={{color: "#3496f0"}}
+          onPress={() => this.setState({selectedTab: 'notification'})}
+          renderIcon={() => <Icon name="bell" size={this.px2dp(22)} color="#666"/>}
+          renderSelectedIcon={() => <Icon name="bell" size={this.px2dp(22)} color="#3496f0"/>}
+        >
+          <NotificationPage/>
+        </TabNavigator.Item>
+        <TabNavigator.Item
+          selected={this.state.selectedTab === 'user'}
+          title="Profile"
+          selectedTitleStyle={{color: "#3496f0"}}
+          onPress={() => this.setState({selectedTab: 'user'})}
+          renderIcon={() => <Icon name="user" size={this.px2dp(22)} color="#666"/>}
+          renderSelectedIcon={() => <Icon name="user" size={this.px2dp(22)} color="#3496f0"/>}
+        >
+          <UserPage/>
+        </TabNavigator.Item>
+      </TabNavigator>
     )
   }
 }
@@ -73,21 +70,8 @@ export default class TabMenu extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 60
-  },
-  blockCenter: {
-    flexDirection: 'row', 
-    justifyContent: 'space-around', 
-    alignItems: 'center', 
-  },
-  menu: {
-    width: 40, 
-    height: 40,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#d6d7da'
-  },
-  selected: {
-    backgroundColor: '#0BA9F0'
+    backgroundColor: '#F5FCFF',
   }
 })
