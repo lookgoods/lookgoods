@@ -12,7 +12,8 @@
     "react-native": "0.52.0",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-vector-icons": "^4.5.0",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "react-native-tab-navigator": "^0.3.4"
   },
   "devDependencies": {
     "babel-jest": "22.0.4",

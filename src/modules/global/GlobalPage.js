@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
 import {
   Platform,
   StyleSheet,
   Text,
   View
 } from 'react-native'
-import TabMenu from '../shares/TabMenu'
+import React, { Component } from 'react'
+
 import NavBar from '../shares/NavBar'
+
+// import TabMenu from '../shares/TabMenu'
+
 
 export default class GlobalPage extends Component {
   constructor (props) {
@@ -18,10 +21,7 @@ export default class GlobalPage extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
-          <Text>phasin</Text>
-        </View>
-        <View style={styles.coverFooter}>
-          <TabMenu/>
+          <Text>Global</Text>
         </View>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
