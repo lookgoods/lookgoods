@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 
-import NavBar from '../shares/NavBar'
+import NavBar from 'src/modules/shares/NavBar'
 
 export default class NotificationPage extends Component {
     constructor (props) {
@@ -26,7 +26,7 @@ export default class NotificationPage extends Component {
             </View>
           </View>
         </View>
-      );
+      )
     }
   }
   
