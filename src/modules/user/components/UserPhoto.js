@@ -14,13 +14,15 @@ export default class UserPhoto extends Component {
 	render() {
 		return (
 			<View>
-				<Image
+				<View style={styles.imageContainer}>
+					<Image
 						source={require('src/assets/images/profile.jpg')}
 						style={styles.profile_image}
 						resizeMode='cover'
-				/>
+					/>
+				</View>
 				<View style={styles.usernameContainer}>
-					<Text>{this.props.username}</Text>
+					<Text style={styles.usernameText}>{this.props.username}</Text>
 				</View>
 			</View>
 		)
@@ -29,12 +31,17 @@ export default class UserPhoto extends Component {
 
 const styles = StyleSheet.create({
 	profile_image: {
-			width: 120,
-			height: 120,
-			borderRadius: 80
+		width: 120,
+		height: 120,
+		borderRadius: 80
+	},
+	imageContainer: {
+		alignItems: 'center'
 	},
 	usernameContainer: {
-		justifyContent: 'center',
-		alignItems: 'center'
+		marginTop: 5
+	},
+	usernameText: {
+		fontSize: 18
 	}
 })

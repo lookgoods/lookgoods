@@ -7,7 +7,8 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 
-import UserPhoto from 'src/modules/user/UserPhoto'
+import UserPhoto from 'src/modules/user/components/UserPhoto'
+import InfoBar from 'src/modules/user/components/InfoBar'
 
 export default class UserPage extends Component {
     constructor (props) {
@@ -18,8 +19,11 @@ export default class UserPage extends Component {
       return (
         <View style={styles.container}>
           <View style={styles.body}>
-            <View style={styles.userPhotoContainer}>
-              <UserPhoto username="phasin"/>
+            <View style={styles.userPhoto}>
+              <UserPhoto username="Phasin Sarunpornkul"/>
+            </View>
+            <View style={styles.infoBar}>
+              <InfoBar review_num={4} comment_num={22} follower_num={30} following_num={12}/>
             </View>
           </View>
         </View>
@@ -35,8 +39,11 @@ export default class UserPage extends Component {
     body: {
       marginTop: Platform.OS === 'ios' ? 75 : 60
     },
-    userPhotoContainer: {
-      justifyContent: 'center',
+    userPhoto: {
+      flexDirection: 'column',
       alignItems: 'center'
+    },
+    infoBar: {
+      marginTop: 30
     }
   })
