@@ -11,6 +11,7 @@ import { Divider } from 'react-native-elements'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import { colors } from 'src/constant/mixins'
+import Tabs from 'src/modules/shares/Tabs'
 
 export default class UserPage extends Component {
     constructor (props) {
@@ -29,6 +30,16 @@ export default class UserPage extends Component {
             </View>
             <View style={{alignItems: 'center'}}>
               <Divider style={styles.divider}/>
+            </View>
+            <View style={styles.tabsContainer}>
+              <Tabs>
+                <View title="Reviews">
+                  <Text>Review</Text>
+                </View>
+                <View title="Saved">
+                  <Text>Saved</Text>
+                </View>
+              </Tabs>
             </View>
           </View>
         </View>
@@ -56,5 +67,8 @@ export default class UserPage extends Component {
       marginTop: 15,
       height: 1.2,
       width: '90%'
+    },
+    tabsContainer: {
+      marginTop: 20
     }
   })
