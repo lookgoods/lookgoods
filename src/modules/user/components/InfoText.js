@@ -32,6 +32,7 @@ export default class InfoText extends Component {
         fontSize: 25
     },
     text: {
-        fontSize: 12
+        fontSize: 12,
+        color: colors.gray
     }
   })
