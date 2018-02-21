@@ -1,8 +1,4 @@
-import {
-    StyleSheet,
-    View,
-    Text
-} from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import React, { Component } from 'react'
 import { colors } from 'src/constant/mixins'
 

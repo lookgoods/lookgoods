@@ -1,9 +1,4 @@
-import {
-    StyleSheet,
-		Image,
-		View,
-		Text
-} from 'react-native'
+import { StyleSheet, Image, View, Text } from 'react-native'
 import React, { Component } from 'react'
 
 export default class UserPhoto extends Component {
@@ -15,11 +10,14 @@ export default class UserPhoto extends Component {
 		return (
 			<View>
 				<View style={styles.imageContainer}>
-					<Image
-						source={require('src/assets/images/profile.jpg')}
-						style={styles.profile_image}
-						resizeMode='cover'
-					/>
+					{ this.props.image_url ?
+						<Image
+							source={this.props.image_url}
+							style={styles.profile_image}
+							resizeMode='cover'
+						/> :
+						<View/>
+					}
 				</View>
 				<View style={styles.usernameContainer}>
 					<Text style={styles.usernameText}>{this.props.username}</Text>

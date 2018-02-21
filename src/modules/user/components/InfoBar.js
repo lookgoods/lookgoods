@@ -1,7 +1,4 @@
-import {
-    StyleSheet,
-    View
-} from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 
 import InfoText from 'src/modules/user/components/InfoText'
