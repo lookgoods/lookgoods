@@ -7,12 +7,13 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native'
-
+import { Actions } from 'react-native-router-flux';
 import NavBar from 'src/modules/shares/NavBar'
 import { Card, ListItem, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
+
 
 export default class HomePage extends Component {
   constructor (props) {
@@ -24,28 +25,29 @@ export default class HomePage extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.body}>
-          <Card
-            title='HELLO WORLD'
-            image={{uri : 'https://openclipart.org/image/2400px/svg_to_png/16155/milker-X-icon.png'}}>
-            {/* <Text style={{marginBottom: 10}}>
-              The idea with React Native Elements is more about component structure than actual design.
-            </Text> */}
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row' }}>
-                <IconIonicons name='ios-star' size={36} color='#000' />
-                <Text style={{ fontSize: 14 }}>4.8</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                <IconFontAwesome name='btc' size={36} color='#000' />
-                <Text style={{ fontSize: 14 }}>500</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
-                <IconFontAwesome name='commenting-o' size={24} color='#000' />
-                <Text style={{ fontSize: 14 }}>14</Text>
-              </TouchableOpacity>
-            </View>
-
-          </Card>
+          <TouchableOpacity onPress={() => {Actions.addProductPage()}}>
+            <Card
+              title='ETUDE HOUSE BB CREAM COVER'
+              image={{uri : 'https://goo.gl/XCL6pA'}}>
+              {/* <Text style={{marginBottom: 10}}>
+                The idea with React Native Elements is more about component structure than actual design.
+              </Text> */}
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row' }}>
+                  <IconIonicons name='ios-star' size={36} color='#000' />
+                  <Text style={{ fontSize: 14 }}>4.8</Text>
+                </View>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                  <IconFontAwesome name='btc' size={36} color='#000' />
+                  <Text style={{ fontSize: 14 }}>500</Text>
+                </View>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
+                  <IconFontAwesome name='commenting-o' size={24} color='#000' />
+                  <Text style={{ fontSize: 14 }}>14</Text>
+                </View>
+              </View>
+            </Card>
+          </TouchableOpacity>
         </View>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
