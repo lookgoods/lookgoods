@@ -5,7 +5,10 @@ import { colors } from 'src/constant/mixins'
 import { Actions } from 'react-native-router-flux'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
+const { LoginButton, AccessToken } = FBSDK
+
 export default class LoginPage extends Component {
+
     constructor (props) {
         super(props)
 
@@ -24,9 +27,29 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        
         return (
         <View style={styles.container}>
             <View style={styles.buttonContainer}>
+                <LoginButton 
+                    publicPermissions={["public_actions"]}
+                    onLoginFinished={
+                        (error, result) => {
+                            if(error) {
+                                console.log("login has error : " + result.error)
+                            } else if(result.isCancelled) {
+                                console.log("login is cancelled")
+                            } else {
+                                AccessToken.getCurrentAccessToken().then(
+                                    (data) => {
+                                        console.log(data.accessToken.toString())
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    onLogoutFinished={() => console.log("logout")}
+                />
                 <Button 
                     title='Login with Facebook' 
                     backgroundColor={colors.blue}
