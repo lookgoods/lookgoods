@@ -3,11 +3,24 @@ import { Platform, StyleSheet, Text, View, Image, TouchableOpacity } from 'react
 import { Button } from 'react-native-elements'
 import { colors } from 'src/constant/mixins'
 import { Actions } from 'react-native-router-flux'
+import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
 export default class LoginPage extends Component {
     constructor (props) {
         super(props)
 
+    }
+
+    _fbAuth() {
+        LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
+            if(result.isCancelled) {
+                console.log('Loging was cancelled')
+            } else {
+                console.log('Login was a success' + result.grantedPermissions.toString())
+            }
+        }, function(error) {
+            console.log('an error occured')
+        })
     }
 
     render() {
