@@ -20,6 +20,7 @@ export default class LoginPage extends Component {
                 console.log('Loging was cancelled')
             } else {
                 console.log('Login was a success' + result.grantedPermissions.toString())
+                Actions.tabMenu()
             }
         }, function(error) {
             console.log('an error occured')
@@ -30,36 +31,33 @@ export default class LoginPage extends Component {
         
         return (
         <View style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <LoginButton 
-                    publicPermissions={["public_actions"]}
-                    onLoginFinished={
-                        (error, result) => {
-                            if(error) {
-                                console.log("login has error : " + result.error)
-                            } else if(result.isCancelled) {
-                                console.log("login is cancelled")
-                            } else {
-                                AccessToken.getCurrentAccessToken().then(
-                                    (data) => {
-                                        console.log(data.accessToken.toString())
-                                    }
-                                )
+            <LoginButton 
+                        publicPermissions={["public_actions"]}
+                        onLoginFinished={
+                            (error, result) => {
+                                if(error) {
+                                    console.log("login has error : " + result.error)
+                                } else if(result.isCancelled) {
+                                    console.log("login is cancelled")
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then(
+                                        (data) => {
+                                            console.log(data.accessToken.toString())
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
-                    onLogoutFinished={() => console.log("logout")}
-                />
+                        onLogoutFinished={() => console.log("logout")}
+                    />
+            <View style={styles.buttonContainer}>
+               
                 <Button 
                     title='Login with Facebook' 
                     backgroundColor={colors.blue}
+                    onPress={ () => this._fbAuth() }
                 />
             </View>
-            <Button
-                    title='Go to Homepage'
-                    style={ { marginTop: 10 }}
-                    onPress={ () => Actions.tabMenu() }
-            />
         </View>
         )
     }
