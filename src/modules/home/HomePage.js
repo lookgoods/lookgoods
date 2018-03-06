@@ -13,7 +13,7 @@ import { Card, ListItem, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
-
+import ReviewCard from 'src/modules/home/components/ReviewCard'
 
 export default class HomePage extends Component {
   constructor (props) {
@@ -26,12 +26,12 @@ export default class HomePage extends Component {
       <View style={styles.container}>
         <View style={styles.body}>
           <TouchableOpacity onPress={() => {Actions.addProductPage()}}>
-            <Card
+            {/* <Card
               title='ETUDE HOUSE BB CREAM COVER'
               image={{uri : 'https://goo.gl/XCL6pA'}}>
               {/* <Text style={{marginBottom: 10}}>
                 The idea with React Native Elements is more about component structure than actual design.
-              </Text> */}
+              </Text>
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row' }}>
                   <IconIonicons name='ios-star' size={36} color='#000' />
@@ -46,12 +46,13 @@ export default class HomePage extends Component {
                   <Text style={{ fontSize: 14 }}>14</Text>
                 </View>
               </View>
-            </Card>
+            </Card> */}
+            <ReviewCard />
           </TouchableOpacity>
         </View>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
-            <NavBar titleName="HomePage"/>
+            {/* <NavBar titleName="HomePage"/> */}
           </View>
         </View>
       </View>
