@@ -8,15 +8,17 @@ import {
   TouchableOpacity
 } from 'react-native'
 import images from 'src/constant/images'
+import icons from 'src/constant/icons'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import { colors } from 'src/constant/mixins'
+import { Actions } from 'react-native-router-flux';
 
 const ProfilePicture = ({ image_url }) => {
 	return ( 
 		<View>
 			{ image_url ?
 			<Image
-				style={styles.profile_image}
+				style={styles.profileImage}
 				source={image_url}
 				resizeMode='cover'
 			/> : <View/> }
@@ -52,11 +54,14 @@ const ProductPicture = ({ image_url }) => {
 	return ( 
 		<View>
 			{ image_url ?
-			<Image
-				style={styles.product_image}
-				source={image_url}
-				resizeMode='contain'
-			/> : <View/> }
+			<TouchableOpacity onPress={() => {Actions.addProductPage()}}>
+				<Image
+					style={styles.productImage}
+					source={image_url}
+					resizeMode='contain'
+				/> 
+			</TouchableOpacity>
+			: <View/> }
 		</View>
 	)
 }
@@ -78,8 +83,8 @@ function Footer({ rating, price, numberOfComment}) {
 				<Text style={styles.productDetailRating}>{rating}</Text>
 			</View>
 			<View style={styles.productDetail}>
-				<IconMaterial name='attach-money' size={24}/>
-				<Text style={styles.productDetailMoney}>{price + ' Baht'}</Text>
+				<Image style={styles.bahtImage} source={icons.baht} resizeMode='cover'/>
+				<Text style={styles.productDetailMoney}>{price}</Text>
 			</View>
 			<View style={styles.productDetail}>
 				<IconMaterial name='chat-bubble-outline' size={24}/>
@@ -91,18 +96,20 @@ function Footer({ rating, price, numberOfComment}) {
 
 export default class ReviewCard extends Component {
 
-  constructor (props) {
-    super(props)
-  }
+	constructor (props) {
+		super(props)
+	}
   
-  render() {
-    return (
-      <View style={styles.container}>
-        <Header reviewer_name='Sririta Jensan' profile_url={images.profile} time='4 hours ago' isSaved={false} />
-		  <Body product_url={images.product1} title='Etude House BB Cream is The best BB Cream' />
-		  <Footer rating={5.0} price={500} numberOfComment={100} />
-      </View>
-    )
+	render() {
+		const { title, user, picture_cover_url, product, comment_list, rating, timestamp} = this.props.review
+
+		return (
+		<View style={styles.container}>
+			<Header reviewer_name={user.username} profile_url={user.profile_url} time={timestamp} isSaved={false} />
+			<Body product_url={picture_cover_url} title={title} />
+			<Footer rating={rating} price={product.price} numberOfComment={comment_list.length} />
+		</View>
+	)
   }
 }
 
@@ -111,7 +118,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginBottom: 5,
 	},
-	profile_image: {
+	profileImage: {
 		width: 55,
 		height: 55,
 		borderRadius: 90,
@@ -136,9 +143,13 @@ const styles = StyleSheet.create({
 		paddingRight: 10,
 		marginVertical: 5
 	},
-	product_image: {
+	productImage: {
 		width: '100%',
 		height: 260
+	},
+	bahtImage: {
+		width: 24,
+		height: 24
 	},
 	titleText: {
 		marginLeft: 20,
@@ -154,12 +165,14 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	productDetailRating: {
-		marginLeft: 2
+		marginLeft: 2,
+		marginVertical: 1
 	},
 	productDetailMoney: {
-		marginLeft: -2
+		marginLeft: 1,
+		marginVertical: 1
 	},
 	productDetailComment: {
-		marginLeft: 6
+		marginLeft: 6,
 	}
 })
