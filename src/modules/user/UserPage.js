@@ -1,70 +1,91 @@
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View
-} from 'react-native'
+import { Platform, StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React, { Component } from 'react'
+import { Divider } from 'react-native-elements'
 
-import NavBar from '../shares/NavBar'
+import UserPhoto from 'src/modules/user/components/UserPhoto'
+import InfoBar from 'src/modules/user/components/InfoBar'
+import { colors } from 'src/constant/mixins'
+import Tabs from 'src/modules/shares/Tabs'
+import ProductsGrid from 'src/modules/user/components/ProductsGrid'
+import images from 'src/constant/images'
+
+const products = [
+  { name: 'product1', image_url: images.product1 },
+  { name: 'product2', image_url: images.product2 },
+  { name: 'product3', image_url: images.product3 },
+  { name: 'product4', image_url: images.product4 },
+  { name: 'product4', image_url: images.product2 },
+  { name: 'product2', image_url: images.product4 },
+  { name: 'product3', image_url: images.product3 },
+  { name: 'product4', image_url: images.product4 },
+  { name: 'product4', image_url: images.product1 },
+  { name: 'product4', image_url: images.product2 }
+]
+
+const products_save = [
+  { name: 'product3', image_url: images.product1 },
+  { name: 'product2', image_url: images.product2 },
+  { name: 'product4', image_url: images.product3 },
+  { name: 'product1', image_url: images.product4 }
+]
 
 export default class UserPage extends Component {
     constructor (props) {
       super(props)
-    
     }
-  
+
     render() {
       return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.body}>
-            <Text>UserPage</Text>
-          </View>
-          <View style={styles.header}>
-            <View style={styles.platformHeader}>
-              <NavBar titleName="UserPage"/>
+            <View style={styles.userPhoto}>
+              <UserPhoto username="Phasin Sarunpornkul" image_url={images.profile}/>
             </View>
+            <View style={styles.infoBar}>
+              <InfoBar review_num={4} comment_num={22} follower_num={30} following_num={12}/>
+            </View>
+            <View style={{alignItems: 'center'}}>
+              <Divider style={styles.divider}/>
+            </View>
+            <View style={styles.tabsContainer}>
+              <Tabs>
+                <View title="Reviews">
+                  <ProductsGrid product_list={products} />
+                </View>
+                <View title="Saved">
+                  <ProductsGrid product_list={products_save} />
+                </View>
+              </Tabs>
+            </View >
           </View>
-        </View>
-      );
+        </ScrollView>
+      )
     }
   }
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff'
+      backgroundColor: colors.white
     },
     body: {
-      marginTop: Platform.OS === 'ios' ? 75 : 60
+      marginTop: Platform.OS === 'ios' ? 30 : 25
     },
-    platformHeader: {
-      height: Platform.OS === 'ios' ? 75 : 60,
-      paddingTop: Platform.OS === 'ios' ? 25 : 0
+    userPhoto: {
+      flexDirection: 'column',
+      alignItems: 'center'
     },
-    header: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: 'transparent',
-      overflow: 'hidden',
-      zIndex: 1
+    infoBar: {
+      marginTop: 30
     },
-    coverHeader: {
-      height: Platform.OS === 'ios' ? 75 : 60,
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 0
+    divider: {
+      backgroundColor: colors.gray2,
+      marginTop: 15,
+      height: 1.2,
+      width: '100%'
     },
-    coverFooter: {
-      height: 40,
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      zIndex: 0
+    tabsContainer: {
+      marginTop: 20,
+      paddingLeft: 12,
+      paddingRight: 12
     }
   })

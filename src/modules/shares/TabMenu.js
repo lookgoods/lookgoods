@@ -1,13 +1,13 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { Component } from 'react'
 
-import GlobalPage from '../global/GlobalPage'
-import HomePage from '../home/HomePage'
+import GlobalPage from 'src/modules/global/GlobalPage'
+import HomePage from 'src/modules/home/HomePage'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import NotificationPage from '../notification/NotificationPage'
+import NotificationPage from 'src/modules/notification/NotificationPage'
 import TabNavigator from 'react-native-tab-navigator'
-import UserPage from '../user/UserPage'
-import { colors } from '../../constant/mixins'
+import UserPage from 'src/modules/user/UserPage'
+import { colors } from 'src/constant/mixins'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375

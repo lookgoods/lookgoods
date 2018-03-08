@@ -6,10 +6,7 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 
-import NavBar from '../shares/NavBar'
-
-// import TabMenu from '../shares/TabMenu'
-
+import NavBar from 'src/modules/shares/NavBar'
 
 export default class GlobalPage extends Component {
   constructor (props) {
@@ -29,7 +26,7 @@ export default class GlobalPage extends Component {
           </View>
         </View>
       </View>
-    );
+    )
   }
 }
 
