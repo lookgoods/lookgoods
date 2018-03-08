@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	profile_image: {
 		width: 120,
 		height: 120,
-		borderRadius: 80
+		borderRadius: 90
 	},
 	imageContainer: {
 		alignItems: 'center'
