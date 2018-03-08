@@ -30,35 +30,16 @@ export default class LoginPage extends Component {
     render() {
         
         return (
-        <View style={styles.container}>
-            <LoginButton 
-                        publicPermissions={["public_actions"]}
-                        onLoginFinished={
-                            (error, result) => {
-                                if(error) {
-                                    console.log("login has error : " + result.error)
-                                } else if(result.isCancelled) {
-                                    console.log("login is cancelled")
-                                } else {
-                                    AccessToken.getCurrentAccessToken().then(
-                                        (data) => {
-                                            console.log(data.accessToken.toString())
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                        onLogoutFinished={() => console.log("logout")}
+            <View style={styles.container}>
+                <View style={styles.buttonContainer}>
+                    <Button 
+                        title='SIGN IN WITH FACEBOOK' 
+                        backgroundColor={colors.blueFacebook}
+                        onPress={ () => this._fbAuth() }
+                        buttonStyle={styles.signinBtn}
                     />
-            <View style={styles.buttonContainer}>
-               
-                <Button 
-                    title='Login with Facebook' 
-                    backgroundColor={colors.blue}
-                    onPress={ () => this._fbAuth() }
-                />
+                </View>
             </View>
-        </View>
         )
     }
 }
@@ -66,10 +47,17 @@ export default class LoginPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        flexDirection: 'row'
     },
     buttonContainer: {
-        marginTop: 50,
-        marginBottom: 10
+        marginBottom: 100,
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    signinBtn: {
+        borderRadius: 2
     }
 })
