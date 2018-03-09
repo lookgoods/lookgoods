@@ -11,14 +11,22 @@ import images from 'src/constant/images'
 import icons from 'src/constant/icons'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import { colors } from 'src/constant/mixins'
-import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux'
+
 
 const ProfilePicture = ({ image_url }) => {
 	return ( 
-		<View>
+		<View 
+			style={[
+				styles.borderCover,
+				{ height: 50, width: 50 },
+				{ borderColor: colors.gray },
+				{ backgroundColor: '#FFF' }
+			]}
+		>
 			{ image_url ?
 			<Image
-				style={styles.profileImage}
+				style={styles.profileImage }
 				source={image_url}
 				resizeMode='cover'
 			/> : <View/> }
@@ -118,11 +126,17 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginBottom: 5,
 	},
+	borderCover: {
+    // borderWidth: 1,
+    // borderRadius: 36,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 	profileImage: {
-		width: 55,
-		height: 55,
-		borderRadius: 90,
-		marginLeft: 10
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		// margin: 1
 	},
 	headerWrapper: {
 		flexDirection: 'column',
