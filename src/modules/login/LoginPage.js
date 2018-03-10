@@ -4,10 +4,12 @@ import { Button } from 'react-native-elements'
 import { colors } from 'src/constant/mixins'
 import { Actions } from 'react-native-router-flux'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import UserActions from 'src/redux/actions/user'
+import { connect } from 'react-redux'
 
 const { LoginButton, AccessToken } = FBSDK
 
-export default class LoginPage extends Component {
+export class LoginPage extends Component {
 
     constructor (props) {
         super(props)
@@ -15,12 +17,20 @@ export default class LoginPage extends Component {
     }
 
     _fbAuth() {
+        var self = this
         LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
             if(result.isCancelled) {
                 console.log('Loging was cancelled')
             } else {
                 console.log('Login was a success' + result.grantedPermissions.toString())
-                Actions.tabMenu()
+                AccessToken.getCurrentAccessToken().then(
+                    (data) => {
+                        const token = data.accessToken.toString()
+                        self.props.getUserFromFacebook(token)
+                        console.log('currentuser', self.props.currentUser)
+                        // Actions.tabMenu()
+                    }
+                )
             }
         }, function(error) {
             console.log('an error occured')
@@ -61,3 +71,15 @@ const styles = StyleSheet.create({
         borderRadius: 2
     }
 })
+
+const mapStateToProps = state => ({
+    currentUser: state.userReducer.currentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+    getUserFromFacebook: token => {
+        dispatch(UserActions.getUserFromFacebook(token))
+    }         
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
