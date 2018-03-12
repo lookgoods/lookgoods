@@ -10,11 +10,11 @@ import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import images from 'src/constant/images'
 
 const products = [
-  { name: 'product1', image_url: images.product1 },
-  { name: 'product2', image_url: images.product2 },
-  { name: 'product3', image_url: images.product3 },
+  { name: 'product1', image_url: images.product4 },
+  { name: 'product2', image_url: images.product4 },
+  { name: 'product3', image_url: images.product4 },
   { name: 'product4', image_url: images.product4 },
-  { name: 'product4', image_url: images.product2 },
+  { name: 'product4', image_url: images.product4 },
   { name: 'product2', image_url: images.product4 },
   { name: 'product3', image_url: images.product3 },
   { name: 'product4', image_url: images.product4 },
