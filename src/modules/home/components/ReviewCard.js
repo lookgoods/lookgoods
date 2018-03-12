@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native'
+import CoverImage from 'src/modules/shares/CoverImage'
 import images from 'src/constant/images'
 import icons from 'src/constant/icons'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
@@ -14,23 +15,10 @@ import { colors } from 'src/constant/mixins'
 import { Actions } from 'react-native-router-flux'
 
 
+
 const ProfilePicture = ({ image_url }) => {
 	return ( 
-		<View 
-			style={[
-				styles.borderCover,
-				{ height: 50, width: 50 },
-				{ borderColor: colors.gray },
-				{ backgroundColor: '#FFF' }
-			]}
-		>
-			{ image_url ?
-			<Image
-				style={styles.profileImage }
-				source={image_url}
-				resizeMode='cover'
-			/> : <View/> }
-		</View>
+		<CoverImage size={50} url={image_url}/>
 	)
 }
 

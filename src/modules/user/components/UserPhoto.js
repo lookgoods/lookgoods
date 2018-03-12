@@ -1,5 +1,6 @@
 import { StyleSheet, Image, View, Text } from 'react-native'
 import React, { Component } from 'react'
+import CoverImage from 'src/modules/shares/CoverImage'
 
 export default class UserPhoto extends Component {
 	constructor (props) {
@@ -7,18 +8,10 @@ export default class UserPhoto extends Component {
 	}
 
 	render() {
+		const { size, image_url } = this.props
 		return (
-			<View>
-				<View style={styles.imageContainer}>
-					{ this.props.image_url ?
-						<Image
-							source={this.props.image_url}
-							style={styles.profile_image}
-							resizeMode='cover'
-						/> :
-						<View/>
-					}
-				</View>
+			<View style={styles.userphotoBody}>
+				<CoverImage size={size} url={image_url}/>
 				<View style={styles.usernameContainer}>
 					<Text style={styles.usernameText}>{this.props.username}</Text>
 				</View>
@@ -28,12 +21,8 @@ export default class UserPhoto extends Component {
 }
 
 const styles = StyleSheet.create({
-	profile_image: {
-		width: 120,
-		height: 120,
-		borderRadius: 90
-	},
-	imageContainer: {
+	userphotoBody:{
+		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	usernameContainer: {
