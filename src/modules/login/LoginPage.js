@@ -18,7 +18,7 @@ export class LoginPage extends Component {
 
     _fbAuth() {
         var self = this
-        LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
+        LoginManager.logInWithReadPermissions(['public_profile', 'user_friends']).then(function(result) {
             if(result.isCancelled) {
                 console.log('Loging was cancelled')
             } else {
@@ -26,14 +26,14 @@ export class LoginPage extends Component {
                 AccessToken.getCurrentAccessToken().then(
                     (data) => {
                         const token = data.accessToken.toString()
+                        console.log('token', token)
                         self.props.getUserFromFacebook(token)
-                        console.log('currentuser', self.props.currentUser)
-                        // Actions.tabMenu()
+                        Actions.tabMenu()
                     }
                 )
             }
         }, function(error) {
-            console.log('an error occured')
+            console.log('Login had an error occured')
         })
     }
 

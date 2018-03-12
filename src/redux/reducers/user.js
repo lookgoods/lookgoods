@@ -7,7 +7,8 @@ import {
 const initialState = {
     currentUser: {
         clientId: null, 
-        name: null
+        name: null,
+        picture_profile: null
     },
     loading: false,
     error: null
@@ -22,13 +23,13 @@ export default userReducer = (state = initialState, action) => {
                 error: null
             }
         case GET_FACEBOOK_USER_SUCCESS:
-            console.log(action.payload, 'success')
             return {
                 ...state,
                 loading: false,
                 currentUser: {
                     clientId: action.payload.user.clientId,
-                    name: action.payload.user.name
+                    name: action.payload.user.name,
+                    picture_profile: action.payload.user.picture_profile
                 }
             }
         case GET_FACEBOOK_USER_FAILURE:
