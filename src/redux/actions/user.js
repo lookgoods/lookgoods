@@ -1,8 +1,10 @@
-export const GET_FACEBOOK_USER_REQUEST = 'GET_FACEBOOK_USER_REQUEST'
-export const GET_FACEBOOK_USER_SUCCESS = 'GET_FACEBOOK_USER_SUCCESS'
-export const GET_FACEBOOK_USER_FAILURE = 'GET_FACEBOOK_USER_FAILURE'
-
-const FacebookURL = 'https://graph.facebook.com/v2.11'
+import { 
+    AppURL,
+    FacebookURL,
+    GET_FACEBOOK_USER_FAILURE,
+    GET_FACEBOOK_USER_REQUEST,
+    GET_FACEBOOK_USER_SUCCESS
+} from 'src/redux/constants'
 
 async function fetchUserInfo(token) {
     let response, data
@@ -26,6 +28,28 @@ async function fetchProfilePicture(clientId) {
         return err
     }
     return data.data.url
+}
+
+async function loginWithFacebook(token) {
+    let response
+    try {
+        response = await fetch(`${AppURL}/auth/facebook/token`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
+            },
+            body: JSON.stringify({
+                access_token: token,
+            })
+        })
+    }catch(err) {
+        console.log(err, 'loginWithFacebook error')
+        return err
+    }
+    console.log(response, 'loginWithFacebook')
+    return response
 }
 
 export default actions = {
@@ -54,5 +78,8 @@ export default actions = {
     getUserFromFacebookError: error => ({
         type: GET_FACEBOOK_USER_FAILURE,
         payload: { error }
-    }) 
+    }),
+    loginWithFacebook: (token) => async dispatch => {
+        loginWithFacebook(token)
+    }
 }

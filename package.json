@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "noot": "react-native run-android"
+    "run-android": "adb reverse tcp:3000 tcp:3000 & react-native run-android"
   },
   "dependencies": {
     "mobx": "^3.5.1",

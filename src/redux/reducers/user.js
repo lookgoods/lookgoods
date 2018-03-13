@@ -2,7 +2,7 @@ import {
     GET_FACEBOOK_USER_REQUEST,
     GET_FACEBOOK_USER_SUCCESS,
     GET_FACEBOOK_USER_FAILURE 
-} from 'src/redux/actions/user'
+} from 'src/redux/constants'
 
 const initialState = {
     currentUser: {
