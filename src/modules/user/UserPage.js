@@ -10,11 +10,11 @@ import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import images from 'src/constant/images'
 
 const products = [
-  { name: 'product1', image_url: images.product1 },
-  { name: 'product2', image_url: images.product2 },
-  { name: 'product3', image_url: images.product3 },
+  { name: 'product1', image_url: images.product4 },
+  { name: 'product2', image_url: images.product4 },
+  { name: 'product3', image_url: images.product4 },
   { name: 'product4', image_url: images.product4 },
-  { name: 'product4', image_url: images.product2 },
+  { name: 'product4', image_url: images.product4 },
   { name: 'product2', image_url: images.product4 },
   { name: 'product3', image_url: images.product3 },
   { name: 'product4', image_url: images.product4 },
@@ -38,9 +38,7 @@ export default class UserPage extends Component {
       return (
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.body}>
-            <View style={styles.userPhoto}>
-              <UserPhoto username="Phasin Sarunpornkul" image_url={images.profile}/>
-            </View>
+            <UserPhoto username="Phasin Sarunpornkul" size={120} image_url={images.profile}/>
             <View style={styles.infoBar}>
               <InfoBar review_num={4} comment_num={22} follower_num={30} following_num={12}/>
             </View>
@@ -69,10 +67,6 @@ export default class UserPage extends Component {
     },
     body: {
       marginTop: Platform.OS === 'ios' ? 30 : 25
-    },
-    userPhoto: {
-      flexDirection: 'column',
-      alignItems: 'center'
     },
     infoBar: {
       marginTop: 30

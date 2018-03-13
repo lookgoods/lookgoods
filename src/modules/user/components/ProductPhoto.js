@@ -9,7 +9,12 @@ export default class ProductPhoto extends Component {
 
 	render() {
 		return (
-			<View>
+			<View style={[
+				{ justifyContent: 'center', alignItems: 'center' },
+				{ height: 110, width: 110 },
+				{ backgroundColor: '#FFF' }
+			  ]}
+			>
 				{ this.props.product.image_url ?
 					<Image
 						source={this.props.product.image_url}
@@ -25,7 +30,7 @@ export default class ProductPhoto extends Component {
 
 const styles = StyleSheet.create({
     product_image: {
-        width: 125,
-		height: 125
+        width: 110,
+		height: 110
     }
 })
