@@ -4,5 +4,7 @@ export const colors = {
     white: "#FFF",
     meat: '#E94F37',
     black: "#000",
-    gray2: '#BDBDBD'
+    gray2: '#BDBDBD',
+    orange: '#FF5733',
+    yellow_star: '#F8ED5E'
 }

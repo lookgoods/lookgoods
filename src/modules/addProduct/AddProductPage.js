@@ -12,6 +12,8 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import NavBar from 'src/modules/shares/NavBar'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
+import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { colors } from 'src/constant/mixins'
 
 export default class GlobalPage extends Component {
   constructor (props) {
@@ -20,7 +22,7 @@ export default class GlobalPage extends Component {
       title: '',
       name: '',
       price: '',
-      categories : '',
+      brand : '',
       numStar: ['star-o','star-o','star-o','star-o','star-o']
     }
   }
@@ -33,12 +35,12 @@ export default class GlobalPage extends Component {
     this.setState({ name: text })
   }
 
-  handleChangePrice (text) {
-    this.setState({ price: text })
+  handleChangeBrand (text) {
+    this.setState({ brand: text })
   }
 
-  handleChangeCategories (text) {
-    this.setState({ categories: text })
+  handleChangePrice (text) {
+    this.setState({ price: text })
   }
 
   setAmountRating(num){
@@ -63,8 +65,6 @@ export default class GlobalPage extends Component {
           bounces={false}
           style={styles.body}
         >
-          {/* <View style={styles.body}> */}
-            {/* <Text>AddProduct</Text> */}
             <View>
               <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                 <Image 
@@ -72,9 +72,6 @@ export default class GlobalPage extends Component {
                     flex: 1,
                     height: 200,
                     resizeMode: 'cover',
-                    // borderWidth: 1,
-                    // borderRadius: 3,
-                    // borderColor: '#f1f1f1'
                   }}
                   source={{uri: 'https://goo.gl/XCL6pA'}}
                 />
@@ -101,16 +98,15 @@ export default class GlobalPage extends Component {
                     />
                   </View>
 
-                
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex : 1, paddingRight : 10 }}>
                       <Text style={styles.label}>Brand</Text>
                       <View style={styles.textBox}>
                         <TextInput
                           style={styles.textInput}
-                          value={this.state.name}
+                          value={this.state.brand}
                           underlineColorAndroid='transparent'
-                          onChangeText={(text) => this.handleChangeName(text)}
+                          onChangeText={(text) => this.handleChangeBrand(text)}
                         />
                       </View>
                     </View>
@@ -119,27 +115,35 @@ export default class GlobalPage extends Component {
                       <View style={styles.textBox}>
                         <TextInput
                           style={styles.textInput}
-                          value={this.state.name}
+                          value={this.state.price}
                           underlineColorAndroid='transparent'
-                          onChangeText={(text) => this.handleChangeName(text)}
+                          onChangeText={(text) => this.handleChangePrice(text)}
                         />
                       </View>
                     </View>
                   </View>
 
-                  <View style={styles.label}> 
-                    <Text>Rating</Text>
-                  </View>
+                  <Text style={styles.label}>Rating</Text>
                   <View style={{
                     flex: 1, 
-                    marginTop: 10, 
+                    marginTop: 10,
+                    marginBottom: 10,
                     flexDirection: 'row'
                   }}>
                     {this.state.numStar.map((item,key) => (
                       <TouchableOpacity key={key} onPress={() => this.setAmountRating(key+1)}>
-                        <IconFontAwesome style={{ marginRight : 8 }} name={item} size={35} color='#F8ED5E' />
+                        <IconFontAwesome style={{ marginRight : 8 }} name={item} size={35} color={colors.yellow_star} />
                       </TouchableOpacity>
                     ))}
+                  </View>
+
+                  <Text style={styles.label}>Content</Text>
+
+                  <View style={styles.blockAdd}>
+                    <TouchableOpacity style={styles.buttonAdd}>
+                      <IconMaterialIcons name='add-circle' size={40}></IconMaterialIcons>
+                      {/* <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text> */}
+                    </TouchableOpacity>
                   </View>
 
 
@@ -161,11 +165,7 @@ export default class GlobalPage extends Component {
                     />
                   </View> */}
 
-                {/* <View style={styles.blockSave}>
-                    <TouchableOpacity style={styles.buttonAdd}>
-                                    <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
-                                </TouchableOpacity>
-                </View> */}
+                
                 </View>
               </View>
             </View>
@@ -253,9 +253,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#FF5733',
+    backgroundColor: colors.gray2,
     height: 50,
     borderRadius: 3,
     zIndex: 2
+  },
+  blockAdd: {
+    paddingTop: 20,
+    padding: 5,
+    // paddingVertical: 20
   }
+  // blockSave: {
+  //   borderTopColor: '#f1f1f1',
+  //   borderTopWidth: 1,
+  //   shadowColor: '#808080',
+  //   shadowOffset: { width: 0, height: 3 },
+  //   shadowOpacity: 0.5,
+  //   padding: 10
+  //   // elevation: 1
+  // }
 })
