@@ -12,7 +12,8 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import NavBar from 'src/modules/shares/NavBar'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
-import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import IconEntypo from 'react-native-vector-icons/Entypo'
 import { colors } from 'src/constant/mixins'
 
 export default class GlobalPage extends Component {
@@ -23,7 +24,10 @@ export default class GlobalPage extends Component {
       name: '',
       price: '',
       brand : '',
-      numStar: ['star-o','star-o','star-o','star-o','star-o']
+      numStar: ['star-o','star-o','star-o','star-o','star-o'],
+      isAddButton: false,
+      meassage: '',
+      contentList: []
     }
   }
 
@@ -43,6 +47,10 @@ export default class GlobalPage extends Component {
     this.setState({ price: text })
   }
 
+  handleChangeTextBox (text) {
+    this.setState({ meassage: text })
+  }
+
   setAmountRating(num){
     this.setState({
       numStar: this.state.numStar.map((_,index)=>{
@@ -56,7 +64,20 @@ export default class GlobalPage extends Component {
     })
   }
 
+  isAddButton(bool){
+    this.setState({ isAddButton : bool})
+  }
+
+  addContentBox(){
+    const contentArr = this.state.contentList
+    contentArr.push('content')
+    console.log(contentArr,'eiei')
+    this.setState({ contentList: contentArr })
+    this.isAddButton(false)
+  }
+
   render() {
+    console.log(this.state.contentList,'contentList')
     return (
         <View style={styles.container}>
          <ScrollView 
@@ -137,33 +158,63 @@ export default class GlobalPage extends Component {
                     ))}
                   </View>
 
-                  <Text style={styles.label}>Content</Text>
+                  {/* <Text style={styles.label}>Content</Text> */}
 
-                  <View style={styles.blockAdd}>
-                    <TouchableOpacity style={styles.buttonAdd}>
-                      <IconMaterialIcons name='add-circle' size={40}></IconMaterialIcons>
-                      {/* <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text> */}
-                    </TouchableOpacity>
-                  </View>
-
-
-                  {/* <View>
-                    <View style={{ width: 75, marginTop: 10, marginLeft: 10, marginRight: 10 }}> 
-                      <Text>Review</Text>
+                  <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+                    <View style={{ marginBottom: 5, flexDirection: 'row' }}>
+                      <Text style={{ fontSize:15, color: colors.black, fontWeight: 'bold' }}>Content</Text>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
+                        <TouchableOpacity style={{ marginLeft: 24, flexDirection: 'row' }}>
+                          <IconFontAwesome name='edit' size={18} />
+                          <Text style={{ fontSize:15, color: colors.gray, marginLeft: 5 }}>Edit</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                  <View style={styles.bodyTextInput}>
-                    <TextInput 
-                      style={[styles.font15, styles.fontGray, { minHeight: 180, paddingTop: 0, paddingBottom: 0 }]}
-                      multiline
-                      maxHeight={300}
-                      editable={this.state.switchEditAndSent}
-                      underlineColorAndroid='transparent'
-                      onChangeText={text => this.handleChangeConclude(text)}
-                      value={this.state.staticMessage}
-                      keyboardType='default'
-                    />
-                  </View> */}
+
+                  {this.state.contentList.map((item,key) => 
+                    <View>
+                      {  item === 'content' && (
+                        <View style={styles.bodyTextInput}>
+                          <TextInput 
+                            style={{ fontSize:15, color: colors.gray, minHeight: 100, paddingTop: 0, paddingBottom: 0 }}
+                            multiline
+                            maxHeight={300}
+                            // editable={this.state.switchEditAndSent}
+                            underlineColorAndroid='transparent'
+                            onChangeText={text => this.handleChangeTextBox(text)}
+                            value={this.state.staticMessage}
+                            keyboardType='default'
+                          />
+                      </View>)}
+                    </View>
+                  )}
+                  
+
+                  { !this.state.isAddButton &&
+                    <View style={styles.blockAdd}>
+                      <TouchableOpacity style={styles.buttonAdd} onPress={() => this.isAddButton(true)}>
+                        <IconMaterial name='add-circle' size={40}></IconMaterial>
+                      </TouchableOpacity>
+                    </View>
+                  }
+
+                  { this.state.isAddButton &&
+                    <View style={styles.blockOption}>
+                      <TouchableOpacity style={styles.buttonOptionLeft} onPress={() => this.addContentBox()}>
+                        <IconEntypo name='text' size={40}></IconEntypo>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.buttonOptionRight} onPress={() => this.isAddButton(false)}>
+                        <IconFontAwesome name='picture-o' size={40}></IconFontAwesome>
+                      </TouchableOpacity>
+                    </View>
+                  }
+                  
+                  <View style={styles.blockSave}>
+                    <TouchableOpacity style={styles.buttonSave}>
+                      <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
+                    </TouchableOpacity>
+                  </View>
 
                 
                 </View>
@@ -252,17 +303,59 @@ const styles = StyleSheet.create({
   buttonAdd: {
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: colors.gray2,
+    // flexDirection: 'row',
+    backgroundColor: colors.white,
     height: 50,
     borderRadius: 3,
-    zIndex: 2
+    zIndex: 2,
+    borderColor: '#dfdfdf', 
+    borderWidth: 1
   },
   blockAdd: {
     paddingTop: 20,
     padding: 5,
     // paddingVertical: 20
-  }
+  },
+  buttonSave: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: colors.orange,
+    height: 50,
+    borderRadius: 3,
+    zIndex: 2
+  },
+  blockSave: {
+    borderTopColor: '#f1f1f1',
+    borderTopWidth: 1,
+    shadowColor: '#808080',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    padding: 5
+  },
+  blockOption: {
+    flexDirection: 'row',
+    paddingTop: 20,
+    padding: 5,
+  },
+  buttonOptionLeft: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.gray2,
+    height: 50,
+    borderBottomLeftRadius: 3,
+    borderTopLeftRadius:3
+  },
+  buttonOptionRight: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.gray2,
+    height: 50,
+    borderBottomRightRadius: 3,
+    borderTopRightRadius:3
+  },
   // blockSave: {
   //   borderTopColor: '#f1f1f1',
   //   borderTopWidth: 1,

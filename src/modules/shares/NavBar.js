@@ -10,12 +10,12 @@ import {
 import { Actions } from 'react-native-router-flux'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
+import { colors } from 'src/constant/mixins'
 
 class NavBar extends Component {
 
   render () {
     const { titleName } = this.props
-    console.log('titleName',titleName)
     return (
       <View style={styles.navBar} >
         <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }} >
@@ -23,9 +23,9 @@ class NavBar extends Component {
             style={{ width: 50, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }} 
             onPress={() => Actions.pop()}
           >
-            <IconIonicons name='ios-arrow-back' size={20} color='#000' />
+            <IconIonicons name='ios-arrow-back' size={20} color={colors.gray} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>{ titleName }</Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ titleName }</Text>
         </View>
       </View>
     )
@@ -38,7 +38,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     flexDirection: 'row',
     zIndex: 1,
-    backgroundColor: '#0ff'
+    backgroundColor: colors.white,
+    borderBottomColor: '#f1f1f1',
+    borderBottomWidth: 1,
+    shadowColor: '#808080',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.5
   },
   backgroundTranparent: {
     backgroundColor: 'transparent' 
