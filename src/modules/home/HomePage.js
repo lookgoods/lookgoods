@@ -26,8 +26,10 @@ const reviewsMock = [
 			profile_url: images.profile
 		},
 		picture_cover_url: images.product1,
+		product_price: 500,
 		product: {
-			price: 500
+			name: 'Etude House BB Cream',
+			brand: 'Etude'
 		},
 		comment_list: ['1', '2', '3'],
 		rating: 5.0,
@@ -40,8 +42,10 @@ const reviewsMock = [
 			profile_url: images.profile
 		},
 		picture_cover_url: images.product2,
+		product_price: 300,
 		product: {
-			price: 300
+			name: 'Skinfood Peach Cotton',
+			brand: 'Skinfood'
 		},
 		comment_list: ['1', '2', '3', '4'],
 		rating: 4.5,

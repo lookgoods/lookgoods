@@ -13,7 +13,8 @@ import icons from 'src/constant/icons'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import { colors } from 'src/constant/mixins'
 import { Actions } from 'react-native-router-flux'
-
+import { connect } from 'react-redux'
+import ReviewActions from 'src/redux/actions/review'
 
 
 const ProfilePicture = ({ image_url }) => {
@@ -46,11 +47,14 @@ function Header({ reviewer_name, profile_url, time, isSaved }) {
 	)
 }
 
-const ProductPicture = ({ image_url }) => {
+const ProductPicture = ({ image_url, review, setReview }) => {
 	return ( 
 		<View>
 			{ image_url ?
-			<TouchableOpacity onPress={() => {Actions.addProductPage()}}>
+			<TouchableOpacity onPress={() => {
+				setReview(review)
+				Actions.viewProductPage()
+			}}>
 				<Image
 					style={styles.productImage}
 					source={image_url}
@@ -62,10 +66,10 @@ const ProductPicture = ({ image_url }) => {
 	)
 }
 
-function Body({ product_url, title }) {
+function Body({ product_url, title, review, setReview }) {
 	return (
 		<View>
-			<ProductPicture image_url={product_url} />
+			<ProductPicture image_url={product_url} review={review} setReview={setReview}/>
 			<Text style={styles.titleText}>{title}</Text>
 		</View>
 	)
@@ -90,41 +94,38 @@ function Footer({ rating, price, numberOfComment}) {
 	)
 }
 
-export default class ReviewCard extends Component {
+export class ReviewCard extends Component {
 
 	constructor (props) {
 		super(props)
 	}
   
 	render() {
-		const { title, user, picture_cover_url, product, comment_list, rating, timestamp} = this.props.review
-
+		const { title, user, picture_cover_url, product, product_price, comment_list, rating, timestamp } = this.props.review
+		
 		return (
-		<View style={styles.container}>
-			<Header reviewer_name={user.username} profile_url={user.profile_url} time={timestamp} isSaved={false} />
-			<Body product_url={picture_cover_url} title={title} />
-			<Footer rating={rating} price={product.price} numberOfComment={comment_list.length} />
-		</View>
-	)
-  }
+			<View style={styles.container}>
+				<Header reviewer_name={user.username} profile_url={user.profile_url} time={timestamp} isSaved={false} />
+				<Body product_url={picture_cover_url} title={title} review={this.props.review} setReview={this.props.setCurrentReview}/>
+				<Footer rating={rating} price={product_price} numberOfComment={comment_list.length} />
+			</View>
+		)
+  	}
 }
 
 const styles = StyleSheet.create({
 	headerContainer: {
 		flexDirection: 'row',
-		marginBottom: 5,
+		marginBottom: 5
 	},
 	borderCover: {
-    // borderWidth: 1,
-    // borderRadius: 36,
     justifyContent: 'center',
     alignItems: 'center'
-  },
+ 	},
 	profileImage: {
 		width: 40,
 		height: 40,
-		borderRadius: 20,
-		// margin: 1
+		borderRadius: 20
 	},
 	headerWrapper: {
 		flexDirection: 'column',
@@ -178,3 +179,11 @@ const styles = StyleSheet.create({
 		marginLeft: 6,
 	}
 })
+
+const mapDispatchToProps = dispatch => ({
+	setCurrentReview: review => {
+		dispatch(ReviewActions.setCurrentReview(review))
+	}
+})
+
+export default connect(null, mapDispatchToProps)(ReviewCard)
