@@ -9,6 +9,7 @@ import {
   ScrollView
 } from 'react-native'
 import React, { Component } from 'react'
+import ImagePicker from 'react-native-image-picker'
 import { Actions } from 'react-native-router-flux'
 import NavBar from 'src/modules/shares/NavBar'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -51,6 +52,33 @@ export default class GlobalPage extends Component {
     this.setState({ meassage: text })
   }
 
+  attachPhotos () {
+    // const { paymentCard } = this.state
+    const options = {
+      title: 'Select Avatar',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    }
+
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled photo picker')
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error)
+      } else {
+        console.log('ImagePicker Success: ', response.uri)
+        const contentArr = this.state.contentList
+        contentArr.push({name: 'picture', uri: response.uri})
+        console.log(contentArr,'eiei')
+        this.setState({ contentList: contentArr })
+        this.isAddButton(false)
+        // this.props.updateAttachedSlip({ file: response, billPaymentId: payment.id, billId: payment.bill_id })
+      }
+    })
+  }
+
   setAmountRating(num){
     this.setState({
       numStar: this.state.numStar.map((_,index)=>{
@@ -70,7 +98,7 @@ export default class GlobalPage extends Component {
 
   addContentBox(){
     const contentArr = this.state.contentList
-    contentArr.push('content')
+    contentArr.push({name: 'content'})
     console.log(contentArr,'eiei')
     this.setState({ contentList: contentArr })
     this.isAddButton(false)
@@ -147,13 +175,14 @@ export default class GlobalPage extends Component {
                   <Text style={styles.label}>Rating</Text>
                   <View style={{
                     flex: 1, 
+                    marginLeft: 15,
                     marginTop: 10,
                     marginBottom: 10,
                     flexDirection: 'row'
                   }}>
                     {this.state.numStar.map((item,key) => (
                       <TouchableOpacity key={key} onPress={() => this.setAmountRating(key+1)}>
-                        <IconFontAwesome style={{ marginRight : 8 }} name={item} size={35} color={colors.yellow_star} />
+                        <IconFontAwesome style={{ marginRight : 12 }} name={item} size={35} color={colors.yellow_star} />
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -174,8 +203,8 @@ export default class GlobalPage extends Component {
 
                   {this.state.contentList.map((item,key) => 
                     <View>
-                      {  item === 'content' && (
-                        <View style={styles.bodyTextInput}>
+                      {  item.name === 'content' && (
+                        <View key={key} style={styles.bodyTextInput}>
                           <TextInput 
                             style={{ fontSize:15, color: colors.gray, minHeight: 100, paddingTop: 0, paddingBottom: 0 }}
                             multiline
@@ -186,7 +215,18 @@ export default class GlobalPage extends Component {
                             value={this.state.staticMessage}
                             keyboardType='default'
                           />
-                      </View>)}
+                        </View>)
+                      }
+
+                      { item.name === 'picture' && (
+                        <View key={key} style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+                          <Image 
+                            style={{ flex: 1, height: 180, resizeMode: 'cover'}}
+                            source={{ uri: item.uri }}
+                          />
+                        </View>
+                      )
+                      }
                     </View>
                   )}
                   
@@ -204,7 +244,7 @@ export default class GlobalPage extends Component {
                       <TouchableOpacity style={styles.buttonOptionLeft} onPress={() => this.addContentBox()}>
                         <IconEntypo name='text' size={40}></IconEntypo>
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.buttonOptionRight} onPress={() => this.isAddButton(false)}>
+                      <TouchableOpacity style={styles.buttonOptionRight} onPress={() => this.attachPhotos()}>
                         <IconFontAwesome name='picture-o' size={40}></IconFontAwesome>
                       </TouchableOpacity>
                     </View>
@@ -263,8 +303,9 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#5C5C5C', 
-    fontSize: 15
-    // fontWeight: 'bold'
+    fontSize: 15,
+    marginLeft: 15,
+    fontWeight: 'bold'
   },
   sectionBody: {
     backgroundColor: '#FFF', 
@@ -279,7 +320,9 @@ const styles = StyleSheet.create({
     borderRadius: 3, 
     justifyContent: 'center', 
     backgroundColor: '#FFF',
-    paddingHorizontal: 10, 
+    paddingHorizontal: 15, 
+    marginLeft: 15,
+    marginRight: 15,
     marginTop: 10, 
     marginBottom: 10, 
     borderColor: '#dfdfdf', 
