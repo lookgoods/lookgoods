@@ -27,7 +27,7 @@ export default class GlobalPage extends Component {
       brand : '',
       numStar: ['star-o','star-o','star-o','star-o','star-o'],
       isAddButton: false,
-      meassage: '',
+      contentMessage: [],
       contentList: []
     }
   }
@@ -48,12 +48,13 @@ export default class GlobalPage extends Component {
     this.setState({ price: text })
   }
 
-  handleChangeTextBox (text) {
-    this.setState({ meassage: text })
+  handleChangeTextBox(property, text) {
+    const contact = this.state.contentMessage
+    contact[property] = text
+    this.setState({ contentMessage: contact })
   }
 
   attachPhotos () {
-    // const { paymentCard } = this.state
     const options = {
       title: 'Select Avatar',
       storageOptions: {
@@ -70,11 +71,9 @@ export default class GlobalPage extends Component {
       } else {
         console.log('ImagePicker Success: ', response.uri)
         const contentArr = this.state.contentList
-        contentArr.push({name: 'picture', uri: response.uri})
-        console.log(contentArr,'eiei')
+        contentArr.push({type: 'picture', value: response.uri})
         this.setState({ contentList: contentArr })
         this.isAddButton(false)
-        // this.props.updateAttachedSlip({ file: response, billPaymentId: payment.id, billId: payment.bill_id })
       }
     })
   }
@@ -98,17 +97,22 @@ export default class GlobalPage extends Component {
 
   addContentBox(){
     const contentArr = this.state.contentList
-    contentArr.push({name: 'content'})
-    console.log(contentArr,'eiei')
+    contentArr.push({type: 'text', value:''})
     this.setState({ contentList: contentArr })
     this.isAddButton(false)
   }
 
+  addReview(){
+    const contentList = this.state.contentList.map((content,index) => content.type === 'text' && { ...content, value: this.state.contentMessage[index] })
+    console.log(contentList, 'contentList')
+    this.setState({ contentList })
+  }
+
   render() {
-    console.log(this.state.contentList,'contentList')
+    console.log(this.state.contentMessage,'meassage')
     return (
-        <View style={styles.container}>
-         <ScrollView 
+      <View style={styles.container}>
+        <ScrollView 
           showsVerticalScrollIndicator={false} 
           scrollEventThrottle={16} 
           bounces={false}
@@ -122,7 +126,7 @@ export default class GlobalPage extends Component {
                     height: 200,
                     resizeMode: 'cover',
                   }}
-                  source={{uri: 'https://goo.gl/XCL6pA'}}
+                  source={{uri: 'https://www.picz.in.th/images/2018/03/18/Sq1cft.jpg'}}
                 />
               </View>
               <View>
@@ -172,6 +176,16 @@ export default class GlobalPage extends Component {
                     </View>
                   </View>
 
+                  <Text style={styles.label}>Tags (ex. Cosmatic, Noot)</Text>
+                  <View style={styles.textBox}>
+                    <TextInput
+                      style={styles.textInput}
+                      value={this.state.name}
+                      underlineColorAndroid='transparent'
+                      onChangeText={(text) => this.handleChangeName(text)}
+                    />
+                  </View>
+
                   <Text style={styles.label}>Rating</Text>
                   <View style={{
                     flex: 1, 
@@ -187,8 +201,6 @@ export default class GlobalPage extends Component {
                     ))}
                   </View>
 
-                  {/* <Text style={styles.label}>Content</Text> */}
-
                   <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
                     <View style={{ marginBottom: 5, flexDirection: 'row' }}>
                       <Text style={{ fontSize:15, color: colors.black, fontWeight: 'bold' }}>Content</Text>
@@ -202,30 +214,29 @@ export default class GlobalPage extends Component {
                   </View>
 
                   {this.state.contentList.map((item,key) => 
-                    <View>
-                      {  item.name === 'content' && (
-                        <View key={key} style={styles.bodyTextInput}>
+                    <View key={key}>
+                      {  item.type === 'text' && (
+                        <View style={styles.bodyTextInput}>
                           <TextInput 
-                            style={{ fontSize:15, color: colors.gray, minHeight: 100, paddingTop: 0, paddingBottom: 0 }}
+                            style={{ fontSize:15, color: colors.gray, minHeight: 120, paddingTop: 0, paddingBottom: 0 }}
                             multiline
                             maxHeight={300}
                             // editable={this.state.switchEditAndSent}
                             underlineColorAndroid='transparent'
-                            onChangeText={text => this.handleChangeTextBox(text)}
+                            onChangeText={text => this.handleChangeTextBox(key,text)}
                             value={this.state.staticMessage}
                             keyboardType='default'
                           />
                         </View>)
                       }
 
-                      { item.name === 'picture' && (
-                        <View key={key} style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+                      { item.type === 'picture' && (
+                        <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
                           <Image 
                             style={{ flex: 1, height: 180, resizeMode: 'cover'}}
-                            source={{ uri: item.uri }}
+                            source={{ uri: item.value }}
                           />
-                        </View>
-                      )
+                        </View>)
                       }
                     </View>
                   )}
@@ -251,7 +262,7 @@ export default class GlobalPage extends Component {
                   }
                   
                   <View style={styles.blockSave}>
-                    <TouchableOpacity style={styles.buttonSave}>
+                    <TouchableOpacity style={styles.buttonSave} onPress={() => this.addReview()}>
                       <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
                     </TouchableOpacity>
                   </View>
@@ -260,7 +271,6 @@ export default class GlobalPage extends Component {
                 </View>
               </View>
             </View>
-        {/* </View> */}
         </ScrollView>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
