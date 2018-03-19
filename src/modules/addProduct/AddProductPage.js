@@ -25,6 +25,7 @@ export default class GlobalPage extends Component {
       name: '',
       price: '',
       brand : '',
+      coverImage: '',
       numStar: ['star-o','star-o','star-o','star-o','star-o'],
       isAddButton: false,
       contentMessage: [],
@@ -52,6 +53,27 @@ export default class GlobalPage extends Component {
     const contact = this.state.contentMessage
     contact[property] = text
     this.setState({ contentMessage: contact })
+  }
+
+  addCoverImage () {
+    const options = {
+      title: 'Select Avatar',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    }
+
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled photo picker')
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error)
+      } else {
+        console.log('ImagePicker Success: ', response.uri)
+        this.setState({ coverImage: response.uri })
+      }
+    })
   }
 
   attachPhotos () {
@@ -103,7 +125,12 @@ export default class GlobalPage extends Component {
   }
 
   addReview(){
-    const contentList = this.state.contentList.map((content,index) => content.type === 'text' && { ...content, value: this.state.contentMessage[index] })
+    const contentList = this.state.contentList.map(
+      (content,index) => 
+        content.type === 'text' 
+          ? { ...content, value: contentMessage[index]} 
+          : { ...content, value: content.value}
+    )
     console.log(contentList, 'contentList')
     this.setState({ contentList })
   }
@@ -120,14 +147,22 @@ export default class GlobalPage extends Component {
         >
             <View>
               <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                <Image 
-                  style={{
-                    flex: 1,
-                    height: 200,
-                    resizeMode: 'cover',
-                  }}
-                  source={{uri: 'https://www.picz.in.th/images/2018/03/18/Sq1cft.jpg'}}
-                />
+                { this.state.coverImage === '' ? 
+                  <TouchableOpacity 
+                    style={{ flex: 1, height: 200, backgroundColor: colors.gray3, alignItems: 'center', justifyContent: 'center' }}
+                    onPress={() => this.addCoverImage()}
+                  >
+                    <IconMaterial name='add-a-photo' size={100}></IconMaterial>
+                  </TouchableOpacity>  :
+                  <Image 
+                    style={{
+                      flex: 1,
+                      height: 200,
+                      resizeMode: 'cover',
+                    }}
+                    source={{uri: this.state.coverImage}}
+                  />
+                }
               </View>
               <View>
                 <View style={styles.sectionBody}>
