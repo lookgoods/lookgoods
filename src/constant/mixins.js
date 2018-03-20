@@ -8,5 +8,6 @@ export const colors = {
     gray3: '#FAFAFA',
     orange: '#FF5733',
     yellow_star: '#F8ED5E',
-    red: '#ff0000'
+    red: '#ff0000',
+    blueFacebook: '#3B5998'
 }

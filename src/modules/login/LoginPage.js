@@ -4,10 +4,12 @@ import { Button } from 'react-native-elements'
 import { colors } from 'src/constant/mixins'
 import { Actions } from 'react-native-router-flux'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import UserActions from 'src/redux/actions/user'
+import { connect } from 'react-redux'
 
 const { LoginButton, AccessToken } = FBSDK
 
-export default class LoginPage extends Component {
+export class LoginPage extends Component {
 
     constructor (props) {
         super(props)
@@ -15,52 +17,40 @@ export default class LoginPage extends Component {
     }
 
     _fbAuth() {
-        LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
+        var self = this
+        LoginManager.logInWithReadPermissions(['public_profile', 'user_friends']).then(function(result) {
             if(result.isCancelled) {
                 console.log('Loging was cancelled')
             } else {
                 console.log('Login was a success' + result.grantedPermissions.toString())
+                AccessToken.getCurrentAccessToken().then(
+                    (data) => {
+                        const token = data.accessToken.toString()
+                        console.log('token', token)
+                        self.props.loginWithFacebook(token)
+                        // self.props.getUserFromFacebook(token)
+                        Actions.tabMenu()
+                    }
+                )
             }
         }, function(error) {
-            console.log('an error occured')
+            console.log('Login had an error occured')
         })
     }
 
     render() {
         
         return (
-        <View style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <LoginButton 
-                    publicPermissions={["public_actions"]}
-                    onLoginFinished={
-                        (error, result) => {
-                            if(error) {
-                                console.log("login has error : " + result.error)
-                            } else if(result.isCancelled) {
-                                console.log("login is cancelled")
-                            } else {
-                                AccessToken.getCurrentAccessToken().then(
-                                    (data) => {
-                                        console.log(data.accessToken.toString())
-                                    }
-                                )
-                            }
-                        }
-                    }
-                    onLogoutFinished={() => console.log("logout")}
-                />
-                <Button 
-                    title='Login with Facebook' 
-                    backgroundColor={colors.blue}
-                />
+            <View style={styles.container}>
+                <View style={styles.buttonContainer}>
+                    <Button 
+                        title='SIGN IN WITH FACEBOOK' 
+                        backgroundColor={colors.blueFacebook}
+                        onPress={ () => this._fbAuth() }
+                        buttonStyle={styles.signinBtn}
+                    />
+                </View>
             </View>
-            <Button
-                    title='Go to Homepage'
-                    style={ { marginTop: 10 }}
-                    onPress={ () => Actions.tabMenu() }
-            />
-        </View>
         )
     }
 }
@@ -68,10 +58,32 @@ export default class LoginPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        flexDirection: 'row'
     },
     buttonContainer: {
-        marginTop: 50,
-        marginBottom: 10
+        marginBottom: 100,
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    signinBtn: {
+        borderRadius: 2
     }
 })
+
+const mapStateToProps = state => ({
+    currentUser: state.userReducer.currentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+    getUserFromFacebook: token => {
+        dispatch(UserActions.getUserFromFacebook(token))
+    },
+    loginWithFacebook: token => {
+        dispatch(UserActions.loginWithFacebook(token))
+    }         
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

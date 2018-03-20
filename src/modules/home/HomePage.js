@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
 import ReviewList from 'src/modules/home/components/ReviewList'
+import { connect } from 'react-redux'
 
 const reviewsMock = [
 	{
@@ -47,12 +48,14 @@ const reviewsMock = [
 	}
 ]
 
-export default class HomePage extends Component {
+export class HomePage extends Component {
 	constructor (props) {
 		super(props)
 	}
   
 	render() {
+		console.log('user', this.props.currentUser)
+
 		return (
 			<View style={styles.container}>
 				<ScrollView>
@@ -108,3 +111,9 @@ const styles = StyleSheet.create({
 		zIndex: 2
 	}
 })
+
+const mapStateToProps = state => ({
+    currentUser: state.userReducer.currentUser
+})
+
+export default connect(mapStateToProps, null)(HomePage)

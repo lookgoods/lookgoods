@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "noot": "react-native run-android"
+    "run-android": "adb reverse tcp:3000 tcp:3000 & react-native run-android"
   },
   "dependencies": {
     "mobx": "^3.5.1",
@@ -19,7 +19,11 @@
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-tab-navigator": "^0.3.4",
     "react-native-vector-icons": "^4.5.0",
-    "redux-saga": "^0.16.0"
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-promise": "^0.5.3",
+    "redux-saga": "^0.16.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-jest": "22.0.4",
