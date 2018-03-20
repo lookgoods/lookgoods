@@ -1,19 +1,20 @@
-import React, { Component } from 'react'
+import { Button, Card, ListItem } from 'react-native-elements'
 import {
+	Image,
 	Platform,
+	ScrollView,
 	StyleSheet,
 	Text,
-	View,
-	Image,
 	TouchableOpacity,
-	ScrollView
+	View
 } from 'react-native'
+import React, { Component } from 'react'
+
 import { Actions } from 'react-native-router-flux';
-import NavBar from 'src/modules/shares/NavBar'
-import { Card, ListItem, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
+import NavBar from 'src/modules/shares/NavBar'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { connect } from 'react-redux'
 import NavBarSearch from '../shares/NavBarSearch';
@@ -22,7 +23,7 @@ const reviewsMock = [
 	{
 		title: 'Etude House BB Cream is The best BB Cream',
 		user: {
-			username: 'Phasin Sarunpornkul',
+			name: 'Phasin Sarunpornkul',
 			profile_url: images.profile
 		},
 		picture_cover_url: images.product1,
@@ -32,13 +33,29 @@ const reviewsMock = [
 			brand: 'Etude'
 		},
 		comment_list: ['1', '2', '3'],
-		rating: 5.0,
-		timestamp: '4 hours ago'
+		rating: 1,
+		overall_rating: 4.5,
+		timestamp: '4 hours ago',
+		content_list: [
+			{	type: 'picture',
+				value: images.product2
+			},
+			{	type: 'text',
+				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
+			},
+			{	type: 'picture',
+				value: images.product3
+			},
+			{	type: 'text',
+				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
+			}
+		],
+		tag_list: [ "Makeup and Beauty", "Cosmetic"]
 	},
 	{
 		title: 'Skinfood Peach Cotton is The best BB Cream',
 		user: {
-			username: 'Paiiz Wanchanapon',
+			name: 'Paiiz Wanchanapon',
 			profile_url: images.profile
 		},
 		picture_cover_url: images.product2,
@@ -48,8 +65,24 @@ const reviewsMock = [
 			brand: 'Skinfood'
 		},
 		comment_list: ['1', '2', '3', '4'],
-		rating: 4.5,
-		timestamp: '6 hours ago'
+		rating: 2,
+		overall_rating: 3.5,
+		timestamp: '6 hours ago',
+		content_list: [
+			{	type: 'picture',
+				value: images.product2
+			},
+			{	type: 'text',
+				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
+			},
+			{	type: 'picture',
+				value: images.product3
+			},
+			{	type: 'text',
+				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
+			}
+		],
+		tag_list: [ "Makeup and Beauty", "Cosmetic"]
 	}
 ]
 

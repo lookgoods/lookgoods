@@ -1,21 +1,21 @@
-import React, { Component } from 'react'
 import {
+  Image,
   Platform,
   StyleSheet,
   Text,
-  View,
-  Image,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native'
-import CoverImage from 'src/modules/shares/CoverImage'
-import images from 'src/constant/images'
-import icons from 'src/constant/icons'
-import IconMaterial from 'react-native-vector-icons/MaterialIcons'
-import { colors } from 'src/constant/mixins'
-import { Actions } from 'react-native-router-flux'
-import { connect } from 'react-redux'
-import ReviewActions from 'src/redux/actions/review'
+import React, { Component } from 'react'
 
+import { Actions } from 'react-native-router-flux'
+import CoverImage from 'src/modules/shares/CoverImage'
+import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import ReviewActions from 'src/redux/actions/review'
+import { colors } from 'src/constant/mixins'
+import { connect } from 'react-redux'
+import icons from 'src/constant/icons'
+import images from 'src/constant/images'
 
 const ProfilePicture = ({ image_url }) => {
 	return ( 
@@ -101,13 +101,13 @@ export class ReviewCard extends Component {
 	}
   
 	render() {
-		const { title, user, picture_cover_url, product, product_price, comment_list, rating, timestamp } = this.props.review
+		const { title, user, picture_cover_url, product, product_price, comment_list, overall_rating, timestamp } = this.props.review
 		
 		return (
 			<View style={styles.container}>
-				<Header reviewer_name={user.username} profile_url={user.profile_url} time={timestamp} isSaved={false} />
+				<Header reviewer_name={user.name} profile_url={user.profile_url} time={timestamp} isSaved={false} />
 				<Body product_url={picture_cover_url} title={title} review={this.props.review} setReview={this.props.setCurrentReview}/>
-				<Footer rating={rating} price={product_price} numberOfComment={comment_list.length} />
+				<Footer rating={overall_rating} price={product_price} numberOfComment={comment_list.length} />
 			</View>
 		)
   	}
