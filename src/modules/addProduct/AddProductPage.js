@@ -28,6 +28,7 @@ export default class GlobalPage extends Component {
       coverImage: '',
       numStar: ['star-o','star-o','star-o','star-o','star-o'],
       isAddButton: false,
+      isEditButton: false,
       contentMessage: [],
       contentList: []
     }
@@ -95,7 +96,7 @@ export default class GlobalPage extends Component {
         const contentArr = this.state.contentList
         contentArr.push({type: 'picture', value: response.uri})
         this.setState({ contentList: contentArr })
-        this.isAddButton(false)
+        this.isAddButton()
       }
     })
   }
@@ -113,15 +114,19 @@ export default class GlobalPage extends Component {
     })
   }
 
-  isAddButton(bool){
-    this.setState({ isAddButton : bool})
+  isAddButton(){
+    this.setState({ isAddButton : !this.state.isAddButton })
+  }
+
+  isEditButton(){
+    this.setState({ isEditButton : !this.state.isEditButton })
   }
 
   addContentBox(){
     const contentArr = this.state.contentList
     contentArr.push({type: 'text', value:''})
     this.setState({ contentList: contentArr })
-    this.isAddButton(false)
+    this.isAddButton()
   }
 
   addReview(){
@@ -135,8 +140,16 @@ export default class GlobalPage extends Component {
     this.setState({ contentList })
   }
 
+  deleteContentBox(key){
+    const contentList = this.state.contentList
+    const contentMessage = this.state.contentMessage
+    contentList.splice(key,1)
+    contentMessage.splice(key,1)
+    console.log(contentList, contentMessage, 'deleteContentBox')
+    this.setState({ contentList , contentMessage })
+  }
+
   render() {
-    console.log(this.state.contentMessage,'meassage')
     return (
       <View style={styles.container}>
         <ScrollView 
@@ -234,25 +247,27 @@ export default class GlobalPage extends Component {
               ))}
             </View>
 
-            <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+            <View style={{ marginTop: 15 }}>
               <View style={{ marginBottom: 5, flexDirection: 'row' }}>
-                <Text style={{ fontSize:15, color: colors.black, fontWeight: 'bold' }}>Content</Text>
+                <Text style={ styles.label}>Content</Text>
                 <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
-                  <TouchableOpacity style={{ marginLeft: 24, flexDirection: 'row' }}>
+                  <TouchableOpacity style={{ marginLeft: 24, flexDirection: 'row' }} onPress={() => this.isEditButton()}>
                     <IconFontAwesome name='edit' size={18} />
-                    <Text style={{ fontSize:15, color: colors.gray, marginLeft: 5 }}>Edit</Text>
+                    <Text style={{ fontSize:15, color: colors.gray, marginLeft: 5, marginRight: 15 }}>Edit</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
 
             { this.state.contentList.map((item,key) => 
-              <View key={key} style={{ marginTop: 15 }}>
+              <View key={key} >
                 { item.type === 'text' && (
                   <View>
-                    <TouchableOpacity style={{ top: 25, marginTop: -30, alignSelf: 'flex-end', right: 6, zIndex: 1 }}>
-                      <IconMaterial name='cancel' size={20}></IconMaterial>
-                    </TouchableOpacity>
+                    { this.state.isEditButton && (
+                      <TouchableOpacity style={{ top: 25, marginTop: -20, alignSelf: 'flex-end', right: 6, zIndex: 1 }} onPress={() => this.deleteContentBox(key)}>
+                        <IconMaterial name='cancel' color={colors.red} size={20}></IconMaterial>
+                      </TouchableOpacity>)
+                    }
                     <View style={styles.bodyTextInput}>
                       <TextInput 
                         style={{ fontSize:15, color: colors.gray, minHeight: 120, paddingTop: 0, paddingBottom: 0 }}
@@ -261,20 +276,26 @@ export default class GlobalPage extends Component {
                         // editable={this.state.switchEditAndSent}
                         underlineColorAndroid='transparent'
                         onChangeText={text => this.handleChangeTextBox(key,text)}
-                        value={this.state.staticMessage}
+                        value={this.state.contentMessage[key]}
                         keyboardType='default'
                       />
                     </View>
-                  </View>
-                  )
+                  </View>)
                 }
 
                 { item.type === 'picture' && (
-                  <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
-                    <Image 
-                      style={{ flex: 1, height: 180, resizeMode: 'cover'}}
-                      source={{ uri: item.value }}
-                    />
+                  <View>
+                    { this.state.isEditButton && (
+                      <TouchableOpacity style={{ top: 25, marginTop: -20, alignSelf: 'flex-end', right: 6, zIndex: 1 }} onPress={() => this.deleteContentBox(key)}>
+                        <IconMaterial name='cancel' color={colors.red} size={20}></IconMaterial>
+                      </TouchableOpacity>)
+                    }
+                    <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+                      <Image 
+                        style={{ flex: 1, height: 180, resizeMode: 'cover'}}
+                        source={{ uri: item.value }}
+                      />
+                    </View>
                   </View>)
                 }
               </View>
@@ -282,7 +303,7 @@ export default class GlobalPage extends Component {
             
             { !this.state.isAddButton &&
               <View style={styles.blockAdd}>
-                <TouchableOpacity style={styles.buttonAdd} onPress={() => this.isAddButton(true)}>
+                <TouchableOpacity style={styles.buttonAdd} onPress={() => this.isAddButton()}>
                   <IconMaterial name='add-circle' size={40}></IconMaterial>
                 </TouchableOpacity>
               </View>
