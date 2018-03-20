@@ -10,88 +10,22 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 
-import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
 import NavBar from 'src/modules/shares/NavBar'
+import NavBarSearch from '../shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { connect } from 'react-redux'
-import NavBarSearch from '../shares/NavBarSearch';
-
-const reviewsMock = [
-	{
-		title: 'Etude House BB Cream is The best BB Cream',
-		user: {
-			name: 'Phasin Sarunpornkul',
-			profile_url: images.profile
-		},
-		picture_cover_url: images.product1,
-		product_price: 500,
-		product: {
-			name: 'Etude House BB Cream',
-			brand: 'Etude'
-		},
-		comment_list: ['1', '2', '3'],
-		rating: 1,
-		overall_rating: 4.5,
-		timestamp: '4 hours ago',
-		content_list: [
-			{	type: 'picture',
-				value: images.product2
-			},
-			{	type: 'text',
-				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
-			},
-			{	type: 'picture',
-				value: images.product3
-			},
-			{	type: 'text',
-				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
-			}
-		],
-		tag_list: [ "Makeup and Beauty", "Cosmetic"]
-	},
-	{
-		title: 'Skinfood Peach Cotton is The best BB Cream',
-		user: {
-			name: 'Paiiz Wanchanapon',
-			profile_url: images.profile
-		},
-		picture_cover_url: images.product2,
-		product_price: 300,
-		product: {
-			name: 'Skinfood Peach Cotton',
-			brand: 'Skinfood'
-		},
-		comment_list: ['1', '2', '3', '4'],
-		rating: 2,
-		overall_rating: 3.5,
-		timestamp: '6 hours ago',
-		content_list: [
-			{	type: 'picture',
-				value: images.product2
-			},
-			{	type: 'text',
-				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
-			},
-			{	type: 'picture',
-				value: images.product3
-			},
-			{	type: 'text',
-				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
-			}
-		],
-		tag_list: [ "Makeup and Beauty", "Cosmetic"]
-	}
-]
+import reviewsMock from 'src/mockData/reviews'
 
 export class HomePage extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
 			isSearch: false, 
-      searchText: '',
+      		searchText: ''
 		}
 	}
 	

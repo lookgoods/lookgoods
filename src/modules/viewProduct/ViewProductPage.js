@@ -12,6 +12,7 @@ import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
 import { Button } from 'react-native-elements'
+import CommentSection from 'src/modules/viewProduct/components/CommentSection'
 import ContentSection from 'src/modules/viewProduct/components/ContentSection'
 import CoverImage from 'src/modules/shares/CoverImage'
 import NavBar from 'src/modules/shares/NavBar'
@@ -35,6 +36,7 @@ export class ViewProductPage extends Component {
         </View>
         <ScrollView>
           <ContentSection review={this.props.review}/>
+          <CommentSection review={this.props.review}/>
         </ScrollView>
       </View>
     )

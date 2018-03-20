@@ -10,6 +10,7 @@ import { Actions } from 'react-native-router-flux'
 import { Button } from 'react-native-elements'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
+import StarBar from 'src/modules/viewProduct/components/StarBar'
 import { colors } from 'src/constant/mixins'
 import images from 'src/constant/images'
 
@@ -45,24 +46,9 @@ function ReviewerBar({ reviewer, rating }) {
       <ProfilePicture image_url={reviewer.profile_url}/>
       <View style={styles.reviewTextWrapper}>
         <Text style={styles.reviewerName}>{reviewer.name}</Text>
-        <StarBar rating={rating}/>
+        <View style={styles.starBar}><StarBar rating={rating} size={30}/></View>
       </View>
       <FollowButton />
-    </View>
-  )
-}
-
-function checkStar(number, rating) {
-  if(number < rating) return 'star'
-  return 'star-o'
-}
-
-function StarBar({ rating }) {
-  return (
-    <View style={styles.starBar}>
-      { Array.apply(null, Array(5)).map( (item, index) => (
-        <IconFontAwesome key={index} style={styles.star} name={checkStar(index, rating)} size={30} color={colors.yellow}/>
-      )) }
     </View>
   )
 }
@@ -112,7 +98,7 @@ const TagList = ({ tags }) => (
       <Text style={styles.productDetailName}>Tags</Text>
       <View>
         { tags.map( (tag, index) => (
-          <View style={styles.tagWrapper}>
+          <View key={index} style={styles.tagWrapper}>
             <TagButton title={tag} />
           </View>
         ))}
@@ -162,6 +148,9 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     flex: 1
   },
+  starBar: {
+    marginLeft: 3
+  },
   reviewerName: {
     fontSize: 15,
     color: colors.blue,
@@ -172,14 +161,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 35,
     marginRight: 20
-  },
-  starBar: {
-    flexDirection: 'row',
-    marginLeft: 5,
-    marginTop: 5
-  },
-  star: {
-    marginRight: 5
   },
   titleText: {
     marginLeft: 20,
