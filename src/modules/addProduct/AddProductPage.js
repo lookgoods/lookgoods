@@ -145,167 +145,166 @@ export default class GlobalPage extends Component {
           bounces={false}
           style={styles.body}
         >
-            <View>
-              <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                { this.state.coverImage === '' ? 
-                  <TouchableOpacity 
-                    style={{ flex: 1, height: 200, backgroundColor: colors.gray3, alignItems: 'center', justifyContent: 'center' }}
-                    onPress={() => this.addCoverImage()}
-                  >
-                    <IconMaterial name='add-a-photo' size={100}></IconMaterial>
-                  </TouchableOpacity>  :
-                  <Image 
-                    style={{
-                      flex: 1,
-                      height: 200,
-                      resizeMode: 'cover',
-                    }}
-                    source={{uri: this.state.coverImage}}
+          <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+            { this.state.coverImage === '' ? 
+              <TouchableOpacity 
+                style={{ flex: 1, height: 200, backgroundColor: colors.gray3, alignItems: 'center', justifyContent: 'center' }}
+                onPress={() => this.addCoverImage()}
+              >
+                <IconMaterial name='add-a-photo' size={100}></IconMaterial>
+              </TouchableOpacity>  :
+              <Image 
+                style={{
+                  flex: 1,
+                  height: 200,
+                  resizeMode: 'cover',
+                }}
+                source={{uri: this.state.coverImage}}
+              />
+            }
+          </View>
+          <View style={styles.sectionBody}>
+            <Text style={styles.label}>Title</Text>
+            <View style={styles.textBox}>
+              <TextInput
+                style={styles.textInput}
+                value={this.state.title}
+                underlineColorAndroid='transparent'
+                onChangeText={(text) => this.handleChangeTitle(text)}
+              />
+            </View>
+          
+            <Text style={styles.label}>Name</Text>
+            <View style={styles.textBox}>
+              <TextInput
+                style={styles.textInput}
+                value={this.state.name}
+                underlineColorAndroid='transparent'
+                onChangeText={(text) => this.handleChangeName(text)}
+              />
+            </View>
+
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex : 1, paddingRight : 10 }}>
+                <Text style={styles.label}>Brand</Text>
+                <View style={styles.textBox}>
+                  <TextInput
+                    style={styles.textInput}
+                    value={this.state.brand}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(text) => this.handleChangeBrand(text)}
                   />
-                }
+                </View>
               </View>
-              <View>
-                <View style={styles.sectionBody}>
-                  <Text style={styles.label}>Title</Text>
-                  <View style={styles.textBox}>
-                    <TextInput
-                      style={styles.textInput}
-                      value={this.state.title}
-                      underlineColorAndroid='transparent'
-                      onChangeText={(text) => this.handleChangeTitle(text)}
-                    />
-                  </View>
-                
-                  <Text style={styles.label}>Name</Text>
-                  <View style={styles.textBox}>
-                    <TextInput
-                      style={styles.textInput}
-                      value={this.state.name}
-                      underlineColorAndroid='transparent'
-                      onChangeText={(text) => this.handleChangeName(text)}
-                    />
-                  </View>
-
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex : 1, paddingRight : 10 }}>
-                      <Text style={styles.label}>Brand</Text>
-                      <View style={styles.textBox}>
-                        <TextInput
-                          style={styles.textInput}
-                          value={this.state.brand}
-                          underlineColorAndroid='transparent'
-                          onChangeText={(text) => this.handleChangeBrand(text)}
-                        />
-                      </View>
-                    </View>
-                    <View style={{ flex : 1, paddingLeft : 10 }}>
-                      <Text style={styles.label}>Price</Text>
-                      <View style={styles.textBox}>
-                        <TextInput
-                          style={styles.textInput}
-                          value={this.state.price}
-                          underlineColorAndroid='transparent'
-                          onChangeText={(text) => this.handleChangePrice(text)}
-                        />
-                      </View>
-                    </View>
-                  </View>
-
-                  <Text style={styles.label}>Tags (ex. Cosmatic, Noot)</Text>
-                  <View style={styles.textBox}>
-                    <TextInput
-                      style={styles.textInput}
-                      value={this.state.name}
-                      underlineColorAndroid='transparent'
-                      onChangeText={(text) => this.handleChangeName(text)}
-                    />
-                  </View>
-
-                  <Text style={styles.label}>Rating</Text>
-                  <View style={{
-                    flex: 1, 
-                    marginLeft: 15,
-                    marginTop: 10,
-                    marginBottom: 10,
-                    flexDirection: 'row'
-                  }}>
-                    {this.state.numStar.map((item,key) => (
-                      <TouchableOpacity key={key} onPress={() => this.setAmountRating(key+1)}>
-                        <IconFontAwesome style={{ marginRight : 12 }} name={item} size={35} color={colors.yellow_star} />
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-
-                  <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
-                    <View style={{ marginBottom: 5, flexDirection: 'row' }}>
-                      <Text style={{ fontSize:15, color: colors.black, fontWeight: 'bold' }}>Content</Text>
-                      <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
-                        <TouchableOpacity style={{ marginLeft: 24, flexDirection: 'row' }}>
-                          <IconFontAwesome name='edit' size={18} />
-                          <Text style={{ fontSize:15, color: colors.gray, marginLeft: 5 }}>Edit</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-
-                  {this.state.contentList.map((item,key) => 
-                    <View key={key}>
-                      {  item.type === 'text' && (
-                        <View style={styles.bodyTextInput}>
-                          <TextInput 
-                            style={{ fontSize:15, color: colors.gray, minHeight: 120, paddingTop: 0, paddingBottom: 0 }}
-                            multiline
-                            maxHeight={300}
-                            // editable={this.state.switchEditAndSent}
-                            underlineColorAndroid='transparent'
-                            onChangeText={text => this.handleChangeTextBox(key,text)}
-                            value={this.state.staticMessage}
-                            keyboardType='default'
-                          />
-                        </View>)
-                      }
-
-                      { item.type === 'picture' && (
-                        <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
-                          <Image 
-                            style={{ flex: 1, height: 180, resizeMode: 'cover'}}
-                            source={{ uri: item.value }}
-                          />
-                        </View>)
-                      }
-                    </View>
-                  )}
-                  
-
-                  { !this.state.isAddButton &&
-                    <View style={styles.blockAdd}>
-                      <TouchableOpacity style={styles.buttonAdd} onPress={() => this.isAddButton(true)}>
-                        <IconMaterial name='add-circle' size={40}></IconMaterial>
-                      </TouchableOpacity>
-                    </View>
-                  }
-
-                  { this.state.isAddButton &&
-                    <View style={styles.blockOption}>
-                      <TouchableOpacity style={styles.buttonOptionLeft} onPress={() => this.addContentBox()}>
-                        <IconEntypo name='text' size={40}></IconEntypo>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.buttonOptionRight} onPress={() => this.attachPhotos()}>
-                        <IconFontAwesome name='picture-o' size={40}></IconFontAwesome>
-                      </TouchableOpacity>
-                    </View>
-                  }
-                  
-                  <View style={styles.blockSave}>
-                    <TouchableOpacity style={styles.buttonSave} onPress={() => this.addReview()}>
-                      <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                
+              <View style={{ flex : 1, paddingLeft : 10 }}>
+                <Text style={styles.label}>Price</Text>
+                <View style={styles.textBox}>
+                  <TextInput
+                    style={styles.textInput}
+                    value={this.state.price}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(text) => this.handleChangePrice(text)}
+                  />
                 </View>
               </View>
             </View>
+
+            <Text style={styles.label}>Tags</Text>
+            <View style={styles.textBox}>
+              <TextInput
+                style={styles.textInput}
+                value={this.state.name}
+                underlineColorAndroid='transparent'
+                onChangeText={(text) => this.handleChangeName(text)}
+              />
+            </View>
+
+            <Text style={styles.label}>Rating</Text>
+            <View style={{
+              flex: 1, 
+              marginLeft: 15,
+              marginTop: 10,
+              marginBottom: 10,
+              flexDirection: 'row'
+            }}>
+              {this.state.numStar.map((item,key) => (
+                <TouchableOpacity key={key} onPress={() => this.setAmountRating(key+1)}>
+                  <IconFontAwesome style={{ marginRight : 12 }} name={item} size={35} color={colors.yellow_star} />
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+              <View style={{ marginBottom: 5, flexDirection: 'row' }}>
+                <Text style={{ fontSize:15, color: colors.black, fontWeight: 'bold' }}>Content</Text>
+                <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
+                  <TouchableOpacity style={{ marginLeft: 24, flexDirection: 'row' }}>
+                    <IconFontAwesome name='edit' size={18} />
+                    <Text style={{ fontSize:15, color: colors.gray, marginLeft: 5 }}>Edit</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            { this.state.contentList.map((item,key) => 
+              <View key={key} style={{ marginTop: 15 }}>
+                { item.type === 'text' && (
+                  <View>
+                    <TouchableOpacity style={{ top: 25, marginTop: -30, alignSelf: 'flex-end', right: 6, zIndex: 1 }}>
+                      <IconMaterial name='cancel' size={20}></IconMaterial>
+                    </TouchableOpacity>
+                    <View style={styles.bodyTextInput}>
+                      <TextInput 
+                        style={{ fontSize:15, color: colors.gray, minHeight: 120, paddingTop: 0, paddingBottom: 0 }}
+                        multiline
+                        maxHeight={300}
+                        // editable={this.state.switchEditAndSent}
+                        underlineColorAndroid='transparent'
+                        onChangeText={text => this.handleChangeTextBox(key,text)}
+                        value={this.state.staticMessage}
+                        keyboardType='default'
+                      />
+                    </View>
+                  </View>
+                  )
+                }
+
+                { item.type === 'picture' && (
+                  <View style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
+                    <Image 
+                      style={{ flex: 1, height: 180, resizeMode: 'cover'}}
+                      source={{ uri: item.value }}
+                    />
+                  </View>)
+                }
+              </View>
+            )}
+            
+            { !this.state.isAddButton &&
+              <View style={styles.blockAdd}>
+                <TouchableOpacity style={styles.buttonAdd} onPress={() => this.isAddButton(true)}>
+                  <IconMaterial name='add-circle' size={40}></IconMaterial>
+                </TouchableOpacity>
+              </View>
+            }
+
+            { this.state.isAddButton &&
+              <View style={styles.blockOption}>
+                <TouchableOpacity style={styles.buttonOptionLeft} onPress={() => this.addContentBox()}>
+                  <IconEntypo name='text' size={40}></IconEntypo>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonOptionRight} onPress={() => this.attachPhotos()}>
+                  <IconFontAwesome name='picture-o' size={40}></IconFontAwesome>
+                </TouchableOpacity>
+              </View>
+            }
+            
+            <View style={styles.blockSave}>
+              <TouchableOpacity style={styles.buttonSave} onPress={() => this.addReview()}>
+                <Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </ScrollView>
         <View style={styles.header}>
           <View style={styles.platformHeader}>
