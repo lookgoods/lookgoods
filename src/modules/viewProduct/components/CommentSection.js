@@ -8,7 +8,7 @@ import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
 import { Button } from 'react-native-elements'
-import CoverImage from 'src/modules/shares/CoverImage'
+import Comment from 'src/modules/viewProduct/components/Comment'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import StarBar from 'src/modules/viewProduct/components/StarBar'
 import { colors } from 'src/constant/mixins'
@@ -38,6 +38,16 @@ function RatingFrequency ({ comment_list }) {
         </View>
     )
 }
+
+const CommentList = ({ comment_list }) => (
+    <View style={styles.commentList}>
+        { comment_list.map( (comment, index) => (
+            <View style={styles.commentItem}>
+                <Comment comment={comment} key={index}/>
+            </View>
+        ))}
+    </View>
+)
     
 
 export default class CommentSection extends Component {
@@ -52,6 +62,7 @@ export default class CommentSection extends Component {
         <View>
             <Text style={styles.totalText}>{comment_list.length} Reviews</Text>
             <RatingFrequency comment_list={comment_list}/>
+            <CommentList comment_list={comment_list}/>
         </View>
     )
   }
@@ -79,5 +90,11 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 10,
         marginRight: 10
+    },
+    commentList: {
+        marginLeft: 20
+    },
+    commentItem: {
+        marginBottom: 20
     }
 })

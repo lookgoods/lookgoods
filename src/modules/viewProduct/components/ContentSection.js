@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   starBar: {
-    marginLeft: 3
+    marginLeft: 3,
+    marginTop: 5
   },
   reviewerName: {
     fontSize: 15,
