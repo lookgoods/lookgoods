@@ -1,60 +1,31 @@
-import React, { Component } from 'react'
+import { Button, Card, ListItem } from 'react-native-elements'
 import {
+	Image,
 	Platform,
+	ScrollView,
 	StyleSheet,
 	Text,
-	View,
-	Image,
 	TouchableOpacity,
-	ScrollView
+	View
 } from 'react-native'
-import { Actions } from 'react-native-router-flux';
-import NavBar from 'src/modules/shares/NavBar'
-import { Card, ListItem, Button } from 'react-native-elements'
+import React, { Component } from 'react'
+
+import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
+import NavBar from 'src/modules/shares/NavBar'
+import NavBarSearch from '../shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { connect } from 'react-redux'
-import NavBarSearch from '../shares/NavBarSearch';
-
-const reviewsMock = [
-	{
-		title: 'Etude House BB Cream is The best BB Cream',
-		user: {
-			username: 'Phasin Sarunpornkul',
-			profile_url: images.profile
-		},
-		picture_cover_url: images.product1,
-		product: {
-			price: 500
-		},
-		comment_list: ['1', '2', '3'],
-		rating: 5.0,
-		timestamp: '4 hours ago'
-	},
-	{
-		title: 'Skinfood Peach Cotton is The best BB Cream',
-		user: {
-			username: 'Paiiz Wanchanapon',
-			profile_url: images.profile
-		},
-		picture_cover_url: images.product2,
-		product: {
-			price: 300
-		},
-		comment_list: ['1', '2', '3', '4'],
-		rating: 4.5,
-		timestamp: '6 hours ago'
-	}
-]
+import reviewsMock from 'src/mockData/reviews'
 
 export class HomePage extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
 			isSearch: false, 
-      searchText: '',
+      		searchText: ''
 		}
 	}
 	

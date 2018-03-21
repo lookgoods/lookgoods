@@ -9,5 +9,9 @@ export const colors = {
     orange: '#FF5733',
     yellow_star: '#F8ED5E',
     red: '#ff0000',
-    blueFacebook: '#3B5998'
+    blueFacebook: '#3B5998',
+    blue2: '#126DA1',
+    yellow: '#F2C94C',
+    lightGray: '#E5E5E5',
+    darkBlue: '#415D87'
 }
