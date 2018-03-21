@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 class CoverImage extends Component {
 
 	render () {
-		const { size, url } = this.props
+		const { size, url, uri } = this.props
 		return (
 			<View
 				style={[
@@ -28,7 +28,19 @@ class CoverImage extends Component {
 					/>
 				)}
 
-				{url === '' && (
+				{uri !== '' && (
+					<Image
+						style={{
+							height: size - 10,
+							width: size - 10,
+							borderRadius: (size - 10) / 2
+						}}
+						source={ {uri: uri} }
+						resizeMode='cover'
+					/>
+				)}
+
+				{(url === '' && uri === '') && (
 					<IconFontAwesome name='user-o' size={25}/>
 				)}
 			</View>

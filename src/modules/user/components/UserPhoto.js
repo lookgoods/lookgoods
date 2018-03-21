@@ -13,7 +13,7 @@ export default class UserPhoto extends Component {
 		const { size, image_url } = this.props
 		return (
 			<View style={styles.userphotoBody}>
-				<CoverImage size={size} url={image_url}/>
+				<CoverImage size={size} uri={image_url}/>
 				<View style={styles.usernameContainer}>
 					<Text style={styles.usernameText}>{this.props.username}</Text>
 				</View>

@@ -5,9 +5,11 @@ import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import Tabs from 'src/modules/shares/Tabs'
+import { UserActions } from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
-import { colors } from 'src/constants/mixins'
-import images from 'src/constants/images'
+import { colors } from 'src/constant/mixins'
+import { connect } from 'react-redux'
+import images from 'src/constant/images'
 
 const products = [
 	{ name: 'product1', image_url: images.product4 },
@@ -29,35 +31,45 @@ const products_save = [
 	{ name: 'product1', image_url: images.product4 }
 ]
 
-export default class UserPage extends Component {
+export class UserPage extends Component {
 	constructor (props) {
 		super(props)
 	}
+    
+	componentDidMount() {
+		this.props.getCurrentUser()
+	}
 
 	render() {
-		return (
-			<ScrollView contentContainerStyle={styles.container}>
-				<View style={styles.body}>
-					<UserPhoto username="Phasin Sarunpornkul" size={120} image_url={images.profile}/>
-					<View style={styles.infoBar}>
-						<InfoBar review_num={4} comment_num={22} follower_num={30} following_num={12}/>
+		console.log('loading user', this.props.loading)
+		console.log('currentuser', this.props.currentUser)
+		if (!this.props.currentUser) return <View />
+		else {
+			const { name, picture_url, follower_list, following_list } = this.props.currentUser
+			return (
+				<ScrollView contentContainerStyle={styles.container}>
+					<View style={styles.body}>
+						<UserPhoto username={name} size={120} image_url={picture_url}/>
+						<View style={styles.infoBar}>
+							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
+						</View>
+						<View style={{alignItems: 'center'}}>
+							<Divider style={styles.divider}/>
+						</View>
+						<View style={styles.tabsContainer}>
+							<Tabs>
+								<View title="Reviews">
+									<ProductsGrid product_list={products} />
+								</View>
+								<View title="Saved">
+									<ProductsGrid product_list={products_save} />
+								</View>
+							</Tabs>
+						</View>
 					</View>
-					<View style={{ alignItems: 'center' }}>
-						<Divider style={styles.divider}/>
-					</View>
-					<View style={styles.tabsContainer}>
-						<Tabs>
-							<View title="Reviews">
-								<ProductsGrid product_list={products} />
-							</View>
-							<View title="Saved">
-								<ProductsGrid product_list={products_save} />
-							</View>
-						</Tabs>
-					</View>
-				</View>
-			</ScrollView>
-		)
+				</ScrollView>
+			)
+		}
 	}
 }
   
@@ -83,3 +95,16 @@ const styles = StyleSheet.create({
 		paddingRight: 12
 	}
 })
+
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
+	loading: state.userReducer.loading
+})
+
+const mapDispatchToProps = dispatch => ({
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
+	}       
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserPage)
