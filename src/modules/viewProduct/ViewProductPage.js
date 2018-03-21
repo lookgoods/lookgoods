@@ -15,6 +15,7 @@ import { Button } from 'react-native-elements'
 import CommentSection from 'src/modules/viewProduct/components/CommentSection'
 import ContentSection from 'src/modules/viewProduct/components/ContentSection'
 import CoverImage from 'src/modules/shares/CoverImage'
+import { Divider } from 'react-native-elements'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constant/mixins'
 import { connect } from 'react-redux'
@@ -36,6 +37,7 @@ export class ViewProductPage extends Component {
         </View>
         <ScrollView>
           <ContentSection review={this.props.review}/>
+          <Divider style={styles.divider}/>
           <CommentSection review={this.props.review}/>
         </ScrollView>
       </View>
@@ -62,6 +64,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     overflow: 'hidden',
     zIndex: 1
+  },
+  divider: {
+    backgroundColor: colors.gray2,
+    marginTop: 5,
+    height: 1.2,
+    width: '100%'
   }
 })
 

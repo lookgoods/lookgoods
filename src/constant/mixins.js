@@ -11,5 +11,7 @@ export const colors = {
     red: '#ff0000',
     blueFacebook: '#3B5998',
     blue2: '#126DA1',
-    yellow: '#F2C94C'
+    yellow: '#F2C94C',
+    lightGray: '#E5E5E5',
+    darkBlue: '#415D87'
 }
