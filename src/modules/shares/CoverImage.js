@@ -50,7 +50,8 @@ class CoverImage extends Component {
 
 CoverImage.propTypes = {
 	size: PropTypes.number.isRequired,
-	url: PropTypes.string.isRequired
+	url: PropTypes.string,
+	uri: PropTypes.string
 }
 
 const styles = StyleSheet.create({
