@@ -16,6 +16,7 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { connect } from 'react-redux'
+import NavBarSearch from '../shares/NavBarSearch';
 
 const reviewsMock = [
 	{
@@ -51,11 +52,36 @@ const reviewsMock = [
 export class HomePage extends Component {
 	constructor (props) {
 		super(props)
+		this.state = {
+			isSearch: false, 
+      searchText: '',
+		}
 	}
-  
+	
+	setIsSearch () {
+      this.setState({ isSearch: true })
+	}
+	
+	handleSearchText (text) {
+		if( text === ''){
+			this.setState({ isSearch: false })
+		} else {
+			this.setState({ isSearch: true })
+		}
+    this.setState({ searchText: text })
+	}
+
+	async cancelSearch () {
+    // Keyboard.dismiss()
+    await this.setState({
+      isSearch: false,
+      // overlaySearch: false,
+      searchText: ''
+    })
+  }
+	
 	render() {
 		console.log('user', this.props.currentUser)
-
 		return (
 			<View style={styles.container}>
 				<ScrollView>
@@ -65,7 +91,14 @@ export class HomePage extends Component {
 				</ScrollView>
 			<View style={styles.header}>
 				<View style={styles.platformHeader}>
-					{/* <NavBar titleName="HomePage"/> */}
+					<NavBarSearch 
+						overlaySearch={this.state.overlaySearch}
+						searchText={this.state.searchText}
+						isSearch={this.state.isSearch}
+            handleSearchText={(text) => this.handleSearchText(text)}
+            setIsSearch={() => this.setIsSearch()}
+            cancelSearch={() => this.cancelSearch()}
+					/>
 				</View>
 			</View>
 			</View>
