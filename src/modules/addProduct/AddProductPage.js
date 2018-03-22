@@ -29,6 +29,7 @@ export default class GlobalPage extends Component {
       numStar: ['star-o','star-o','star-o','star-o','star-o'],
       isAddButton: false,
       isEditButton: false,
+      isTagsButton: false,
       tagsList: [{tags:''}],
       tagsMessage: [],
       contentMessage: [],
@@ -60,6 +61,11 @@ export default class GlobalPage extends Component {
 
   handleChangeTags(property, text) {
     const tags = this.state.tagsMessage
+    if(text === ''){
+      this.isTagsButton(false)
+    } else {
+      this.isTagsButton(true)
+    }
     tags[property] = text
     this.setState({ tagsMessage: tags })
   }
@@ -128,6 +134,10 @@ export default class GlobalPage extends Component {
 
   isEditButton(){
     this.setState({ isEditButton : !this.state.isEditButton })
+  }
+
+  isTagsButton(bool){
+    this.setState({ isTagsButton : bool })
   }
 
   addContentBox(){
@@ -249,7 +259,7 @@ export default class GlobalPage extends Component {
                     keyboardType='default'
                   />
                 </View>
-                { this.state.tagsList.length-1 === key && (
+                { (this.state.tagsList.length-1 === key && this.state.isTagsButton) && (
                   <TouchableOpacity 
                     style={{
                       justifyContent: 'center',
