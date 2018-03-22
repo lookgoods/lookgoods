@@ -18,21 +18,24 @@ import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 
 export default class GlobalPage extends Component {
-	constructor (props) {
-		super(props)
-		this.state = {
-			title: '',
-			name: '',
-			price: '',
-			brand: '',
-			coverImage: '',
-			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
-			isAddButton: false,
-			isEditButton: false,
-			contentMessage: [],
-			contentList: []
-		}
-	}
+  constructor (props) {
+    super(props)
+    this.state = {
+      title: '',
+      name: '',
+      price: '',
+      brand : '',
+      coverImage: '',
+      numStar: ['star-o','star-o','star-o','star-o','star-o'],
+      isAddButton: false,
+      isEditButton: false,
+      isTagsButton: false,
+      tagsList: [{tags:''}],
+      tagsMessage: [],
+      contentMessage: [],
+      contentList: []
+    }
+  }
 
 	handleChangeTitle (text) {
 		this.setState({ title: text })
@@ -56,14 +59,25 @@ export default class GlobalPage extends Component {
 		this.setState({ contentMessage: contact })
 	}
 
-	addCoverImage () {
-		const options = {
-			title: 'Select Avatar',
-			storageOptions: {
-				skipBackup: true,
-				path: 'images'
-			}
-		}
+  handleChangeTags(property, text) {
+    const tags = this.state.tagsMessage
+    if(text === ''){
+      this.isTagsButton(false)
+    } else {
+      this.isTagsButton(true)
+    }
+    tags[property] = text
+    this.setState({ tagsMessage: tags })
+  }
+
+  addCoverImage () {
+    const options = {
+      title: 'Select Avatar',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    }
 
 		ImagePicker.showImagePicker(options, (response) => {
 			if (response.didCancel) {
@@ -122,23 +136,34 @@ export default class GlobalPage extends Component {
 		this.setState({ isEditButton: !this.state.isEditButton })
 	}
 
-	addContentBox() {
-		const contentArr = this.state.contentList
-		contentArr.push({type: 'text', value: ''})
-		this.setState({ contentList: contentArr })
-		this.isAddButton()
-	}
+  isTagsButton(bool){
+    this.setState({ isTagsButton : bool })
+  }
 
-	addReview() {
-		const contentList = this.state.contentList.map(
-			(content, index) => 
-				content.type === 'text' 
-					? { ...content, value: contentMessage[index]} 
-					: { ...content, value: content.value}
-		)
-		console.log(contentList, 'contentList')
-		this.setState({ contentList })
-	}
+  addContentBox(){
+    const contentArr = this.state.contentList
+    contentArr.push({type: 'text', value:''})
+    this.setState({ contentList: contentArr })
+    this.isAddButton()
+  }
+
+  async addTagsBox(){
+    const tagsArr = this.state.tagsList
+    console.log(tagsArr,'tagsArr')
+    tagsArr.push({tags:''})
+    await this.setState({ tagsList: tagsArr })
+  }
+
+  addReview(){
+    const contentList = this.state.contentList.map(
+      (content,index) => 
+        content.type === 'text' 
+          ? { ...content, value: contentMessage[index]} 
+          : { ...content, value: content.value}
+    )
+    console.log(contentList, 'contentList')
+    this.setState({ contentList })
+  }
 
 	deleteContentBox(key) {
 		const contentList = this.state.contentList
@@ -222,15 +247,40 @@ export default class GlobalPage extends Component {
 							</View>
 						</View>
 
-						<Text style={styles.label}>Tags</Text>
-						<View style={styles.textBox}>
-							<TextInput
-								style={styles.textInput}
-								value={this.state.name}
-								underlineColorAndroid='transparent'
-								onChangeText={(text) => this.handleChangeName(text)}
-							/>
-						</View>
+            <Text style={styles.label}>Tags</Text>
+            {this.state.tagsList.map((item,key) => (
+              <View style={{flexDirection: 'row'}}>
+                <View style={styles.textBox}>
+                  <TextInput
+                    style={styles.textInput}
+                    value={this.state.tagsMessage[key]}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(text) => this.handleChangeTags(key,text)}
+                    keyboardType='default'
+                  />
+                </View>
+                { (this.state.tagsList.length-1 === key && this.state.isTagsButton) && (
+                  <TouchableOpacity 
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // flexDirection: 'row',
+                      marginRight: 15,
+                      marginTop: 10, 
+                      marginBottom: 10,
+                      backgroundColor: colors.white,
+                      height: 35,
+                      width: 35,
+                      borderRadius: 3,
+                      borderColor: '#dfdfdf', 
+                      borderWidth: 1
+                    }} 
+                    onPress={() => this.addTagsBox()}>
+                    <IconMaterial name='add-circle' size={20}></IconMaterial>
+                  </TouchableOpacity>
+                )}
+              </View>
+            ))}
 
 						<Text style={styles.label}>Rating</Text>
 						<View style={{
