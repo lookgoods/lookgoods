@@ -1,10 +1,9 @@
 import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+	Image,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -12,10 +11,9 @@ import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ReviewActions from 'src/redux/actions/review'
-import { colors } from 'src/constant/mixins'
+import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import icons from 'src/constant/icons'
-import images from 'src/constant/images'
+import icons from 'src/constants/icons'
 
 const ProfilePicture = ({ image_url }) => {
 	return ( 
@@ -51,17 +49,17 @@ const ProductPicture = ({ image_url, review, setReview }) => {
 	return ( 
 		<View>
 			{ image_url ?
-			<TouchableOpacity onPress={() => {
-				setReview(review)
-				Actions.viewProductPage()
-			}}>
-				<Image
-					style={styles.productImage}
-					source={image_url}
-					resizeMode='contain'
-				/> 
-			</TouchableOpacity>
-			: <View/> }
+				<TouchableOpacity onPress={() => {
+					setReview(review)
+					Actions.viewProductPage()
+				}}>
+					<Image
+						style={styles.productImage}
+						source={image_url}
+						resizeMode='contain'
+					/> 
+				</TouchableOpacity>
+				: <View/> }
 		</View>
 	)
 }
@@ -101,7 +99,7 @@ export class ReviewCard extends Component {
 	}
   
 	render() {
-		const { title, user, picture_cover_url, product, product_price, comment_list, overall_rating, timestamp } = this.props.review
+		const { title, user, picture_cover_url, product_price, comment_list, overall_rating, timestamp } = this.props.review
 		
 		return (
 			<View style={styles.container}>
@@ -110,22 +108,13 @@ export class ReviewCard extends Component {
 				<Footer rating={overall_rating} price={product_price} numberOfComment={comment_list.length} />
 			</View>
 		)
-  	}
+	}
 }
 
 const styles = StyleSheet.create({
 	headerContainer: {
 		flexDirection: 'row',
 		marginBottom: 5
-	},
-	borderCover: {
-    justifyContent: 'center',
-    alignItems: 'center'
- 	},
-	profileImage: {
-		width: 40,
-		height: 40,
-		borderRadius: 20
 	},
 	headerWrapper: {
 		flexDirection: 'column',
@@ -176,7 +165,7 @@ const styles = StyleSheet.create({
 		marginVertical: 1
 	},
 	productDetailComment: {
-		marginLeft: 6,
+		marginLeft: 6
 	}
 })
 

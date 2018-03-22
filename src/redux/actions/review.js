@@ -1,10 +1,10 @@
-import { 
-    SET_CURRENT_REVIEW
+import {
+	SET_CURRENT_REVIEW
 } from 'src/redux/constants'
 
-export default actions = {
-    setCurrentReview: (review) => ({
-        type: SET_CURRENT_REVIEW,
-        payload: review
-    })
+export default {
+	setCurrentReview: (review) => ({
+		type: SET_CURRENT_REVIEW,
+		payload: review
+	})
 }

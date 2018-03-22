@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from 'react-native'
-import { colors } from 'src/constant/mixins'
+import { StyleSheet, View } from 'react-native'
+
 import ProductPhoto from 'src/modules/user/components/ProductPhoto'
 
 export default class ProductsGrid extends Component {
@@ -11,11 +11,11 @@ export default class ProductsGrid extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{ this.props.product_list ? this.props.product_list.map( ( product, index ) => (
+				{ this.props.product_list ? this.props.product_list.map((product, index) => (
 					<View key={index} style={styles.productPhoto}>
 						<ProductPhoto key={index} product={product}/>
 					</View>
-				) ) : <View/>}
+				)) : <View/>}
 			</View>
 		)
 	}

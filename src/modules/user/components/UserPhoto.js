@@ -1,5 +1,6 @@
-import { StyleSheet, Image, View, Text } from 'react-native'
 import React, { Component } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+
 import CoverImage from 'src/modules/shares/CoverImage'
 
 export default class UserPhoto extends Component {
@@ -21,7 +22,7 @@ export default class UserPhoto extends Component {
 }
 
 const styles = StyleSheet.create({
-	userphotoBody:{
+	userphotoBody: {
 		justifyContent: 'center',
 		alignItems: 'center'
 	},

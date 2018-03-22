@@ -1,7 +1,9 @@
 import { user1, user2, user3 } from 'src/mockData/users'
 
-export default reviews = [
-    {
+import images from 'src/constants/images'
+
+export default [
+	{
 		title: 'Etude House BB Cream is The best BB Cream',
 		user: user1,
 		picture_cover_url: images.product1,
@@ -12,22 +14,22 @@ export default reviews = [
 		},
 		comment_list: [
 			{ 
-				description: "Really useful and effective tips.", 
+				description: 'Really useful and effective tips.', 
 				user: user3,
 				rating: 4
 			},
 			{ 
-				description: "I like Bobbi Brown's BB Cream. It has features the other BB creams have like high SPF.", 
+				description: 'I like Bobbi Brown\'s BB Cream. It has features the other BB creams have like high SPF.', 
 				user: user2,
 				rating: 5
 			},
 			{ 
-				description: "Really useful and effective tips.", 
+				description: 'Really useful and effective tips.', 
 				user: user3,
 				rating: 4
 			},
 			{ 
-				description: "Really useful and effective tips.", 
+				description: 'Really useful and effective tips.', 
 				user: user2,
 				rating: 3
 			}
@@ -49,7 +51,7 @@ export default reviews = [
 				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
 			}
 		],
-		tag_list: [ "Makeup and Beauty", "Cosmetic"]
+		tag_list: [ 'Makeup and Beauty', 'Cosmetic']
 	},
 	{
 		title: 'Skinfood Peach Cotton is The best BB Cream',
@@ -62,7 +64,7 @@ export default reviews = [
 		},
 		comment_list: [
 			{ 
-				description: "Really useful and effective tips.", 
+				description: 'Really useful and effective tips.', 
 				user: user3,
 				rating: 4
 			}
@@ -84,6 +86,6 @@ export default reviews = [
 				value: 'BB Cream formulated with Pearl Powder with an improved adhesive texture to promote moist, radiant looking skin while protecting against UV damage and wrinkles.'
 			}
 		],
-		tag_list: [ "Makeup and Beauty", "Cosmetic"]
+		tag_list: [ 'Makeup and Beauty', 'Cosmetic']
 	}
 ]
