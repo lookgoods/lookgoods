@@ -1,20 +1,11 @@
-import { Button, Card, ListItem } from 'react-native-elements'
 import {
-	Image,
 	Platform,
 	ScrollView,
 	StyleSheet,
-	Text,
-	TouchableOpacity,
 	View
 } from 'react-native'
 import React, { Component } from 'react'
 
-import { Actions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/Ionicons'
-import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
-import IconIonicons from 'react-native-vector-icons/Ionicons'
-import NavBar from 'src/modules/shares/NavBar'
 import NavBarSearch from '../shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { connect } from 'react-redux'
@@ -25,31 +16,31 @@ export class HomePage extends Component {
 		super(props)
 		this.state = {
 			isSearch: false, 
-      		searchText: ''
+			searchText: ''
 		}
 	}
 	
 	setIsSearch () {
-      this.setState({ isSearch: true })
+		this.setState({ isSearch: true })
 	}
 	
 	handleSearchText (text) {
-		if( text === ''){
+		if (text === '') {
 			this.setState({ isSearch: false })
 		} else {
 			this.setState({ isSearch: true })
 		}
-    this.setState({ searchText: text })
+		this.setState({ searchText: text })
 	}
 
 	async cancelSearch () {
-    // Keyboard.dismiss()
-    await this.setState({
-      isSearch: false,
-      // overlaySearch: false,
-      searchText: ''
-    })
-  }
+		// Keyboard.dismiss()
+		await this.setState({
+			isSearch: false,
+			// overlaySearch: false,
+			searchText: ''
+		})
+	}
 	
 	render() {
 		console.log('user', this.props.currentUser)
@@ -60,18 +51,18 @@ export class HomePage extends Component {
 						<ReviewList review_list={reviewsMock}/>
 					</View>
 				</ScrollView>
-			<View style={styles.header}>
-				<View style={styles.platformHeader}>
-					<NavBarSearch 
-						overlaySearch={this.state.overlaySearch}
-						searchText={this.state.searchText}
-						isSearch={this.state.isSearch}
-            handleSearchText={(text) => this.handleSearchText(text)}
-            setIsSearch={() => this.setIsSearch()}
-            cancelSearch={() => this.cancelSearch()}
-					/>
+				<View style={styles.header}>
+					<View style={styles.platformHeader}>
+						<NavBarSearch 
+							overlaySearch={this.state.overlaySearch}
+							searchText={this.state.searchText}
+							isSearch={this.state.isSearch}
+							handleSearchText={(text) => this.handleSearchText(text)}
+							setIsSearch={() => this.setIsSearch()}
+							cancelSearch={() => this.cancelSearch()}
+						/>
+					</View>
 				</View>
-			</View>
 			</View>
 		)
 	}
@@ -97,27 +88,11 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		overflow: 'hidden',
 		zIndex: 1
-	},
-	coverHeader: {
-		height: Platform.OS === 'ios' ? 75 : 60,
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		zIndex: 0
-	},
-	coverFooter: {
-		height: 40,
-		position: 'absolute',
-		bottom: 0,
-		left: 0,
-		right: 0,
-		zIndex: 2
 	}
 })
 
 const mapStateToProps = state => ({
-    currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser
 })
 
 export default connect(mapStateToProps, null)(HomePage)
