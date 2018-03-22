@@ -1,5 +1,5 @@
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
@@ -9,9 +9,9 @@ import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import { UserActions } from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
-import { colors } from 'src/constant/mixins'
+import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import images from 'src/constant/images'
+import images from 'src/constants/images'
 
 const products = [
 	{ name: 'product1', image_url: images.product4 },
