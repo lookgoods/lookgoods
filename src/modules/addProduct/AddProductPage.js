@@ -29,6 +29,8 @@ export default class GlobalPage extends Component {
       numStar: ['star-o','star-o','star-o','star-o','star-o'],
       isAddButton: false,
       isEditButton: false,
+      tagsList: [{tags:''}],
+      tagsMessage: [],
       contentMessage: [],
       contentList: []
     }
@@ -54,6 +56,12 @@ export default class GlobalPage extends Component {
     const contact = this.state.contentMessage
     contact[property] = text
     this.setState({ contentMessage: contact })
+  }
+
+  handleChangeTags(property, text) {
+    const tags = this.state.tagsMessage
+    tags[property] = text
+    this.setState({ tagsMessage: tags })
   }
 
   addCoverImage () {
@@ -127,6 +135,13 @@ export default class GlobalPage extends Component {
     contentArr.push({type: 'text', value:''})
     this.setState({ contentList: contentArr })
     this.isAddButton()
+  }
+
+  async addTagsBox(){
+    const tagsArr = this.state.tagsList
+    console.log(tagsArr,'tagsArr')
+    tagsArr.push({tags:''})
+    await this.setState({ tagsList: tagsArr })
   }
 
   addReview(){
@@ -223,14 +238,40 @@ export default class GlobalPage extends Component {
             </View>
 
             <Text style={styles.label}>Tags</Text>
-            <View style={styles.textBox}>
-              <TextInput
-                style={styles.textInput}
-                value={this.state.name}
-                underlineColorAndroid='transparent'
-                onChangeText={(text) => this.handleChangeName(text)}
-              />
-            </View>
+            {this.state.tagsList.map((item,key) => (
+              <View style={{flexDirection: 'row'}}>
+                <View style={styles.textBox}>
+                  <TextInput
+                    style={styles.textInput}
+                    value={this.state.tagsMessage[key]}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(text) => this.handleChangeTags(key,text)}
+                    keyboardType='default'
+                  />
+                </View>
+                { this.state.tagsList.length-1 === key && (
+                  <TouchableOpacity 
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // flexDirection: 'row',
+                      marginRight: 15,
+                      marginTop: 10, 
+                      marginBottom: 10,
+                      backgroundColor: colors.white,
+                      height: 35,
+                      width: 35,
+                      borderRadius: 3,
+                      borderColor: '#dfdfdf', 
+                      borderWidth: 1
+                    }} 
+                    onPress={() => this.addTagsBox()}>
+                    <IconMaterial name='add-circle' size={20}></IconMaterial>
+                  </TouchableOpacity>
+                )}
+              </View>
+            ))}
+            
 
             <Text style={styles.label}>Rating</Text>
             <View style={{
