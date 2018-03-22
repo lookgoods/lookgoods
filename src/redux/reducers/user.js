@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			loading: false,
-			currentUser: action.payload.user[0]
+			currentUser: action.payload.user
 		}
 	case constants.GET_CURRENT_USER_FAILURE:
 		return {

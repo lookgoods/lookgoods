@@ -24,7 +24,7 @@ async function loginWithFacebook(token) {
 	return response
 }
 
-export const UserActions = {
+const UserActions = {
 	loginWithFacebook: (token) => async dispatch => {
 		loginWithFacebook(token)
 	},
@@ -56,4 +56,4 @@ const actions = {
 	})
 }
 
-export default actions
+export default UserActions
