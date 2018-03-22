@@ -14,15 +14,15 @@ import { connect } from 'react-redux'
 import images from 'src/constants/images'
 
 const products = [
-	{ name: 'product1', image_url: images.product4 },
+	{ name: 'product1', image_url: images.product5 },
+	{ name: 'product2', image_url: images.product5 },
+	{ name: 'product3', image_url: images.product5 },
+	{ name: 'product4', image_url: images.product4 },
+	{ name: 'product4', image_url: images.product5 },
 	{ name: 'product2', image_url: images.product4 },
-	{ name: 'product3', image_url: images.product4 },
+	{ name: 'product3', image_url: images.product5 },
 	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product2', image_url: images.product4 },
-	{ name: 'product3', image_url: images.product3 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product1 },
+	{ name: 'product4', image_url: images.product5 },
 	{ name: 'product4', image_url: images.product2 }
 ]
 
