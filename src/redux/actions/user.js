@@ -51,7 +51,8 @@ const actions = {
 		payload: { user }
 	}),
 	getCurrentUserError: error => ({
-		type: constants.GET_CURRENT_USER_FAILURE
+		type: constants.GET_CURRENT_USER_FAILURE,
+		payload: { error }
 	})
 }
 

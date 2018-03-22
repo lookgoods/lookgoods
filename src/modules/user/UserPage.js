@@ -1,8 +1,10 @@
 import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 
+import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import { UserActions } from 'src/redux/actions/user'
@@ -40,6 +42,10 @@ export class UserPage extends Component {
 		this.props.getCurrentUser()
 	}
 
+	goToSettingPage() {
+		Actions.settingPage()
+	}
+
 	render() {
 		console.log('loading user', this.props.loading)
 		console.log('currentuser', this.props.currentUser)
@@ -49,6 +55,9 @@ export class UserPage extends Component {
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
 					<View style={styles.body}>
+						<View style={styles.settingIconContainer}>
+							<MaterialIcons style={{ paddingRight: 10 }} name='settings' size={30} onPress={() => this.goToSettingPage()}/>
+						</View>
 						<UserPhoto username={name} size={120} image_url={picture_url}/>
 						<View style={styles.infoBar}>
 							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
@@ -78,7 +87,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.white
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 30 : 25
+		marginTop: 10
 	},
 	infoBar: {
 		marginTop: 30
@@ -93,6 +102,10 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		paddingLeft: 12,
 		paddingRight: 12
+	},
+	settingIconContainer: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
 	}
 })
 
