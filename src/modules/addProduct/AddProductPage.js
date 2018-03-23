@@ -10,34 +10,34 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 
+import ContentView from 'src/modules/addProduct/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
-import ContentView from 'src/modules/addProduct/components/ContentView'
 import { colors } from 'src/constants/mixins'
 
 export default class GlobalPage extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      title: '',
-      name: '',
-      price: '',
-      brand : '',
-      coverImage: '',
-      numStar: ['star-o','star-o','star-o','star-o','star-o'],
-      isAddButton: false,
-      isEditButton: false,
-      isTagsButton: false,
-      tagsList: [{tags:''}],
-      tagsMessage: [],
-      contentMessage: [],
-      contentList: []
-    }
-  }
+	constructor (props) {
+		super(props)
+		this.state = {
+			title: '',
+			name: '',
+			price: '',
+			brand: '',
+			coverImage: '',
+			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
+			isAddButton: false,
+			isEditButton: false,
+			isTagsButton: false,
+			tagsList: [{tags: ''}],
+			tagsMessage: [],
+			contentMessage: [],
+			contentList: []
+		}
+	}
 
 	handleChangeTitle (text) {
 		this.setState({ title: text })
@@ -61,25 +61,25 @@ export default class GlobalPage extends Component {
 		this.setState({ contentMessage: contact })
 	}
 
-  handleChangeTags(property, text) {
-    const tags = this.state.tagsMessage
-    if(text === ''){
-      this.setTagsButton(false)
-    } else {
-      this.setTagsButton(true)
-    }
-    tags[property] = text
-    this.setState({ tagsMessage: tags })
-  }
+	handleChangeTags(property, text) {
+		const tags = this.state.tagsMessage
+		if (text === '') {
+			this.setTagsButton(false)
+		} else {
+			this.setTagsButton(true)
+		}
+		tags[property] = text
+		this.setState({ tagsMessage: tags })
+	}
 
-  addCoverImage () {
-    // const options = {
-    //   title: 'Select Avatar',
-    //   storageOptions: {
-    //     skipBackup: true,
-    //     path: 'images'
-    //   }
-    // }
+	addCoverImage () {
+		// const options = {
+		//   title: 'Select Avatar',
+		//   storageOptions: {
+		//     skipBackup: true,
+		//     path: 'images'
+		//   }
+		// }
 
 		// ImagePicker.showImagePicker(options, (response) => {
 		// 	if (response.didCancel) {
@@ -90,15 +90,15 @@ export default class GlobalPage extends Component {
 		// 		console.log('ImagePicker Success: ', response.uri)
 		// 		this.setState({ coverImage: response.uri })
 		// 	}
-    // })
-    ImageCropPicker.openPicker({
-      width: 370,
-      height: 200,
-      cropping: true
-    }).then(image => {
-      console.log(image)
-      this.setState({ coverImage: image.sourceURL })
-    })
+		// })
+		ImageCropPicker.openPicker({
+			width: 370,
+			height: 200,
+			cropping: true
+		}).then(image => {
+			console.log(image)
+			this.setState({ coverImage: image.sourceURL })
+		})
 	}
 
 	attachPhotos () {
@@ -146,45 +146,45 @@ export default class GlobalPage extends Component {
 		this.setState({ isEditButton: !this.state.isEditButton })
 	}
 
-  setTagsButton(bool){
-    this.setState({ isTagsButton : bool })
-  }
+	setTagsButton(bool) {
+		this.setState({ isTagsButton: bool })
+	}
 
-  addContentBox(){
-    const contentArr = this.state.contentList
-    contentArr.push({type: 'text', value:''})
-    this.setState({ contentList: contentArr })
-    this.setAddButton()
-  }
+	addContentBox() {
+		const contentArr = this.state.contentList
+		contentArr.push({type: 'text', value: ''})
+		this.setState({ contentList: contentArr })
+		this.setAddButton()
+	}
 
-  async addTagsBox(){
-    const tagsArr = this.state.tagsList
-    console.log(tagsArr,'tagsArr')
-    tagsArr.push({tags:''})
-    await this.setState({ tagsList: tagsArr })
-  }
+	async addTagsBox() {
+		const tagsArr = this.state.tagsList
+		console.log(tagsArr, 'tagsArr')
+		tagsArr.push({tags: ''})
+		await this.setState({ tagsList: tagsArr })
+	}
 
-  addReview(){
-    const contentMessage = this.state.contentMessage
-    const contentList = this.state.contentList.map(
-      (content,index) => 
-        content.type === 'text' 
-          ? { ...content, value: contentMessage[index]} 
-          : { ...content, value: content.value}
-    )
-    console.log(contentList, 'contentList')
-    this.setState({ contentList })
-  }
+	addReview() {
+		const contentMessage = this.state.contentMessage
+		const contentList = this.state.contentList.map(
+			(content, index) => 
+				content.type === 'text' 
+					? { ...content, value: contentMessage[index]} 
+					: { ...content, value: content.value}
+		)
+		console.log(contentList, 'contentList')
+		this.setState({ contentList })
+	}
 
 	deleteContentBox(key) {
 		const contentList = this.state.contentList
 		const contentMessage = this.state.contentMessage
 		contentList.splice(key, 1)
 		contentMessage.splice(key, 1)
-    console.log(contentList, contentMessage, 'deleteContentBox')
-    if(contentList.length === 0){
-      this.setState({ isEditButton: !this.state.isEditButton })
-    }
+		console.log(contentList, contentMessage, 'deleteContentBox')
+		if (contentList.length === 0) {
+			this.setState({ isEditButton: !this.state.isEditButton })
+		}
 		this.setState({ contentList, contentMessage })
 	}
 
@@ -204,18 +204,18 @@ export default class GlobalPage extends Component {
 								onPress={() => this.addCoverImage()}
 							>
 								<IconMaterial name='add-a-photo' size={100}></IconMaterial>
-              </TouchableOpacity> :
-              <TouchableOpacity style={{flex: 1, height: 200}} onPress={() => this.addCoverImage()}>
-                <Image 
-                  style={{
-                    flex: 1,
-                    height: 200,
-                    resizeMode: 'cover',
-                    zIndex: 1
-                  }}
-                  source={{uri: this.state.coverImage}}
-                />
-              </TouchableOpacity>
+							</TouchableOpacity> :
+							<TouchableOpacity style={{flex: 1, height: 200}} onPress={() => this.addCoverImage()}>
+								<Image 
+									style={{
+										flex: 1,
+										height: 200,
+										resizeMode: 'cover',
+										zIndex: 1
+									}}
+									source={{uri: this.state.coverImage}}
+								/>
+							</TouchableOpacity>
 						}
 					</View>
 					<View style={styles.sectionBody}>
@@ -264,27 +264,27 @@ export default class GlobalPage extends Component {
 							</View>
 						</View>
 
-            <Text style={styles.label}>Tags</Text>
-            {this.state.tagsList.map((item,key) => (
-              <View key={key} style={{flexDirection: 'row'}}>
-                <View style={styles.textBox}>
-                  <TextInput
-                    style={styles.textInput}
-                    value={this.state.tagsMessage[key]}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(text) => this.handleChangeTags(key,text)}
-                    keyboardType='default'
-                  />
-                </View>
-                { (this.state.tagsList.length-1 === key && this.state.isTagsButton) && (
-                  <TouchableOpacity 
-                    style={styles.buttonAddTag} 
-                    onPress={() => this.addTagsBox()}>
-                    <IconMaterial name='add-circle' size={20}></IconMaterial>
-                  </TouchableOpacity>
-                )}
-              </View>
-            ))}
+						<Text style={styles.label}>Tags</Text>
+						{this.state.tagsList.map((item, key) => (
+							<View key={key} style={{flexDirection: 'row'}}>
+								<View style={styles.textBox}>
+									<TextInput
+										style={styles.textInput}
+										value={this.state.tagsMessage[key]}
+										underlineColorAndroid='transparent'
+										onChangeText={(text) => this.handleChangeTags(key, text)}
+										keyboardType='default'
+									/>
+								</View>
+								{ (this.state.tagsList.length-1 === key && this.state.isTagsButton) && (
+									<TouchableOpacity 
+										style={styles.buttonAddTag} 
+										onPress={() => this.addTagsBox()}>
+										<IconMaterial name='add-circle' size={20}></IconMaterial>
+									</TouchableOpacity>
+								)}
+							</View>
+						))}
 
 						<Text style={styles.label}>Rating</Text>
 						<View style={{
@@ -301,14 +301,14 @@ export default class GlobalPage extends Component {
 							))}
 						</View>
 
-            <ContentView 
-              contentList={this.state.contentList}
-              contentMessage={this.state.contentMessage}
-              isEditButton={this.state.isEditButton}
-              setEditButton={() => this.setEditButton()}
-              handleChangeTextBox={(index,text) => this.handleChangeTextBox(index, text)}
-              deleteContentBox={(index) => this.deleteContentBox(index)}
-            />
+						<ContentView 
+							contentList={this.state.contentList}
+							contentMessage={this.state.contentMessage}
+							isEditButton={this.state.isEditButton}
+							setEditButton={() => this.setEditButton()}
+							handleChangeTextBox={(index, text) => this.handleChangeTextBox(index, text)}
+							deleteContentBox={(index) => this.deleteContentBox(index)}
+						/>
             
 						{ !this.state.isAddButton &&
 								<View style={styles.blockAdd}>
@@ -348,8 +348,8 @@ export default class GlobalPage extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-    flex: 1,
-    zIndex: 2,
+		flex: 1,
+		zIndex: 2,
 		backgroundColor: '#fff'
 	},
 	body: {
@@ -462,18 +462,18 @@ const styles = StyleSheet.create({
 		height: 50,
 		borderBottomRightRadius: 3,
 		borderTopRightRadius: 3
-  },
-  buttonAddTag: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
-    marginTop: 10, 
-    marginBottom: 10,
-    backgroundColor: colors.white,
-    height: 35,
-    width: 35,
-    borderRadius: 3,
-    borderColor: '#dfdfdf', 
-    borderWidth: 1
-  }
+	},
+	buttonAddTag: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 15,
+		marginTop: 10, 
+		marginBottom: 10,
+		backgroundColor: colors.white,
+		height: 35,
+		width: 35,
+		borderRadius: 3,
+		borderColor: '#dfdfdf', 
+		borderWidth: 1
+	}
 })
