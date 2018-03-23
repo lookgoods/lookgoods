@@ -3,7 +3,8 @@ import constants from 'src/redux/constants'
 const initialState = {
 	currentUser: null,
 	loading: false,
-	error: null
+	error: null,
+	selectedUser: null
 }
 
 export default (state = initialState, action) => {
@@ -25,6 +26,11 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: action.payload.error
+		}
+	case constants.SET_SELECTED_USER:
+		return {
+			...state,
+			selectedUser: {...action.payload}
 		}
 
 	default:

@@ -27,15 +27,6 @@ const ProfilePicture = ({ image_url }) => (
 	</View>
 )
 
-const FollowButton = () => (
-	<Button 
-		title="Follow" 
-		backgroundColor={colors.blue}
-		buttonStyle={styles.followBtn}
-		fontSize={13}
-	/>
-)
-
 function ReviewerBar({ reviewer, rating }) {
 	return (
 		<View style={styles.reviewerBar}>
@@ -44,7 +35,6 @@ function ReviewerBar({ reviewer, rating }) {
 				<Text style={styles.reviewerName}>{reviewer.name}</Text>
 				<View style={styles.starBar}><StarBar rating={rating} size={30}/></View>
 			</View>
-			<FollowButton />
 		</View>
 	)
 }
@@ -152,11 +142,6 @@ const styles = StyleSheet.create({
 		color: colors.blue,
 		fontWeight: 'bold',
 		marginTop: 5
-	},
-	followBtn: {
-		borderRadius: 5,
-		height: 35,
-		marginRight: 20
 	},
 	titleText: {
 		marginLeft: 20,

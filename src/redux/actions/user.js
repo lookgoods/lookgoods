@@ -39,7 +39,11 @@ const UserActions = {
 		} catch (error) {
 			dispatch(actions.getCurrentUserError(error))
 		}
-	}
+	},
+	setSelectedUser: (user) => ({
+		type: constants.SET_SELECTED_USER,
+		payload: user
+	})
 }
 
 const actions = {

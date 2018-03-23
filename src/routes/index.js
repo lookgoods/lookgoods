@@ -9,6 +9,7 @@ import React from 'react'
 import SettingPage from 'src/modules/setting/SettingPage'
 import TabMenu from 'src/modules/shares/TabMenu'
 import ViewProductPage from 'src/modules/viewProduct/ViewProductPage'
+import ViewUserPage from 'src/modules/user/ViewUserPage'
 import store from 'src/redux/store'
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
 					<Scene key="tabMenu" component={TabMenu} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical' initial/>
 					<Scene key="loginPage" component={LoginPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="settingPage" component={SettingPage} title='Settings' panHandlers={null} hideTabBar={1} direction='vertical'/>
+					<Scene key="viewUserPage" component={ViewUserPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 				</Scene>
 			</Router>
 		</Provider>
