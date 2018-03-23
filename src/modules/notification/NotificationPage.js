@@ -24,10 +24,10 @@ export default class NotificationPage extends Component {
 					<TouchableOpacity style={styles.list}>
 						<CoverImage size={80} url={images.profile} />
 						<View style={{ marginLeft: 13, flex: 1 }}>
-							<View style={{}}>
-								{/* <Text style={styles.textName}>Phasin Sarunpornkul </Text> */}
+							<View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+								{/* <Text style={styles.textName}>Phasin</Text> */}
 								<Text style={{ fontSize: 15, marginBottom: 4 }}>
-									Phasin Sarunpornkul commented on a review HyperX Cloud headset
+									commented on a review HyperX Cloud headset
 									สุดยอดหูฟังเเนวหน้าของวงการ
 								</Text>
 							</View>
@@ -112,11 +112,11 @@ const styles = StyleSheet.create({
 	// 	borderColor: '#c8c8c8',
 	// 	marginRight: 5
 	// },
-	// textName: {
-	// 	fontSize: 15,
-	// 	fontWeight: 'bold',
-	// 	marginBottom: 4
-	// },
+	textName: {
+		fontSize: 15,
+		fontWeight: 'bold',
+		marginBottom: 4
+	},
 	containerImage: {
 		alignItems: 'center',
 		width: 85
