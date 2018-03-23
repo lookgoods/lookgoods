@@ -349,7 +349,6 @@ export default class GlobalPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		zIndex: 2,
 		backgroundColor: '#fff'
 	},
 	body: {
