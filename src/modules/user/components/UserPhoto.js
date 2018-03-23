@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 import CoverImage from 'src/modules/shares/CoverImage'
+import { colors } from 'src/constants/mixins'
 
 export default class UserPhoto extends Component {
 	constructor (props) {
@@ -12,7 +13,7 @@ export default class UserPhoto extends Component {
 		const { size, image_url } = this.props
 		return (
 			<View style={styles.userphotoBody}>
-				<CoverImage size={size} url={image_url}/>
+				<CoverImage size={size} uri={image_url}/>
 				<View style={styles.usernameContainer}>
 					<Text style={styles.usernameText}>{this.props.username}</Text>
 				</View>
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
 		marginTop: 5
 	},
 	usernameText: {
-		fontSize: 18
+		fontSize: 18,
+		color: colors.gray
 	}
 })

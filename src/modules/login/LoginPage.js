@@ -29,7 +29,6 @@ export class LoginPage extends Component {
 						const token = data.accessToken.toString()
 						console.log('token', token)
 						self.props.loginWithFacebook(token)
-						// self.props.getUserFromFacebook(token)
 						Actions.tabMenu()
 					}
 				)
@@ -74,17 +73,10 @@ const styles = StyleSheet.create({
 	}
 })
 
-const mapStateToProps = state => ({
-	currentUser: state.userReducer.currentUser
-})
-
 const mapDispatchToProps = dispatch => ({
-	getUserFromFacebook: token => {
-		dispatch(UserActions.getUserFromFacebook(token))
-	},
 	loginWithFacebook: token => {
 		dispatch(UserActions.loginWithFacebook(token))
 	}         
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+export default connect(null, mapDispatchToProps)(LoginPage)
