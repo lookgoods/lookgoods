@@ -25,11 +25,12 @@ export default class ProductsGrid extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'space-between'
+		flexWrap: 'wrap'
 	},
 	productPhoto: {
 		paddingVertical: 2,
-		paddingHorizontal: 2
+		paddingHorizontal: 2,
+		width: '33%',
+		aspectRatio: 1
 	}
 })

@@ -1,6 +1,4 @@
-import {
-	SET_CURRENT_REVIEW
-} from 'src/redux/constants'
+import constants from 'src/redux/constants'
 
 const initialState = {
 	currentReview: null
@@ -8,8 +6,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-	case SET_CURRENT_REVIEW: 
-		console.log('payload', action.payload)
+	case constants.SET_CURRENT_REVIEW: 
 		return {
 			...state,
 			currentReview: {...action.payload}

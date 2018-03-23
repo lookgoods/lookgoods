@@ -1,7 +1,10 @@
-export default constants = {
-    AppURL: 'http://localhost:3000',
-    FacebookURL: 'https://graph.facebook.com/v2.11',
-    GET_CURRENT_USER_REQUEST: 'GET_CURRENT_USER_REQUEST',
-    GET_CURRENT_USER_SUCCESS: 'GET_CURRENT_USER_SUCCESS',
-    GET_CURRENT_USER_FAILURE: 'GET_CURRENT_USER_FAILURE'
+const constants = {
+	AppURL: 'http://localhost:3000',
+	FacebookURL: 'https://graph.facebook.com/v2.11',
+	GET_CURRENT_USER_REQUEST: 'GET_CURRENT_USER_REQUEST',
+	GET_CURRENT_USER_SUCCESS: 'GET_CURRENT_USER_SUCCESS',
+	GET_CURRENT_USER_FAILURE: 'GET_CURRENT_USER_FAILURE',
+	SET_CURRENT_REVIEW: 'SET_CURRENT_REVIEW'
 }
+
+export default constants
