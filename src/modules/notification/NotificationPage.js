@@ -9,12 +9,38 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 import CoverImage from 'src/modules/shares/CoverImage'
-import NavBar from 'src/modules/shares/NavBar'
+import NavBarSearch from '../shares/NavBarSearch'
 import images from 'src/constants/images'
 
 export default class NotificationPage extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			isSearch: false,
+			searchText: ''
+		}
+	}
+
+	setIsSearch() {
+		this.setState({ isSearch: true })
+	}
+
+	handleSearchText(text) {
+		if (text === '') {
+			this.setState({ isSearch: false })
+		} else {
+			this.setState({ isSearch: true })
+		}
+		this.setState({ searchText: text })
+	}
+
+	async cancelSearch() {
+		// Keyboard.dismiss()
+		await this.setState({
+			isSearch: false,
+			// overlaySearch: false,
+			searchText: ''
+		})
 	}
 
 	render() {
@@ -24,13 +50,16 @@ export default class NotificationPage extends Component {
 					<TouchableOpacity style={styles.list}>
 						<CoverImage size={80} url={images.profile} />
 						<View style={{ marginLeft: 13, flex: 1 }}>
-							<View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-								{/* <Text style={styles.textName}>Phasin</Text> */}
+							<Text>
+								<Text style={styles.textName}>Phasin Sarunpornkul</Text>
 								<Text style={{ fontSize: 15, marginBottom: 4 }}>
-									commented on a review HyperX Cloud headset
-									สุดยอดหูฟังเเนวหน้าของวงการ
+									{' '}
+									commented on a review{' '}
 								</Text>
-							</View>
+								<Text style={styles.textName}>
+									HyperX Cloud headset สุดยอดหูฟังเเนวหน้าของวงการ
+								</Text>
+							</Text>
 							<Text style={[styles.font15, { marginBottom: 4 }]}>
 								4 minutes ago
 							</Text>
@@ -64,7 +93,14 @@ export default class NotificationPage extends Component {
 				</View>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName="NotificationPage" />
+						<NavBarSearch
+							overlaySearch={this.state.overlaySearch}
+							searchText={this.state.searchText}
+							isSearch={this.state.isSearch}
+							handleSearchText={text => this.handleSearchText(text)}
+							setIsSearch={() => this.setIsSearch()}
+							cancelSearch={() => this.cancelSearch()}
+						/>
 					</View>
 				</View>
 			</View>
