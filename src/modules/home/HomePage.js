@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.lightGray
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 70,
+		marginTop: Platform.OS === 'ios' ? 75 : 60,
 		backgroundColor: colors.lightGray
 	},
 	platformHeader: {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		right: 0,
-		backgroundColor: 'transparent',
+		backgroundColor: colors.white,
 		overflow: 'hidden',
 		zIndex: 1
 	}
