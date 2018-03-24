@@ -26,8 +26,7 @@ export default class ReviewList extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#fff'
+		flex: 1
 	},
 	reviewCard: {
 		marginBottom: 10

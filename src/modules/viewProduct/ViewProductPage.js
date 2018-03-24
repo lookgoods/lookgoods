@@ -37,6 +37,7 @@ export class ViewProductPage extends Component {
 					<ContentSection review={this.props.review}/>
 					<Divider style={styles.divider}/>
 					<CommentSection review={this.props.review}/>
+					<Divider style={styles.divider}/>
 					<AddComment style={styles.addComment} user={this.props.currentUser}/>
 				</ScrollView>
 			</View>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
 		zIndex: 1
 	},
 	divider: {
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.lightGray,
 		marginTop: 5,
 		height: 1.2,
 		width: '100%'

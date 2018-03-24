@@ -42,7 +42,8 @@ export default class Comment extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		width: '80%'
 	},
 	content: {
 		flexDirection: 'column',

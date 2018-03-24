@@ -9,7 +9,6 @@ import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
-import { Divider } from 'react-native-elements'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ReviewActions from 'src/redux/actions/review'
 import UserActions from 'src/redux/actions/user'
@@ -120,16 +119,19 @@ export class ReviewCard extends Component {
 				<Header user={user} time={timestamp} isSaved={false} setUser={this.props.setSelectedUser}/>
 				<Body product_url={picture_cover_url} title={title} review={this.props.review} setReview={this.props.setCurrentReview}/>
 				<Footer rating={overall_rating} price={product_price} numberOfComment={comment_list.length} />
-				<Divider style={styles.divider}/>
 			</View>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
+	container: {
+		backgroundColor: colors.white	
+	},
 	headerContainer: {
 		flexDirection: 'row',
-		marginBottom: 5
+		marginBottom: 5,
+		marginTop: 10
 	},
 	headerWrapper: {
 		flexDirection: 'column',
@@ -168,7 +170,8 @@ const styles = StyleSheet.create({
 	footerContainer: {
 		flexDirection: 'row',
 		marginTop: 5,
-		marginLeft: 10
+		marginLeft: 10,
+		marginBottom: 20
 	},
 	productDetail: {
 		flexDirection: 'row',
@@ -184,12 +187,6 @@ const styles = StyleSheet.create({
 	},
 	productDetailComment: {
 		marginLeft: 6
-	},
-	divider: {
-		backgroundColor: colors.lightGray,
-		marginTop: 15,
-		height: 1.2,
-		width: '100%'
 	}
 })
 

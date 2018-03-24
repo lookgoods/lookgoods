@@ -8,6 +8,7 @@ import React, { Component } from 'react'
 
 import NavBarSearch from '../shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
+import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import reviewsMock from 'src/mockData/reviews'
 
@@ -46,11 +47,6 @@ export class HomePage extends Component {
 		console.log('user', this.props.currentUser)
 		return (
 			<View style={styles.container}>
-				<ScrollView>
-					<View style={styles.body}>
-						<ReviewList review_list={reviewsMock}/>
-					</View>
-				</ScrollView>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarSearch 
@@ -63,6 +59,11 @@ export class HomePage extends Component {
 						/>
 					</View>
 				</View>
+				<ScrollView>
+					<View style={styles.body}>
+						<ReviewList review_list={reviewsMock}/>
+					</View>
+				</ScrollView>
 			</View>
 		)
 	}
@@ -71,14 +72,15 @@ export class HomePage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.lightGray
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60
+		marginTop: Platform.OS === 'ios' ? 75 : 70,
+		backgroundColor: colors.lightGray
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
-		paddingTop: Platform.OS === 'ios' ? 25 : 0
+		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
 		position: 'absolute',
