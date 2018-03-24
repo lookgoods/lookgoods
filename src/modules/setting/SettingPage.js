@@ -18,6 +18,14 @@ export default class SettingPage extends Component {
 			<View style={styles.container}>
 				<List>
 					<ListItem
+						title='Change Name'
+					/>
+					<ListItem
+						title='Change Profile Status'
+					/>
+				</List>
+				<List>
+					<ListItem
 						title={<Text style={styles.logoutText}>Logout</Text>}
 					/>
 				</List>
@@ -33,6 +41,7 @@ const styles = StyleSheet.create({
 	},
 	logoutText: {
 		color: colors.red,
-		fontSize: 16
+		fontSize: 16,
+		marginLeft: 10
 	}
 })
