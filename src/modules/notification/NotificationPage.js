@@ -1,13 +1,14 @@
 import {
+	Image,
+	PixelRatio,
 	Platform,
 	StyleSheet,
 	Text,
-	View,
-	PixelRatio,
 	TouchableOpacity,
-	Image
+	View
 } from 'react-native'
 import React, { Component } from 'react'
+
 import CoverImage from 'src/modules/shares/CoverImage'
 import NavBarSearch from '../shares/NavBarSearch'
 import images from 'src/constants/images'
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
-		paddingTop: Platform.OS === 'ios' ? 25 : 0
+		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
 		position: 'absolute',

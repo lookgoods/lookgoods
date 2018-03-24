@@ -21,7 +21,7 @@ export default class UserPhoto extends Component {
 					<View style={{ width: '80%' }}>
 						{ (description !== '' & description)
 							?<Text style={{ lineHeight: 22 }}>{description}</Text>
-							:<Text style={{ lineHeight: 22, color: colors.gray2}}>{'You don\'t have status\nYou can add/chage your status in settings'}</Text>
+							:<Text style={{ lineHeight: 22, color: colors.gray2}}>{'You can add/change your status in settings'}</Text>
 						}
 					</View>
 				</View>

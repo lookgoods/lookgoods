@@ -6,16 +6,22 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 
+import AddComment from 'src/modules/viewProduct/components/AddComment'
 import CommentSection from 'src/modules/viewProduct/components/CommentSection'
 import ContentSection from 'src/modules/viewProduct/components/ContentSection'
 import { Divider } from 'react-native-elements'
 import NavBar from 'src/modules/shares/NavBar'
+import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 
 export class ViewProductPage extends Component {
 	constructor (props) {
 		super(props)
+	}
+
+	componentDidMount() {
+		this.props.getCurrentUser()
 	}
 
 	render() {
@@ -31,6 +37,8 @@ export class ViewProductPage extends Component {
 					<ContentSection review={this.props.review}/>
 					<Divider style={styles.divider}/>
 					<CommentSection review={this.props.review}/>
+					<Divider style={styles.divider}/>
+					<AddComment style={styles.addComment} user={this.props.currentUser}/>
 				</ScrollView>
 			</View>
 		)
@@ -55,15 +63,25 @@ const styles = StyleSheet.create({
 		zIndex: 1
 	},
 	divider: {
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.lightGray,
 		marginTop: 5,
 		height: 1.2,
 		width: '100%'
+	},
+	addComment: {
+		marginTop: 10
 	}
 })
 
 const mapStateToProps = state => ({
-	review: state.reviewReducer.currentReview
+	review: state.reviewReducer.currentReview,
+	currentUser: state.userReducer.currentUser
 })
 
-export default connect(mapStateToProps, null)(ViewProductPage)
+const mapDispatchToProps = dispatch => ({
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
+	}       
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewProductPage)
