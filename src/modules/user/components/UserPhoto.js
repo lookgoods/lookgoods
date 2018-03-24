@@ -10,12 +10,20 @@ export default class UserPhoto extends Component {
 	}
 
 	render() {
-		const { size, image_url } = this.props
+		const { size, image_url, username, description } = this.props
 		return (
 			<View style={styles.userphotoBody}>
 				<CoverImage size={size} uri={image_url}/>
 				<View style={styles.usernameContainer}>
-					<Text style={styles.usernameText}>{this.props.username}</Text>
+					<Text style={styles.usernameText}>{username}</Text>
+				</View>
+				<View style={styles.descriptionContainer}>
+					<View style={{ width: '80%' }}>
+						{ (description !== '' & description)
+							?<Text style={{ lineHeight: 22 }}>{description}</Text>
+							:<Text style={{ lineHeight: 22, color: colors.gray2}}>{'You don\'t have status\nYou can add/chage your status in settings'}</Text>
+						}
+					</View>
 				</View>
 			</View>
 		)
@@ -33,5 +41,10 @@ const styles = StyleSheet.create({
 	usernameText: {
 		fontSize: 18,
 		color: colors.gray
+	},
+	descriptionContainer: {
+		flexDirection: 'row', 
+		justifyContent: 'center', 
+		marginTop: 10
 	}
 })

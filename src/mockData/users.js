@@ -9,7 +9,7 @@ export const user1 = {
 	following_list: [user2, user3],
 	saved_review_list: [review1, review2],
 	own_review_list: [review1, review2],
-	description: 'My name is Phasin Sarunpornkul and I loved LookGoods :)'
+	description: ''
 }
 
 export const user2 = {
@@ -19,7 +19,7 @@ export const user2 = {
 	following_list: [user1, user3],
 	saved_review_list: [review1, review2],
 	own_review_list: [review1, review2],
-	description: 'My name is Paiiz Wanchanapon and I loved LookGoods :)'
+	description: 'My name is Paiiz Wanchanapon and I loved LookGoods :)  very much so much and much right now'
 }
 
 export const user3 = {

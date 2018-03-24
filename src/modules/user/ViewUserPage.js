@@ -1,6 +1,7 @@
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
 
+import CoverImage from 'src/modules/shares/CoverImage'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import ProductsGrid from 'src/modules/user/components/ProductsGrid'
@@ -41,11 +42,24 @@ export class ViewUserPage extends Component {
 	render() {
 		if (!this.props.selectedUser) return <View />
 		else {
-			const { name, picture_url, follower_list, following_list } = this.props.selectedUser
+			const { name, picture_url, follower_list, following_list, description } = this.props.selectedUser
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
 					<View style={styles.body}>
-						<UserPhoto username={name} size={120} image_url={picture_url}/>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+							<CoverImage size={110} uri={picture_url}/>
+							<View style={{ flexDirection: 'column', marginLeft: 20, justifyContent: 'space-between' }}>
+								<Text style={styles.usernameText}>{name}</Text>
+								<View style={{ width: 100, marginBottom: 20 }}>
+									<Button title='Follow' color={colors.orange}/>
+								</View>
+							</View>
+						</View>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+							<View style={{ width: '80%' }}>
+								<Text style={{ lineHeight: 22 }}>{description}</Text>
+							</View>
+						</View>
 						<View style={styles.infoBar}>
 							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
 						</View>
@@ -77,7 +91,7 @@ const styles = StyleSheet.create({
 		marginTop: 10
 	},
 	infoBar: {
-		marginTop: 30
+		marginTop: 20
 	},
 	divider: {
 		backgroundColor: colors.gray2,
@@ -89,6 +103,12 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		paddingLeft: 12,
 		paddingRight: 12
+	},
+	usernameText: {
+		fontSize: 18,
+		marginTop: 10,
+		color: colors.gray,
+		fontWeight: 'bold'
 	}
 })
 

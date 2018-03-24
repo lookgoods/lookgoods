@@ -51,14 +51,14 @@ export class UserPage extends Component {
 		console.log('currentuser', this.props.currentUser)
 		if (!this.props.currentUser) return <View />
 		else {
-			const { name, picture_url, follower_list, following_list } = this.props.currentUser
+			const { name, picture_url, follower_list, following_list, description } = this.props.currentUser
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
 					<View style={styles.body}>
 						<View style={styles.settingIconContainer}>
 							<MaterialIcons style={{ paddingRight: 10 }} name='settings' size={30} onPress={() => this.goToSettingPage()}/>
 						</View>
-						<UserPhoto username={name} size={120} image_url={picture_url}/>
+						<UserPhoto username={name} description={description} size={120} image_url={picture_url}/>
 						<View style={styles.infoBar}>
 							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
 						</View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 		marginTop: 10
 	},
 	infoBar: {
-		marginTop: 30
+		marginTop: 20
 	},
 	divider: {
 		backgroundColor: colors.lightGray,

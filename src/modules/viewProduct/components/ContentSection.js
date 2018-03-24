@@ -1,15 +1,19 @@
 import {
+	Button,
 	Image,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View
 } from 'react-native'
 import React, { Component } from 'react'
 
-import { Button } from 'react-native-elements'
+import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewProduct/components/StarBar'
+import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
+import { connect } from 'react-redux'
 
 const CoverPhoto = ({ image_url }) => (
 	<View>
@@ -27,12 +31,21 @@ const ProfilePicture = ({ image_url }) => (
 	</View>
 )
 
-function ReviewerBar({ reviewer, rating }) {
+function goToUserPage(user, setUser) {
+	setUser(user)
+	Actions.viewUserPage()
+}
+
+function ReviewerBar({ reviewer, rating, setUser }) {
 	return (
 		<View style={styles.reviewerBar}>
-			<ProfilePicture image_url={reviewer.profile_url}/>
+			<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
+				<ProfilePicture image_url={reviewer.profile_url}/>
+			</TouchableOpacity>
 			<View style={styles.reviewTextWrapper}>
-				<Text style={styles.reviewerName}>{reviewer.name}</Text>
+				<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
+					<Text style={styles.reviewerName}>{reviewer.name}</Text>
+				</TouchableOpacity>
 				<View style={styles.starBar}><StarBar rating={rating} size={30}/></View>
 			</View>
 		</View>
@@ -71,9 +84,7 @@ const ProductDetail = ({ name, value }) => (
 const TagButton = ({ title }) => (
 	<Button 
 		title={title} 
-		backgroundColor={colors.gray2}
-		buttonStyle={styles.tagBtn}
-		fontSize={13}
+		color={colors.gray}
 	/>
 )
 
@@ -93,7 +104,7 @@ const TagList = ({ tags }) => (
 	</View>
 )
 
-export default class ContentSection extends Component {
+export class ContentSection extends Component {
 	constructor (props) {
 		super(props)
 	}
@@ -103,7 +114,7 @@ export default class ContentSection extends Component {
 		return (
 			<View>
 				<CoverPhoto image_url={picture_cover_url}/>
-				<ReviewerBar reviewer={user} rating={rating}/>
+				<ReviewerBar reviewer={user} rating={rating} setUser={this.props.setSelectedUser}/>
 				<Text style={styles.titleText}>{title}</Text>
 				<Content content_list={content_list}/>
 				<View style={ { flexDirection: 'row' } }>
@@ -119,7 +130,7 @@ export default class ContentSection extends Component {
 const styles = StyleSheet.create({
 	coverImage: {
 		width: '100%',
-		height: 300
+		height: 250
 	},
 	profileImage: {
 		marginLeft: 10
@@ -139,9 +150,10 @@ const styles = StyleSheet.create({
 	},
 	reviewerName: {
 		fontSize: 15,
-		color: colors.blue,
 		fontWeight: 'bold',
-		marginTop: 5
+		marginTop: 5,
+		marginLeft: 5,
+		color: colors.gray
 	},
 	titleText: {
 		marginLeft: 20,
@@ -175,11 +187,15 @@ const styles = StyleSheet.create({
 		marginLeft: 30,
 		fontWeight: 'bold'
 	},
-	tagBtn: {
-		borderRadius: 5,
-		height: 35
-	},
 	tagWrapper: {
 		marginBottom: 5
 	}
 })
+
+const mapDispatchToProps = dispatch => ({
+	setSelectedUser: user => {
+		dispatch(UserActions.setSelectedUser(user))
+	}
+})
+
+export default connect(null, mapDispatchToProps)(ContentSection)
