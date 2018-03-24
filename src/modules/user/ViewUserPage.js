@@ -1,13 +1,11 @@
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
 
-import { Actions } from 'react-native-router-flux'
+import CoverImage from 'src/modules/shares/CoverImage'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import Tabs from 'src/modules/shares/Tabs'
-import UserActions from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -33,32 +31,35 @@ const products_save = [
 	{ name: 'product1', image_url: images.product4 }
 ]
 
-export class UserPage extends Component {
+export class ViewUserPage extends Component {
 	constructor (props) {
 		super(props)
 	}
     
 	componentDidMount() {
-		this.props.getCurrentUser()
-	}
-
-	goToSettingPage() {
-		Actions.settingPage()
 	}
 
 	render() {
-		console.log('loading user', this.props.loading)
-		console.log('currentuser', this.props.currentUser)
-		if (!this.props.currentUser) return <View />
+		if (!this.props.selectedUser) return <View />
 		else {
-			const { name, picture_url, follower_list, following_list, description } = this.props.currentUser
+			const { name, picture_url, follower_list, following_list, description } = this.props.selectedUser
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
 					<View style={styles.body}>
-						<View style={styles.settingIconContainer}>
-							<MaterialIcons style={{ paddingRight: 10 }} name='settings' size={30} onPress={() => this.goToSettingPage()}/>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+							<CoverImage size={110} uri={picture_url}/>
+							<View style={{ flexDirection: 'column', marginLeft: 20, justifyContent: 'space-between' }}>
+								<Text style={styles.usernameText}>{name}</Text>
+								<View style={{ width: 100, marginBottom: 20 }}>
+									<Button title='Follow' color={colors.orange}/>
+								</View>
+							</View>
 						</View>
-						<UserPhoto username={name} description={description} size={120} image_url={picture_url}/>
+						<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+							<View style={{ width: '80%' }}>
+								<Text style={{ lineHeight: 22 }}>{description}</Text>
+							</View>
+						</View>
 						<View style={styles.infoBar}>
 							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
 						</View>
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
 		marginTop: 20
 	},
 	divider: {
-		backgroundColor: colors.lightGray,
+		backgroundColor: colors.gray2,
 		marginTop: 15,
 		height: 1.2,
 		width: '100%'
@@ -103,21 +104,16 @@ const styles = StyleSheet.create({
 		paddingLeft: 12,
 		paddingRight: 12
 	},
-	settingIconContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end'
+	usernameText: {
+		fontSize: 18,
+		marginTop: 10,
+		color: colors.gray,
+		fontWeight: 'bold'
 	}
 })
 
 const mapStateToProps = state => ({
-	currentUser: state.userReducer.currentUser,
-	loading: state.userReducer.loading
+	selectedUser: state.userReducer.selectedUser
 })
 
-const mapDispatchToProps = dispatch => ({
-	getCurrentUser: () => {
-		dispatch(UserActions.getCurrentUser())
-	}       
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage)
+export default connect(mapStateToProps, null)(ViewUserPage)

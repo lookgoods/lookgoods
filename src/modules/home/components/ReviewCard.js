@@ -9,8 +9,10 @@ import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
+import { Divider } from 'react-native-elements'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ReviewActions from 'src/redux/actions/review'
+import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
@@ -32,12 +34,24 @@ const BookMark = ({ isActive }) => {
 	)
 }
 
-function Header({ reviewer_name, profile_url, time, isSaved }) {
+function goToUserPage(user, setUser) {
+	setUser(user)
+	Actions.viewUserPage()
+}
+
+function Header({ user, time, isSaved, setUser }) {
 	return (
 		<View style={styles.headerContainer}>
-			<ProfilePicture image_url={profile_url} />
+			<TouchableOpacity 
+				onPress={() => goToUserPage(user, setUser)}
+				style={styles.profilePicture}
+			>
+				<ProfilePicture image_url={user.profile_url} />
+			</TouchableOpacity>
 			<View style={styles.headerWrapper}>
-				<Text style={styles.reviewerName}>{reviewer_name}</Text>
+				<TouchableOpacity onPress={() => goToUserPage(user, setUser)}>
+					<Text style={styles.reviewerName}>{user.name}</Text>
+				</TouchableOpacity>
 				<Text style={styles.timeText}>{time}</Text>
 			</View>
 			<BookMark isActive={isSaved} />
@@ -103,9 +117,10 @@ export class ReviewCard extends Component {
 		
 		return (
 			<View style={styles.container}>
-				<Header reviewer_name={user.name} profile_url={user.profile_url} time={timestamp} isSaved={false} />
+				<Header user={user} time={timestamp} isSaved={false} setUser={this.props.setSelectedUser}/>
 				<Body product_url={picture_cover_url} title={title} review={this.props.review} setReview={this.props.setCurrentReview}/>
 				<Footer rating={overall_rating} price={product_price} numberOfComment={comment_list.length} />
+				<Divider style={styles.divider}/>
 			</View>
 		)
 	}
@@ -118,8 +133,11 @@ const styles = StyleSheet.create({
 	},
 	headerWrapper: {
 		flexDirection: 'column',
-		marginLeft: 10,
+		marginLeft: 5,
 		marginVertical: 5
+	},
+	profilePicture: {
+		marginLeft: 10
 	},
 	reviewerName: {
 		fontWeight: 'bold',
@@ -166,12 +184,21 @@ const styles = StyleSheet.create({
 	},
 	productDetailComment: {
 		marginLeft: 6
+	},
+	divider: {
+		backgroundColor: colors.lightGray,
+		marginTop: 15,
+		height: 1.2,
+		width: '100%'
 	}
 })
 
 const mapDispatchToProps = dispatch => ({
 	setCurrentReview: review => {
 		dispatch(ReviewActions.setCurrentReview(review))
+	},
+	setSelectedUser: user => {
+		dispatch(UserActions.setSelectedUser(user))
 	}
 })
 

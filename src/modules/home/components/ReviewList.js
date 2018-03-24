@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	reviewCard: {
-		marginBottom: 20
+		marginBottom: 10
 	}
 })

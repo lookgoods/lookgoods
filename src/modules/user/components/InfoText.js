@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	number: {
-		color: colors.meat,
+		color: colors.orange,
 		fontSize: 25
 	},
 	text: {

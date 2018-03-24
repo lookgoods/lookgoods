@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
 		borderBottomColor: colors.transparent
 	},
 	tabContainerActive: {
-		borderBottomColor: colors.meat
+		borderBottomColor: colors.orange
 	},
 	tabText: {
 		color: colors.gray,
 		textAlign: 'center'
 	},
 	tabTextActive: {
-		color: colors.meat,
+		color: colors.orange,
 		textAlign: 'center'
 	},
 	contentContainer: {
