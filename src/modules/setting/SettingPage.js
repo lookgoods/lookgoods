@@ -6,6 +6,7 @@ import {
 	View
 } from 'react-native'
 
+import { Actions } from 'react-native-router-flux'
 import { colors } from 'src/constants/mixins'
 
 export default class SettingPage extends Component {
@@ -16,6 +17,12 @@ export default class SettingPage extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				<List>
+					<ListItem
+						title='Change Profile Status'
+						onPress={ () => Actions.changeStatusPage() }
+					/>
+				</List>
 				<List>
 					<ListItem
 						title={<Text style={styles.logoutText}>Logout</Text>}
@@ -33,6 +40,7 @@ const styles = StyleSheet.create({
 	},
 	logoutText: {
 		color: colors.red,
-		fontSize: 16
+		fontSize: 16,
+		marginLeft: 10
 	}
 })
