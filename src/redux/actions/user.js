@@ -29,7 +29,10 @@ const UserActions = {
 			description: description
 		}))
 		if (err) dispatch(actions.changeUserDescriptionError(err))
-		else dispatch(actions.changeUserDescriptionSuccess(response))
+		else {
+			dispatch(actions.changeUserDescriptionSuccess(response))
+			dispatch(UserActions.getCurrentUser())
+		}
 	}
 }
 

@@ -8,10 +8,27 @@ import {
 } from 'react-native'
 
 import { colors } from 'src/constants/mixins'
+import UserActions from 'src/redux/actions/user'
+import { connect } from 'react-redux'
+import { Actions } from 'react-native-router-flux'
 
-export default class ChangeStatusPage extends Component {
+export class ChangeStatusPage extends Component {
 	constructor (props) {
 		super(props)
+		this.state = {
+			description: ''
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.currentUser.description) {
+			this.setState({ description: this.props.currentUser.description })
+		}
+	}
+
+	saveButtonClick() {
+		this.props.changeUserStatus(this.props.currentUser._id, this.state.description)
+		Actions.pop()
 	}
 
 	render() {
@@ -27,12 +44,14 @@ export default class ChangeStatusPage extends Component {
 							multiline={true}
 							style={styles.textInput}
 							underlineColorAndroid='transparent'
+							value={this.state.description}
+							onChangeText={(description) => this.setState({ description })}
 						/>
 					</View>
 				</View>
 				<View style={styles.toCenter}>
 					<View style={styles.buttonContainer}>
-						<Button title='Save' color={colors.meat}/>
+						<Button title='Save' color={colors.meat} onPress={() => this.saveButtonClick()}/>
 					</View>
 				</View>
 			</View>
@@ -69,3 +88,15 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 })
+
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+	changeUserStatus: (user_id, description) => {
+		dispatch(UserActions.changeUserDescription(user_id, description))
+	}       
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeStatusPage)
