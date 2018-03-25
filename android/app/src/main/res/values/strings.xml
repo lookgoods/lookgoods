@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LookGoods</string>
+    <string name="facebook_app_id">1447759218667981</string>
+    <string name="fb_login_protocol_scheme">fb1447759218667981</string>
 </resources>
