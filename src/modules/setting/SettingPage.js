@@ -6,6 +6,7 @@ import {
 	View
 } from 'react-native'
 
+import { Actions } from 'react-native-router-flux'
 import { colors } from 'src/constants/mixins'
 
 export default class SettingPage extends Component {
@@ -18,10 +19,8 @@ export default class SettingPage extends Component {
 			<View style={styles.container}>
 				<List>
 					<ListItem
-						title='Change Name'
-					/>
-					<ListItem
 						title='Change Profile Status'
+						onPress={ () => Actions.changeStatusPage() }
 					/>
 				</List>
 				<List>
