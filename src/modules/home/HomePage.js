@@ -2,10 +2,11 @@ import {
 	Platform,
 	ScrollView,
 	StyleSheet,
-	View
+	View,
+	TouchableOpacity
 } from 'react-native'
 import React, { Component } from 'react'
-
+import { Actions } from 'react-native-router-flux'
 import NavBarSearch from '../shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
@@ -13,19 +14,19 @@ import { connect } from 'react-redux'
 import reviewsMock from 'src/mockData/reviews'
 
 export class HomePage extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 		this.state = {
-			isSearch: false, 
+			isSearch: false,
 			searchText: ''
 		}
 	}
-	
-	setIsSearch () {
+
+	setIsSearch() {
 		this.setState({ isSearch: true })
 	}
-	
-	handleSearchText (text) {
+
+	handleSearchText(text) {
 		if (text === '') {
 			this.setState({ isSearch: false })
 		} else {
@@ -34,34 +35,30 @@ export class HomePage extends Component {
 		this.setState({ searchText: text })
 	}
 
-	async cancelSearch () {
+	async cancelSearch() {
 		// Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
 			// overlaySearch: false,
 			searchText: ''
 		})
+		Actions.SearchPage()
 	}
-	
+
 	render() {
 		console.log('user', this.props.currentUser)
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBarSearch 
-							overlaySearch={this.state.overlaySearch}
-							searchText={this.state.searchText}
-							isSearch={this.state.isSearch}
-							handleSearchText={(text) => this.handleSearchText(text)}
-							setIsSearch={() => this.setIsSearch()}
-							cancelSearch={() => this.cancelSearch()}
-						/>
+						<TouchableOpacity onPress={() => Actions.SearchPage()}>
+							<NavBarSearch />
+						</TouchableOpacity>
 					</View>
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewList review_list={reviewsMock}/>
+						<ReviewList review_list={reviewsMock} />
 					</View>
 				</ScrollView>
 			</View>
