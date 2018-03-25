@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
 import { colors } from 'src/constants/mixins'

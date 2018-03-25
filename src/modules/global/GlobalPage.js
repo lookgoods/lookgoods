@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.lightGray
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60,
 		backgroundColor: colors.lightGray
 	},
 	platformHeader: {
@@ -80,12 +79,7 @@ const styles = StyleSheet.create({
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
 		backgroundColor: colors.white,
-		overflow: 'hidden',
-		zIndex: 1
+		overflow: 'hidden'
 	}
 })

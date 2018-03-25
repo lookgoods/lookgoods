@@ -2,8 +2,7 @@ import {
 	Platform,
 	ScrollView,
 	StyleSheet,
-	View,
-	TouchableOpacity
+	View
 } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
@@ -51,9 +50,7 @@ export class HomePage extends Component {
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<TouchableOpacity onPress={() => Actions.SearchPage()}>
-							<NavBarSearch />
-						</TouchableOpacity>
+						<NavBarSearch />
 					</View>
 				</View>
 				<ScrollView>
@@ -72,7 +69,6 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.lightGray
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60,
 		backgroundColor: colors.lightGray
 	},
 	platformHeader: {
@@ -80,13 +76,8 @@ const styles = StyleSheet.create({
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
 		backgroundColor: colors.white,
-		overflow: 'hidden',
-		zIndex: 1
+		overflow: 'hidden'
 	}
 })
 
