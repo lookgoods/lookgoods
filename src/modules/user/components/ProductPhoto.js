@@ -1,35 +1,38 @@
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, View, Dimensions } from 'react-native'
 import React, { Component } from 'react'
 
 import { colors } from 'src/constants/mixins'
 
 export default class ProductPhoto extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 	}
 
 	render() {
 		return (
 			<View style={styles.container}>
-				{ this.props.product.image_url ?
+				{this.props.product.image_url ? (
 					<Image
 						source={this.props.product.image_url}
 						style={styles.product_image}
-						resizeMode='contain'
-					/>: <View/> }
+						resizeMode="contain"
+					/>
+				) : (
+					<View />
+				)}
 			</View>
 		)
 	}
 }
 
-
 const styles = StyleSheet.create({
 	container: {
-		justifyContent: 'center', 
+		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: colors.white
 	},
 	product_image: {
+		width: Dimensions.get('window').width / 3 - 10,
 		height: '100%'
 	}
 })

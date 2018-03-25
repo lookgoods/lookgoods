@@ -95,7 +95,6 @@ export default class NotificationPage extends Component {
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarSearch
-							overlaySearch={this.state.overlaySearch}
 							searchText={this.state.searchText}
 							isSearch={this.state.isSearch}
 							handleSearchText={text => this.handleSearchText(text)}

@@ -1,28 +1,22 @@
-import {
-	Platform,
-	StyleSheet,
-	Text,
-	View
-} from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import React, { Component } from 'react'
 
 import NavBarSearch from '../shares/NavBarSearch'
 
 export default class GlobalPage extends Component {
-  
-	constructor (props) {
+	constructor(props) {
 		super(props)
 		this.state = {
-			isSearch: false, 
+			isSearch: false,
 			searchText: ''
 		}
 	}
-	
-	setIsSearch () {
+
+	setIsSearch() {
 		this.setState({ isSearch: true })
 	}
-	
-	handleSearchText (text) {
+
+	handleSearchText(text) {
 		if (text === '') {
 			this.setState({ isSearch: false })
 		} else {
@@ -31,7 +25,7 @@ export default class GlobalPage extends Component {
 		this.setState({ searchText: text })
 	}
 
-	async cancelSearch () {
+	async cancelSearch() {
 		// Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
@@ -48,11 +42,10 @@ export default class GlobalPage extends Component {
 				</View>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBarSearch 
-							overlaySearch={this.state.overlaySearch}
+						<NavBarSearch
 							searchText={this.state.searchText}
 							isSearch={this.state.isSearch}
-							handleSearchText={(text) => this.handleSearchText(text)}
+							handleSearchText={text => this.handleSearchText(text)}
 							setIsSearch={() => this.setIsSearch()}
 							cancelSearch={() => this.cancelSearch()}
 						/>
