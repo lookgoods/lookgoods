@@ -73,25 +73,20 @@ export default class AddComment extends Component {
 					</View>
 					{this.state.rating !== 0 && (
 						<View style={{ flexDirection: 'row', marginTop: 10 }}>
-							<View
-								style={{
-									marginLeft: 10,
-									marginRight: 20,
-									backgroundColor: colors.lightGray
-								}}
-							>
+							<View style={styles.bodyTextInput}>
 								<TextInput
-									placeholder="Add a comment"
-									value={this.state.message}
-									onChangeText={message => this.setState({ message })}
 									style={styles.textInput}
+									multiline
+									maxHeight={300}
 									underlineColorAndroid="transparent"
+									onChangeText={message => this.setState({ message })}
+									value={this.state.message}
+									keyboardType="default"
 								/>
 							</View>
 							<TouchableOpacity style={styles.buttonSend}>
 								<Text style={styles.fontSend}>Send</Text>
 							</TouchableOpacity>
-							{/* <Button title="Send" color={colors.orange} /> */}
 						</View>
 					)}
 				</View>
@@ -105,10 +100,11 @@ const styles = StyleSheet.create({
 		marginRight: 5
 	},
 	textInput: {
-		height: 40,
-		width: 300,
-		padding: 10,
-		borderRadius: 5
+		fontSize: 15,
+		color: colors.black,
+		minHeight: 15,
+		paddingTop: 0,
+		paddingBottom: 0
 	},
 	fontSend: {
 		fontSize: 18,
@@ -116,9 +112,19 @@ const styles = StyleSheet.create({
 		color: colors.orange
 	},
 	buttonSend: {
-		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'flex-end',
 		flexDirection: 'row',
+		marginBottom: 10,
+		right: 8,
 		borderRadius: 3
+	},
+	bodyTextInput: {
+		flex: 1,
+		marginTop: 15,
+		marginLeft: 15,
+		marginRight: 15,
+		padding: 10,
+		borderColor: '#dfdfdf',
+		borderWidth: 1
 	}
 })
