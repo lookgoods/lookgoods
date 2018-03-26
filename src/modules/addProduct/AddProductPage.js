@@ -400,14 +400,6 @@ const styles = StyleSheet.create({
 		height: 35,
 		padding: 0
 	},
-	bodyTextInput: {
-		marginTop: 15,
-		marginLeft: 15,
-		marginRight: 15,
-		padding: 10,
-		borderColor: '#dfdfdf',
-		borderWidth: 1
-	},
 	buttonAdd: {
 		justifyContent: 'center',
 		alignItems: 'center',
