@@ -1,5 +1,5 @@
 const constants = {
-	AppURL: 'http://localhost:3000',
+	AppURL: 'http://35.187.248.137:3000',
 	FacebookURL: 'https://graph.facebook.com/v2.11',
 	LOGIN_FACEBOOK_REQUEST: 'LOGIN_FACEBOOK_REQUEST',
 	LOGIN_FACEBOOK_SUCCESS: 'LOGIN_FACEBOOK_SUCCESS',
