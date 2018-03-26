@@ -14,7 +14,6 @@ class NavBarSearchPage extends Component {
 			cancelSearch,
 			setIsSearch
 		} = this.props
-		// const { titleName } = this.props
 		return (
 			<View style={styles.navBar}>
 				<TouchableOpacity style={styles.boxIcon} onPress={() => Actions.pop()}>
@@ -25,29 +24,7 @@ class NavBarSearchPage extends Component {
 						style={styles.backgroundTranparent}
 					/>
 				</TouchableOpacity>
-				{/* <TouchableOpacity
-					style={{
-						width: 50,
-						alignItems: 'center',
-						justifyContent: 'center',
-						flexDirection: 'row'
-					}}
-					onPress={() => Actions.pop()}
-				>
-					<IconIonicons name="ios-arrow-back" size={20} color={colors.gray} />
-				</TouchableOpacity> */}
-				<View
-					style={{
-						flex: 1,
-						height: 42,
-						borderRadius: 20,
-						flexDirection: 'row',
-						alignItems: 'center',
-						backgroundColor: 'rgba(0, 0, 0, 0.16)',
-						paddingHorizontal: 15,
-						marginHorizontal: 10
-					}}
-				>
+				<View style={styles.searchBox}>
 					<IconFontAwesome
 						name={'search'}
 						size={15}
@@ -99,6 +76,17 @@ const styles = StyleSheet.create({
 	},
 	backgroundTranparent: {
 		backgroundColor: 'transparent'
+	},
+	searchBox: {
+		flex: 1,
+		height: 42,
+		borderRadius: 20,
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.16)',
+		paddingHorizontal: 15,
+		marginHorizontal: 10,
+		marginTop: 5
 	},
 	searchIcon: {
 		backgroundColor: 'transparent',
