@@ -171,8 +171,7 @@ const styles = StyleSheet.create({
 	},
 	fontFollow: {
 		fontSize: 18,
-		fontWeight: 'bold'
-		// color: colors.orange
+		color: colors.white
 	},
 	buttonFollow: {
 		justifyContent: 'center',
