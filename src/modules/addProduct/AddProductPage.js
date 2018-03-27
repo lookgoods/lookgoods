@@ -349,7 +349,7 @@ export default class GlobalPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.white
 	},
 	body: {
 		marginTop: Platform.OS === 'ios' ? 75 : 60
