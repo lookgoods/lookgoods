@@ -211,15 +211,15 @@ const styles = StyleSheet.create({
 	fontTags: {
 		fontSize: 15,
 		fontWeight: 'bold',
-		color: '#4761A4'
+		color: colors.white
 	},
 	buttonTag: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
-		backgroundColor: colors.gray3,
+		backgroundColor: colors.blue,
 		height: 25,
-		paddingHorizontal: 5,
+		paddingHorizontal: 10,
 		borderRadius: 15
 	}
 })

@@ -83,17 +83,21 @@ export class ViewUserPage extends Component {
 									</TouchableOpacity>
 								</View>
 							</View>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'center',
-									marginTop: 10
-								}}
-							>
-								<View style={{ width: '80%' }}>
-									<Text style={{ lineHeight: 22 }}>{description}</Text>
+
+							{description !== '' && (
+								<View
+									style={{
+										flexDirection: 'row',
+										justifyContent: 'center',
+										marginTop: 10
+									}}
+								>
+									<View style={{ width: '80%' }}>
+										<Text style={{ lineHeight: 22 }}>{description}</Text>
+									</View>
 								</View>
-							</View>
+							)}
+
 							<View style={styles.infoBar}>
 								<InfoBar
 									review_num={4}
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
 	},
 	usernameText: {
 		fontSize: 18,
-		marginTop: 10,
+		marginTop: 20,
 		color: colors.gray,
 		fontWeight: 'bold'
 	},
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
-		marginTop: 10,
+		marginTop: 20,
 		backgroundColor: colors.orange,
 		height: 30,
 		borderRadius: 3
