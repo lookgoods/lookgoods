@@ -349,7 +349,7 @@ export default class GlobalPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.white
 	},
 	body: {
 		marginTop: Platform.OS === 'ios' ? 75 : 60
@@ -399,14 +399,6 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		height: 35,
 		padding: 0
-	},
-	bodyTextInput: {
-		marginTop: 15,
-		marginLeft: 15,
-		marginRight: 15,
-		padding: 10,
-		borderColor: '#dfdfdf',
-		borderWidth: 1
 	},
 	buttonAdd: {
 		justifyContent: 'center',

@@ -1,11 +1,5 @@
-import {
-	Platform,
-	ScrollView,
-	StyleSheet,
-	View
-} from 'react-native'
+import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
-
 import AddComment from 'src/modules/viewProduct/components/AddComment'
 import CommentSection from 'src/modules/viewProduct/components/CommentSection'
 import ContentSection from 'src/modules/viewProduct/components/ContentSection'
@@ -16,7 +10,7 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 
 export class ViewProductPage extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 	}
 
@@ -30,15 +24,15 @@ export class ViewProductPage extends Component {
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName={product.name}/>
+						<NavBar titleName={product.name} />
 					</View>
 				</View>
 				<ScrollView>
-					<ContentSection review={this.props.review}/>
-					<Divider style={styles.divider}/>
-					<CommentSection review={this.props.review}/>
-					<Divider style={styles.divider}/>
-					<AddComment style={styles.addComment} user={this.props.currentUser}/>
+					<ContentSection review={this.props.review} />
+					<Divider style={styles.divider} />
+					<CommentSection review={this.props.review} />
+					<Divider style={styles.divider} />
+					<AddComment style={styles.addComment} user={this.props.currentUser} />
 				</ScrollView>
 			</View>
 		)
@@ -81,7 +75,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
-	}       
+	}
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewProductPage)

@@ -1,4 +1,11 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+	Platform,
+	TouchableOpacity,
+	ScrollView,
+	StyleSheet,
+	Text,
+	View
+} from 'react-native'
 import React, { Component } from 'react'
 
 import CoverImage from 'src/modules/shares/CoverImage'
@@ -6,7 +13,7 @@ import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import ProductsGrid from 'src/modules/user/components/ProductsGrid'
 import Tabs from 'src/modules/shares/Tabs'
-import UserPhoto from 'src/modules/user/components/UserPhoto'
+import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import images from 'src/constants/images'
@@ -32,63 +39,115 @@ const products_save = [
 ]
 
 export class ViewUserPage extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 	}
-    
-	componentDidMount() {
-	}
+
+	componentDidMount() {}
 
 	render() {
 		if (!this.props.selectedUser) return <View />
 		else {
-			const { name, picture_url, follower_list, following_list, description } = this.props.selectedUser
+			const {
+				name,
+				picture_url,
+				follower_list,
+				following_list,
+				description
+			} = this.props.selectedUser
 			return (
-				<ScrollView contentContainerStyle={styles.container}>
-					<View style={styles.body}>
-						<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-							<CoverImage size={110} uri={picture_url}/>
-							<View style={{ flexDirection: 'column', marginLeft: 20, justifyContent: 'space-between' }}>
-								<Text style={styles.usernameText}>{name}</Text>
-								<View style={{ width: 100, marginBottom: 20 }}>
-									<Button title='Follow' color={colors.orange}/>
+				<View style={styles.container}>
+					<ScrollView
+						showsVerticalScrollIndicator={false}
+						scrollEventThrottle={16}
+						bounces={false}
+						style={styles.body}
+					>
+						<View>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'center',
+									marginTop: 10
+								}}
+							>
+								<CoverImage size={110} uri={picture_url} />
+								<View
+									style={{
+										marginLeft: 20
+									}}
+								>
+									<Text style={styles.usernameText}>{name}</Text>
+									<TouchableOpacity style={styles.buttonFollow}>
+										<Text style={styles.fontFollow}>Follow</Text>
+									</TouchableOpacity>
 								</View>
 							</View>
-						</View>
-						<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-							<View style={{ width: '80%' }}>
-								<Text style={{ lineHeight: 22 }}>{description}</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'center',
+									marginTop: 10
+								}}
+							>
+								<View style={{ width: '80%' }}>
+									<Text style={{ lineHeight: 22 }}>{description}</Text>
+								</View>
+							</View>
+							<View style={styles.infoBar}>
+								<InfoBar
+									review_num={4}
+									comment_num={22}
+									follower_num={follower_list.length}
+									following_num={following_list.length}
+								/>
+							</View>
+							<View style={{ alignItems: 'center' }}>
+								<Divider style={styles.divider} />
+							</View>
+							<View style={styles.tabsContainer}>
+								<Tabs>
+									<View title="Reviews">
+										<ProductsGrid product_list={products} />
+									</View>
+									<View title="Saved">
+										<ProductsGrid product_list={products_save} />
+									</View>
+								</Tabs>
 							</View>
 						</View>
-						<View style={styles.infoBar}>
-							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
-						</View>
-						<View style={{alignItems: 'center'}}>
-							<Divider style={styles.divider}/>
-						</View>
-						<View style={styles.tabsContainer}>
-							<Tabs>
-								<View title="Reviews">
-									<ProductsGrid product_list={products} />
-								</View>
-								<View title="Saved">
-									<ProductsGrid product_list={products_save} />
-								</View>
-							</Tabs>
+					</ScrollView>
+					<View style={styles.header}>
+						<View style={styles.platformHeader}>
+							<NavBar titleName={name} />
 						</View>
 					</View>
-				</ScrollView>
+				</View>
 			)
 		}
 	}
 }
-  
+
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		backgroundColor: colors.white
 	},
 	body: {
-		marginTop: 10
+		marginTop: Platform.OS === 'ios' ? 75 : 60
+	},
+	platformHeader: {
+		height: Platform.OS === 'ios' ? 75 : 60,
+		paddingTop: Platform.OS === 'ios' ? 25 : 0
+	},
+	header: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: 'transparent',
+		overflow: 'hidden',
+		zIndex: 1
 	},
 	infoBar: {
 		marginTop: 20
@@ -109,6 +168,20 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		color: colors.gray,
 		fontWeight: 'bold'
+	},
+	fontFollow: {
+		fontSize: 18,
+		fontWeight: 'bold'
+		// color: colors.orange
+	},
+	buttonFollow: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row',
+		marginTop: 10,
+		backgroundColor: colors.orange,
+		height: 30,
+		borderRadius: 3
 	}
 })
 

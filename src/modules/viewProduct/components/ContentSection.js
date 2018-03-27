@@ -1,11 +1,4 @@
-import {
-	Button,
-	Image,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
@@ -17,17 +10,21 @@ import { connect } from 'react-redux'
 
 const CoverPhoto = ({ image_url }) => (
 	<View>
-		{ image_url ? 
+		{image_url ? (
 			<Image
 				style={styles.coverImage}
 				source={image_url}
-				resizeMode='contain' />: <View/>}
+				resizeMode="contain"
+			/>
+		) : (
+			<View />
+		)}
 	</View>
 )
 
 const ProfilePicture = ({ image_url }) => (
 	<View style={styles.profileImage}>
-		<CoverImage size={70} url={image_url}/>
+		<CoverImage size={70} url={image_url} />
 	</View>
 )
 
@@ -40,13 +37,15 @@ function ReviewerBar({ reviewer, rating, setUser }) {
 	return (
 		<View style={styles.reviewerBar}>
 			<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
-				<ProfilePicture image_url={reviewer.profile_url}/>
+				<ProfilePicture image_url={reviewer.profile_url} />
 			</TouchableOpacity>
 			<View style={styles.reviewTextWrapper}>
 				<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
 					<Text style={styles.reviewerName}>{reviewer.name}</Text>
 				</TouchableOpacity>
-				<View style={styles.starBar}><StarBar rating={rating} size={30}/></View>
+				<View style={styles.starBar}>
+					<StarBar rating={rating} size={30} />
+				</View>
 			</View>
 		</View>
 	)
@@ -56,72 +55,91 @@ function getContent(content) {
 	if (content.type === 'picture')
 		return (
 			<View style={styles.contentImageWrapper}>
-				<Image source={content.value} resizeMode='contain' style={styles.contentImage}/>
-			</View>)
+				<Image
+					source={content.value}
+					resizeMode="contain"
+					style={styles.contentImage}
+				/>
+			</View>
+		)
 	else if (content.type === 'text')
 		return <Text style={styles.contentText}>{content.value}</Text>
-	else return <View/>
+	else return <View />
 }
 
 function Content({ content_list }) {
 	return (
 		<View style={styles.contentList}>
-			{ content_list.map((content) => (getContent(content)))}
+			{content_list.map(content => getContent(content))}
 		</View>
 	)
 }
 
 const ProductDetail = ({ name, value }) => (
 	<View>
-		{ value && 
-		<View style={styles.productDetail}>
-			<Text style={styles.productDetailName}>{name}</Text>
-			<Text>{value}</Text>
-		</View> }
+		{value && (
+			<View style={styles.productDetail}>
+				<Text style={styles.productDetailName}>{name}</Text>
+				<Text>{value}</Text>
+			</View>
+		)}
 	</View>
 )
 
 const TagButton = ({ title }) => (
-	<Button 
-		title={title} 
-		color={colors.gray}
-	/>
+	<TouchableOpacity style={styles.buttonTag}>
+		<Text style={styles.fontTags}>{title}</Text>
+	</TouchableOpacity>
 )
 
 const TagList = ({ tags }) => (
 	<View>
-		{ tags && 
-		<View style={styles.productDetail}>
-			<Text style={styles.productDetailName}>Tags</Text>
-			<View>
-				{ tags.map((tag, index) => (
-					<View key={index} style={styles.tagWrapper}>
-						<TagButton title={tag} />
-					</View>
-				))}
+		{tags && (
+			<View style={styles.productDetail}>
+				<Text style={styles.productDetailName}>Tags</Text>
+				<View>
+					{tags.map((tag, index) => (
+						<View key={index} style={styles.tagWrapper}>
+							<TagButton title={tag} />
+						</View>
+					))}
+				</View>
 			</View>
-		</View> }
+		)}
 	</View>
 )
 
 export class ContentSection extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 	}
 
 	render() {
-		const { picture_cover_url, product, user, rating, title, content_list, product_price, tag_list } = this.props.review
+		const {
+			picture_cover_url,
+			product,
+			user,
+			rating,
+			title,
+			content_list,
+			product_price,
+			tag_list
+		} = this.props.review
 		return (
 			<View>
-				<CoverPhoto image_url={picture_cover_url}/>
-				<ReviewerBar reviewer={user} rating={rating} setUser={this.props.setSelectedUser}/>
+				<CoverPhoto image_url={picture_cover_url} />
+				<ReviewerBar
+					reviewer={user}
+					rating={rating}
+					setUser={this.props.setSelectedUser}
+				/>
 				<Text style={styles.titleText}>{title}</Text>
-				<Content content_list={content_list}/>
-				<View style={ { flexDirection: 'row' } }>
-					<ProductDetail name="Price" value={product_price}/>
-					<ProductDetail name="Brand" value={product.brand}/>
+				<Content content_list={content_list} />
+				<View style={{ flexDirection: 'row' }}>
+					<ProductDetail name="Price" value={product_price} />
+					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={tag_list}/>
+				<TagList tags={tag_list} />
 			</View>
 		)
 	}
@@ -189,6 +207,20 @@ const styles = StyleSheet.create({
 	},
 	tagWrapper: {
 		marginBottom: 5
+	},
+	fontTags: {
+		fontSize: 15,
+		fontWeight: 'bold',
+		color: '#4761A4'
+	},
+	buttonTag: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row',
+		backgroundColor: colors.gray3,
+		height: 25,
+		paddingHorizontal: 5,
+		borderRadius: 15
 	}
 })
 
