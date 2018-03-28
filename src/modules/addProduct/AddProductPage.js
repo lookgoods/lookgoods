@@ -20,7 +20,7 @@ import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 
 export default class GlobalPage extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 		this.state = {
 			title: '',
@@ -32,26 +32,26 @@ export default class GlobalPage extends Component {
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
-			tagsList: [{tags: ''}],
+			tagsList: [{ tags: '' }],
 			tagsMessage: [],
 			contentMessage: [],
 			contentList: []
 		}
 	}
 
-	handleChangeTitle (text) {
+	handleChangeTitle(text) {
 		this.setState({ title: text })
 	}
 
-	handleChangeName (text) {
+	handleChangeName(text) {
 		this.setState({ name: text })
 	}
 
-	handleChangeBrand (text) {
+	handleChangeBrand(text) {
 		this.setState({ brand: text })
 	}
 
-	handleChangePrice (text) {
+	handleChangePrice(text) {
 		this.setState({ price: text })
 	}
 
@@ -72,7 +72,7 @@ export default class GlobalPage extends Component {
 		this.setState({ tagsMessage: tags })
 	}
 
-	addCoverImage () {
+	addCoverImage() {
 		// const options = {
 		//   title: 'Select Avatar',
 		//   storageOptions: {
@@ -101,7 +101,7 @@ export default class GlobalPage extends Component {
 		})
 	}
 
-	attachPhotos () {
+	attachPhotos() {
 		const options = {
 			title: 'Select Avatar',
 			storageOptions: {
@@ -110,7 +110,7 @@ export default class GlobalPage extends Component {
 			}
 		}
 
-		ImagePicker.showImagePicker(options, (response) => {
+		ImagePicker.showImagePicker(options, response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
@@ -118,7 +118,7 @@ export default class GlobalPage extends Component {
 			} else {
 				console.log('ImagePicker Success: ', response.uri)
 				const contentArr = this.state.contentList
-				contentArr.push({type: 'picture', value: response.uri})
+				contentArr.push({ type: 'picture', value: response.uri })
 				this.setState({ contentList: contentArr })
 				this.setAddButton()
 			}
@@ -130,8 +130,7 @@ export default class GlobalPage extends Component {
 			numStar: this.state.numStar.map((_, index) => {
 				if (index < num) {
 					return 'star'
-				}
-				else {
+				} else {
 					return 'star-o'
 				}
 			})
@@ -152,7 +151,7 @@ export default class GlobalPage extends Component {
 
 	addContentBox() {
 		const contentArr = this.state.contentList
-		contentArr.push({type: 'text', value: ''})
+		contentArr.push({ type: 'text', value: '' })
 		this.setState({ contentList: contentArr })
 		this.setAddButton()
 	}
@@ -160,20 +159,20 @@ export default class GlobalPage extends Component {
 	async addTagsBox() {
 		const tagsArr = this.state.tagsList
 		console.log(tagsArr, 'tagsArr')
-		tagsArr.push({tags: ''})
+		tagsArr.push({ tags: '' })
 		await this.setState({ tagsList: tagsArr })
 	}
 
-	addReview() {
+	async addReview() {
 		const contentMessage = this.state.contentMessage
 		const contentList = this.state.contentList.map(
-			(content, index) => 
-				content.type === 'text' 
-					? { ...content, value: contentMessage[index]} 
-					: { ...content, value: content.value}
+			(content, index) =>
+				content.type === 'text'
+					? { ...content, value: contentMessage[index] }
+					: { ...content, value: content.value }
 		)
 		console.log(contentList, 'contentList')
-		this.setState({ contentList })
+		await this.setState({ contentList })
 	}
 
 	deleteContentBox(key) {
@@ -191,32 +190,48 @@ export default class GlobalPage extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<ScrollView 
-					showsVerticalScrollIndicator={false} 
-					scrollEventThrottle={16} 
+				<ScrollView
+					showsVerticalScrollIndicator={false}
+					scrollEventThrottle={16}
 					bounces={false}
 					style={styles.body}
 				>
-					<View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-						{ this.state.coverImage === '' ? 
-							<TouchableOpacity 
-								style={{ flex: 1, height: 200, backgroundColor: colors.gray3, alignItems: 'center', justifyContent: 'center' }}
+					<View
+						style={{
+							alignItems: 'center',
+							justifyContent: 'center',
+							flexDirection: 'row'
+						}}
+					>
+						{this.state.coverImage === '' ? (
+							<TouchableOpacity
+								style={{
+									flex: 1,
+									height: 200,
+									backgroundColor: colors.gray3,
+									alignItems: 'center',
+									justifyContent: 'center'
+								}}
 								onPress={() => this.addCoverImage()}
 							>
-								<IconMaterial name='add-a-photo' size={100}></IconMaterial>
-							</TouchableOpacity> :
-							<TouchableOpacity style={{flex: 1, height: 200}} onPress={() => this.addCoverImage()}>
-								<Image 
+								<IconMaterial name="add-a-photo" size={100} />
+							</TouchableOpacity>
+						) : (
+							<TouchableOpacity
+								style={{ flex: 1, height: 200 }}
+								onPress={() => this.addCoverImage()}
+							>
+								<Image
 									style={{
 										flex: 1,
 										height: 200,
 										resizeMode: 'cover',
 										zIndex: 1
 									}}
-									source={{uri: this.state.coverImage}}
+									source={{ uri: this.state.coverImage }}
 								/>
 							</TouchableOpacity>
-						}
+						)}
 					</View>
 					<View style={styles.sectionBody}>
 						<Text style={styles.label}>Title</Text>
@@ -224,18 +239,18 @@ export default class GlobalPage extends Component {
 							<TextInput
 								style={styles.textInput}
 								value={this.state.title}
-								underlineColorAndroid='transparent'
-								onChangeText={(text) => this.handleChangeTitle(text)}
+								underlineColorAndroid="transparent"
+								onChangeText={text => this.handleChangeTitle(text)}
 							/>
 						</View>
-          
+
 						<Text style={styles.label}>Name</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
 								value={this.state.name}
-								underlineColorAndroid='transparent'
-								onChangeText={(text) => this.handleChangeName(text)}
+								underlineColorAndroid="transparent"
+								onChangeText={text => this.handleChangeName(text)}
 							/>
 						</View>
 
@@ -246,8 +261,8 @@ export default class GlobalPage extends Component {
 									<TextInput
 										style={styles.textInput}
 										value={this.state.brand}
-										underlineColorAndroid='transparent'
-										onChangeText={(text) => this.handleChangeBrand(text)}
+										underlineColorAndroid="transparent"
+										onChangeText={text => this.handleChangeBrand(text)}
 									/>
 								</View>
 							</View>
@@ -257,8 +272,8 @@ export default class GlobalPage extends Component {
 									<TextInput
 										style={styles.textInput}
 										value={this.state.price}
-										underlineColorAndroid='transparent'
-										onChangeText={(text) => this.handleChangePrice(text)}
+										underlineColorAndroid="transparent"
+										onChangeText={text => this.handleChangePrice(text)}
 									/>
 								</View>
 							</View>
@@ -266,71 +281,97 @@ export default class GlobalPage extends Component {
 
 						<Text style={styles.label}>Tags</Text>
 						{this.state.tagsList.map((item, key) => (
-							<View key={key} style={{flexDirection: 'row'}}>
+							<View key={key} style={{ flexDirection: 'row' }}>
 								<View style={styles.textBox}>
 									<TextInput
 										style={styles.textInput}
 										value={this.state.tagsMessage[key]}
-										underlineColorAndroid='transparent'
-										onChangeText={(text) => this.handleChangeTags(key, text)}
-										keyboardType='default'
+										underlineColorAndroid="transparent"
+										onChangeText={text => this.handleChangeTags(key, text)}
+										keyboardType="default"
 									/>
 								</View>
-								{ (this.state.tagsList.length-1 === key && this.state.isTagsButton) && (
-									<TouchableOpacity 
-										style={styles.buttonAddTag} 
-										onPress={() => this.addTagsBox()}>
-										<IconMaterial name='add-circle' size={20}></IconMaterial>
+								{this.state.tagsList.length - 1 === key &&
+									this.state.isTagsButton && (
+									<TouchableOpacity
+										style={styles.buttonAddTag}
+										onPress={() => this.addTagsBox()}
+									>
+										<IconMaterial name="add-circle" size={20} />
 									</TouchableOpacity>
 								)}
 							</View>
 						))}
 
 						<Text style={styles.label}>Rating</Text>
-						<View style={{
-							flex: 1, 
-							marginLeft: 15,
-							marginTop: 10,
-							marginBottom: 10,
-							flexDirection: 'row'
-						}}>
+						<View
+							style={{
+								flex: 1,
+								marginLeft: 15,
+								marginTop: 10,
+								marginBottom: 10,
+								flexDirection: 'row'
+							}}
+						>
 							{this.state.numStar.map((item, key) => (
-								<TouchableOpacity key={key} onPress={() => this.setAmountRating(key+1)}>
-									<IconFontAwesome style={{ marginRight: 12 }} name={item} size={35} color={colors.yellow_star} />
+								<TouchableOpacity
+									key={key}
+									onPress={() => this.setAmountRating(key + 1)}
+								>
+									<IconFontAwesome
+										style={{ marginRight: 12 }}
+										name={item}
+										size={35}
+										color={colors.yellow_star}
+									/>
 								</TouchableOpacity>
 							))}
 						</View>
 
-						<ContentView 
+						<ContentView
 							contentList={this.state.contentList}
 							contentMessage={this.state.contentMessage}
 							isEditButton={this.state.isEditButton}
 							setEditButton={() => this.setEditButton()}
-							handleChangeTextBox={(index, text) => this.handleChangeTextBox(index, text)}
-							deleteContentBox={(index) => this.deleteContentBox(index)}
+							handleChangeTextBox={(index, text) =>
+								this.handleChangeTextBox(index, text)
+							}
+							deleteContentBox={index => this.deleteContentBox(index)}
 						/>
-            
-						{ !this.state.isAddButton &&
-								<View style={styles.blockAdd}>
-									<TouchableOpacity style={styles.buttonAdd} onPress={() => this.setAddButton()}>
-										<IconMaterial name='add-circle' size={40}></IconMaterial>
-									</TouchableOpacity>
-								</View>
-						}
 
-						{ this.state.isAddButton &&
-								<View style={styles.blockOption}>
-									<TouchableOpacity style={styles.buttonOptionLeft} onPress={() => this.addContentBox()}>
-										<IconEntypo name='text' size={40}></IconEntypo>
-									</TouchableOpacity>
-									<TouchableOpacity style={styles.buttonOptionRight} onPress={() => this.attachPhotos()}>
-										<IconFontAwesome name='picture-o' size={40}></IconFontAwesome>
-									</TouchableOpacity>
-								</View>
-						}
-            
+						{!this.state.isAddButton && (
+							<View style={styles.blockAdd}>
+								<TouchableOpacity
+									style={styles.buttonAdd}
+									onPress={() => this.setAddButton()}
+								>
+									<IconMaterial name="add-circle" size={40} />
+								</TouchableOpacity>
+							</View>
+						)}
+
+						{this.state.isAddButton && (
+							<View style={styles.blockOption}>
+								<TouchableOpacity
+									style={styles.buttonOptionLeft}
+									onPress={() => this.addContentBox()}
+								>
+									<IconEntypo name="text" size={40} />
+								</TouchableOpacity>
+								<TouchableOpacity
+									style={styles.buttonOptionRight}
+									onPress={() => this.attachPhotos()}
+								>
+									<IconFontAwesome name="picture-o" size={40} />
+								</TouchableOpacity>
+							</View>
+						)}
+
 						<View style={styles.blockSave}>
-							<TouchableOpacity style={styles.buttonSave} onPress={() => this.addReview()}>
+							<TouchableOpacity
+								style={styles.buttonSave}
+								onPress={() => this.addReview()}
+							>
 								<Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
 							</TouchableOpacity>
 						</View>
@@ -338,7 +379,7 @@ export default class GlobalPage extends Component {
 				</ScrollView>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName="AddProduct"/>
+						<NavBar titleName="AddProduct" />
 					</View>
 				</View>
 			</View>
@@ -368,29 +409,29 @@ const styles = StyleSheet.create({
 		zIndex: 1
 	},
 	label: {
-		color: '#5C5C5C', 
+		color: '#5C5C5C',
 		fontSize: 15,
 		marginLeft: 15,
 		fontWeight: 'bold'
 	},
 	sectionBody: {
-		backgroundColor: '#FFF', 
-		margin: 5, 
-		paddingHorizontal: 5, 
-		paddingTop: 10, 
+		backgroundColor: '#FFF',
+		margin: 5,
+		paddingHorizontal: 5,
+		paddingTop: 10,
 		paddingBottom: 10
 	},
 	textBox: {
-		flex: 1, 
-		borderRadius: 3, 
-		justifyContent: 'center', 
+		flex: 1,
+		borderRadius: 3,
+		justifyContent: 'center',
 		backgroundColor: '#FFF',
-		paddingHorizontal: 15, 
+		paddingHorizontal: 15,
 		marginLeft: 15,
 		marginRight: 15,
-		marginTop: 10, 
-		marginBottom: 10, 
-		borderColor: '#dfdfdf', 
+		marginTop: 10,
+		marginBottom: 10,
+		borderColor: '#dfdfdf',
 		borderWidth: 1
 	},
 	textInput: {
@@ -407,7 +448,7 @@ const styles = StyleSheet.create({
 		height: 50,
 		borderRadius: 3,
 		zIndex: 2,
-		borderColor: '#dfdfdf', 
+		borderColor: '#dfdfdf',
 		borderWidth: 1
 	},
 	blockAdd: {
@@ -458,13 +499,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginRight: 15,
-		marginTop: 10, 
+		marginTop: 10,
 		marginBottom: 10,
 		backgroundColor: colors.white,
 		height: 35,
 		width: 35,
 		borderRadius: 3,
-		borderColor: '#dfdfdf', 
+		borderColor: '#dfdfdf',
 		borderWidth: 1
 	}
 })
