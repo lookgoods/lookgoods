@@ -3,8 +3,10 @@ import React, { Component } from 'react'
 import {
 	StyleSheet,
 	Text,
-	View
+	View,
+	Alert
 } from 'react-native'
+import { LoginManager } from 'react-native-fbsdk'
 
 import { Actions } from 'react-native-router-flux'
 import { colors } from 'src/constants/mixins'
@@ -12,6 +14,20 @@ import { colors } from 'src/constants/mixins'
 export default class SettingPage extends Component {
 	constructor (props) {
 		super(props)
+	}
+
+	logout() {
+		Alert.alert(
+			'Logout',
+			'Are you sure ?',
+			[
+				{text: 'Cancel', style: 'cancel'},
+				{text: 'OK', onPress: () => {
+					LoginManager.logOut()
+					Actions.loginPage()
+				}}
+			]
+		)
 	}
 
 	render() {
@@ -26,6 +42,7 @@ export default class SettingPage extends Component {
 				<List>
 					<ListItem
 						title={<Text style={styles.logoutText}>Logout</Text>}
+						onPress={ () => this.logout() }
 					/>
 				</List>
 			</View>
