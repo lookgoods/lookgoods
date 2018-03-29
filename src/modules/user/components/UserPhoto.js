@@ -11,6 +11,7 @@ export default class UserPhoto extends Component {
 
 	render() {
 		const { size, image_url, username, description } = this.props
+		console.log(description, 'description')
 		return (
 			<View style={styles.userphotoBody}>
 				<CoverImage size={size} uri={image_url}/>
@@ -19,9 +20,9 @@ export default class UserPhoto extends Component {
 				</View>
 				<View style={styles.descriptionContainer}>
 					<View style={{ width: '80%' }}>
-						{ (description !== '' & description)
+						{ (description !== '' && description)
 							?<Text style={{ lineHeight: 22 }}>{description}</Text>
-							:<Text style={{ lineHeight: 22, color: colors.gray2}}>{'You can add/change your status in settings'}</Text>
+							:<Text style={{ lineHeight: 22, color: colors.gray2}}>{'You can add/change your status in settings.'}</Text>
 						}
 					</View>
 				</View>

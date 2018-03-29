@@ -1,8 +1,6 @@
 import { Image, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
-
 import Icons from 'src/constants/icons'
-import PropTypes from 'prop-types'
 
 class CoverImage extends Component {
 	render() {
@@ -41,7 +39,7 @@ class CoverImage extends Component {
 				)}
 
 				{url === undefined &&
-					uri === undefined && 
+					uri === undefined && (
 					<Image
 						style={{
 							height: size - 10,
@@ -50,16 +48,11 @@ class CoverImage extends Component {
 						}}
 						source={Icons.user}
 						resizeMode="cover"
-					/>}
+					/>
+				)}
 			</View>
 		)
 	}
-}
-
-CoverImage.propTypes = {
-	size: PropTypes.number.isRequired,
-	url: PropTypes.string,
-	uri: PropTypes.string
 }
 
 const styles = StyleSheet.create({

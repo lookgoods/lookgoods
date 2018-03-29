@@ -1,52 +1,53 @@
 import constants from 'src/redux/constants'
+import axios from 'react-native-axios'
+import to from 'await-to-js'
 
 const AppURL = constants.AppURL
 
-async function loginWithFacebook(token) {
-	let response
-	try {
-		response = await fetch(`${AppURL}/auth/facebook/token`, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'Cache-Control': 'no-cache'
-			},
-			body: JSON.stringify({
-				access_token: token
-			})
-		})
-	} catch (err) {
-		console.log(err, 'loginWithFacebook error')
-		return err
-	}
-	console.log(response, 'loginWithFacebook')
-	return response
-}
-
 const UserActions = {
 	loginWithFacebook: (token) => async dispatch => {
-		loginWithFacebook(token)
+		dispatch(actions.loginFacebookRequest())
+		const [ err, response ] = await to(axios.post(`${AppURL}/auth/facebook/token`, {
+			access_token: token
+		}))
+		if (err) dispatch(actions.loginFacebookError(err))
+		else dispatch(actions.loginFacebookSuccess(response))
 	},
 	getCurrentUser: () => async dispatch => {
 		dispatch(actions.getCurrentUserRequest())
-		try {
-			let response, data
-			response = await fetch(`${AppURL}/currentuser`)
-			data = await response.json()
-			dispatch(actions.getCurrentUserSuccess(data))
-
-		} catch (error) {
-			dispatch(actions.getCurrentUserError(error))
-		}
+		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser`))
+		if (err) dispatch(actions.getCurrentUserError(err))
+		else dispatch(actions.getCurrentUserSuccess(response.data))
 	},
 	setSelectedUser: (user) => ({
 		type: constants.SET_SELECTED_USER,
 		payload: user
-	})
+	}),
+	changeUserDescription: (user_id, description) => async dispatch => {
+		dispatch(actions.changeUserDescriptionRequest())
+		const [ err, response ] = await to(axios.put(`${AppURL}/users/${user_id}`, {
+			description: description
+		}))
+		if (err) dispatch(actions.changeUserDescriptionError(err))
+		else {
+			dispatch(actions.changeUserDescriptionSuccess(response))
+			dispatch(UserActions.getCurrentUser())
+		}
+	}
 }
 
 const actions = {
+	loginFacebookRequest: () => ({
+		type: constants.LOGIN_FACEBOOK_REQUEST
+	}),
+	loginFacebookSuccess: response => ({
+		type: constants.LOGIN_FACEBOOK_SUCCESS,
+		payload: { response }
+	}),
+	loginFacebookError: error => ({
+		type: constants.LOGIN_FACEBOOK_FAILURE,
+		payload: { error }
+	}),
 	getCurrentUserRequest: () => ({
 		type: constants.GET_CURRENT_USER_REQUEST
 	}),
@@ -56,6 +57,17 @@ const actions = {
 	}),
 	getCurrentUserError: error => ({
 		type: constants.GET_CURRENT_USER_FAILURE,
+		payload: { error }
+	}),
+	changeUserDescriptionRequest: () => ({
+		type: constants.CHANGE_USER_DESCRIPTION_REQUEST
+	}),
+	changeUserDescriptionSuccess: (response) => ({
+		type: constants.CHANGE_USER_DESCRIPTION_SUCCESS,
+		payload: { response }
+	}),
+	changeUserDescriptionError: error => ({
+		type: constants.CHANGE_USER_DESCRIPTION_FAILURE,
 		payload: { error }
 	})
 }

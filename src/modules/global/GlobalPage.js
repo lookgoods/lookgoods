@@ -1,7 +1,15 @@
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import {
+	Platform,
+	ScrollView,
+	StyleSheet,
+	View
+} from 'react-native'
 import React, { Component } from 'react'
 
-import NavBarSearch from '../shares/NavBarSearch'
+import NavBarSearch from 'src/modules/shares/NavBarSearch'
+import ReviewList from 'src/modules/home/components/ReviewList'
+import { colors } from 'src/constants/mixins'
+import reviewsMock from 'src/mockData/reviews'
 
 export default class GlobalPage extends Component {
 	constructor(props) {
@@ -37,9 +45,6 @@ export default class GlobalPage extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<View style={styles.body}>
-					<Text>Global</Text>
-				</View>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarSearch
@@ -51,6 +56,11 @@ export default class GlobalPage extends Component {
 						/>
 					</View>
 				</View>
+				<ScrollView>
+					<View style={styles.body}>
+						<ReviewList review_list={reviewsMock}/>
+					</View>
+				</ScrollView>
 			</View>
 		)
 	}
@@ -59,22 +69,17 @@ export default class GlobalPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.lightGray
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60
+		backgroundColor: colors.lightGray
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		zIndex: 1
+		backgroundColor: colors.white,
+		overflow: 'hidden'
 	}
 })

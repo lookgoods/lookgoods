@@ -1,10 +1,4 @@
-import {
-	Image,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
@@ -17,18 +11,17 @@ import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
 
 const ProfilePicture = ({ image_url }) => {
-	return ( 
-		<CoverImage size={50} url={image_url}/>
-	)
+	return <CoverImage size={50} url={image_url} />
 }
 
 const BookMark = ({ isActive }) => {
 	return (
-		<View style={styles.bookmark}> 
-			{ isActive ? 
-				<IconMaterial name="bookmark" size={36}/>
-				: <IconMaterial name="bookmark-border" size={36}/>
-			}
+		<View style={styles.bookmark}>
+			{isActive ? (
+				<IconMaterial name="bookmark" size={36} />
+			) : (
+				<IconMaterial name="bookmark-border" size={36} />
+			)}
 		</View>
 	)
 }
@@ -41,7 +34,7 @@ function goToUserPage(user, setUser) {
 function Header({ user, time, isSaved, setUser }) {
 	return (
 		<View style={styles.headerContainer}>
-			<TouchableOpacity 
+			<TouchableOpacity
 				onPress={() => goToUserPage(user, setUser)}
 				style={styles.profilePicture}
 			>
@@ -59,20 +52,24 @@ function Header({ user, time, isSaved, setUser }) {
 }
 
 const ProductPicture = ({ image_url, review, setReview }) => {
-	return ( 
+	return (
 		<View>
-			{ image_url ?
-				<TouchableOpacity onPress={() => {
-					setReview(review)
-					Actions.viewProductPage()
-				}}>
+			{image_url ? (
+				<TouchableOpacity
+					onPress={() => {
+						setReview(review)
+						Actions.viewProductPage()
+					}}
+				>
 					<Image
 						style={styles.productImage}
 						source={image_url}
-						resizeMode='contain'
-					/> 
+						resizeMode="contain"
+					/>
 				</TouchableOpacity>
-				: <View/> }
+			) : (
+				<View />
+			)}
 		</View>
 	)
 }
@@ -80,25 +77,33 @@ const ProductPicture = ({ image_url, review, setReview }) => {
 function Body({ product_url, title, review, setReview }) {
 	return (
 		<View>
-			<ProductPicture image_url={product_url} review={review} setReview={setReview}/>
+			<ProductPicture
+				image_url={product_url}
+				review={review}
+				setReview={setReview}
+			/>
 			<Text style={styles.titleText}>{title}</Text>
 		</View>
 	)
 }
 
-function Footer({ rating, price, numberOfComment}) {
+function Footer({ rating, price, numberOfComment }) {
 	return (
 		<View style={styles.footerContainer}>
 			<View style={styles.productDetail}>
-				<IconMaterial name='star-border' size={24}/>
+				<IconMaterial name="star-border" color={'#777777'} size={24} />
 				<Text style={styles.productDetailRating}>{rating}</Text>
 			</View>
 			<View style={styles.productDetail}>
-				<Image style={styles.bahtImage} source={icons.baht} resizeMode='cover'/>
+				<Image
+					style={styles.bahtImage}
+					source={icons.baht}
+					resizeMode="cover"
+				/>
 				<Text style={styles.productDetailMoney}>{price}</Text>
 			</View>
 			<View style={styles.productDetail}>
-				<IconMaterial name='chat-bubble-outline' size={24}/>
+				<IconMaterial name="chat-bubble-outline" color={'#777777'} size={24} />
 				<Text style={styles.productDetailComment}>{numberOfComment}</Text>
 			</View>
 		</View>
@@ -106,19 +111,40 @@ function Footer({ rating, price, numberOfComment}) {
 }
 
 export class ReviewCard extends Component {
-
-	constructor (props) {
+	constructor(props) {
 		super(props)
 	}
-  
+
 	render() {
-		const { title, user, picture_cover_url, product_price, comment_list, overall_rating, timestamp } = this.props.review
-		
+		const {
+			title,
+			user,
+			picture_cover_url,
+			product_price,
+			comment_list,
+			overall_rating,
+			timestamp
+		} = this.props.review
+
 		return (
 			<View style={styles.container}>
-				<Header user={user} time={timestamp} isSaved={false} setUser={this.props.setSelectedUser}/>
-				<Body product_url={picture_cover_url} title={title} review={this.props.review} setReview={this.props.setCurrentReview}/>
-				<Footer rating={overall_rating} price={product_price} numberOfComment={comment_list.length} />
+				<Header
+					user={user}
+					time={timestamp}
+					isSaved={false}
+					setUser={this.props.setSelectedUser}
+				/>
+				<Body
+					product_url={picture_cover_url}
+					title={title}
+					review={this.props.review}
+					setReview={this.props.setCurrentReview}
+				/>
+				<Footer
+					rating={overall_rating}
+					price={product_price}
+					numberOfComment={comment_list.length}
+				/>
 			</View>
 		)
 	}
@@ -126,7 +152,7 @@ export class ReviewCard extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: colors.white	
+		backgroundColor: colors.white
 	},
 	headerContainer: {
 		flexDirection: 'row',
@@ -178,14 +204,17 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	productDetailRating: {
+		marginTop: 4,
 		marginLeft: 2,
 		marginVertical: 1
 	},
 	productDetailMoney: {
+		marginTop: 4,
 		marginLeft: 1,
 		marginVertical: 1
 	},
 	productDetailComment: {
+		marginTop: 4,
 		marginLeft: 6
 	}
 })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
@@ -34,10 +34,10 @@ const products_save = [
 ]
 
 export class UserPage extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 	}
-    
+
 	componentDidMount() {
 		this.props.getCurrentUser()
 	}
@@ -51,19 +51,39 @@ export class UserPage extends Component {
 		console.log('currentuser', this.props.currentUser)
 		if (!this.props.currentUser) return <View />
 		else {
-			const { name, picture_url, follower_list, following_list, description } = this.props.currentUser
+			const {
+				name,
+				picture_url,
+				follower_list,
+				following_list,
+				description
+			} = this.props.currentUser
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
 					<View style={styles.body}>
-						<View style={styles.settingIconContainer}>
-							<MaterialIcons style={{ paddingRight: 10 }} name='settings' size={30} onPress={() => this.goToSettingPage()}/>
+						<View style={[styles.settingIconContainer, { right: 10 }]}>
+							<MaterialIcons
+								name="settings"
+								size={25}
+								onPress={() => this.goToSettingPage()}
+							/>
 						</View>
-						<UserPhoto username={name} description={description} size={120} image_url={picture_url}/>
+						<UserPhoto
+							username={name}
+							description={description}
+							size={120}
+							image_url={picture_url}
+						/>
 						<View style={styles.infoBar}>
-							<InfoBar review_num={4} comment_num={22} follower_num={follower_list.length} following_num={following_list.length}/>
+							<InfoBar
+								review_num={4}
+								comment_num={22}
+								follower_num={follower_list.length}
+								following_num={following_list.length}
+							/>
 						</View>
-						<View style={{alignItems: 'center'}}>
-							<Divider style={styles.divider}/>
+						<View style={{ alignItems: 'center' }}>
+							<Divider style={styles.divider} />
 						</View>
 						<View style={styles.tabsContainer}>
 							<Tabs>
@@ -81,10 +101,11 @@ export class UserPage extends Component {
 		}
 	}
 }
-  
+
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: colors.white
+		backgroundColor: colors.white,
+		paddingTop: Platform.OS === 'ios' ? 10 : 0
 	},
 	body: {
 		marginTop: 10
@@ -117,7 +138,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
-	}       
+	}
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage)
