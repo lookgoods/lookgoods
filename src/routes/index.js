@@ -1,4 +1,4 @@
-import { Router, Scene, ActionConst } from 'react-native-router-flux'
+import { Router, Scene } from 'react-native-router-flux'
 
 import AddProductPage from 'src/modules/addProduct/AddProductPage'
 import ChangeStatusPage from 'src/modules/setting/ChangeStatusPage'
