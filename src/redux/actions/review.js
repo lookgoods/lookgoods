@@ -3,6 +3,7 @@ import axios from 'react-native-axios'
 import to from 'await-to-js'
 
 const AppURL = constants.AppURL
+const TestURL = constants.TestURL
 
 function changeImageValue(content_list) {
 	const contentList = []
@@ -28,6 +29,7 @@ const ReviewActions = {
 		payload: review
 	}),
 	addReview: (review) => async dispatch => {
+		dispatch(actions.addReviewRequest())
 		const data = {
 			title: review.title,
 			brand: review.brand,
@@ -39,13 +41,9 @@ const ReviewActions = {
 			content_list: changeImageValue(review.content_list)
 		}
 		console.log(data, 'review')
-		const [ err, response ] = await to(axios.post(`${constants.TestURL}/reviews`), data, {
-			header: {
-				'Content-Type': 'multipart/form-data'
-			}
-		})
-		if (err) console.log(err)
-		else console.log(response)
+		const [ err, response ] = await to(axios.post(`${TestURL}/reviews`), data)
+		if (err) dispatch(actions.addReviewError(err))
+		else dispatch(actions.addReviewSuccess(response))
 	}
 }
 
