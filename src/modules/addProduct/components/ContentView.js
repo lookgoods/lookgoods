@@ -40,11 +40,11 @@ export default class ContentView extends Component {
 						>
 							{contentList.length === 0 ? (
 								<View style={{ marginLeft: 24, flexDirection: 'row' }}>
-									<IconFontAwesome name="edit" color={colors.gray} size={18} />
+									<IconFontAwesome name="edit" color="#dfdfdf" size={18} />
 									<Text
 										style={{
 											fontSize: 15,
-											color: colors.gray,
+											color: '#dfdfdf',
 											marginLeft: 5,
 											marginRight: 15
 										}}
@@ -153,5 +153,11 @@ const styles = StyleSheet.create({
 		padding: 10,
 		borderColor: '#dfdfdf',
 		borderWidth: 1
+	},
+	label: {
+		color: '#5C5C5C',
+		fontSize: 15,
+		marginLeft: 15,
+		fontWeight: 'bold'
 	}
 })

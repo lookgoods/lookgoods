@@ -22,7 +22,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 
 export class AddProductPage extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
 		this.state = {
 			title: '',
@@ -75,7 +75,7 @@ export class AddProductPage extends Component {
 		this.setState({ tagsMessage: tags })
 	}
 
-	addCoverImage () {
+	addCoverImage() {
 		const options = {
 			title: 'Select Avatar',
 			storageOptions: {
@@ -84,7 +84,7 @@ export class AddProductPage extends Component {
 			}
 		}
 
-		ImagePicker.showImagePicker(options, (response) => {
+		ImagePicker.showImagePicker(options, response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
@@ -121,7 +121,7 @@ export class AddProductPage extends Component {
 			} else {
 				console.log('ImagePicker Success: ', response)
 				const contentArr = this.state.contentList
-				contentArr.push({type: 'picture', value: response})
+				contentArr.push({ type: 'picture', value: response })
 				this.setState({ contentList: contentArr })
 				this.setAddButton()
 			}
@@ -244,7 +244,7 @@ export class AddProductPage extends Component {
 										resizeMode: 'cover',
 										zIndex: 1
 									}}
-									source={{uri: this.state.coverImage.uri}}
+									source={{ uri: this.state.coverImage.uri }}
 								/>
 							</TouchableOpacity>
 						)}
@@ -355,7 +355,7 @@ export class AddProductPage extends Component {
 							deleteContentBox={index => this.deleteContentBox(index)}
 						/>
 
-						{!this.state.isAddButton && (
+						{this.state.isAddButton && (
 							<View style={styles.blockAdd}>
 								<TouchableOpacity
 									style={styles.buttonAdd}
@@ -366,7 +366,7 @@ export class AddProductPage extends Component {
 							</View>
 						)}
 
-						{this.state.isAddButton && (
+						{!this.state.isAddButton && (
 							<View style={styles.blockOption}>
 								<TouchableOpacity
 									style={styles.buttonOptionLeft}
@@ -388,14 +388,14 @@ export class AddProductPage extends Component {
 								style={styles.buttonSave}
 								onPress={() => this.addReview()}
 							>
-								<Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
+								<Text style={{ fontSize: 18, color: '#FFF' }}>ADD REVIEW</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName="AddProduct" />
+						<NavBar titleName="Add Review" />
 					</View>
 				</View>
 			</View>
@@ -527,7 +527,7 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => ({
-	addReview: (review) => {
+	addReview: review => {
 		dispatch(ReviewActions.addReview(review))
 	}
 })
