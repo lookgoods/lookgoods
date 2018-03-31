@@ -278,7 +278,10 @@ export class AddProductPage extends Component {
 						)}
 					</View>
 					<View style={styles.sectionBody}>
-						<Text style={styles.label}>Title</Text>
+						<Text style={styles.label}>
+							Title
+							<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
@@ -288,7 +291,9 @@ export class AddProductPage extends Component {
 							/>
 						</View>
 
-						<Text style={styles.label}>Name</Text>
+						<Text style={styles.label}>
+							Name<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
@@ -300,7 +305,9 @@ export class AddProductPage extends Component {
 
 						<View style={{ flexDirection: 'row' }}>
 							<View style={{ flex: 1, paddingRight: 10 }}>
-								<Text style={styles.label}>Brand</Text>
+								<Text style={styles.label}>
+									Brand<Text style={styles.fontRed}>*</Text>
+								</Text>
 								<View style={styles.textBox}>
 									<TextInput
 										style={styles.textInput}
@@ -311,7 +318,9 @@ export class AddProductPage extends Component {
 								</View>
 							</View>
 							<View style={{ flex: 1, paddingLeft: 10 }}>
-								<Text style={styles.label}>Price</Text>
+								<Text style={styles.label}>
+									Price<Text style={styles.fontRed}>*</Text>
+								</Text>
 								<View style={styles.textBox}>
 									<TextInput
 										style={styles.textInput}
@@ -347,7 +356,9 @@ export class AddProductPage extends Component {
 							</View>
 						))}
 
-						<Text style={styles.label}>Rating</Text>
+						<Text style={styles.label}>
+							Rating<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View
 							style={{
 								flex: 1,
@@ -561,6 +572,9 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 		borderColor: '#dfdfdf',
 		borderWidth: 1
+	},
+	fontRed: {
+		color: colors.red
 	}
 })
 

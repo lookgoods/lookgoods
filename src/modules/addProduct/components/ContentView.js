@@ -29,7 +29,9 @@ export default class ContentView extends Component {
 			<View>
 				<View style={{ marginTop: 15 }}>
 					<View style={{ marginBottom: 5, flexDirection: 'row' }}>
-						<Text style={styles.label}>Content</Text>
+						<Text style={styles.label}>
+							Content<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View
 							style={{
 								flex: 1,
@@ -40,17 +42,8 @@ export default class ContentView extends Component {
 						>
 							{contentList.length === 0 ? (
 								<View style={{ marginLeft: 24, flexDirection: 'row' }}>
-									<IconFontAwesome name="edit" color="#dfdfdf" size={18} />
-									<Text
-										style={{
-											fontSize: 15,
-											color: '#dfdfdf',
-											marginLeft: 5,
-											marginRight: 15
-										}}
-									>
-										Edit
-									</Text>
+									<IconFontAwesome name="edit" color={colors.gray4} size={18} />
+									<Text style={styles.fontTextEdit}>Edit</Text>
 								</View>
 							) : (
 								<TouchableOpacity
@@ -151,7 +144,7 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 		marginRight: 15,
 		padding: 10,
-		borderColor: '#dfdfdf',
+		borderColor: colors.gray4,
 		borderWidth: 1
 	},
 	label: {
@@ -159,5 +152,14 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		marginLeft: 15,
 		fontWeight: 'bold'
+	},
+	fontRed: {
+		color: colors.red
+	},
+	fontTextEdit: {
+		fontSize: 15,
+		color: colors.gray4,
+		marginLeft: 5,
+		marginRight: 15
 	}
 })
