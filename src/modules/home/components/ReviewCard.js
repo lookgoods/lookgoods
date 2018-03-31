@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import ReviewActions from 'src/redux/actions/review'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
@@ -87,24 +88,46 @@ function Body({ product_url, title, review, setReview }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment }) {
+function Footer({ rating, price, numberOfComment, isLove, clickLove }) {
 	return (
 		<View style={styles.footerContainer}>
-			<View style={styles.productDetail}>
-				<IconMaterial name="star-border" color={'#777777'} size={24} />
-				<Text style={styles.productDetailRating}>{rating}</Text>
+			<View style={{ flexDirection: 'row' }}>
+				<View style={styles.productDetail}>
+					<IconMaterial name="star-border" color={'#777777'} size={24} />
+					<Text style={styles.productDetailRating}>{rating}</Text>
+				</View>
+				<View style={styles.productDetail}>
+					<Image
+						style={styles.bahtImage}
+						source={icons.baht}
+						resizeMode="cover"
+					/>
+					<Text style={styles.productDetailMoney}>{price}</Text>
+				</View>
+				<View style={styles.productDetail}>
+					<IconMaterial
+						style={styles.iconComment}
+						name="chat-bubble-outline"
+						color={'#777777'}
+						size={22}
+					/>
+					<Text style={styles.productDetailComment}>{numberOfComment}</Text>
+				</View>
 			</View>
-			<View style={styles.productDetail}>
-				<Image
-					style={styles.bahtImage}
-					source={icons.baht}
-					resizeMode="cover"
-				/>
-				<Text style={styles.productDetailMoney}>{price}</Text>
-			</View>
-			<View style={styles.productDetail}>
-				<IconMaterial name="chat-bubble-outline" color={'#777777'} size={24} />
-				<Text style={styles.productDetailComment}>{numberOfComment}</Text>
+
+			<View style={{ flexDirection: 'row' }}>
+				<View style={styles.productDetailHeart}>
+					{isLove ? (
+						<TouchableOpacity onPress={() => clickLove()}>
+							<Ionicons name="md-heart" color={colors.red} size={24} />
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity onPress={() => clickLove()}>
+							<Ionicons name="md-heart-outline" color={'#777777'} size={24} />
+						</TouchableOpacity>
+					)}
+					<Text style={styles.productDetailLove}>{numberOfComment} likes</Text>
+				</View>
 			</View>
 		</View>
 	)
@@ -113,6 +136,15 @@ function Footer({ rating, price, numberOfComment }) {
 export class ReviewCard extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			isLove: false
+		}
+	}
+
+	clickLove() {
+		this.setState({
+			isLove: !this.state.isLove
+		})
 	}
 
 	render() {
@@ -125,7 +157,7 @@ export class ReviewCard extends Component {
 			overall_rating,
 			timestamp
 		} = this.props.review
-
+		console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<Header
@@ -144,6 +176,8 @@ export class ReviewCard extends Component {
 					rating={overall_rating}
 					price={product_price}
 					numberOfComment={comment_list.length}
+					isLove={this.state.isLove}
+					clickLove={() => this.clickLove()}
 				/>
 			</View>
 		)
@@ -186,20 +220,28 @@ const styles = StyleSheet.create({
 		height: 260
 	},
 	bahtImage: {
-		width: 24,
-		height: 24
+		marginTop: 3,
+		width: 20,
+		height: 20
+	},
+	iconComment: {
+		marginTop: 3
 	},
 	titleText: {
 		marginLeft: 20,
 		marginTop: 10
 	},
 	footerContainer: {
-		flexDirection: 'row',
+		flex: 1,
 		marginTop: 5,
 		marginLeft: 10,
 		marginBottom: 20
 	},
 	productDetail: {
+		flexDirection: 'row',
+		marginLeft: 8
+	},
+	productDetailHeart: {
 		flexDirection: 'row',
 		marginLeft: 10
 	},
@@ -214,6 +256,10 @@ const styles = StyleSheet.create({
 		marginVertical: 1
 	},
 	productDetailComment: {
+		marginTop: 4,
+		marginLeft: 6
+	},
+	productDetailLove: {
 		marginTop: 4,
 		marginLeft: 6
 	}
