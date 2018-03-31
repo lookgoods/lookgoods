@@ -8,12 +8,26 @@ import NotificationPage from 'src/modules/notification/NotificationPage'
 import TabNavigator from 'react-native-tab-navigator'
 import UserPage from 'src/modules/user/UserPage'
 import { colors } from 'src/constants/mixins'
+import FBSDK from 'react-native-fbsdk'
+import to from 'await-to-js'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
+const { AccessToken } = FBSDK
+
 export default class TabMenu extends Component {
 	state = {
 		selectedTab: 'home'
+	}
+
+	async checkLogin() {
+		const [err, token] = await to(AccessToken.getCurrentAccessToken())
+		if (err) console.log('get token error', err)
+		if (!token) Actions.loginPage()
+	}
+
+	componentWillMount() {
+		this.checkLogin()
 	}
 
 	px2dp(px) {

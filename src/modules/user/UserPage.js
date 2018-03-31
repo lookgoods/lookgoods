@@ -64,7 +64,7 @@ export class UserPage extends Component {
 						<View style={[styles.settingIconContainer, { right: 10 }]}>
 							<MaterialIcons
 								name="settings"
-								size={20}
+								size={25}
 								onPress={() => this.goToSettingPage()}
 							/>
 						</View>

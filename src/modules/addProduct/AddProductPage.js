@@ -18,9 +18,11 @@ import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
+import ReviewActions from 'src/redux/actions/review'
+import { connect } from 'react-redux'
 
-export default class GlobalPage extends Component {
-	constructor(props) {
+export class AddProductPage extends Component {
+	constructor (props) {
 		super(props)
 		this.state = {
 			title: '',
@@ -35,7 +37,8 @@ export default class GlobalPage extends Component {
 			tagsList: [{ tags: '' }],
 			tagsMessage: [],
 			contentMessage: [],
-			contentList: []
+			contentList: [],
+			rating: 0
 		}
 	}
 
@@ -72,33 +75,33 @@ export default class GlobalPage extends Component {
 		this.setState({ tagsMessage: tags })
 	}
 
-	addCoverImage() {
-		// const options = {
-		//   title: 'Select Avatar',
-		//   storageOptions: {
-		//     skipBackup: true,
-		//     path: 'images'
-		//   }
-		// }
+	addCoverImage () {
+		const options = {
+			title: 'Select Avatar',
+			storageOptions: {
+				skipBackup: true,
+				path: 'images'
+			}
+		}
 
-		// ImagePicker.showImagePicker(options, (response) => {
-		// 	if (response.didCancel) {
-		// 		console.log('User cancelled photo picker')
-		// 	} else if (response.error) {
-		// 		console.log('ImagePicker Error: ', response.error)
-		// 	} else {
-		// 		console.log('ImagePicker Success: ', response.uri)
-		// 		this.setState({ coverImage: response.uri })
-		// 	}
-		// })
-		ImageCropPicker.openPicker({
-			width: 370,
-			height: 200,
-			cropping: true
-		}).then(image => {
-			console.log(image)
-			this.setState({ coverImage: image.sourceURL })
+		ImagePicker.showImagePicker(options, (response) => {
+			if (response.didCancel) {
+				console.log('User cancelled photo picker')
+			} else if (response.error) {
+				console.log('ImagePicker Error: ', response.error)
+			} else {
+				console.log('ImagePicker Success: ', response)
+				this.setState({ coverImage: response })
+			}
 		})
+		// ImageCropPicker.openPicker({
+		// 	width: 370,
+		// 	height: 200,
+		// 	cropping: true
+		// }).then(image => {
+		// 	console.log(image)
+		// 	this.setState({ coverImage: image.sourceURL })
+		// })
 	}
 
 	attachPhotos() {
@@ -116,9 +119,9 @@ export default class GlobalPage extends Component {
 			} else if (response.error) {
 				console.log('ImagePicker Error: ', response.error)
 			} else {
-				console.log('ImagePicker Success: ', response.uri)
+				console.log('ImagePicker Success: ', response)
 				const contentArr = this.state.contentList
-				contentArr.push({ type: 'picture', value: response.uri })
+				contentArr.push({type: 'picture', value: response})
 				this.setState({ contentList: contentArr })
 				this.setAddButton()
 			}
@@ -133,7 +136,8 @@ export default class GlobalPage extends Component {
 				} else {
 					return 'star-o'
 				}
-			})
+			}),
+			rating: num
 		})
 	}
 
@@ -171,8 +175,20 @@ export default class GlobalPage extends Component {
 					? { ...content, value: contentMessage[index] }
 					: { ...content, value: content.value }
 		)
-		console.log(contentList, 'contentList')
 		await this.setState({ contentList })
+
+		const review = {
+			title: this.state.title,
+			price: this.state.price,
+			brand: this.state.brand,
+			tag: this.state.tagsMessage,
+			picture_cover: this.state.coverImage,
+			content_list: this.state.contentList,
+			rating: this.state.rating,
+			name: this.state.name
+		}
+
+		this.props.addReview(review)
 	}
 
 	deleteContentBox(key) {
@@ -228,7 +244,7 @@ export default class GlobalPage extends Component {
 										resizeMode: 'cover',
 										zIndex: 1
 									}}
-									source={{ uri: this.state.coverImage }}
+									source={{uri: this.state.coverImage.uri}}
 								/>
 							</TouchableOpacity>
 						)}
@@ -509,3 +525,11 @@ const styles = StyleSheet.create({
 		borderWidth: 1
 	}
 })
+
+const mapDispatchToProps = dispatch => ({
+	addReview: (review) => {
+		dispatch(ReviewActions.addReview(review))
+	}
+})
+
+export default connect(null, mapDispatchToProps)(AddProductPage)
