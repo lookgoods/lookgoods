@@ -4,6 +4,15 @@ export default function validate(fieldName, value) {
 	const constraints = {
 		title: {
 			presence: { allowEmpty: false, message: 'field is required.' }
+		},
+		name: {
+			presence: { allowEmpty: false, message: 'field is required.' }
+		},
+		brand: {
+			presence: { allowEmpty: false, message: 'field is required.' }
+		},
+		price: {
+			presence: { allowEmpty: false, message: 'field is required.' }
 		}
 	}
 

@@ -27,38 +27,25 @@ export class AddProductPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			coverImage: '',
 			title: '',
 			titleErr: '',
 			name: '',
-			price: '',
+			nameErr: '',
 			brand: '',
-			coverImage: '',
-			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
+			brandErr: '',
+			price: '',
+			priceErr: '',
+			tagsList: [{ tags: '' }],
+			tagsMessage: [],
+			rating: 0,
+			contentList: [],
+			contentMessage: [],
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
-			tagsList: [{ tags: '' }],
-			tagsMessage: [],
-			contentMessage: [],
-			contentList: [],
-			rating: 0
+			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
-	}
-
-	handleChangeTitle(text) {
-		this.setState({ title: text })
-	}
-
-	handleChangeName(text) {
-		this.setState({ name: text })
-	}
-
-	handleChangeBrand(text) {
-		this.setState({ brand: text })
-	}
-
-	handleChangePrice(text) {
-		this.setState({ price: text })
 	}
 
 	handleChangeTextBox(property, text) {
@@ -83,7 +70,7 @@ export class AddProductPage extends Component {
 			setInterval(() => {
 				if (!this.props.upload_loading) resolve('Upload success')
 			}, 100)
-		}) 
+		})
 	}
 
 	async addCoverImage() {
@@ -104,9 +91,11 @@ export class AddProductPage extends Component {
 				console.log('ImagePicker Success: ', response)
 				await this.props.uploadImage(response)
 				await this.waitForUpload()
-				this.setState({ coverImage: { 
-					url: this.props.picture_url, 
-					thumbnail_url: this.props.thumbnail_url } 
+				this.setState({
+					coverImage: {
+						url: this.props.picture_url,
+						thumbnail_url: this.props.thumbnail_url
+					}
 				})
 			}
 		})
@@ -213,9 +202,9 @@ export class AddProductPage extends Component {
 
 	async checkValidate() {
 		const titleErr = validate(['title'], [this.state.title])
-		// const lastNameErr = validate(['lastName'], [this.state.lastName])
-		// const emailErr = validate(['email'], [this.state.email])
-		// const passwordErr = validate(['password'], [this.state.password])
+		const nameErr = validate(['name'], [this.state.name])
+		const brandErr = validate(['brand'], [this.state.brand])
+		const priceErr = validate(['price'], [this.state.price])
 		// const confirmPasswordErr = validate(
 		// 	['password', 'confirmPassword'],
 		// 	[this.state.password, this.state.confirmPassword]
@@ -223,12 +212,20 @@ export class AddProductPage extends Component {
 		// const telErr = validate(['tel'], [this.state.tel])
 
 		await this.setState({
-			titleErr
+			titleErr,
+			nameErr,
+			brandErr,
+			priceErr
 		})
-		console.log(this.state.titleErr)
+		console.log(
+			this.state.titleErr,
+			this.state.nameErr,
+			this.state.brandErr,
+			this.state.priceErr
+		)
 		// if (!this.state.isTermsChecked) this.setState({ isTermsCheckedErr: true })
 
-		if (!titleErr) {
+		if (!titleErr && !nameErr && !brandErr && !priceErr) {
 			console.log('success')
 		}
 	}
@@ -247,9 +244,7 @@ export class AddProductPage extends Component {
 
 	renderLoading() {
 		if (this.props.upload_loading || this.props.review_loading) {
-			return (
-				<ActivityIndicator size="large" style={styles.loading} />        
-			)
+			return <ActivityIndicator size="large" style={styles.loading} />
 		} else {
 			return null
 		}
@@ -257,7 +252,14 @@ export class AddProductPage extends Component {
 
 	render() {
 		return (
-			<View style={styles.container} pointerEvents={(this.props.upload_loading||this.props.review_loading)?'none':'box-none'}>
+			<View
+				style={styles.container}
+				pointerEvents={
+					this.props.upload_loading || this.props.review_loading
+						? 'none'
+						: 'box-none'
+				}
+			>
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					scrollEventThrottle={16}
@@ -311,7 +313,7 @@ export class AddProductPage extends Component {
 								style={styles.textInput}
 								value={this.state.title}
 								underlineColorAndroid="transparent"
-								onChangeText={text => this.handleChangeTitle(text)}
+								onChangeText={value => this.setState({ title: value.trim() })}
 								onBlur={() => {
 									this.setState({
 										titleErr: validate(['title'], [this.state.title])
@@ -329,7 +331,7 @@ export class AddProductPage extends Component {
 								style={styles.textInput}
 								value={this.state.name}
 								underlineColorAndroid="transparent"
-								onChangeText={text => this.handleChangeName(text)}
+								onChangeText={value => this.setState({ name: value.trim() })}
 							/>
 						</View>
 
@@ -343,7 +345,9 @@ export class AddProductPage extends Component {
 										style={styles.textInput}
 										value={this.state.brand}
 										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangeBrand(text)}
+										onChangeText={value =>
+											this.setState({ brand: value.trim() })
+										}
 									/>
 								</View>
 							</View>
@@ -356,7 +360,9 @@ export class AddProductPage extends Component {
 										style={styles.textInput}
 										value={this.state.price}
 										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangePrice(text)}
+										onChangeText={value =>
+											this.setState({ price: value.trim() })
+										}
 									/>
 								</View>
 							</View>
@@ -462,7 +468,7 @@ export class AddProductPage extends Component {
 						</View>
 					</View>
 				</ScrollView>
-				{ this.renderLoading() }
+				{this.renderLoading()}
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBar titleName="Add Review" />
@@ -620,7 +626,7 @@ const mapDispatchToProps = dispatch => ({
 	addReview: review => {
 		dispatch(ReviewActions.addReview(review))
 	},
-	uploadImage: (image) => {
+	uploadImage: image => {
 		dispatch(ImageActions.uploadImage(image))
 	}
 })
