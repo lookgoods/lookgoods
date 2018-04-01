@@ -13,11 +13,19 @@ const ReviewActions = {
 	}),
 	addReview: (review) => async dispatch => {
 		dispatch(actions.addReviewRequest())
-		const [ err, response ] = await to(axios.post(`${AppURL}/reviews`), review)
-		if (err) dispatch(actions.addReviewError(err))
-		else {
-			dispatch(actions.addReviewSuccess(response))
+		try {
+			const response = await fetch(`${TestURL}/reviews`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(review)
+			})
+			const data = await response.json()
+			dispatch(actions.addReviewSuccess(data))
 			Actions.tabMenu()
+		} catch (err) {
+			dispatch(actions.addReviewError(err))
 		}
 	},
 	getReviews: () => async dispatch => {
