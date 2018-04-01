@@ -77,30 +77,36 @@ export class AddProductPage extends Component {
 		this.setState({ tagsMessage: tags })
 	}
 
-	async uploadImage(image) {
-		const picture_url = await this.props.uploadImage(image)
-		return picture_url
+	waitForUpload() {
+		return new Promise((resolve, reject) => {
+			setInterval(() => {
+				if (!this.props.upload_loading) resolve('Upload success')
+			}, 100)
+		}) 
 	}
 
 	async addCoverImage() {
 		const options = {
-			title: 'Select Avatar',
+			title: 'Select Product Cover',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		}
 
-		var self = this
-
-		ImagePicker.showImagePicker(options, response => {
+		ImagePicker.showImagePicker(options, async response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
 				console.log('ImagePicker Error: ', response.error)
 			} else {
 				console.log('ImagePicker Success: ', response)
-				this.setState({ coverImage: self.uploadImage(response) })
+				await this.props.uploadImage(response)
+				await this.waitForUpload()
+				this.setState({ coverImage: { 
+					url: this.props.picture_url, 
+					thumbnail_url: this.props.thumbnail_url } 
+				})
 			}
 		})
 		// ImageCropPicker.openPicker({
@@ -115,14 +121,14 @@ export class AddProductPage extends Component {
 
 	attachPhotos() {
 		const options = {
-			title: 'Select Avatar',
+			title: 'Select Product Photo',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		}
 
-		ImagePicker.showImagePicker(options, response => {
+		ImagePicker.showImagePicker(options, async response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
@@ -130,7 +136,9 @@ export class AddProductPage extends Component {
 			} else {
 				console.log('ImagePicker Success: ', response)
 				const contentArr = this.state.contentList
-				contentArr.push({ type: 'picture', value: response })
+				this.props.uploadImage(response)
+				await this.waitForUpload()
+				contentArr.push({ type: 'picture', value: this.props.picture_url })
 				this.setState({ contentList: contentArr })
 				this.setAddButton()
 			}
@@ -191,7 +199,8 @@ export class AddProductPage extends Component {
 			price: this.state.price,
 			brand: this.state.brand,
 			tag: this.state.tagsMessage,
-			picture_cover: this.state.coverImage,
+			picture_cover_url: this.state.coverImage.url,
+			picture_thumbnail_url: this.state.coverImage.thumbnail_url,
 			content_list: this.state.contentList,
 			rating: this.state.rating,
 			name: this.state.name
@@ -213,7 +222,7 @@ export class AddProductPage extends Component {
 	}
 
 	renderLoading() {
-		if (this.props.upload_loading) {
+		if (this.props.upload_loading || this.props.review_loading) {
 			return (
 				<ActivityIndicator size="large" style={styles.loading} />        
 			)
@@ -223,9 +232,8 @@ export class AddProductPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.upload_loading, 'loading')
 		return (
-			<View style={styles.container} pointerEvents={(this.props.upload_loading)?'none':'box-none'}>
+			<View style={styles.container} pointerEvents={(this.props.upload_loading||this.props.review_loading)?'none':'box-none'}>
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					scrollEventThrottle={16}
@@ -264,7 +272,7 @@ export class AddProductPage extends Component {
 										resizeMode: 'cover',
 										zIndex: 1
 									}}
-									source={{ uri: this.props.picture_url }}
+									source={{ uri: this.state.coverImage.url }}
 								/>
 							</TouchableOpacity>
 						)}
@@ -560,7 +568,8 @@ const mapStateToProps = state => ({
 	picture_url: state.imageReducer.picture_url,
 	thumbnail_url: state.imageReducer.thumbnail_url,
 	upload_loading: state.imageReducer.loading,
-	upload_error: state.imageReducer.error
+	upload_error: state.imageReducer.error,
+	review_loading: state.reviewReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({

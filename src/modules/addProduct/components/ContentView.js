@@ -133,7 +133,7 @@ export default class ContentView extends Component {
 								>
 									<Image
 										style={{ flex: 1, height: 180, resizeMode: 'cover' }}
-										source={{ uri: item.value.uri }}
+										source={{ uri: item.value }}
 									/>
 								</View>
 							</View>

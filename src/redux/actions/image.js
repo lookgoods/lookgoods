@@ -1,18 +1,15 @@
 import constants from 'src/redux/constants'
-import axios from 'react-native-axios'
-import to from 'await-to-js'
 
 const AppURL = constants.AppURL
 const TestURL = constants.TestURL
 
 const ImageActions = {
 	uploadImage: (image) => async dispatch => {
-		console.log(image, 'upload image')
 		dispatch(actions.uploadImageRequest())
 		const formData = new FormData()
 		formData.append('file', {uri: image.uri, name: image.fileName, type: image.type})
 		try {
-			const response = await fetch(`${TestURL}/uploadImage`, {
+			const response = await fetch(`${AppURL}/uploadImage`, {
 				method: 'post',
 				headers: {
 					'Content-Type': 'multipart/form-data'

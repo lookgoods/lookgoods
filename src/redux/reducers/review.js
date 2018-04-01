@@ -1,7 +1,9 @@
 import constants from 'src/redux/constants'
 
 const initialState = {
-	currentReview: null
+	currentReview: null,
+	loading: false,
+	error: null
 }
 
 export default (state = initialState, action) => {
@@ -11,7 +13,28 @@ export default (state = initialState, action) => {
 			...state,
 			currentReview: {...action.payload}
 		}
+	
+	case constants.ADD_REVIEW_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+	
+	case constants.ADD_REVIEW_SUCCESS:
+		return {
+			...state,
+			loading: false,
+			error: null
+		}
 
+	case constants.ADD_REVIEW_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload.error
+		}
+		
 	default:
 		return state
 	}
