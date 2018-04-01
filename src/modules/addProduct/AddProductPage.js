@@ -6,7 +6,8 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
-	View
+	View,
+	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -20,6 +21,7 @@ import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
+import ImageActions from 'src/redux/actions/image'
 
 export class AddProductPage extends Component {
 	constructor(props) {
@@ -75,23 +77,36 @@ export class AddProductPage extends Component {
 		this.setState({ tagsMessage: tags })
 	}
 
-	addCoverImage() {
+	waitForUpload() {
+		return new Promise((resolve, reject) => {
+			setInterval(() => {
+				if (!this.props.upload_loading) resolve('Upload success')
+			}, 100)
+		}) 
+	}
+
+	async addCoverImage() {
 		const options = {
-			title: 'Select Avatar',
+			title: 'Select Product Cover',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		}
 
-		ImagePicker.showImagePicker(options, response => {
+		ImagePicker.showImagePicker(options, async response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
 				console.log('ImagePicker Error: ', response.error)
 			} else {
 				console.log('ImagePicker Success: ', response)
-				this.setState({ coverImage: response })
+				await this.props.uploadImage(response)
+				await this.waitForUpload()
+				this.setState({ coverImage: { 
+					url: this.props.picture_url, 
+					thumbnail_url: this.props.thumbnail_url } 
+				})
 			}
 		})
 		// ImageCropPicker.openPicker({
@@ -106,14 +121,14 @@ export class AddProductPage extends Component {
 
 	attachPhotos() {
 		const options = {
-			title: 'Select Avatar',
+			title: 'Select Product Photo',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		}
 
-		ImagePicker.showImagePicker(options, response => {
+		ImagePicker.showImagePicker(options, async response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
@@ -121,7 +136,9 @@ export class AddProductPage extends Component {
 			} else {
 				console.log('ImagePicker Success: ', response)
 				const contentArr = this.state.contentList
-				contentArr.push({ type: 'picture', value: response })
+				this.props.uploadImage(response)
+				await this.waitForUpload()
+				contentArr.push({ type: 'picture', value: this.props.picture_url })
 				this.setState({ contentList: contentArr })
 				this.setAddButton()
 			}
@@ -182,7 +199,8 @@ export class AddProductPage extends Component {
 			price: this.state.price,
 			brand: this.state.brand,
 			tag: this.state.tagsMessage,
-			picture_cover: this.state.coverImage,
+			picture_cover_url: this.state.coverImage.url,
+			picture_thumbnail_url: this.state.coverImage.thumbnail_url,
 			content_list: this.state.contentList,
 			rating: this.state.rating,
 			name: this.state.name
@@ -203,9 +221,19 @@ export class AddProductPage extends Component {
 		this.setState({ contentList, contentMessage })
 	}
 
+	renderLoading() {
+		if (this.props.upload_loading || this.props.review_loading) {
+			return (
+				<ActivityIndicator size="large" style={styles.loading} />        
+			)
+		} else {
+			return null
+		}
+	}
+
 	render() {
 		return (
-			<View style={styles.container}>
+			<View style={styles.container} pointerEvents={(this.props.upload_loading||this.props.review_loading)?'none':'box-none'}>
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					scrollEventThrottle={16}
@@ -244,7 +272,7 @@ export class AddProductPage extends Component {
 										resizeMode: 'cover',
 										zIndex: 1
 									}}
-									source={{ uri: this.state.coverImage.uri }}
+									source={{ uri: this.state.coverImage.url }}
 								/>
 							</TouchableOpacity>
 						)}
@@ -393,6 +421,7 @@ export class AddProductPage extends Component {
 						</View>
 					</View>
 				</ScrollView>
+				{ this.renderLoading() }
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBar titleName="Add Review" />
@@ -408,6 +437,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: colors.white
 	},
+	loading: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		alignItems: 'center',
+		justifyContent: 'center',
+		opacity: 0.5,
+		backgroundColor: colors.black
+	},
 	body: {
 		marginTop: Platform.OS === 'ios' ? 75 : 60
 	},
@@ -417,12 +457,10 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		position: 'absolute',
-		top: 0,
 		left: 0,
 		right: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		zIndex: 1
+		top: 0,
+		bottom: 0
 	},
 	label: {
 		color: '#5C5C5C',
@@ -526,10 +564,21 @@ const styles = StyleSheet.create({
 	}
 })
 
+const mapStateToProps = state => ({
+	picture_url: state.imageReducer.picture_url,
+	thumbnail_url: state.imageReducer.thumbnail_url,
+	upload_loading: state.imageReducer.loading,
+	upload_error: state.imageReducer.error,
+	review_loading: state.reviewReducer.loading
+})
+
 const mapDispatchToProps = dispatch => ({
 	addReview: review => {
 		dispatch(ReviewActions.addReview(review))
+	},
+	uploadImage: (image) => {
+		dispatch(ImageActions.uploadImage(image))
 	}
 })
 
-export default connect(null, mapDispatchToProps)(AddProductPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AddProductPage)
