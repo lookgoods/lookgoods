@@ -10,7 +10,7 @@ import {
 	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
-
+import validate from 'src/services/validate'
 import ContentView from 'src/modules/addProduct/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -28,6 +28,7 @@ export class AddProductPage extends Component {
 		super(props)
 		this.state = {
 			title: '',
+			titleErr: '',
 			name: '',
 			price: '',
 			brand: '',
@@ -193,6 +194,7 @@ export class AddProductPage extends Component {
 					: { ...content, value: content.value }
 		)
 		await this.setState({ contentList })
+		await this.checkValidate()
 
 		const review = {
 			title: this.state.title,
@@ -207,6 +209,28 @@ export class AddProductPage extends Component {
 		}
 
 		this.props.addReview(review)
+	}
+
+	async checkValidate() {
+		const titleErr = validate(['title'], [this.state.title])
+		// const lastNameErr = validate(['lastName'], [this.state.lastName])
+		// const emailErr = validate(['email'], [this.state.email])
+		// const passwordErr = validate(['password'], [this.state.password])
+		// const confirmPasswordErr = validate(
+		// 	['password', 'confirmPassword'],
+		// 	[this.state.password, this.state.confirmPassword]
+		// )
+		// const telErr = validate(['tel'], [this.state.tel])
+
+		await this.setState({
+			titleErr
+		})
+		console.log(this.state.titleErr)
+		// if (!this.state.isTermsChecked) this.setState({ isTermsCheckedErr: true })
+
+		if (!titleErr) {
+			console.log('success')
+		}
 	}
 
 	deleteContentBox(key) {
@@ -288,6 +312,12 @@ export class AddProductPage extends Component {
 								value={this.state.title}
 								underlineColorAndroid="transparent"
 								onChangeText={text => this.handleChangeTitle(text)}
+								onBlur={() => {
+									this.setState({
+										titleErr: validate(['title'], [this.state.title])
+									})
+								}}
+								error={this.state.titleErr}
 							/>
 						</View>
 
