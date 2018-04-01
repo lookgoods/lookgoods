@@ -7,10 +7,23 @@ const TestURL = constants.TestURL
 
 const ImageActions = {
 	uploadImage: (image) => async dispatch => {
-		dispatch(actions.uploadImageRequest)
-		const [err, response] = await to(axios.post(`${TestURL}/uploadImage`), { file: image })
-		if (err) dispatch(actions.uploadImageError(err))
-		else dispatch(actions.uploadImageSuccess(response))
+		console.log(image, 'upload image')
+		dispatch(actions.uploadImageRequest())
+		const formData = new FormData()
+		formData.append('file', {uri: image.uri, name: image.fileName, type: image.type})
+		try {
+			const response = await fetch(`${TestURL}/uploadImage`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				},
+				body: formData
+			})
+			const data = await response.json()
+			dispatch(actions.uploadImageSuccess(data))
+		} catch (err) {
+			dispatch(actions.uploadImageError(err))
+		}
 	}
 }
 
