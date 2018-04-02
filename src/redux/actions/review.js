@@ -14,7 +14,7 @@ const ReviewActions = {
 	addReview: (review) => async dispatch => {
 		dispatch(actions.addReviewRequest())
 		try {
-			const response = await fetch(`${TestURL}/reviews`, {
+			const response = await fetch(`${AppURL}/reviews`, {
 				method: 'post',
 				headers: {
 					'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ const ReviewActions = {
 	},
 	getReviews: () => async dispatch => {
 		dispatch(actions.getReviewRequest())
-		const [err, response ] = await to(axios.get(`${TestURL}/reviews`))
+		const [err, response ] = await to(axios.get(`${AppURL}/reviews`))
 		if (err) dispatch(actions.getReviewError(err))
 		else dispatch(actions.getReviewSuccess(response.data))
 	},
@@ -39,6 +39,12 @@ const ReviewActions = {
 		const [err, response ] = await to(axios.put(`${TestURL}/reviews`), review)
 		if (err) dispatch(actions.getReviewError(err))
 		else dispatch(actions.getReviewSuccess(response))
+	},
+	deleteReview: (review_id) => async dispatch => {
+		dispatch(actions.deleteReviewRequest())
+		const [err, response ] = await to(axios.delete(`${TestURL}/reviews/${review_id}`))
+		if (err) dispatch(actions.deleteReviewError(err))
+		else dispatch(actions.deleteReviewSuccess(response))
 	}
 }
 
@@ -74,6 +80,17 @@ const actions = {
 	}),
 	editReviewError: error => ({
 		type: constants.EDIT_REVIEW_FAILURE,
+		payload: { error }
+	}),
+	deleteReviewRequest: () => ({
+		type: constants.DELETE_REVIEW_REQUEST
+	}),
+	deleteReviewSuccess: reviews => ({
+		type: constants.DELETE_REVIEW_SUCCESS,
+		payload: { reviews }
+	}),
+	deleteReviewError: error => ({
+		type: constants.DELETE_REVIEW_FAILURE,
 		payload: { error }
 	})
 }

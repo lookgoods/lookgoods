@@ -18,11 +18,17 @@ const ReviewActions = {
 		if (err) dispatch(actions.getCommentError(err))
 		else dispatch(actions.getCommentSuccess(response))
 	},
-	editReview: (review) => async dispatch => {
-		dispatch(actions.getReviewRequest())
-		const [err, response ] = await to(axios.put(`${TestURL}/reviews`), review)
-		if (err) dispatch(actions.getReviewError(err))
-		else dispatch(actions.getReviewSuccess(response))
+	editComment: (comment, review_id, comment_id) => async dispatch => {
+		dispatch(actions.editCommentRequest())
+		const [err, response ] = await to(axios.put(`${TestURL}/reviews/${review_id}/comments/${comment_id}`), comment)
+		if (err) dispatch(actions.editCommentError(err))
+		else dispatch(actions.editCommentSuccess(response))
+	},
+	deleteComment: (comment, review_id, comment_id) => async dispatch => {
+		dispatch(actions.deleteCommentRequest())
+		const [err, response ] = await to(axios.delete(`${TestURL}/reviews/${review_id}/comments/${comment_id}`), comment)
+		if (err) dispatch(actions.deleteCommentError(err))
+		else dispatch(actions.deleteCommentSuccess(response))
 	}
 }
 
@@ -30,9 +36,9 @@ const actions = {
 	addCommentRequest: () => ({
 		type: constants.ADD_COMMENT_REQUEST
 	}),
-	addCommentSuccess: response => ({
+	addCommentSuccess: comment => ({
 		type: constants.ADD_COMMENT_SUCCESS,
-		payload: { response }
+		payload: { comment }
 	}),
 	addCommentError: error => ({
 		type: constants.ADD_COMMENT_FAILURE,
@@ -49,15 +55,26 @@ const actions = {
 		type: constants.GET_COMMENT_FAILURE,
 		payload: { error }
 	}),
-	editReviewRequest: () => ({
-		type: constants.EDIT_REVIEW_REQUEST
+	editCommentRequest: () => ({
+		type: constants.EDIT_COMMENT_REQUEST
 	}),
-	editReviewSuccess: reviews => ({
-		type: constants.EDIT_REVIEW_SUCCESS,
-		payload: { reviews }
+	editCommentSuccess: comments => ({
+		type: constants.EDIT_COMMENT_SUCCESS,
+		payload: { comments }
 	}),
-	editReviewError: error => ({
-		type: constants.EDIT_REVIEW_FAILURE,
+	editCommentError: error => ({
+		type: constants.EDIT_COMMENT_FAILURE,
+		payload: { error }
+	}),
+	deleteCommentRequest: () => ({
+		type: constants.DELETE_COMMENT_REQUEST
+	}),
+	deleteCommentSuccess: comments => ({
+		type: constants.DELETE_COMMENT_SUCCESS,
+		payload: { comments }
+	}),
+	deleteCommentError: error => ({
+		type: constants.DELETE_COMMENT_FAILURE,
 		payload: { error }
 	})
 }
