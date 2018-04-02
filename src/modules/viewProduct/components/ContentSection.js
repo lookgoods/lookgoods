@@ -122,8 +122,8 @@ export class ContentSection extends Component {
 			rating,
 			title,
 			content_list,
-			product_price,
-			tag_list
+			price,
+			tag
 		} = this.props.review
 		return (
 			<View>
@@ -136,10 +136,10 @@ export class ContentSection extends Component {
 				<Text style={styles.titleText}>{title}</Text>
 				<Content content_list={content_list} />
 				<View style={{ flexDirection: 'row' }}>
-					<ProductDetail name="Price" value={product_price} />
+					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={tag_list} />
+				<TagList tags={tag} />
 			</View>
 		)
 	}

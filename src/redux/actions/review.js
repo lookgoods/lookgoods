@@ -32,7 +32,7 @@ const ReviewActions = {
 		dispatch(actions.getReviewRequest())
 		const [err, response ] = await to(axios.get(`${TestURL}/reviews`))
 		if (err) dispatch(actions.getReviewError(err))
-		else dispatch(actions.getReviewSuccess(response))
+		else dispatch(actions.getReviewSuccess(response.data))
 	},
 	editReview: (review) => async dispatch => {
 		dispatch(actions.getReviewRequest())
