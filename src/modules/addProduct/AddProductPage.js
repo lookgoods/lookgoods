@@ -33,14 +33,14 @@ export class AddProductPage extends Component {
 			name: '',
 			nameErr: '',
 			brand: '',
-			brandErr: '',
 			price: '',
-			priceErr: '',
 			tagsList: [{ tags: '' }],
 			tagsMessage: [],
 			rating: 0,
+			ratingErr: '',
 			contentList: [],
 			contentMessage: [],
+			contentMessageErr: [],
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
@@ -203,29 +203,25 @@ export class AddProductPage extends Component {
 	async checkValidate() {
 		const titleErr = validate(['title'], [this.state.title])
 		const nameErr = validate(['name'], [this.state.name])
-		const brandErr = validate(['brand'], [this.state.brand])
-		const priceErr = validate(['price'], [this.state.price])
-		// const confirmPasswordErr = validate(
-		// 	['password', 'confirmPassword'],
-		// 	[this.state.password, this.state.confirmPassword]
-		// )
-		// const telErr = validate(['tel'], [this.state.tel])
-
+		const ratingErr = validate(['rating'], [this.state.rating])
+		const contentMeassageErr = validate(
+			['contentMessage'],
+			[this.state.contentMessage]
+		)
 		await this.setState({
 			titleErr,
 			nameErr,
-			brandErr,
-			priceErr
+			ratingErr,
+			contentMeassageErr
 		})
 		console.log(
 			this.state.titleErr,
 			this.state.nameErr,
-			this.state.brandErr,
-			this.state.priceErr
+			this.state.ratingErr,
+			this.state.contentMessageErr
 		)
-		// if (!this.state.isTermsChecked) this.setState({ isTermsCheckedErr: true })
 
-		if (!titleErr && !nameErr && !brandErr && !priceErr) {
+		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			console.log('success')
 		}
 	}
@@ -314,6 +310,7 @@ export class AddProductPage extends Component {
 								value={this.state.title}
 								underlineColorAndroid="transparent"
 								onChangeText={value => this.setState({ title: value.trim() })}
+								keyboardType="default"
 								onBlur={() => {
 									this.setState({
 										titleErr: validate(['title'], [this.state.title])
@@ -332,14 +329,19 @@ export class AddProductPage extends Component {
 								value={this.state.name}
 								underlineColorAndroid="transparent"
 								onChangeText={value => this.setState({ name: value.trim() })}
+								keyboardType="default"
+								onBlur={() => {
+									this.setState({
+										nameErr: validate(['name'], [this.state.name])
+									})
+								}}
+								error={this.state.nameErr}
 							/>
 						</View>
 
 						<View style={{ flexDirection: 'row' }}>
 							<View style={{ flex: 1, paddingRight: 10 }}>
-								<Text style={styles.label}>
-									Brand<Text style={styles.fontRed}>*</Text>
-								</Text>
+								<Text style={styles.label}>Brand</Text>
 								<View style={styles.textBox}>
 									<TextInput
 										style={styles.textInput}
@@ -348,13 +350,12 @@ export class AddProductPage extends Component {
 										onChangeText={value =>
 											this.setState({ brand: value.trim() })
 										}
+										keyboardType="default"
 									/>
 								</View>
 							</View>
 							<View style={{ flex: 1, paddingLeft: 10 }}>
-								<Text style={styles.label}>
-									Price<Text style={styles.fontRed}>*</Text>
-								</Text>
+								<Text style={styles.label}>Price</Text>
 								<View style={styles.textBox}>
 									<TextInput
 										style={styles.textInput}
@@ -363,6 +364,7 @@ export class AddProductPage extends Component {
 										onChangeText={value =>
 											this.setState({ price: value.trim() })
 										}
+										keyboardType="default"
 									/>
 								</View>
 							</View>
