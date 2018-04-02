@@ -18,6 +18,7 @@ import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
+import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
@@ -223,6 +224,8 @@ export class AddProductPage extends Component {
 
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			console.log('success')
+		} else {
+			Toast.show('กรุณาเติมข้อมูลที่จำเป็นให้ครบถ้วน', Toast.SHORT)
 		}
 	}
 

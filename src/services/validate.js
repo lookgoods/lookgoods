@@ -8,12 +8,6 @@ export default function validate(fieldName, value) {
 		name: {
 			presence: { allowEmpty: false, message: 'field is required.' }
 		},
-		// brand: {
-		// 	presence: { allowEmpty: false, message: 'field is required.' }
-		// },
-		// price: {
-		// 	presence: { allowEmpty: false, message: 'field is required.' }
-		// },
 		rating: {
 			presence: { allowEmpty: false, message: 'field is required.' },
 			numericality: {
