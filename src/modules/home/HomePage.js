@@ -11,6 +11,7 @@ import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
+import UserActions from 'src/redux/actions/user'
 import reviewsMock from 'src/mockData/reviews'
 
 export class HomePage extends Component {
@@ -22,12 +23,13 @@ export class HomePage extends Component {
 		}
 	}
 
-	fetchReviews() {
+	fetchData() {
 		this.props.getReviews()
+		this.props.getCurrentUser()
 	}
 
 	componentDidMount() {
-		this.fetchReviews()
+		this.fetchData()
 	}
 
 	setIsSearch() {
@@ -97,6 +99,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getReviews: () => {
 		dispatch(ReviewActions.getReviews())
+	},
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
 	}
 })
 
