@@ -13,7 +13,7 @@ import icons from 'src/constants/icons'
 import { APP_FULL_WIDTH } from 'src/constants'
 
 const ProfilePicture = ({ image_url }) => {
-	return <CoverImage size={50} url={image_url} />
+	return <CoverImage size={50} uri={image_url} />
 }
 
 const BookMark = ({ isActive }) => {
@@ -40,7 +40,7 @@ function Header({ user, time, isSaved, setUser }) {
 				onPress={() => goToUserPage(user, setUser)}
 				style={styles.profilePicture}
 			>
-				<ProfilePicture image_url={user.profile_url} />
+				<ProfilePicture image_url={user.picture_url} />
 			</TouchableOpacity>
 			<View style={styles.headerWrapper}>
 				<TouchableOpacity onPress={() => goToUserPage(user, setUser)}>
