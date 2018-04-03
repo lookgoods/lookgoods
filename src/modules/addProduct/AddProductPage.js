@@ -225,7 +225,7 @@ export class AddProductPage extends Component {
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			console.log('success')
 		} else {
-			Toast.show('กรุณาเติมข้อมูลที่จำเป็นให้ครบถ้วน', Toast.SHORT)
+			Toast.show('กรุณาเติมข้อมูลที่สำคัญให้ครบถ้วน', Toast.SHORT)
 		}
 	}
 
