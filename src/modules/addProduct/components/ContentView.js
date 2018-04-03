@@ -29,28 +29,14 @@ export default class ContentView extends Component {
 			<View>
 				<View style={{ marginTop: 15 }}>
 					<View style={{ marginBottom: 5, flexDirection: 'row' }}>
-						<Text style={styles.label}>Content</Text>
-						<View
-							style={{
-								flex: 1,
-								justifyContent: 'flex-end',
-								flexDirection: 'row',
-								alignItems: 'center'
-							}}
-						>
+						<Text style={styles.label}>
+							Content<Text style={styles.fontRed}>*</Text>
+						</Text>
+						<View style={styles.bodyEditContent}>
 							{contentList.length === 0 ? (
 								<View style={{ marginLeft: 24, flexDirection: 'row' }}>
-									<IconFontAwesome name="edit" color="#dfdfdf" size={18} />
-									<Text
-										style={{
-											fontSize: 15,
-											color: '#dfdfdf',
-											marginLeft: 5,
-											marginRight: 15
-										}}
-									>
-										Edit
-									</Text>
+									<IconFontAwesome name="edit" color={colors.gray4} size={18} />
+									<Text style={styles.fontTextEdit}>Edit</Text>
 								</View>
 							) : (
 								<TouchableOpacity
@@ -58,14 +44,7 @@ export default class ContentView extends Component {
 									onPress={() => setEditButton()}
 								>
 									<IconFontAwesome name="edit" size={18} />
-									<Text
-										style={{
-											fontSize: 15,
-											color: colors.gray,
-											marginLeft: 5,
-											marginRight: 15
-										}}
-									>
+									<Text style={styles.fontTextEdit}>
 										{isEditButton ? 'Done' : 'Edit'}
 									</Text>
 								</TouchableOpacity>
@@ -80,13 +59,7 @@ export default class ContentView extends Component {
 							<View>
 								{isEditButton && (
 									<TouchableOpacity
-										style={{
-											top: 25,
-											marginTop: -20,
-											alignSelf: 'flex-end',
-											right: 6,
-											zIndex: 1
-										}}
+										style={styles.deleteIcon}
 										onPress={() => deleteContentBox(key)}
 									>
 										<IconMaterial name="cancel" color={colors.red} size={20} />
@@ -94,13 +67,7 @@ export default class ContentView extends Component {
 								)}
 								<View style={styles.bodyTextInput}>
 									<TextInput
-										style={{
-											fontSize: 15,
-											color: colors.gray,
-											minHeight: 120,
-											paddingTop: 0,
-											paddingBottom: 0
-										}}
+										style={styles.textInputLabel}
 										multiline
 										maxHeight={300}
 										underlineColorAndroid="transparent"
@@ -116,13 +83,7 @@ export default class ContentView extends Component {
 							<View>
 								{isEditButton && (
 									<TouchableOpacity
-										style={{
-											top: 25,
-											marginTop: -20,
-											alignSelf: 'flex-end',
-											right: 6,
-											zIndex: 1
-										}}
+										style={{}}
 										onPress={() => deleteContentBox(key)}
 									>
 										<IconMaterial name="cancel" color={colors.red} size={20} />
@@ -151,7 +112,7 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 		marginRight: 15,
 		padding: 10,
-		borderColor: '#dfdfdf',
+		borderColor: colors.gray4,
 		borderWidth: 1
 	},
 	label: {
@@ -159,5 +120,34 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		marginLeft: 15,
 		fontWeight: 'bold'
+	},
+	fontRed: {
+		color: colors.red
+	},
+	fontTextEdit: {
+		fontSize: 15,
+		color: colors.gray4,
+		marginLeft: 5,
+		marginRight: 15
+	},
+	deleteIcon: {
+		top: 25,
+		marginTop: -20,
+		alignSelf: 'flex-end',
+		right: 6,
+		zIndex: 1
+	},
+	textInputLabel: {
+		fontSize: 15,
+		color: colors.gray,
+		minHeight: 120,
+		paddingTop: 0,
+		paddingBottom: 0
+	},
+	bodyEditContent: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 })

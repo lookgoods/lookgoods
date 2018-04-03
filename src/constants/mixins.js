@@ -6,6 +6,7 @@ export const colors = {
 	gray: '#666',
 	gray2: '#BDBDBD',
 	gray3: '#FAFAFA',
+	gray4: '#dfdfdf',
 	yellow_star: '#F8ED5E',
 	red: '#ff0000',
 	blueFacebook: '#3B5998',

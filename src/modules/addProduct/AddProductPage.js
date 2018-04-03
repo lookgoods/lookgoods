@@ -10,7 +10,7 @@ import {
 	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
-
+import validate from 'src/services/validate'
 import ContentView from 'src/modules/addProduct/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -18,6 +18,7 @@ import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
+import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
@@ -27,37 +28,25 @@ export class AddProductPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			title: '',
-			name: '',
-			price: '',
-			brand: '',
 			coverImage: '',
-			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
+			title: '',
+			titleErr: '',
+			name: '',
+			nameErr: '',
+			brand: '',
+			price: '',
+			tagsList: [{ tags: '' }],
+			tagsMessage: [],
+			rating: 0,
+			ratingErr: '',
+			contentList: [],
+			contentMessage: [],
+			contentMessageErr: [],
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
-			tagsList: [{ tags: '' }],
-			tagsMessage: [],
-			contentMessage: [],
-			contentList: [],
-			rating: 0
+			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
-	}
-
-	handleChangeTitle(text) {
-		this.setState({ title: text })
-	}
-
-	handleChangeName(text) {
-		this.setState({ name: text })
-	}
-
-	handleChangeBrand(text) {
-		this.setState({ brand: text })
-	}
-
-	handleChangePrice(text) {
-		this.setState({ price: text })
 	}
 
 	handleChangeTextBox(property, text) {
@@ -82,7 +71,7 @@ export class AddProductPage extends Component {
 			setInterval(() => {
 				if (!this.props.upload_loading) resolve('Upload success')
 			}, 100)
-		}) 
+		})
 	}
 
 	async addCoverImage() {
@@ -103,9 +92,11 @@ export class AddProductPage extends Component {
 				console.log('ImagePicker Success: ', response)
 				await this.props.uploadImage(response)
 				await this.waitForUpload()
-				this.setState({ coverImage: { 
-					url: this.props.picture_url, 
-					thumbnail_url: this.props.thumbnail_url } 
+				this.setState({
+					coverImage: {
+						url: this.props.picture_url,
+						thumbnail_url: this.props.thumbnail_url
+					}
 				})
 			}
 		})
@@ -193,6 +184,7 @@ export class AddProductPage extends Component {
 					: { ...content, value: content.value }
 		)
 		await this.setState({ contentList })
+		await this.checkValidate()
 
 		const review = {
 			title: this.state.title,
@@ -209,6 +201,34 @@ export class AddProductPage extends Component {
 		this.props.addReview(review)
 	}
 
+	async checkValidate() {
+		const titleErr = validate(['title'], [this.state.title])
+		const nameErr = validate(['name'], [this.state.name])
+		const ratingErr = validate(['rating'], [this.state.rating])
+		const contentMeassageErr = validate(
+			['contentMessage'],
+			[this.state.contentMessage]
+		)
+		await this.setState({
+			titleErr,
+			nameErr,
+			ratingErr,
+			contentMeassageErr
+		})
+		console.log(
+			this.state.titleErr,
+			this.state.nameErr,
+			this.state.ratingErr,
+			this.state.contentMessageErr
+		)
+
+		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
+			console.log('success')
+		} else {
+			Toast.show('กรุณาเติมข้อมูลที่สำคัญให้ครบถ้วน', Toast.SHORT)
+		}
+	}
+
 	deleteContentBox(key) {
 		const contentList = this.state.contentList
 		const contentMessage = this.state.contentMessage
@@ -223,9 +243,7 @@ export class AddProductPage extends Component {
 
 	renderLoading() {
 		if (this.props.upload_loading || this.props.review_loading) {
-			return (
-				<ActivityIndicator size="large" style={styles.loading} />        
-			)
+			return <ActivityIndicator size="large" style={styles.loading} />
 		} else {
 			return null
 		}
@@ -233,7 +251,14 @@ export class AddProductPage extends Component {
 
 	render() {
 		return (
-			<View style={styles.container} pointerEvents={(this.props.upload_loading||this.props.review_loading)?'none':'box-none'}>
+			<View
+				style={styles.container}
+				pointerEvents={
+					this.props.upload_loading || this.props.review_loading
+						? 'none'
+						: 'box-none'
+				}
+			>
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					scrollEventThrottle={16}
@@ -278,23 +303,42 @@ export class AddProductPage extends Component {
 						)}
 					</View>
 					<View style={styles.sectionBody}>
-						<Text style={styles.label}>Title</Text>
+						<Text style={styles.label}>
+							Title
+							<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
 								value={this.state.title}
 								underlineColorAndroid="transparent"
-								onChangeText={text => this.handleChangeTitle(text)}
+								onChangeText={value => this.setState({ title: value.trim() })}
+								keyboardType="default"
+								onBlur={() => {
+									this.setState({
+										titleErr: validate(['title'], [this.state.title])
+									})
+								}}
+								error={this.state.titleErr}
 							/>
 						</View>
 
-						<Text style={styles.label}>Name</Text>
+						<Text style={styles.label}>
+							Name<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
 								value={this.state.name}
 								underlineColorAndroid="transparent"
-								onChangeText={text => this.handleChangeName(text)}
+								onChangeText={value => this.setState({ name: value.trim() })}
+								keyboardType="default"
+								onBlur={() => {
+									this.setState({
+										nameErr: validate(['name'], [this.state.name])
+									})
+								}}
+								error={this.state.nameErr}
 							/>
 						</View>
 
@@ -306,7 +350,10 @@ export class AddProductPage extends Component {
 										style={styles.textInput}
 										value={this.state.brand}
 										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangeBrand(text)}
+										onChangeText={value =>
+											this.setState({ brand: value.trim() })
+										}
+										keyboardType="default"
 									/>
 								</View>
 							</View>
@@ -317,7 +364,10 @@ export class AddProductPage extends Component {
 										style={styles.textInput}
 										value={this.state.price}
 										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangePrice(text)}
+										onChangeText={value =>
+											this.setState({ price: value.trim() })
+										}
+										keyboardType="default"
 									/>
 								</View>
 							</View>
@@ -347,7 +397,9 @@ export class AddProductPage extends Component {
 							</View>
 						))}
 
-						<Text style={styles.label}>Rating</Text>
+						<Text style={styles.label}>
+							Rating<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View
 							style={{
 								flex: 1,
@@ -421,7 +473,7 @@ export class AddProductPage extends Component {
 						</View>
 					</View>
 				</ScrollView>
-				{ this.renderLoading() }
+				{this.renderLoading()}
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBar titleName="Add Review" />
@@ -561,6 +613,9 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 		borderColor: '#dfdfdf',
 		borderWidth: 1
+	},
+	fontRed: {
+		color: colors.red
 	}
 })
 
@@ -576,7 +631,7 @@ const mapDispatchToProps = dispatch => ({
 	addReview: review => {
 		dispatch(ReviewActions.addReview(review))
 	},
-	uploadImage: (image) => {
+	uploadImage: image => {
 		dispatch(ImageActions.uploadImage(image))
 	}
 })
