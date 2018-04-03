@@ -10,6 +10,7 @@ import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
+import { APP_FULL_WIDTH } from 'src/constants'
 
 const ProfilePicture = ({ image_url }) => {
 	return <CoverImage size={50} url={image_url} />
@@ -64,8 +65,8 @@ const ProductPicture = ({ image_url, review, setReview }) => {
 				>
 					<Image
 						style={styles.productImage}
-						source={image_url}
-						resizeMode="contain"
+						source={{ uri: image_url }}
+						resizeMode="cover"
 					/>
 				</TouchableOpacity>
 			) : (
@@ -152,9 +153,9 @@ export class ReviewCard extends Component {
 			title,
 			user,
 			picture_cover_url,
-			product_price,
+			price,
 			comment_list,
-			overall_rating,
+			rating,
 			timestamp
 		} = this.props.review
 		console.log(this.props.review, 'review')
@@ -173,8 +174,8 @@ export class ReviewCard extends Component {
 					setReview={this.props.setCurrentReview}
 				/>
 				<Footer
-					rating={overall_rating}
-					price={product_price}
+					rating={rating}
+					price={price}
 					numberOfComment={comment_list.length}
 					isLove={this.state.isLove}
 					clickLove={() => this.clickLove()}
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
 		marginVertical: 5
 	},
 	productImage: {
-		width: '100%',
+		width: APP_FULL_WIDTH,
 		height: 260
 	},
 	bahtImage: {

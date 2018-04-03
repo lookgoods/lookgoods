@@ -10,6 +10,7 @@ import NavBarSearch from '../shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import ReviewActions from 'src/redux/actions/review'
 import reviewsMock from 'src/mockData/reviews'
 
 export class HomePage extends Component {
@@ -19,6 +20,14 @@ export class HomePage extends Component {
 			isSearch: false,
 			searchText: ''
 		}
+	}
+
+	fetchReviews() {
+		this.props.getReviews()
+	}
+
+	componentDidMount() {
+		this.fetchReviews()
 	}
 
 	setIsSearch() {
@@ -45,7 +54,6 @@ export class HomePage extends Component {
 	}
 
 	render() {
-		console.log('user', this.props.currentUser)
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -55,7 +63,7 @@ export class HomePage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewList review_list={reviewsMock} />
+						<ReviewList review_list={this.props.reviews} />
 					</View>
 				</ScrollView>
 			</View>
@@ -82,7 +90,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-	currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser,
+	reviews: state.reviewReducer.reviews
 })
 
-export default connect(mapStateToProps, null)(HomePage)
+const mapDispatchToProps = dispatch => ({
+	getReviews: () => {
+		dispatch(ReviewActions.getReviews())
+	}
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
