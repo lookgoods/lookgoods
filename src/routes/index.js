@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import React from 'react'
 import SettingPage from 'src/modules/setting/SettingPage'
 import TabMenu from 'src/modules/shares/TabMenu'
-import ViewProductPage from 'src/modules/viewProduct/ViewProductPage'
+import ViewReviewPage from 'src/modules/viewReview/ViewReviewPage'
 import ViewUserPage from 'src/modules/user/ViewUserPage'
 import SearchPage from 'src/modules/search/SearchPage'
 import store from 'src/redux/store'
@@ -22,7 +22,7 @@ const App = () => {
 					<Scene key="homePage" component={HomePage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="globalPage" component={GlobalPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="addProductPage" component={AddProductPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
-					<Scene key="viewProductPage" component={ViewProductPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
+					<Scene key="viewReviewPage" component={ViewReviewPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="tabMenu" component={TabMenu} hideNavBar={1} type="reset" hideTabBar={1} direction='vertical' initial/>
 					<Scene key="loginPage" component={LoginPage} hideNavBar={1} type="reset" hideTabBar={1} direction='vertical'/>
 					<Scene key="settingPage" component={SettingPage} title='Settings' panHandlers={null} hideTabBar={1} direction='vertical'/>
