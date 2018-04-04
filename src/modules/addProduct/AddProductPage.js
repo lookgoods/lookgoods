@@ -188,24 +188,12 @@ export class AddProductPage extends Component {
 		await this.setState({ contentList })
 		await this.checkValidate()
 
-		const review = {
-			title: this.state.title,
-			price: this.state.price,
-			brand: this.state.brand,
-			tag: this.state.tagsMessage,
-			picture_cover_url: this.state.coverImage.url,
-			picture_thumbnail_url: this.state.coverImage.thumbnail_url,
-			content_list: this.state.contentList,
-			rating: this.state.rating,
-			name: this.state.name
-		}
-
-		this.props.addReview(review)
+		
 	}
 
 	async checkValidate() {
-		const titleErr = validate(['title'], [this.state.title])
-		const nameErr = validate(['name'], [this.state.name])
+		const titleErr = validate(['title'], [this.state.title.trim()])
+		const nameErr = validate(['name'], [this.state.name.trim()])
 		const ratingErr = validate(['rating'], [this.state.rating])
 		const contentMeassageErr = validate(
 			['contentMessage'],
@@ -225,9 +213,21 @@ export class AddProductPage extends Component {
 		)
 
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
-			console.log('success')
+			const review = {
+				title: this.state.title.trim(),
+				name: this.state.name.trim(),
+				price: this.state.price.trim(),
+				brand: this.state.brand.trim(),
+				tag: this.state.tagsMessage,
+				picture_cover_url: this.state.coverImage.url,
+				picture_thumbnail_url: this.state.coverImage.thumbnail_url,
+				content_list: this.state.contentList,
+				rating: this.state.rating	
+			}
+	
+			this.props.addReview(review)
 		} else {
-			Toast.show('กรุณาเติมข้อมูลที่สำคัญให้ครบถ้วน', Toast.SHORT)
+			Toast.show('กรุณาเติมข้อมูลที่ * ให้ครบถ้วน', Toast.SHORT)
 		}
 	}
 
@@ -315,7 +315,7 @@ export class AddProductPage extends Component {
 								style={styles.textInput}
 								value={this.state.title}
 								underlineColorAndroid="transparent"
-								onChangeText={value => this.setState({ title: value.trim() })}
+								onChangeText={value => this.setState({ title: value })}
 								keyboardType="default"
 								onBlur={() => {
 									this.setState({
@@ -334,7 +334,7 @@ export class AddProductPage extends Component {
 								style={styles.textInput}
 								value={this.state.name}
 								underlineColorAndroid="transparent"
-								onChangeText={value => this.setState({ name: value.trim() })}
+								onChangeText={value => this.setState({ name: value })}
 								keyboardType="default"
 								onBlur={() => {
 									this.setState({
@@ -354,7 +354,7 @@ export class AddProductPage extends Component {
 										value={this.state.brand}
 										underlineColorAndroid="transparent"
 										onChangeText={value =>
-											this.setState({ brand: value.trim() })
+											this.setState({ brand: value })
 										}
 										keyboardType="default"
 									/>
@@ -368,7 +368,7 @@ export class AddProductPage extends Component {
 										value={this.state.price}
 										underlineColorAndroid="transparent"
 										onChangeText={value =>
-											this.setState({ price: value.trim() })
+											this.setState({ price: value })
 										}
 										keyboardType="default"
 									/>
