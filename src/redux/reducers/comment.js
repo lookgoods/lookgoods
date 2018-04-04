@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
 			loading: false,
 			error: null
 		}
-
+		
 	case constants.ADD_COMMENT_FAILURE:
 		return {
 			...state,
