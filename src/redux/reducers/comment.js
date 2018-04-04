@@ -37,21 +37,6 @@ export default (state = initialState, action) => {
 			error: null
 		}
 
-
-	case constants.ADD_COMMENT_FAILURE:
-		return {
-			...state,
-			success: false,
-			error: action.payload.error
-		}
-
-	case constants.GET_COMMENT_REQUEST:
-		return {
-			...state,
-			success: true,
-			error: null
-		}
-
 	case constants.GET_COMMENT_SUCCESS:
 		return {
 			...state,
@@ -110,7 +95,6 @@ export default (state = initialState, action) => {
 			success: false,
 			error: action.payload.error
 		}	
-
 
 	default:
 		return state
