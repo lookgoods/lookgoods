@@ -5,8 +5,8 @@ import {
 	View
 } from 'react-native'
 
-import Comment from 'src/modules/viewProduct/components/Comment'
-import StarBar from 'src/modules/viewProduct/components/StarBar'
+import Comment from 'src/modules/viewReview/components/Comment'
+import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
 
 function countRatingFrequency(comment_list) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, ScrollView, StyleSheet, View } from 'react-native'
-import ProductsGrid from 'src/modules/user/components/ProductsGrid'
+import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -66,7 +66,7 @@ export class ViewUserPage extends Component {
 				</View>
 				<View>
 					<ScrollView>
-						<ProductsGrid product_list={products} />
+						<ReviewsGrid product_list={products} />
 					</ScrollView>
 				</View>
 			</View>

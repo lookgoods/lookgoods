@@ -10,14 +10,24 @@ import NavBarSearch from 'src/modules/shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import reviewsMock from 'src/mockData/reviews'
+import ReviewActions from 'src/redux/actions/review'
+import { connect } from 'react-redux'
 
-export default class GlobalPage extends Component {
+export class GlobalPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			isSearch: false,
 			searchText: ''
 		}
+	}
+
+	fetchReviews() {
+		this.props.getReviews()
+	}
+
+	componentDidMount() {
+		this.fetchReviews()
 	}
 
 	setIsSearch() {
@@ -58,7 +68,7 @@ export default class GlobalPage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewList review_list={reviewsMock}/>
+						<ReviewList review_list={this.props.reviews}/>
 					</View>
 				</ScrollView>
 			</View>
@@ -83,3 +93,17 @@ const styles = StyleSheet.create({
 		overflow: 'hidden'
 	}
 })
+
+const mapStateToProps = state => ({
+	reviews: state.reviewReducer.reviews
+})
+
+const mapDispatchToProps = dispatch => ({
+	getReviews: () => {
+		dispatch(ReviewActions.getReviews())
+	}
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(GlobalPage)
+

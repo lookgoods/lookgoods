@@ -6,10 +6,11 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
-	View
+	View,
+	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
-
+import validate from 'src/services/validate'
 import ContentView from 'src/modules/addProduct/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -17,42 +18,38 @@ import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
+import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
+import ReviewActions from 'src/redux/actions/review'
+import { connect } from 'react-redux'
+import ImageActions from 'src/redux/actions/image'
 
-export default class GlobalPage extends Component {
+export class AddProductPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			coverImage: {
+				url: '',
+				thumbnail_url: ''
+			},
 			title: '',
+			titleErr: '',
 			name: '',
-			price: '',
+			nameErr: '',
 			brand: '',
-			coverImage: '',
-			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
+			price: '',
+			tagsList: [{ tags: '' }],
+			tagsMessage: [],
+			rating: 0,
+			ratingErr: '',
+			contentList: [],
+			contentMessage: [],
+			contentMessageErr: [],
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
-			tagsList: [{ tags: '' }],
-			tagsMessage: [],
-			contentMessage: [],
-			contentList: []
+			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
-	}
-
-	handleChangeTitle(text) {
-		this.setState({ title: text })
-	}
-
-	handleChangeName(text) {
-		this.setState({ name: text })
-	}
-
-	handleChangeBrand(text) {
-		this.setState({ brand: text })
-	}
-
-	handleChangePrice(text) {
-		this.setState({ price: text })
 	}
 
 	handleChangeTextBox(property, text) {
@@ -72,53 +69,69 @@ export default class GlobalPage extends Component {
 		this.setState({ tagsMessage: tags })
 	}
 
-	addCoverImage() {
-		// const options = {
-		//   title: 'Select Avatar',
-		//   storageOptions: {
-		//     skipBackup: true,
-		//     path: 'images'
-		//   }
-		// }
-
-		// ImagePicker.showImagePicker(options, (response) => {
-		// 	if (response.didCancel) {
-		// 		console.log('User cancelled photo picker')
-		// 	} else if (response.error) {
-		// 		console.log('ImagePicker Error: ', response.error)
-		// 	} else {
-		// 		console.log('ImagePicker Success: ', response.uri)
-		// 		this.setState({ coverImage: response.uri })
-		// 	}
-		// })
-		ImageCropPicker.openPicker({
-			width: 370,
-			height: 200,
-			cropping: true
-		}).then(image => {
-			console.log(image)
-			this.setState({ coverImage: image.sourceURL })
+	waitForUpload() {
+		return new Promise((resolve, reject) => {
+			setInterval(() => {
+				if (!this.props.upload_loading) resolve('Upload success')
+			}, 100)
 		})
 	}
 
-	attachPhotos() {
+	async addCoverImage() {
 		const options = {
-			title: 'Select Avatar',
+			title: 'Select Product Cover',
 			storageOptions: {
 				skipBackup: true,
 				path: 'images'
 			}
 		}
 
-		ImagePicker.showImagePicker(options, response => {
+		ImagePicker.showImagePicker(options, async response => {
 			if (response.didCancel) {
 				console.log('User cancelled photo picker')
 			} else if (response.error) {
 				console.log('ImagePicker Error: ', response.error)
 			} else {
-				console.log('ImagePicker Success: ', response.uri)
+				console.log('ImagePicker Success: ', response)
+				await this.props.uploadImage(response)
+				await this.waitForUpload()
+				const coverImage = {
+					url: this.props.picture_url,
+					thumbnail_url: this.props.thumbnail_url
+				}
+				this.setState({ coverImage })
+			}
+		})
+		// ImageCropPicker.openPicker({
+		// 	width: 370,
+		// 	height: 200,
+		// 	cropping: true
+		// }).then(image => {
+		// 	console.log(image)
+		// 	this.setState({ coverImage: image.sourceURL })
+		// })
+	}
+
+	attachPhotos() {
+		const options = {
+			title: 'Select Product Photo',
+			storageOptions: {
+				skipBackup: true,
+				path: 'images'
+			}
+		}
+
+		ImagePicker.showImagePicker(options, async response => {
+			if (response.didCancel) {
+				console.log('User cancelled photo picker')
+			} else if (response.error) {
+				console.log('ImagePicker Error: ', response.error)
+			} else {
+				console.log('ImagePicker Success: ', response)
 				const contentArr = this.state.contentList
-				contentArr.push({ type: 'picture', value: response.uri })
+				this.props.uploadImage(response)
+				await this.waitForUpload()
+				contentArr.push({ type: 'picture', value: this.props.picture_url })
 				this.setState({ contentList: contentArr })
 				this.setAddButton()
 			}
@@ -133,7 +146,8 @@ export default class GlobalPage extends Component {
 				} else {
 					return 'star-o'
 				}
-			})
+			}),
+			rating: num
 		})
 	}
 
@@ -171,8 +185,50 @@ export default class GlobalPage extends Component {
 					? { ...content, value: contentMessage[index] }
 					: { ...content, value: content.value }
 		)
-		console.log(contentList, 'contentList')
 		await this.setState({ contentList })
+		await this.checkValidate()
+
+		
+	}
+
+	async checkValidate() {
+		const titleErr = validate(['title'], [this.state.title.trim()])
+		const nameErr = validate(['name'], [this.state.name.trim()])
+		const ratingErr = validate(['rating'], [this.state.rating])
+		const contentMeassageErr = validate(
+			['contentMessage'],
+			[this.state.contentMessage]
+		)
+		await this.setState({
+			titleErr,
+			nameErr,
+			ratingErr,
+			contentMeassageErr
+		})
+		console.log(
+			this.state.titleErr,
+			this.state.nameErr,
+			this.state.ratingErr,
+			this.state.contentMessageErr
+		)
+
+		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
+			const review = {
+				title: this.state.title.trim(),
+				name: this.state.name.trim(),
+				price: this.state.price.trim(),
+				brand: this.state.brand.trim(),
+				tag: this.state.tagsMessage,
+				picture_cover_url: this.state.coverImage.url,
+				picture_thumbnail_url: this.state.coverImage.thumbnail_url,
+				content_list: this.state.contentList,
+				rating: this.state.rating	
+			}
+	
+			this.props.addReview(review)
+		} else {
+			Toast.show('กรุณาเติมข้อมูลที่ * ให้ครบถ้วน', Toast.SHORT)
+		}
 	}
 
 	deleteContentBox(key) {
@@ -187,9 +243,25 @@ export default class GlobalPage extends Component {
 		this.setState({ contentList, contentMessage })
 	}
 
+	renderLoading() {
+		if (this.props.upload_loading || this.props.review_loading) {
+			return <ActivityIndicator size="large" style={styles.loading} />
+		} else {
+			return null
+		}
+	}
+
 	render() {
+		console.log(this.state.coverImage, 'cover')
 		return (
-			<View style={styles.container}>
+			<View
+				style={styles.container}
+				pointerEvents={
+					this.props.upload_loading || this.props.review_loading
+						? 'none'
+						: 'box-none'
+				}
+			>
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					scrollEventThrottle={16}
@@ -203,7 +275,7 @@ export default class GlobalPage extends Component {
 							flexDirection: 'row'
 						}}
 					>
-						{this.state.coverImage === '' ? (
+						{this.state.coverImage.url === '' ? (
 							<TouchableOpacity
 								style={{
 									flex: 1,
@@ -228,29 +300,48 @@ export default class GlobalPage extends Component {
 										resizeMode: 'cover',
 										zIndex: 1
 									}}
-									source={{ uri: this.state.coverImage }}
+									source={{ uri: this.state.coverImage.url }}
 								/>
 							</TouchableOpacity>
 						)}
 					</View>
 					<View style={styles.sectionBody}>
-						<Text style={styles.label}>Title</Text>
+						<Text style={styles.label}>
+							Title
+							<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
 								value={this.state.title}
 								underlineColorAndroid="transparent"
-								onChangeText={text => this.handleChangeTitle(text)}
+								onChangeText={value => this.setState({ title: value })}
+								keyboardType="default"
+								onBlur={() => {
+									this.setState({
+										titleErr: validate(['title'], [this.state.title])
+									})
+								}}
+								error={this.state.titleErr}
 							/>
 						</View>
 
-						<Text style={styles.label}>Name</Text>
+						<Text style={styles.label}>
+							Name<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View style={styles.textBox}>
 							<TextInput
 								style={styles.textInput}
 								value={this.state.name}
 								underlineColorAndroid="transparent"
-								onChangeText={text => this.handleChangeName(text)}
+								onChangeText={value => this.setState({ name: value })}
+								keyboardType="default"
+								onBlur={() => {
+									this.setState({
+										nameErr: validate(['name'], [this.state.name])
+									})
+								}}
+								error={this.state.nameErr}
 							/>
 						</View>
 
@@ -262,7 +353,10 @@ export default class GlobalPage extends Component {
 										style={styles.textInput}
 										value={this.state.brand}
 										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangeBrand(text)}
+										onChangeText={value =>
+											this.setState({ brand: value })
+										}
+										keyboardType="default"
 									/>
 								</View>
 							</View>
@@ -273,7 +367,10 @@ export default class GlobalPage extends Component {
 										style={styles.textInput}
 										value={this.state.price}
 										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangePrice(text)}
+										onChangeText={value =>
+											this.setState({ price: value })
+										}
+										keyboardType="default"
 									/>
 								</View>
 							</View>
@@ -303,7 +400,9 @@ export default class GlobalPage extends Component {
 							</View>
 						))}
 
-						<Text style={styles.label}>Rating</Text>
+						<Text style={styles.label}>
+							Rating<Text style={styles.fontRed}>*</Text>
+						</Text>
 						<View
 							style={{
 								flex: 1,
@@ -339,7 +438,7 @@ export default class GlobalPage extends Component {
 							deleteContentBox={index => this.deleteContentBox(index)}
 						/>
 
-						{!this.state.isAddButton && (
+						{this.state.isAddButton && (
 							<View style={styles.blockAdd}>
 								<TouchableOpacity
 									style={styles.buttonAdd}
@@ -350,7 +449,7 @@ export default class GlobalPage extends Component {
 							</View>
 						)}
 
-						{this.state.isAddButton && (
+						{!this.state.isAddButton && (
 							<View style={styles.blockOption}>
 								<TouchableOpacity
 									style={styles.buttonOptionLeft}
@@ -372,14 +471,15 @@ export default class GlobalPage extends Component {
 								style={styles.buttonSave}
 								onPress={() => this.addReview()}
 							>
-								<Text style={{ fontSize: 18, color: '#FFF' }}>เพิ่มสินค้า</Text>
+								<Text style={{ fontSize: 18, color: '#FFF' }}>ADD REVIEW</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
+				{this.renderLoading()}
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName="AddProduct" />
+						<NavBar titleName="Add Review" />
 					</View>
 				</View>
 			</View>
@@ -392,6 +492,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: colors.white
 	},
+	loading: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		alignItems: 'center',
+		justifyContent: 'center',
+		opacity: 0.5,
+		backgroundColor: colors.black
+	},
 	body: {
 		marginTop: Platform.OS === 'ios' ? 75 : 60
 	},
@@ -401,12 +512,9 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		position: 'absolute',
-		top: 0,
 		left: 0,
 		right: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		zIndex: 1
+		top: 0
 	},
 	label: {
 		color: '#5C5C5C',
@@ -507,5 +615,27 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 		borderColor: '#dfdfdf',
 		borderWidth: 1
+	},
+	fontRed: {
+		color: colors.red
 	}
 })
+
+const mapStateToProps = state => ({
+	picture_url: state.imageReducer.picture_url,
+	thumbnail_url: state.imageReducer.thumbnail_url,
+	upload_loading: state.imageReducer.loading,
+	upload_error: state.imageReducer.error,
+	review_loading: state.reviewReducer.loading
+})
+
+const mapDispatchToProps = dispatch => ({
+	addReview: review => {
+		dispatch(ReviewActions.addReview(review))
+	},
+	uploadImage: image => {
+		dispatch(ImageActions.uploadImage(image))
+	}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddProductPage)

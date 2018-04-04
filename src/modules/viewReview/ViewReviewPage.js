@@ -1,15 +1,15 @@
 import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
-import AddComment from 'src/modules/viewProduct/components/AddComment'
-import CommentSection from 'src/modules/viewProduct/components/CommentSection'
-import ContentSection from 'src/modules/viewProduct/components/ContentSection'
+import AddComment from 'src/modules/viewReview/components/AddComment'
+import CommentSection from 'src/modules/viewReview/components/CommentSection'
+import ContentSection from 'src/modules/viewReview/components/ContentSection'
 import { Divider } from 'react-native-elements'
 import NavBar from 'src/modules/shares/NavBar'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 
-export class ViewProductPage extends Component {
+export class ViewReviewPage extends Component {
 	constructor(props) {
 		super(props)
 	}
@@ -78,4 +78,4 @@ const mapDispatchToProps = dispatch => ({
 	}
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewProductPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ViewReviewPage)

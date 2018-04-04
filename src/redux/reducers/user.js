@@ -2,9 +2,10 @@ import constants from 'src/redux/constants'
 
 const initialState = {
 	currentUser: null,
-	loading: false,
+	success: false,
 	error: null,
-	selectedUser: null
+	selectedUser: null,
+	user: null
 }
 
 export default (state = initialState, action) => {
@@ -12,21 +13,21 @@ export default (state = initialState, action) => {
 	case constants.GET_CURRENT_USER_REQUEST:
 		return {
 			...state,
-			loading: true,
+			success: false,
 			error: null
 		}
 
 	case constants.GET_CURRENT_USER_SUCCESS:
 		return {
 			...state,
-			loading: false,
+			success: true,
 			currentUser: action.payload.user
 		}
 
 	case constants.GET_CURRENT_USER_FAILURE:
 		return {
 			...state,
-			loading: false,
+			success: false,
 			error: action.payload.error
 		}
 
@@ -43,6 +44,27 @@ export default (state = initialState, action) => {
 	case constants.LOGIN_FACEBOOK_SUCCESS:
 		console.log('login with facebook success', action.payload)
 		return state
+
+	case constants.GET_USER_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_USER_SUCCESS:
+		return {
+			...state,
+			success: true,
+			user: action.payload.user
+		}
+
+	case constants.GET_USER_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload.error
+		}
 
 	default:
 		return state

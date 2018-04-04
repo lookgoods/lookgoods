@@ -4,14 +4,17 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import ReviewActions from 'src/redux/actions/review'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
+import { APP_FULL_WIDTH } from 'src/constants'
+import moment from 'moment'
 
 const ProfilePicture = ({ image_url }) => {
-	return <CoverImage size={50} url={image_url} />
+	return <CoverImage size={50} uri={image_url} />
 }
 
 const BookMark = ({ isActive }) => {
@@ -31,6 +34,13 @@ function goToUserPage(user, setUser) {
 	Actions.viewUserPage()
 }
 
+function getTimeText(time) {
+	if (Math.abs(moment().diff(time)) < 25000) { // 25 seconds before or after now
+		return 'Just now'
+	}
+	return moment(time).fromNow()
+}
+
 function Header({ user, time, isSaved, setUser }) {
 	return (
 		<View style={styles.headerContainer}>
@@ -38,13 +48,13 @@ function Header({ user, time, isSaved, setUser }) {
 				onPress={() => goToUserPage(user, setUser)}
 				style={styles.profilePicture}
 			>
-				<ProfilePicture image_url={user.profile_url} />
+				<ProfilePicture image_url={user.picture_url} />
 			</TouchableOpacity>
 			<View style={styles.headerWrapper}>
 				<TouchableOpacity onPress={() => goToUserPage(user, setUser)}>
 					<Text style={styles.reviewerName}>{user.name}</Text>
 				</TouchableOpacity>
-				<Text style={styles.timeText}>{time}</Text>
+				<Text style={styles.timeText}>{getTimeText(time)}</Text>
 			</View>
 			<BookMark isActive={isSaved} />
 		</View>
@@ -58,13 +68,13 @@ const ProductPicture = ({ image_url, review, setReview }) => {
 				<TouchableOpacity
 					onPress={() => {
 						setReview(review)
-						Actions.viewProductPage()
+						Actions.viewReviewPage()
 					}}
 				>
 					<Image
 						style={styles.productImage}
-						source={image_url}
-						resizeMode="contain"
+						source={{ uri: image_url }}
+						resizeMode="cover"
 					/>
 				</TouchableOpacity>
 			) : (
@@ -87,24 +97,46 @@ function Body({ product_url, title, review, setReview }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment }) {
+function Footer({ rating, price, numberOfComment, isLove, clickLove }) {
 	return (
 		<View style={styles.footerContainer}>
-			<View style={styles.productDetail}>
-				<IconMaterial name="star-border" color={'#777777'} size={24} />
-				<Text style={styles.productDetailRating}>{rating}</Text>
+			<View style={{ flexDirection: 'row' }}>
+				<View style={styles.productDetail}>
+					<IconMaterial name="star-border" color={'#777777'} size={24} />
+					<Text style={styles.productDetailRating}>{rating}</Text>
+				</View>
+				<View style={styles.productDetail}>
+					<Image
+						style={styles.bahtImage}
+						source={icons.baht}
+						resizeMode="cover"
+					/>
+					<Text style={styles.productDetailMoney}>{price}</Text>
+				</View>
+				<View style={styles.productDetail}>
+					<IconMaterial
+						style={styles.iconComment}
+						name="chat-bubble-outline"
+						color={'#777777'}
+						size={22}
+					/>
+					<Text style={styles.productDetailComment}>{numberOfComment}</Text>
+				</View>
 			</View>
-			<View style={styles.productDetail}>
-				<Image
-					style={styles.bahtImage}
-					source={icons.baht}
-					resizeMode="cover"
-				/>
-				<Text style={styles.productDetailMoney}>{price}</Text>
-			</View>
-			<View style={styles.productDetail}>
-				<IconMaterial name="chat-bubble-outline" color={'#777777'} size={24} />
-				<Text style={styles.productDetailComment}>{numberOfComment}</Text>
+
+			<View style={{ flexDirection: 'row' }}>
+				<View style={styles.productDetailHeart}>
+					{isLove ? (
+						<TouchableOpacity onPress={() => clickLove()}>
+							<Ionicons name="md-heart" color={colors.red} size={24} />
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity onPress={() => clickLove()}>
+							<Ionicons name="md-heart-outline" color={'#777777'} size={24} />
+						</TouchableOpacity>
+					)}
+					<Text style={styles.productDetailLove}>{numberOfComment} likes</Text>
+				</View>
 			</View>
 		</View>
 	)
@@ -113,6 +145,15 @@ function Footer({ rating, price, numberOfComment }) {
 export class ReviewCard extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			isLove: false
+		}
+	}
+
+	clickLove() {
+		this.setState({
+			isLove: !this.state.isLove
+		})
 	}
 
 	render() {
@@ -120,12 +161,12 @@ export class ReviewCard extends Component {
 			title,
 			user,
 			picture_cover_url,
-			product_price,
+			price,
 			comment_list,
-			overall_rating,
+			rating,
 			timestamp
 		} = this.props.review
-
+		console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<Header
@@ -141,9 +182,11 @@ export class ReviewCard extends Component {
 					setReview={this.props.setCurrentReview}
 				/>
 				<Footer
-					rating={overall_rating}
-					price={product_price}
+					rating={rating}
+					price={price}
 					numberOfComment={comment_list.length}
+					isLove={this.state.isLove}
+					clickLove={() => this.clickLove()}
 				/>
 			</View>
 		)
@@ -182,24 +225,32 @@ const styles = StyleSheet.create({
 		marginVertical: 5
 	},
 	productImage: {
-		width: '100%',
+		width: APP_FULL_WIDTH,
 		height: 260
 	},
 	bahtImage: {
-		width: 24,
-		height: 24
+		marginTop: 3,
+		width: 20,
+		height: 20
+	},
+	iconComment: {
+		marginTop: 3
 	},
 	titleText: {
 		marginLeft: 20,
 		marginTop: 10
 	},
 	footerContainer: {
-		flexDirection: 'row',
+		flex: 1,
 		marginTop: 5,
 		marginLeft: 10,
 		marginBottom: 20
 	},
 	productDetail: {
+		flexDirection: 'row',
+		marginLeft: 8
+	},
+	productDetailHeart: {
 		flexDirection: 'row',
 		marginLeft: 10
 	},
@@ -214,6 +265,10 @@ const styles = StyleSheet.create({
 		marginVertical: 1
 	},
 	productDetailComment: {
+		marginTop: 4,
+		marginLeft: 6
+	},
+	productDetailLove: {
 		marginTop: 4,
 		marginLeft: 6
 	}

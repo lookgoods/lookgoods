@@ -1,37 +1,17 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ProductsGrid from 'src/modules/user/components/ProductsGrid'
+import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import UserActions from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import images from 'src/constants/images'
-
-const products = [
-	{ name: 'product1', image_url: images.product5 },
-	{ name: 'product2', image_url: images.product5 },
-	{ name: 'product3', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product5 },
-	{ name: 'product2', image_url: images.product4 },
-	{ name: 'product3', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product2 }
-]
-
-const products_save = [
-	{ name: 'product3', image_url: images.product1 },
-	{ name: 'product2', image_url: images.product2 },
-	{ name: 'product4', image_url: images.product3 },
-	{ name: 'product1', image_url: images.product4 }
-]
+import { APP_FULL_HEIGHT } from 'src/constants'
 
 export class UserPage extends Component {
 	constructor(props) {
@@ -46,56 +26,61 @@ export class UserPage extends Component {
 		Actions.settingPage()
 	}
 
+	goToLoginPage() {
+		Actions.loginPage()
+	}
+
 	render() {
-		console.log('loading user', this.props.loading)
+		console.log('loading user', this.props.success)
 		console.log('currentuser', this.props.currentUser)
-		if (!this.props.currentUser) return <View />
+		if (!this.props.currentUser && this.props.success) {
+			this.goToLoginPage()
+			return <View/>
+		}
 		else {
-			const {
-				name,
-				picture_url,
-				follower_list,
-				following_list,
-				description
-			} = this.props.currentUser
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
-					<View style={styles.body}>
-						<View style={[styles.settingIconContainer, { right: 10 }]}>
-							<MaterialIcons
-								name="settings"
-								size={25}
-								onPress={() => this.goToSettingPage()}
+					{ !this.props.success ? 
+						<View style={styles.loadingContainer}>
+							<ActivityIndicator size="large" />
+						</View>
+						: <View style={styles.body}>
+							<View style={[styles.settingIconContainer, { right: 10 }]}>
+								<MaterialIcons
+									name="settings"
+									size={25}
+									onPress={() => this.goToSettingPage()}
+								/>
+							</View>
+							<UserPhoto
+								username={this.props.currentUser.name}
+								description={this.props.currentUser.description}
+								size={120}
+								image_url={this.props.currentUser.picture_url}
 							/>
+							<View style={styles.infoBar}>
+								<InfoBar
+									review_num={this.props.currentUser.own_post_list.length}
+									comment_num={0}
+									follower_num={this.props.currentUser.follower_list.length}
+									following_num={this.props.currentUser.following_list.length}
+								/>
+							</View>
+							<View style={{ alignItems: 'center' }}>
+								<Divider style={styles.divider} />
+							</View>
+							<View style={styles.tabsContainer}>
+								<Tabs>
+									<View title="Reviews">
+										<ReviewsGrid review_list={this.props.currentUser.own_post_list} />
+									</View>
+									<View title="Saved">
+										<ReviewsGrid review_list={this.props.currentUser.saved_post_list} />
+									</View>
+								</Tabs>
+							</View>
 						</View>
-						<UserPhoto
-							username={name}
-							description={description}
-							size={120}
-							image_url={picture_url}
-						/>
-						<View style={styles.infoBar}>
-							<InfoBar
-								review_num={4}
-								comment_num={22}
-								follower_num={follower_list.length}
-								following_num={following_list.length}
-							/>
-						</View>
-						<View style={{ alignItems: 'center' }}>
-							<Divider style={styles.divider} />
-						</View>
-						<View style={styles.tabsContainer}>
-							<Tabs>
-								<View title="Reviews">
-									<ProductsGrid product_list={products} />
-								</View>
-								<View title="Saved">
-									<ProductsGrid product_list={products_save} />
-								</View>
-							</Tabs>
-						</View>
-					</View>
+					}
 				</ScrollView>
 			)
 		}
@@ -127,12 +112,15 @@ const styles = StyleSheet.create({
 	settingIconContainer: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end'
+	},
+	loadingContainer: {
+		marginTop: APP_FULL_HEIGHT/2
 	}
 })
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	loading: state.userReducer.loading
+	success: state.userReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({

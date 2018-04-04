@@ -3,28 +3,26 @@ import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
-import StarBar from 'src/modules/viewProduct/components/StarBar'
+import StarBar from 'src/modules/viewReview/components/StarBar'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import { APP_FULL_WIDTH } from 'src/constants'
 
-const CoverPhoto = ({ image_url }) => (
-	<View>
-		{image_url ? (
-			<Image
-				style={styles.coverImage}
-				source={image_url}
-				resizeMode="contain"
-			/>
-		) : (
-			<View />
-		)}
-	</View>
-)
+function CoverPhoto ({ image_url }) {
+	if (image_url) {
+		return <Image
+			style={styles.coverImage}
+			source={{ uri: image_url }}
+			resizeMode="cover"
+		/>
+	}
+	return <View />
+}
 
 const ProfilePicture = ({ image_url }) => (
 	<View style={styles.profileImage}>
-		<CoverImage size={70} url={image_url} />
+		<CoverImage size={70} uri={image_url} />
 	</View>
 )
 
@@ -37,7 +35,7 @@ function ReviewerBar({ reviewer, rating, setUser }) {
 	return (
 		<View style={styles.reviewerBar}>
 			<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
-				<ProfilePicture image_url={reviewer.profile_url} />
+				<ProfilePicture image_url={reviewer.picture_url} />
 			</TouchableOpacity>
 			<View style={styles.reviewTextWrapper}>
 				<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
@@ -51,26 +49,26 @@ function ReviewerBar({ reviewer, rating, setUser }) {
 	)
 }
 
-function getContent(content) {
+function getContent(content, index) {
 	if (content.type === 'picture')
 		return (
-			<View style={styles.contentImageWrapper}>
+			<View key={index} style={styles.contentImageWrapper}>
 				<Image
-					source={content.value}
+					source={{ uri: content.value }}
 					resizeMode="contain"
 					style={styles.contentImage}
 				/>
 			</View>
 		)
 	else if (content.type === 'text')
-		return <Text style={styles.contentText}>{content.value}</Text>
-	else return <View />
+		return <Text key={index} style={styles.contentText}>{content.value}</Text>
+	else return <View key={index}/>
 }
 
 function Content({ content_list }) {
 	return (
 		<View style={styles.contentList}>
-			{content_list.map(content => getContent(content))}
+			{content_list.map((content, index) => getContent(content, index))}
 		</View>
 	)
 }
@@ -122,9 +120,9 @@ export class ContentSection extends Component {
 			rating,
 			title,
 			content_list,
-			product_price,
-			tag_list
+			price
 		} = this.props.review
+		console.log(picture_cover_url, 'pic url')
 		return (
 			<View>
 				<CoverPhoto image_url={picture_cover_url} />
@@ -136,10 +134,10 @@ export class ContentSection extends Component {
 				<Text style={styles.titleText}>{title}</Text>
 				<Content content_list={content_list} />
 				<View style={{ flexDirection: 'row' }}>
-					<ProductDetail name="Price" value={product_price} />
+					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={tag_list} />
+				<TagList tags={product.tag} />
 			</View>
 		)
 	}
@@ -147,7 +145,7 @@ export class ContentSection extends Component {
 
 const styles = StyleSheet.create({
 	coverImage: {
-		width: '100%',
+		width: APP_FULL_WIDTH,
 		height: 250
 	},
 	profileImage: {
@@ -155,7 +153,8 @@ const styles = StyleSheet.create({
 	},
 	reviewerBar: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginTop: 10
 	},
 	reviewTextWrapper: {
 		flexDirection: 'column',
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
 		marginTop: 5
 	},
 	contentImage: {
-		width: '80%',
+		width: '90%',
 		height: 200
 	},
 	contentImageWrapper: {
