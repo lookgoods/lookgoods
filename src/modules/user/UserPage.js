@@ -11,28 +11,7 @@ import UserActions from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import images from 'src/constants/images'
-import { LoginManager } from 'react-native-fbsdk'
-
-const products = [
-	{ name: 'product1', image_url: images.product5 },
-	{ name: 'product2', image_url: images.product5 },
-	{ name: 'product3', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product5 },
-	{ name: 'product2', image_url: images.product4 },
-	{ name: 'product3', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product2 }
-]
-
-const products_save = [
-	{ name: 'product3', image_url: images.product1 },
-	{ name: 'product2', image_url: images.product2 },
-	{ name: 'product4', image_url: images.product3 },
-	{ name: 'product1', image_url: images.product4 }
-]
+import { APP_FULL_HEIGHT } from 'src/constants'
 
 export class UserPage extends Component {
 	constructor(props) {
@@ -62,7 +41,9 @@ export class UserPage extends Component {
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
 					{ !this.props.success ? 
-						<ActivityIndicator size="large" style={styles.loading} />
+						<View style={styles.loadingContainer}>
+							<ActivityIndicator size="large" />
+						</View>
 						: <View style={styles.body}>
 							<View style={[styles.settingIconContainer, { right: 10 }]}>
 								<MaterialIcons
@@ -79,8 +60,8 @@ export class UserPage extends Component {
 							/>
 							<View style={styles.infoBar}>
 								<InfoBar
-									review_num={4}
-									comment_num={22}
+									review_num={this.props.currentUser.own_post_list.length}
+									comment_num={0}
 									follower_num={this.props.currentUser.follower_list.length}
 									following_num={this.props.currentUser.following_list.length}
 								/>
@@ -91,10 +72,10 @@ export class UserPage extends Component {
 							<View style={styles.tabsContainer}>
 								<Tabs>
 									<View title="Reviews">
-										<ProductsGrid product_list={products} />
+										<ProductsGrid product_list={this.props.currentUser.own_post_list} />
 									</View>
 									<View title="Saved">
-										<ProductsGrid product_list={products_save} />
+										<ProductsGrid product_list={this.props.currentUser.saved_post_list} />
 									</View>
 								</Tabs>
 							</View>
@@ -131,6 +112,9 @@ const styles = StyleSheet.create({
 	settingIconContainer: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end'
+	},
+	loadingContainer: {
+		marginTop: APP_FULL_HEIGHT/2
 	}
 })
 

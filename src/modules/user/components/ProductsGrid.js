@@ -34,8 +34,6 @@ const styles = StyleSheet.create({
 	productPhoto: {
 		paddingVertical: 2,
 		paddingHorizontal: 2,
-		// width: Dimensions.get('window').width / 3,
-		// height: Dimensions.get('window').width / 3
 		width: '33%',
 		aspectRatio: 1
 	}

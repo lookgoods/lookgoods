@@ -1,7 +1,8 @@
-import { Image, StyleSheet, View, Dimensions } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 
 import { colors } from 'src/constants/mixins'
+import { PICTURE_GRID_SIZE } from 'src/constants'
 
 export default class ProductPhoto extends Component {
 	constructor(props) {
@@ -11,9 +12,9 @@ export default class ProductPhoto extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{this.props.product.image_url ? (
+				{this.props.product.picture_thumbnail_url ? (
 					<Image
-						source={this.props.product.image_url}
+						source={{ uri: this.props.product.picture_thumbnail_url }}
 						style={styles.product_image}
 						resizeMode="contain"
 					/>
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.white
 	},
 	product_image: {
-		width: Dimensions.get('window').width / 3 - 10,
-		height: '100%'
+		width: PICTURE_GRID_SIZE,
+		height: PICTURE_GRID_SIZE
 	}
 })
