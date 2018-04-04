@@ -68,7 +68,7 @@ const ProductPicture = ({ image_url, review, setReview }) => {
 				<TouchableOpacity
 					onPress={() => {
 						setReview(review)
-						Actions.viewProductPage()
+						Actions.viewReviewPage()
 					}}
 				>
 					<Image
