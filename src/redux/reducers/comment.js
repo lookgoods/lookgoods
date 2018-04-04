@@ -22,79 +22,6 @@ export default (state = initialState, action) => {
 			success: false,
 			error: null
 		}
-		
-	case constants.ADD_COMMENT_FAILURE:
-		return {
-			...state,
-			loading: false,
-			error: action.payload.error
-		}
-
-	case constants.GET_COMMENT_REQUEST:
-		return {
-			...state,
-			loading: true,
-			error: null
-		}
-
-	case constants.GET_COMMENT_SUCCESS:
-		return {
-			...state,
-			comments: action.payload.comments,
-			success: false,
-			error: null
-		}
-
-	case constants.GET_COMMENT_FAILURE:
-		return {
-			...state,
-			success: false,
-			error: action.payload.error
-		}	
-
-	case constants.EDIT_COMMENT_REQUEST:
-		return {
-			...state,
-			success: true,
-			error: null
-		}
-
-	case constants.EDIT_COMMENT_SUCCESS:
-		return {
-			...state,
-			comments: action.payload.comments,
-			success: false,
-			error: null
-		}
-
-	case constants.EDIT_COMMENT_FAILURE:
-		return {
-			...state,
-			success: false,
-			error: action.payload.error
-		}	
-
-	case constants.DELETE_COMMENT_REQUEST:
-		return {
-			...state,
-			success: true,
-			error: null
-		}
-
-	case constants.DELETE_COMMENT_SUCCESS:
-		return {
-			...state,
-			comments: action.payload.comments,
-			success: false,
-			error: null
-		}
-
-	case constants.DELETE_COMMENT_FAILURE:
-		return {
-			...state,
-			success: false,
-			error: action.payload.error
-		}	
 
 	case constants.ADD_COMMENT_FAILURE:
 		return {
@@ -168,7 +95,6 @@ export default (state = initialState, action) => {
 			success: false,
 			error: action.payload.error
 		}	
-
 
 	default:
 		return state
