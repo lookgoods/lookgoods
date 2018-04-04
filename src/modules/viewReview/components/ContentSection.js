@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
-import StarBar from 'src/modules/viewProduct/components/StarBar'
+import StarBar from 'src/modules/viewReview/components/StarBar'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'

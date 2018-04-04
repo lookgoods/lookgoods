@@ -5,7 +5,6 @@ import Icons from 'src/constants/icons'
 class CoverImage extends Component {
 	render() {
 		const { size, url, uri } = this.props
-		console.log(uri, 'uri')
 		return (
 			<View
 				style={[

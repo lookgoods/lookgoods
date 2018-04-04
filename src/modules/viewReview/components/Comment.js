@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 
 import CoverImage from 'src/modules/shares/CoverImage'
-import StarBar from 'src/modules/viewProduct/components/StarBar'
+import StarBar from 'src/modules/viewReview/components/StarBar'
 
 const ProfilePicture = ({ image_url }) => (
 	<View style={styles.profileImage}>

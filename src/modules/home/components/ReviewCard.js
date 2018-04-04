@@ -11,9 +11,10 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
 import { APP_FULL_WIDTH } from 'src/constants'
+import moment from 'moment'
 
 const ProfilePicture = ({ image_url }) => {
-	return <CoverImage size={50} url={image_url} />
+	return <CoverImage size={50} uri={image_url} />
 }
 
 const BookMark = ({ isActive }) => {
@@ -33,6 +34,13 @@ function goToUserPage(user, setUser) {
 	Actions.viewUserPage()
 }
 
+function getTimeText(time) {
+	if (Math.abs(moment().diff(time)) < 25000) { // 25 seconds before or after now
+		return 'Just now'
+	}
+	return moment(time).fromNow()
+}
+
 function Header({ user, time, isSaved, setUser }) {
 	return (
 		<View style={styles.headerContainer}>
@@ -40,13 +48,13 @@ function Header({ user, time, isSaved, setUser }) {
 				onPress={() => goToUserPage(user, setUser)}
 				style={styles.profilePicture}
 			>
-				<ProfilePicture image_url={user.profile_url} />
+				<ProfilePicture image_url={user.picture_url} />
 			</TouchableOpacity>
 			<View style={styles.headerWrapper}>
 				<TouchableOpacity onPress={() => goToUserPage(user, setUser)}>
 					<Text style={styles.reviewerName}>{user.name}</Text>
 				</TouchableOpacity>
-				<Text style={styles.timeText}>{time}</Text>
+				<Text style={styles.timeText}>{getTimeText(time)}</Text>
 			</View>
 			<BookMark isActive={isSaved} />
 		</View>
@@ -60,7 +68,7 @@ const ProductPicture = ({ image_url, review, setReview }) => {
 				<TouchableOpacity
 					onPress={() => {
 						setReview(review)
-						Actions.viewProductPage()
+						Actions.viewReviewPage()
 					}}
 				>
 					<Image
