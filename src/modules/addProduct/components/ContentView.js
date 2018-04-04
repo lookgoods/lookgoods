@@ -36,7 +36,7 @@ export default class ContentView extends Component {
 							{contentList.length === 0 ? (
 								<View style={{ marginLeft: 24, flexDirection: 'row' }}>
 									<IconFontAwesome name="edit" color={colors.gray4} size={18} />
-									<Text style={styles.fontTextEdit}>Edit</Text>
+									<Text style={[styles.fontTextEdit, {color: colors.gray4}]}>Edit</Text>
 								</View>
 							) : (
 								<TouchableOpacity
@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
 	},
 	fontTextEdit: {
 		fontSize: 15,
-		color: colors.gray4,
 		marginLeft: 5,
 		marginRight: 15
 	},
