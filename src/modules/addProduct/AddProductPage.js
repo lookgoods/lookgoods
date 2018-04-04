@@ -192,8 +192,8 @@ export class AddProductPage extends Component {
 	}
 
 	async checkValidate() {
-		const titleErr = validate(['title'], [this.state.title])
-		const nameErr = validate(['name'], [this.state.name])
+		const titleErr = validate(['title'], [this.state.title.trim()])
+		const nameErr = validate(['name'], [this.state.name.trim()])
 		const ratingErr = validate(['rating'], [this.state.rating])
 		const contentMeassageErr = validate(
 			['contentMessage'],
@@ -214,15 +214,15 @@ export class AddProductPage extends Component {
 
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			const review = {
-				title: this.state.title,
-				price: this.state.price,
-				brand: this.state.brand,
+				title: this.state.title.trim(),
+				name: this.state.name.trim(),
+				price: this.state.price.trim(),
+				brand: this.state.brand.trim(),
 				tag: this.state.tagsMessage,
 				picture_cover_url: this.state.coverImage.url,
 				picture_thumbnail_url: this.state.coverImage.thumbnail_url,
 				content_list: this.state.contentList,
-				rating: this.state.rating,
-				name: this.state.name
+				rating: this.state.rating	
 			}
 	
 			this.props.addReview(review)
