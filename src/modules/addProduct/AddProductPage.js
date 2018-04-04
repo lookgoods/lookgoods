@@ -28,7 +28,10 @@ export class AddProductPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			coverImage: '',
+			coverImage: {
+				url: '',
+				thumbnail_url: ''
+			},
 			title: '',
 			titleErr: '',
 			name: '',
@@ -92,12 +95,11 @@ export class AddProductPage extends Component {
 				console.log('ImagePicker Success: ', response)
 				await this.props.uploadImage(response)
 				await this.waitForUpload()
-				this.setState({
-					coverImage: {
-						url: this.props.picture_url,
-						thumbnail_url: this.props.thumbnail_url
-					}
-				})
+				const coverImage = {
+					url: this.props.picture_url,
+					thumbnail_url: this.props.thumbnail_url
+				}
+				this.setState({ coverImage })
 			}
 		})
 		// ImageCropPicker.openPicker({
@@ -250,6 +252,7 @@ export class AddProductPage extends Component {
 	}
 
 	render() {
+		console.log(this.state.coverImage, 'cover')
 		return (
 			<View
 				style={styles.container}
@@ -272,7 +275,7 @@ export class AddProductPage extends Component {
 							flexDirection: 'row'
 						}}
 					>
-						{this.state.coverImage === '' ? (
+						{this.state.coverImage.url === '' ? (
 							<TouchableOpacity
 								style={{
 									flex: 1,
@@ -511,8 +514,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		left: 0,
 		right: 0,
-		top: 0,
-		bottom: 0
+		top: 0
 	},
 	label: {
 		color: '#5C5C5C',
