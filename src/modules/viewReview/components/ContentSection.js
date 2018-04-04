@@ -7,6 +7,7 @@ import StarBar from 'src/modules/viewReview/components/StarBar'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import { APP_FULL_WIDTH } from 'src/constants'
 
 function CoverPhoto ({ image_url }) {
 	if (image_url) {
@@ -144,7 +145,7 @@ export class ContentSection extends Component {
 
 const styles = StyleSheet.create({
 	coverImage: {
-		width: '100%',
+		width: APP_FULL_WIDTH,
 		height: 250
 	},
 	profileImage: {
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
 		marginTop: 5
 	},
 	contentImage: {
-		width: '80%',
+		width: '90%',
 		height: 200
 	},
 	contentImageWrapper: {

@@ -26,7 +26,7 @@ export default class TabMenu extends Component {
 		if (!token) Actions.loginPage()
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.checkLogin()
 	}
 

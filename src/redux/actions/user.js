@@ -39,7 +39,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}`))
 		if (err) dispatch(actions.getUserError(err))
 		else {
-			dispatch(actions.getUserSuccess(response))
+			dispatch(actions.getUserSuccess(response.data))
 		}
 	},
 	getUserReviews: (user_id) => async dispatch => {
