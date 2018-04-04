@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ProductsGrid from 'src/modules/user/components/ProductsGrid'
+import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import UserActions from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
@@ -72,10 +72,10 @@ export class UserPage extends Component {
 							<View style={styles.tabsContainer}>
 								<Tabs>
 									<View title="Reviews">
-										<ProductsGrid product_list={this.props.currentUser.own_post_list} />
+										<ReviewsGrid review_list={this.props.currentUser.own_post_list} />
 									</View>
 									<View title="Saved">
-										<ProductsGrid product_list={this.props.currentUser.saved_post_list} />
+										<ReviewsGrid review_list={this.props.currentUser.saved_post_list} />
 									</View>
 								</Tabs>
 							</View>

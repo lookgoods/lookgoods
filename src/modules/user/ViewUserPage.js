@@ -11,7 +11,7 @@ import React, { Component } from 'react'
 import CoverImage from 'src/modules/shares/CoverImage'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
-import ProductsGrid from 'src/modules/user/components/ProductsGrid'
+import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
@@ -112,10 +112,10 @@ export class ViewUserPage extends Component {
 							<View style={styles.tabsContainer}>
 								<Tabs>
 									<View title="Reviews">
-										<ProductsGrid product_list={products} />
+										<ReviewsGrid product_list={products} />
 									</View>
 									<View title="Saved">
-										<ProductsGrid product_list={products_save} />
+										<ReviewsGrid product_list={products_save} />
 									</View>
 								</Tabs>
 							</View>
