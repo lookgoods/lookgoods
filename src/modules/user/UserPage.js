@@ -18,7 +18,7 @@ export class UserPage extends Component {
 		super(props)
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.getCurrentUser()
 	}
 

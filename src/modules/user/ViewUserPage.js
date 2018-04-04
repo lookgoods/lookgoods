@@ -4,7 +4,8 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
-	View
+	View,
+	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -16,45 +17,24 @@ import Tabs from 'src/modules/shares/Tabs'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import images from 'src/constants/images'
-
-const products = [
-	{ name: 'product1', image_url: images.product5 },
-	{ name: 'product2', image_url: images.product5 },
-	{ name: 'product3', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product5 },
-	{ name: 'product2', image_url: images.product4 },
-	{ name: 'product3', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product5 },
-	{ name: 'product4', image_url: images.product2 }
-]
-
-const products_save = [
-	{ name: 'product3', image_url: images.product1 },
-	{ name: 'product2', image_url: images.product2 },
-	{ name: 'product4', image_url: images.product3 },
-	{ name: 'product1', image_url: images.product4 }
-]
+import UserActions from 'src/redux/actions/user'
 
 export class ViewUserPage extends Component {
 	constructor(props) {
 		super(props)
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		this.props.getUser(this.props.selectedUser._id)
+	}
 
 	render() {
-		if (!this.props.selectedUser) return <View />
+		console.log(this.props.selectedUser, 'selected user')
+		console.log(this.props.user, 'user')
+		if (!this.props.user) {
+			return <View/>
+		}
 		else {
-			const {
-				name,
-				picture_url,
-				follower_list,
-				following_list,
-				description
-			} = this.props.selectedUser
 			return (
 				<View style={styles.container}>
 					<ScrollView
@@ -63,28 +43,11 @@ export class ViewUserPage extends Component {
 						bounces={false}
 						style={styles.body}
 					>
-						<View>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'center',
-									marginTop: 10
-								}}
-							>
-								<CoverImage size={110} uri={picture_url} />
-								<View
-									style={{
-										marginLeft: 20
-									}}
-								>
-									<Text style={styles.usernameText}>{name}</Text>
-									<TouchableOpacity style={styles.buttonFollow}>
-										<Text style={styles.fontFollow}>Follow</Text>
-									</TouchableOpacity>
-								</View>
-							</View>
-
-							{description !== '' && (
+						{ !this.props.success ? 
+							<View style={styles.loadingContainer}>
+								<ActivityIndicator size="large" />
+							</View> :
+							<View>
 								<View
 									style={{
 										flexDirection: 'row',
@@ -92,38 +55,65 @@ export class ViewUserPage extends Component {
 										marginTop: 10
 									}}
 								>
-									<View style={{ width: '80%' }}>
-										<Text style={{ lineHeight: 22 }}>{description}</Text>
+									<CoverImage size={110} uri={this.props.user.picture_url} />
+									<View
+										style={{
+											marginLeft: 20
+										}}
+									>
+										<Text style={styles.usernameText}>{this.props.user.name}</Text>
+										{ this.props.currentUser._id !== this.props.user._id &&
+											<TouchableOpacity style={styles.buttonFollow}>
+												<Text style={styles.fontFollow}>Follow</Text>
+											</TouchableOpacity>
+										}
 									</View>
 								</View>
-							)}
 
-							<View style={styles.infoBar}>
-								<InfoBar
-									review_num={4}
-									comment_num={22}
-									follower_num={follower_list.length}
-									following_num={following_list.length}
-								/>
-							</View>
-							<View style={{ alignItems: 'center' }}>
-								<Divider style={styles.divider} />
-							</View>
-							<View style={styles.tabsContainer}>
-								<Tabs>
-									<View title="Reviews">
-										<ReviewsGrid product_list={products} />
+								{this.props.user.description !== '' && (
+									<View
+										style={{
+											flexDirection: 'row',
+											justifyContent: 'center',
+											marginTop: 10
+										}}
+									>
+										<View style={{ width: '80%' }}>
+											<Text style={{ lineHeight: 22 }}>{this.props.user.description}</Text>
+										</View>
 									</View>
-									<View title="Saved">
-										<ReviewsGrid product_list={products_save} />
-									</View>
-								</Tabs>
+								)}
+
+								<View style={styles.infoBar}>
+									<InfoBar
+										review_num={this.props.user.own_post_list.length}
+										comment_num={0}
+										follower_num={this.props.user.follower_list.length}
+										following_num={this.props.user.following_list.length}
+									/>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Divider style={styles.divider} />
+								</View>
+								<View style={styles.tabsContainer}>
+									<Tabs>
+										<View title="Reviews">
+											<ReviewsGrid review_list={this.props.user.own_post_list} />
+										</View>
+										<View title="Saved">
+											<ReviewsGrid review_list={this.props.user.saved_post_list} />
+										</View>
+									</Tabs>
+								</View>
 							</View>
-						</View>
+						}
 					</ScrollView>
 					<View style={styles.header}>
 						<View style={styles.platformHeader}>
-							<NavBar titleName={name} />
+							{ this.props.success ? 
+								<NavBar titleName={this.props.user.name} /> :
+								<NavBar />
+							} 
 						</View>
 					</View>
 				</View>
@@ -185,11 +175,25 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.orange,
 		height: 30,
 		borderRadius: 3
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 })
 
 const mapStateToProps = state => ({
-	selectedUser: state.userReducer.selectedUser
+	selectedUser: state.userReducer.selectedUser,
+	user: state.userReducer.user,
+	currentUser: state.userReducer.currentUser,
+	success: state.userReducer.success
 })
 
-export default connect(mapStateToProps, null)(ViewUserPage)
+const mapDispatchToProps = dispatch => ({
+	getUser: (user_id) => {
+		dispatch(UserActions.getUser(user_id))
+	}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewUserPage)
