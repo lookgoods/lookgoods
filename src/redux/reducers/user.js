@@ -2,7 +2,7 @@ import constants from 'src/redux/constants'
 
 const initialState = {
 	currentUser: null,
-	loading: false,
+	success: false,
 	error: null,
 	selectedUser: null
 }
@@ -12,21 +12,21 @@ export default (state = initialState, action) => {
 	case constants.GET_CURRENT_USER_REQUEST:
 		return {
 			...state,
-			loading: true,
+			success: false,
 			error: null
 		}
 
 	case constants.GET_CURRENT_USER_SUCCESS:
 		return {
 			...state,
-			loading: false,
+			success: true,
 			currentUser: action.payload.user
 		}
 
 	case constants.GET_CURRENT_USER_FAILURE:
 		return {
 			...state,
-			loading: false,
+			success: false,
 			error: action.payload.error
 		}
 

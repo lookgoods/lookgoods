@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
@@ -12,6 +12,7 @@ import UserPhoto from 'src/modules/user/components/UserPhoto'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import images from 'src/constants/images'
+import { LoginManager } from 'react-native-fbsdk'
 
 const products = [
 	{ name: 'product1', image_url: images.product5 },
@@ -38,7 +39,7 @@ export class UserPage extends Component {
 		super(props)
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		this.props.getCurrentUser()
 	}
 
@@ -46,56 +47,59 @@ export class UserPage extends Component {
 		Actions.settingPage()
 	}
 
+	goToLoginPage() {
+		Actions.loginPage()
+	}
+
 	render() {
-		console.log('loading user', this.props.loading)
+		console.log('loading user', this.props.success)
 		console.log('currentuser', this.props.currentUser)
-		if (!this.props.currentUser) return <View />
+		if (!this.props.currentUser && this.props.success) {
+			this.goToLoginPage()
+			return <View/>
+		}
 		else {
-			const {
-				name,
-				picture_url,
-				follower_list,
-				following_list,
-				description
-			} = this.props.currentUser
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
-					<View style={styles.body}>
-						<View style={[styles.settingIconContainer, { right: 10 }]}>
-							<MaterialIcons
-								name="settings"
-								size={25}
-								onPress={() => this.goToSettingPage()}
+					{ !this.props.success ? 
+						<ActivityIndicator size="large" style={styles.loading} />
+						: <View style={styles.body}>
+							<View style={[styles.settingIconContainer, { right: 10 }]}>
+								<MaterialIcons
+									name="settings"
+									size={25}
+									onPress={() => this.goToSettingPage()}
+								/>
+							</View>
+							<UserPhoto
+								username={this.props.currentUser.name}
+								description={this.props.currentUser.description}
+								size={120}
+								image_url={this.props.currentUser.picture_url}
 							/>
+							<View style={styles.infoBar}>
+								<InfoBar
+									review_num={4}
+									comment_num={22}
+									follower_num={this.props.currentUser.follower_list.length}
+									following_num={this.props.currentUser.following_list.length}
+								/>
+							</View>
+							<View style={{ alignItems: 'center' }}>
+								<Divider style={styles.divider} />
+							</View>
+							<View style={styles.tabsContainer}>
+								<Tabs>
+									<View title="Reviews">
+										<ProductsGrid product_list={products} />
+									</View>
+									<View title="Saved">
+										<ProductsGrid product_list={products_save} />
+									</View>
+								</Tabs>
+							</View>
 						</View>
-						<UserPhoto
-							username={name}
-							description={description}
-							size={120}
-							image_url={picture_url}
-						/>
-						<View style={styles.infoBar}>
-							<InfoBar
-								review_num={4}
-								comment_num={22}
-								follower_num={follower_list.length}
-								following_num={following_list.length}
-							/>
-						</View>
-						<View style={{ alignItems: 'center' }}>
-							<Divider style={styles.divider} />
-						</View>
-						<View style={styles.tabsContainer}>
-							<Tabs>
-								<View title="Reviews">
-									<ProductsGrid product_list={products} />
-								</View>
-								<View title="Saved">
-									<ProductsGrid product_list={products_save} />
-								</View>
-							</Tabs>
-						</View>
-					</View>
+					}
 				</ScrollView>
 			)
 		}
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	loading: state.userReducer.loading
+	success: state.userReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({
