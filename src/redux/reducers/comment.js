@@ -38,6 +38,21 @@ export default (state = initialState, action) => {
 		}
 
 
+	case constants.ADD_COMMENT_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload.error
+		}
+
+	case constants.GET_COMMENT_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+
 	default:
 		return state
 	}

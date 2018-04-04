@@ -36,9 +36,9 @@ const actions = {
 	addCommentRequest: () => ({
 		type: constants.ADD_COMMENT_REQUEST
 	}),
-	addCommentSuccess: comment => ({
+	addCommentSuccess: comments => ({
 		type: constants.ADD_COMMENT_SUCCESS,
-		payload: { comment }
+		payload: { comments }
 	}),
 	addCommentError: error => ({
 		type: constants.ADD_COMMENT_FAILURE,
