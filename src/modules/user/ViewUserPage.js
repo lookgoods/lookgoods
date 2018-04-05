@@ -28,6 +28,7 @@ export class ViewUserPage extends Component {
 		this.props.getUser(this.props.selectedUser._id)
 	}
 
+
 	render() {
 		console.log(this.props.selectedUser, 'selected user')
 		console.log(this.props.user, 'user')
@@ -63,7 +64,7 @@ export class ViewUserPage extends Component {
 									>
 										<Text style={styles.usernameText}>{this.props.user.name}</Text>
 										{ this.props.currentUser._id !== this.props.user._id &&
-											<TouchableOpacity style={styles.buttonFollow}>
+											<TouchableOpacity style={styles.buttonFollow} onPress={}>
 												<Text style={styles.fontFollow}>Follow</Text>
 											</TouchableOpacity>
 										}
@@ -193,6 +194,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getUser: (user_id) => {
 		dispatch(UserActions.getUser(user_id))
+	},
+	followUser: (user_id) => {
+		dispatch(UserActions.followUser(user_id))
+	},
+	unfollowUser: (user_id) => {
+		dispatch(UserActions.unfollwUser(user_id))
 	}
 })
 
