@@ -19,6 +19,9 @@ export default function validate(fieldName, value) {
 		contentMessage: {
 			presence: { allowEmpty: false },
 			length: { minimum: 1, message: 'must be at least one content' }
+		},
+		desc: {
+			presence: { allowEmpty: false, message: 'field is required.' }
 		}
 	}
 

@@ -7,9 +7,10 @@ import {
 	View
 } from 'react-native'
 import React, { Component } from 'react'
-
+import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
+import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 
 export default class AddComment extends Component {
@@ -17,6 +18,7 @@ export default class AddComment extends Component {
 		super(props)
 		this.state = {
 			desc: '',
+			descErr: '',
 			rating: 0,
 			stars: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
@@ -35,9 +37,20 @@ export default class AddComment extends Component {
 		})
 	}
 
-	addComment() {
-		const comment = { user_id: this.props.user._id, desc: this.state.desc, rating: this.state.rating}
-		this.props.addComment(comment)
+	async addComment() {
+		const descErr = validate(['desc'], [this.state.desc.trim()])
+		await this.setState({ descErr })
+
+		if (!descErr) {
+			const comment = {
+				user_id: this.props.user._id, 
+				desc: this.state.desc.trim(), 
+				rating: this.state.rating
+			}
+			this.props.addComment(comment)
+		} else {
+			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
+		}
 	}
 
 	render() {
@@ -87,6 +100,12 @@ export default class AddComment extends Component {
 									onChangeText={desc => this.setState({ desc })}
 									value={this.state.desc}
 									keyboardType="default"
+									onBlur={() => {
+										this.setState({
+											titleErr: validate(['title'], [this.state.title])
+										})
+									}}
+									error={this.state.titleErr}
 								/>
 							</View>
 							<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>

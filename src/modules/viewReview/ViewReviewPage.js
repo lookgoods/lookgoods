@@ -37,7 +37,7 @@ export class ViewReviewPage extends Component {
 				<ScrollView>
 					<ContentSection review={this.props.review} />
 					<Divider style={styles.divider} />
-					<CommentSection review={this.props.review} />
+					{/* <CommentSection review={this.props.review} /> */}
 					<Divider style={styles.divider} />
 					<AddComment 
 						style={styles.addComment} 
