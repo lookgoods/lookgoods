@@ -16,7 +16,7 @@ export default class AddComment extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			message: '',
+			desc: '',
 			rating: 0,
 			stars: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
@@ -33,6 +33,11 @@ export default class AddComment extends Component {
 			rating: index + 1,
 			stars: stars
 		})
+	}
+
+	addComment() {
+		const comment = { user_id: this.props.user._id, desc: this.state.desc, rating: this.state.rating}
+		this.props.addComment(comment)
 	}
 
 	render() {
@@ -79,12 +84,12 @@ export default class AddComment extends Component {
 									multiline
 									maxHeight={300}
 									underlineColorAndroid="transparent"
-									onChangeText={message => this.setState({ message })}
-									value={this.state.message}
+									onChangeText={desc => this.setState({ desc })}
+									value={this.state.desc}
 									keyboardType="default"
 								/>
 							</View>
-							<TouchableOpacity style={styles.buttonSend}>
+							<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>
 								<Text style={styles.fontSend}>Send</Text>
 							</TouchableOpacity>
 						</View>
