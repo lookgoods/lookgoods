@@ -1,5 +1,5 @@
 import constants from 'src/redux/constants'
-import axios from 'react-native-axios'
+import axios from 'axios'
 import to from 'await-to-js'
 
 const AppURL = constants.AppURL
