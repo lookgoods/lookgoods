@@ -17,7 +17,7 @@ const UserActions = {
 	},
 	getCurrentUser: () => async dispatch => {
 		dispatch(actions.getCurrentUserRequest())
-		const [err, response] = fetch(`${AppURL}/currentuser`)
+		const [err, response] = await to(axios.get(`${AppURL}/currentuser`))
 		if (err) dispatch(actions.getCurrentUserError(err))
 		else dispatch(actions.getCurrentUserSuccess(response.data))
 	},

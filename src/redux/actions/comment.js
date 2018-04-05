@@ -3,30 +3,29 @@ import axios from 'axios'
 import to from 'await-to-js'
 
 const AppURL = constants.AppURL
-const TestURL = constants.TestURL
 
 const ReviewActions = {
 	addComment: (comment, review_id) => async dispatch => {
 		dispatch(actions.addCommentRequest())
-		const [ err, response ] = await to(axios.post(`${TestURL}/reviews/${review_id}`), comment)
+		const [ err, response ] = await to(axios.post(`${AppURL}/reviews/${review_id}`), comment)
 		if (err) dispatch(actions.addCommentError(err))
 		else dispatch(actions.addCommentSuccess(response))
 	},
 	getComments: (review_id) => async dispatch => {
 		dispatch(actions.getCommentRequest())
-		const [err, response ] = await to(axios.get(`${TestURL}/reviews/${review_id}`))
+		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}`))
 		if (err) dispatch(actions.getCommentError(err))
 		else dispatch(actions.getCommentSuccess(response))
 	},
 	editComment: (comment, review_id, comment_id) => async dispatch => {
 		dispatch(actions.editCommentRequest())
-		const [err, response ] = await to(axios.put(`${TestURL}/reviews/${review_id}/comments/${comment_id}`), comment)
+		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
 		if (err) dispatch(actions.editCommentError(err))
 		else dispatch(actions.editCommentSuccess(response))
 	},
 	deleteComment: (comment, review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())
-		const [err, response ] = await to(axios.delete(`${TestURL}/reviews/${review_id}/comments/${comment_id}`), comment)
+		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
 		if (err) dispatch(actions.deleteCommentError(err))
 		else dispatch(actions.deleteCommentSuccess(response))
 	}
