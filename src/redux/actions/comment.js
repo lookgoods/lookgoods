@@ -4,7 +4,7 @@ import to from 'await-to-js'
 
 const AppURL = constants.AppURL
 
-const ReviewActions = {
+const CommentActions = {
 	addComment: (comment, review_id) => async dispatch => {
 		dispatch(actions.addCommentRequest())
 		const [ err, response ] = await to(axios.post(`${AppURL}/reviews/${review_id}`), comment)
@@ -78,4 +78,4 @@ const actions = {
 	})
 }
 
-export default ReviewActions
+export default CommentActions

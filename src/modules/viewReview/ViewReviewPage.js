@@ -6,7 +6,7 @@ import ContentSection from 'src/modules/viewReview/components/ContentSection'
 import { Divider } from 'react-native-elements'
 import NavBar from 'src/modules/shares/NavBar'
 import UserActions from 'src/redux/actions/user'
-import ReviewActions from 'src/redux/actions/comment'
+import CommentActions from 'src/redux/actions/comment'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,
-	currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser,
+	comments: state.commentReducer.comment
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -88,7 +89,10 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(UserActions.getCurrentUser())
 	},
 	addComment: (comment, review_id) => {
-		dispatch(ReviewActions.addComment(comment, review_id))
+		dispatch(CommentActions.addComment(comment, review_id))
+	},
+	getComments: (review_id) => {
+		dispatch(CommentActions.getComments(review_id))
 	}
 })
 
