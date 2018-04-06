@@ -17,6 +17,7 @@ export class ViewReviewPage extends Component {
 
 	componentDidMount() {
 		this.props.getCurrentUser()
+		this.props.getComments(this.props.review._id)
 	}
 
 	addComment(comment) {
@@ -27,6 +28,7 @@ export class ViewReviewPage extends Component {
 		const { product } = this.props.review
 		console.log(this.props.review, 'review')
 		console.log(this.props.currentUser, 'currentUser')
+		console.log(this.props.comments, 'comments')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,
 	currentUser: state.userReducer.currentUser,
-	comments: state.commentReducer.comment
+	comments: state.commentReducer.comments
 })
 
 const mapDispatchToProps = dispatch => ({
