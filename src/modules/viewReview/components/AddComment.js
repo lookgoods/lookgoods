@@ -44,7 +44,7 @@ export default class AddComment extends Component {
 		if (!descErr) {
 			const comment = {
 				user_id: this.props.user._id, 
-				desc: this.state.desc.trim(), 
+				description: this.state.desc.trim(), 
 				rating: this.state.rating
 			}
 			console.log(comment, 'comment befor post')
