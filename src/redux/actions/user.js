@@ -63,7 +63,9 @@ const UserActions = {
 		)
 		if (err) dispatch(actions.followUserError(err))
 		else {
+			dispatch(UserActions.getCurrentUser())
 			dispatch(actions.followUserSuccess(response))
+			console.log(response, 'follow success')
 		}
 	},
 	unfollowUser: user_id => async dispatch => {
@@ -73,7 +75,9 @@ const UserActions = {
 		)
 		if (err) dispatch(actions.unfollowUserError(err))
 		else {
+			dispatch(UserActions.getCurrentUser())
 			dispatch(actions.unfollowUserSuccess(response))
+			console.log(response, 'unfollow success')
 		}
 	},
 	getFollowerUsers: user_id => async dispatch => {

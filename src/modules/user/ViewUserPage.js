@@ -22,17 +22,46 @@ import UserActions from 'src/redux/actions/user'
 export class ViewUserPage extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			isFollowed: false
+		}
 	}
 
 	componentDidMount() {
-		this.props.getUser(this.props.selectedUser._id)
+		this.props.getCurrentUser()
+		this.checkFollow()
 	}
 
+	getDerivedStateFromProps(nextProps, prevState) {
+		if (this.props.currentUser) {
+			console.log('load current user success')
+		}
+	}
+
+	checkFollow() {
+		if (this.props.currentUser.following_list.includes(this.props.selectedUser._id)) {
+			this.setState({
+				isFollowed: true
+			})
+		} else {
+			this.setState({
+				isFollowed: false
+			})
+		}
+	}
+
+	followUser(user_id) {
+		this.props.followUser(user_id)
+	}
+	
+	unfollowUser(user_id) {
+		this.props.unfollowUser(user_id)
+	}
 
 	render() {
 		console.log(this.props.selectedUser, 'selected user')
-		console.log(this.props.user, 'user')
-		if (!this.props.user) {
+		console.log(this.props.currentUser, 'currentuser')
+		if (!this.props.selectedUser || !this.props.currentUser) {
 			return <View/>
 		}
 		else {
@@ -56,22 +85,27 @@ export class ViewUserPage extends Component {
 										marginTop: 10
 									}}
 								>
-									<CoverImage size={110} uri={this.props.user.picture_url} />
+									<CoverImage size={110} uri={this.props.selectedUser.picture_url} />
 									<View
 										style={{
 											marginLeft: 20
 										}}
 									>
-										<Text style={styles.usernameText}>{this.props.user.name}</Text>
-										{ this.props.currentUser._id !== this.props.user._id &&
-											<TouchableOpacity style={styles.buttonFollow} onPress={}>
+										<Text style={styles.usernameText}>{this.props.selectedUser.name}</Text>
+										{ this.props.currentUser._id !== this.props.selectedUser._id &&
+											this.state.isFollowed ? 
+											<TouchableOpacity style={styles.buttonUnfollow} onPress={() => this.unfollowUser(this.props.selectedUser._id)}>
+												<Text style={styles.fontFollow}>Unfollow</Text>
+											</TouchableOpacity>
+											: 
+											<TouchableOpacity style={styles.buttonFollow} onPress={() => this.followUser(this.props.selectedUser._id)}>
 												<Text style={styles.fontFollow}>Follow</Text>
 											</TouchableOpacity>
 										}
 									</View>
 								</View>
 
-								{this.props.user.description !== '' && (
+								{this.props.selectedUser.description !== '' && (
 									<View
 										style={{
 											flexDirection: 'row',
@@ -80,17 +114,17 @@ export class ViewUserPage extends Component {
 										}}
 									>
 										<View style={{ width: '80%' }}>
-											<Text style={{ lineHeight: 22 }}>{this.props.user.description}</Text>
+											<Text style={{ lineHeight: 22 }}>{this.props.selectedUser.description}</Text>
 										</View>
 									</View>
 								)}
 
 								<View style={styles.infoBar}>
 									<InfoBar
-										review_num={this.props.user.own_post_list.length}
+										review_num={this.props.selectedUser.own_post_list.length}
 										comment_num={0}
-										follower_num={this.props.user.follower_list.length}
-										following_num={this.props.user.following_list.length}
+										follower_num={this.props.selectedUser.follower_list.length}
+										following_num={this.props.selectedUser.following_list.length}
 									/>
 								</View>
 								<View style={{ alignItems: 'center' }}>
@@ -99,10 +133,10 @@ export class ViewUserPage extends Component {
 								<View style={styles.tabsContainer}>
 									<Tabs>
 										<View title="Reviews">
-											<ReviewsGrid review_list={this.props.user.own_post_list} />
+											<ReviewsGrid review_list={this.props.selectedUser.own_post_list} />
 										</View>
 										<View title="Saved">
-											<ReviewsGrid review_list={this.props.user.saved_post_list} />
+											<ReviewsGrid review_list={this.props.selectedUser.saved_post_list} />
 										</View>
 									</Tabs>
 								</View>
@@ -112,7 +146,7 @@ export class ViewUserPage extends Component {
 					<View style={styles.header}>
 						<View style={styles.platformHeader}>
 							{ this.props.success ? 
-								<NavBar titleName={this.props.user.name} /> :
+								<NavBar titleName={this.props.selectedUser.name} /> :
 								<NavBar />
 							} 
 						</View>
@@ -177,6 +211,15 @@ const styles = StyleSheet.create({
 		height: 30,
 		borderRadius: 3
 	},
+	buttonUnfollow: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row',
+		marginTop: 20,
+		backgroundColor: colors.lightGray,
+		height: 30,
+		borderRadius: 3
+	},
 	loadingContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -186,20 +229,19 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	selectedUser: state.userReducer.selectedUser,
-	user: state.userReducer.user,
 	currentUser: state.userReducer.currentUser,
 	success: state.userReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({
-	getUser: (user_id) => {
-		dispatch(UserActions.getUser(user_id))
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
 	},
 	followUser: (user_id) => {
 		dispatch(UserActions.followUser(user_id))
 	},
 	unfollowUser: (user_id) => {
-		dispatch(UserActions.unfollwUser(user_id))
+		dispatch(UserActions.unfollowUser(user_id))
 	}
 })
 
