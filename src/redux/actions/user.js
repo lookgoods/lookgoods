@@ -58,26 +58,20 @@ const UserActions = {
 	},
 	followUser: user_id => async dispatch => {
 		dispatch(actions.followUserRequest())
-		const [err, response] = await to(
-			axios.get(`${AppURL}/users/${user_id}/follow`)
-		)
+		const [ err, response ] = await to(axios.put(`${AppURL}/currentuser/follow/users/${user_id}`))
 		if (err) dispatch(actions.followUserError(err))
 		else {
 			dispatch(UserActions.getCurrentUser())
 			dispatch(actions.followUserSuccess(response))
-			console.log(response, 'follow success')
 		}
 	},
 	unfollowUser: user_id => async dispatch => {
 		dispatch(actions.unfollowUserRequest())
-		const [err, response] = await to(
-			axios.get(`${AppURL}/users/${user_id}/unfollow`)
-		)
+		const [ err, response ] = await to(axios.put(`${AppURL}/currentuser/unfollow/users/${user_id}`))
 		if (err) dispatch(actions.unfollowUserError(err))
 		else {
 			dispatch(UserActions.getCurrentUser())
 			dispatch(actions.unfollowUserSuccess(response))
-			console.log(response, 'unfollow success')
 		}
 	},
 	getFollowerUsers: user_id => async dispatch => {

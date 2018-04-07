@@ -29,12 +29,11 @@ export class ViewUserPage extends Component {
 
 	componentDidMount() {
 		this.props.getCurrentUser()
-		this.checkFollow()
 	}
 
-	getDerivedStateFromProps(nextProps, prevState) {
-		if (this.props.currentUser) {
-			console.log('load current user success')
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.currentUser.following_list !== prevProps.currentUser.following_list) {
+			this.checkFollow()
 		}
 	}
 
