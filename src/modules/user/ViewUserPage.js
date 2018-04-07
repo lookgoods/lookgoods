@@ -91,15 +91,15 @@ export class ViewUserPage extends Component {
 										}}
 									>
 										<Text style={styles.usernameText}>{this.props.selectedUser.name}</Text>
-										{ this.props.currentUser._id !== this.props.selectedUser._id &&
+										{ (this.props.currentUser._id !== this.props.selectedUser._id) && (
 											this.state.isFollowed ? 
-											<TouchableOpacity style={styles.buttonUnfollow} onPress={() => this.unfollowUser(this.props.selectedUser._id)}>
-												<Text style={styles.fontFollow}>Unfollow</Text>
-											</TouchableOpacity>
-											: 
-											<TouchableOpacity style={styles.buttonFollow} onPress={() => this.followUser(this.props.selectedUser._id)}>
-												<Text style={styles.fontFollow}>Follow</Text>
-											</TouchableOpacity>
+												<TouchableOpacity style={styles.buttonUnfollow} onPress={() => this.unfollowUser(this.props.selectedUser._id)}>
+													<Text style={styles.fontFollow}>Unfollow</Text>
+												</TouchableOpacity>
+												: 
+												<TouchableOpacity style={styles.buttonFollow} onPress={() => this.followUser(this.props.selectedUser._id)}>
+													<Text style={styles.fontFollow}>Follow</Text>
+												</TouchableOpacity>)
 										}
 									</View>
 								</View>

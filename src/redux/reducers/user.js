@@ -5,7 +5,9 @@ const initialState = {
 	success: false,
 	error: null,
 	selectedUser: null,
-	user: null
+	user: null,
+	ownReviews: null,
+	saveReviews: null
 }
 
 export default (state = initialState, action) => {
@@ -21,20 +23,20 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			success: true,
-			currentUser: action.payload.user
+			currentUser: action.payload
 		}
 
 	case constants.GET_CURRENT_USER_FAILURE:
 		return {
 			...state,
 			success: false,
-			error: action.payload.error
+			error: action.payload
 		}
 
 	case constants.SET_SELECTED_USER:
 		return {
 			...state,
-			selectedUser: {...action.payload}
+			selectedUser: action.payload
 		}
 	
 	case constants.LOGIN_FACEBOOK_FAILURE:
@@ -56,14 +58,56 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			success: true,
-			user: action.payload.user
+			user: action.payload
 		}
 
 	case constants.GET_USER_FAILURE:
 		return {
 			...state,
 			success: false,
-			error: action.payload.error
+			error: action.payload
+		}
+
+	case constants.GET_USER_OWN_REVIEWS_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_USER_OWN_REVIEWS_SUCCESS:
+		return {
+			...state,
+			success: true,
+			ownReviews: action.payload
+		}
+
+	case constants.GET_USER_OWN_REVIEWS_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
+		}
+	
+	case constants.GET_USER_SAVE_REVIEWS_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_USER_SAVE_REVIEWS_SUCCESS:
+		return {
+			...state,
+			success: true,
+			saveReviews: action.payload
+		}
+
+	case constants.GET_USER_SAVE_REVIEWS_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
 		}
 
 	default:
