@@ -15,7 +15,10 @@ const CommentActions = {
 		dispatch(actions.getCommentRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}`))
 		if (err) dispatch(actions.getCommentError(err))
-		else dispatch(actions.getCommentSuccess(response))
+		else {
+			console(response, 'eiei')
+			dispatch(actions.getCommentSuccess(response))
+		}
 	},
 	editComment: (comment, review_id, comment_id) => async dispatch => {
 		dispatch(actions.editCommentRequest())
