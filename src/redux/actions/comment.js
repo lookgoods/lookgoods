@@ -7,13 +7,15 @@ const AppURL = constants.AppURL
 const CommentActions = {
 	addComment: (comment, review_id) => async dispatch => {
 		dispatch(actions.addCommentRequest())
-		const [ err, response ] = await to(axios.post(`${AppURL}/reviews/${review_id}`), comment)
+		console(response, 'aaa')
+		const [ err, response ] = await to(axios.post(`${AppURL}/reviews/${review_id}/comments`), comment)
 		if (err) dispatch(actions.addCommentError(err))
 		else dispatch(actions.addCommentSuccess(response))
 	},
 	getComments: (review_id) => async dispatch => {
 		dispatch(actions.getCommentRequest())
-		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}`))
+		console(response, 'xxx')
+		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}/comments`))
 		if (err) dispatch(actions.getCommentError(err))
 		else {
 			console(response, 'eiei')

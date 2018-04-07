@@ -47,6 +47,7 @@ export default class AddComment extends Component {
 				desc: this.state.desc.trim(), 
 				rating: this.state.rating
 			}
+			console.log(comment, 'comment befor post')
 			this.props.addComment(comment)
 		} else {
 			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
