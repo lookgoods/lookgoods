@@ -36,7 +36,10 @@ export default (state = initialState, action) => {
 	case constants.SET_SELECTED_USER:
 		return {
 			...state,
-			selectedUser: action.payload
+			selectedUser: action.payload,
+			user: null,
+			ownReviews: null,
+			saveReviews: null
 		}
 	
 	case constants.LOGIN_FACEBOOK_FAILURE:
@@ -104,6 +107,50 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_USER_SAVE_REVIEWS_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
+		}
+	
+	case constants.GET_CURRENTUSER_OWN_REVIEWS_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null,
+			ownReviews: null,
+			saveReviews: null
+		}
+
+	case constants.GET_CURRENTUSER_OWN_REVIEWS_SUCCESS:
+		return {
+			...state,
+			success: true,
+			ownReviews: action.payload
+		}
+
+	case constants.GET_CURRENTUSER_OWN_REVIEWS_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
+		}
+	
+	case constants.GET_CURRENTUSER_SAVE_REVIEWS_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_CURRENTUSER_SAVE_REVIEWS_SUCCESS:
+		return {
+			...state,
+			success: true,
+			saveReviews: action.payload
+		}
+
+	case constants.GET_CURRENTUSER_SAVE_REVIEWS_FAILURE:
 		return {
 			...state,
 			success: false,

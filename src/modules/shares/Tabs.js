@@ -8,18 +8,23 @@ export default class Tabs extends Component {
 	state = {
 		activeTab: 0
 	}
+
+	onSelectedTab(index, onSelected) {
+		this.setState({ activeTab: index })
+		if (onSelected) onSelected()
+	}
 	
 	render({ children } = this.props) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.tabsContainer}>
-					{ children.map(({ props: { title } }, index) => (
+					{ children.map(({ props: { title, onSelectedTab } }, index) => (
 						<TouchableOpacity
 							style={[
 								styles.tabContainer,
 								index === this.state.activeTab ? styles.tabContainerActive: []
 							]}
-							onPress={() => this.setState({ activeTab: index })}
+							onPress={() => this.onSelectedTab(index, onSelectedTab)}
 							key={index}
 						>
 							<Text style={[

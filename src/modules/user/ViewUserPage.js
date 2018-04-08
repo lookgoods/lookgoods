@@ -29,6 +29,8 @@ export class ViewUserPage extends Component {
 
 	componentDidMount() {
 		this.props.getCurrentUser()
+		this.props.getUser(this.props.selectedUser._id)
+		this.props.getUserOwnReviews(this.props.selectedUser._id)
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -57,10 +59,14 @@ export class ViewUserPage extends Component {
 		this.props.unfollowUser(user_id)
 	}
 
+	fetchSaveReviews() {
+		if (this.props.saveReviews == null) {
+			this.props.getUserSaveReviews(this.props.selectedUser._id)
+		}
+	}
+
 	render() {
-		console.log(this.props.selectedUser, 'selected user')
-		console.log(this.props.currentUser, 'currentuser')
-		if (!this.props.selectedUser || !this.props.currentUser) {
+		if (!this.props.selectedUser || !this.props.currentUser || !this.props.user) {
 			return <View/>
 		}
 		else {
@@ -72,7 +78,7 @@ export class ViewUserPage extends Component {
 						bounces={false}
 						style={styles.body}
 					>
-						{ !this.props.success ? 
+						{ !this.props.currentUser ? 
 							<View style={styles.loadingContainer}>
 								<ActivityIndicator size="large" />
 							</View> :
@@ -84,14 +90,14 @@ export class ViewUserPage extends Component {
 										marginTop: 10
 									}}
 								>
-									<CoverImage size={110} uri={this.props.selectedUser.picture_url} />
+									<CoverImage size={110} uri={this.props.user.picture_url} />
 									<View
 										style={{
 											marginLeft: 20
 										}}
 									>
-										<Text style={styles.usernameText}>{this.props.selectedUser.name}</Text>
-										{ (this.props.currentUser._id !== this.props.selectedUser._id) && (
+										<Text style={styles.usernameText}>{this.props.user.name}</Text>
+										{ ((this.props.currentUser._id !== this.props.user._id) && this.props.user && this.props.currentUser) && (
 											this.state.isFollowed ? 
 												<TouchableOpacity style={styles.buttonUnfollow} onPress={() => this.unfollowUser(this.props.selectedUser._id)}>
 													<Text style={styles.fontFollow}>Unfollow</Text>
@@ -104,7 +110,7 @@ export class ViewUserPage extends Component {
 									</View>
 								</View>
 
-								{this.props.selectedUser.description !== '' && (
+								{this.props.user.description !== '' && (
 									<View
 										style={{
 											flexDirection: 'row',
@@ -113,17 +119,17 @@ export class ViewUserPage extends Component {
 										}}
 									>
 										<View style={{ width: '80%' }}>
-											<Text style={{ lineHeight: 22 }}>{this.props.selectedUser.description}</Text>
+											<Text style={{ lineHeight: 22 }}>{this.props.user.description}</Text>
 										</View>
 									</View>
 								)}
 
 								<View style={styles.infoBar}>
 									<InfoBar
-										review_num={this.props.selectedUser.own_post_list.length}
+										review_num={this.props.user.own_post_list.length}
 										comment_num={0}
-										follower_num={this.props.selectedUser.follower_list.length}
-										following_num={this.props.selectedUser.following_list.length}
+										follower_num={this.props.user.follower_list.length}
+										following_num={this.props.user.following_list.length}
 									/>
 								</View>
 								<View style={{ alignItems: 'center' }}>
@@ -132,10 +138,10 @@ export class ViewUserPage extends Component {
 								<View style={styles.tabsContainer}>
 									<Tabs>
 										<View title="Reviews">
-											<ReviewsGrid review_list={this.props.selectedUser.own_post_list} />
+											<ReviewsGrid review_list={this.props.ownReviews} />
 										</View>
-										<View title="Saved">
-											<ReviewsGrid review_list={this.props.selectedUser.saved_post_list} />
+										<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
+											<ReviewsGrid review_list={this.props.saveReviews} />
 										</View>
 									</Tabs>
 								</View>
@@ -144,7 +150,7 @@ export class ViewUserPage extends Component {
 					</ScrollView>
 					<View style={styles.header}>
 						<View style={styles.platformHeader}>
-							{ this.props.success ? 
+							{ this.props.selectedUser ? 
 								<NavBar titleName={this.props.selectedUser.name} /> :
 								<NavBar />
 							} 
@@ -229,18 +235,30 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	selectedUser: state.userReducer.selectedUser,
 	currentUser: state.userReducer.currentUser,
-	success: state.userReducer.success
+	user: state.userReducer.user,
+	success: state.userReducer.success,
+	ownReviews: state.userReducer.ownReviews,
+	saveReviews: state.userReducer.saveReviews
 })
 
 const mapDispatchToProps = dispatch => ({
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
 	},
+	getUser: (user_id) => {
+		dispatch(UserActions.getUser(user_id))
+	},
 	followUser: (user_id) => {
 		dispatch(UserActions.followUser(user_id))
 	},
 	unfollowUser: (user_id) => {
 		dispatch(UserActions.unfollowUser(user_id))
+	},
+	getUserOwnReviews: (user_id) => {
+		dispatch(UserActions.getUserOwnReviews(user_id))
+	},
+	getUserSaveReviews: (user_id) => {
+		dispatch(UserActions.getUserSaveReviews(user_id))
 	}
 })
 
