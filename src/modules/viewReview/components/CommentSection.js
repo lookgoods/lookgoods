@@ -11,6 +11,7 @@ import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { Divider } from 'react-native-elements'
+import CommentActions from 'src/redux/actions/comment'
 
 function countRatingFrequency(comment_list) {
 	let rating_frequency_list = [0, 0, 0, 0, 0]
@@ -130,4 +131,13 @@ const mapStateToProps = state => ({
 	success: state.commentReducer.success
 })
 
-export default connect(mapStateToProps, null)(CommentSection)
+const mapDispatchToProps = dispatch => ({
+	editComment: (comment, review_id, comment_id) => {
+		dispatch(CommentActions.editComment(comment, review_id, comment_id))
+	},
+	deleteComment: (review_id, comment_id) => {
+		dispatch(CommentActions.deleteComment(review_id, comment_id))
+	}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentSection)
