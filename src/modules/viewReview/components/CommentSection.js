@@ -54,12 +54,11 @@ class CommentSection extends Component {
 
 	render() {
 		const comment_list = this.props.comments
-		console.log(comment_list, 'commentSection')
 		return (
 			this.props.success && (
 				<View>
-					{(comment_list.length === 0) && <View/>}
-					{(comment_list.length !== 0) &&
+					{comment_list.length === 0 && <View/>}
+					{comment_list.length !== 0 &&
 					<View>
 						<Divider style={styles.divider} />
 						<View>
@@ -113,6 +112,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
 	comments: state.commentReducer.comments,
 	success: state.commentReducer.success
 })
