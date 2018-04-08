@@ -26,11 +26,9 @@ const CommentActions = {
 		console.log(review_id, 'xxxxxx')
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}/comments`))
 		if (err) {
-			console.log(err, 'err')
 			dispatch(actions.getCommentError(err))
 		} 
 		else {
-			console.log(response.data, 'eiei')
 			dispatch(actions.getCommentSuccess(response.data))
 		}
 	},
@@ -40,9 +38,9 @@ const CommentActions = {
 		if (err) dispatch(actions.editCommentError(err))
 		else dispatch(actions.editCommentSuccess(response))
 	},
-	deleteComment: (comment, review_id, comment_id) => async dispatch => {
+	deleteComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())
-		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
+		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`))
 		if (err) dispatch(actions.deleteCommentError(err))
 		else dispatch(actions.deleteCommentSuccess(response))
 	}
