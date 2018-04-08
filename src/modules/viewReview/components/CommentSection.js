@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import {
 	StyleSheet,
 	Text,
-	View
+	View,
+	TouchableOpacity
 } from 'react-native'
-
+import ActionSheet from 'react-native-actionsheet'
 import Comment from 'src/modules/viewReview/components/Comment'
 import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
@@ -35,21 +36,14 @@ function RatingFrequency ({ comment_list }) {
 		</View>
 	)
 }
-
-const CommentList = ({ comment_list }) => (
-	<View style={styles.commentList}>
-		{ comment_list.map((comment, index) => (
-			<View style={styles.commentItem} key={index}>
-				<Comment comment={comment}/>
-			</View>
-		))}
-	</View>
-)
     
-
 class CommentSection extends Component {
 	constructor (props) {
 		super(props)
+	}
+
+	showActionSheet() {	
+		this.ActionSheet.show()
 	}
 
 	render() {
@@ -57,16 +51,35 @@ class CommentSection extends Component {
 		return (
 			this.props.success && (
 				<View>
-					{comment_list.length === 0 && <View/>}
-					{comment_list.length !== 0 &&
-					<View>
-						<Divider style={styles.divider} />
+					{comment_list.length === 0 ? <View/> :
 						<View>
-							<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-							<RatingFrequency comment_list={comment_list}/>
-							<CommentList comment_list={comment_list}/>
+							<Text onPress={() => this.showActionSheet()}>Open ActionSheet</Text>
+							<Divider style={styles.divider} />
+							<View>
+								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
+								<RatingFrequency comment_list={comment_list}/>
+								<View style={styles.commentList}>
+									{ comment_list.map((comment, index) => (
+										<View key={index} >
+											<TouchableOpacity 
+												delayLongPress={1000} 
+												onLongPress ={() => this.showActionSheet()}>
+												<View style={styles.commentItem} >
+													<Comment comment={comment}/>
+												</View>
+											</TouchableOpacity>
+										</View>
+									))}
+								</View>
+							</View> 
+							<ActionSheet
+								ref={o => this.ActionSheet = o}
+								options={['Edit', 'Delete', 'Cancel']}
+								cancelButtonIndex={2}
+								destructiveButtonIndex={1}
+								onPress={(index) => { console.log(index, 'index') }}
+							/>
 						</View>
-					</View>
 					}
 				</View>
 			)
