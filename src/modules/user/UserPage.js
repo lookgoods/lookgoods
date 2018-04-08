@@ -54,7 +54,6 @@ export class UserPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.ownReviews, 'ownReviews')
 		if (!this.props.currentUser && this.props.success) {
 			this.goToLoginPage()
 			return <View/>

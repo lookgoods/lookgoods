@@ -17,15 +17,15 @@ const ProfilePicture = ({ image_url }) => {
 	return <CoverImage size={50} uri={image_url} />
 }
 
-const BookMark = ({ isActive }) => {
+const BookMark = ({ isActive, clickBookmark }) => {
 	return (
-		<View style={styles.bookmark}>
+		<TouchableOpacity style={styles.bookmark} onPress={clickBookmark}>
 			{isActive ? (
 				<IconMaterial name="bookmark" size={36} />
 			) : (
 				<IconMaterial name="bookmark-border" size={36} />
 			)}
-		</View>
+		</TouchableOpacity>
 	)
 }
 
@@ -41,7 +41,7 @@ function getTimeText(time) {
 	return moment(time).fromNow()
 }
 
-function Header({ user, time, isSaved, setUser }) {
+function Header({ user, time, isSaved, setUser, clickBookmark, showBookmark }) {
 	return (
 		<View style={styles.headerContainer}>
 			<TouchableOpacity
@@ -56,7 +56,7 @@ function Header({ user, time, isSaved, setUser }) {
 				</TouchableOpacity>
 				<Text style={styles.timeText}>{getTimeText(time)}</Text>
 			</View>
-			<BookMark isActive={isSaved} />
+			{ showBookmark && <BookMark isActive={isSaved} clickBookmark={clickBookmark} /> }
 		</View>
 	)
 }
@@ -146,13 +146,46 @@ export class ReviewCard extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isLove: false
+			isLove: false,
+			isSaved: false,
+			showBookmark: true
 		}
 	}
 
 	clickLove() {
 		this.setState({
 			isLove: !this.state.isLove
+		})
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.currentUser && (this.props.currentUser.saved_post_list !== prevProps.currentUser.saved_post_list)) {
+			this.checkBookmark()
+		}
+	}
+
+	checkBookmark() {
+		if (this.props.currentUser.saved_post_list.includes(this.props.review._id)) {
+			this.setState({
+				isSaved: true
+			})
+		} else {
+			this.setState({
+				isSaved: false
+			})
+		}
+		if (this.props.currentUser.client_id === this.props.review.user.client_id) {
+			this.setState({
+				showBookmark: false
+			})
+		}
+	}
+
+	clickBookmark() {
+		if (this.state.isSaved) this.props.unsaveReview(this.props.review._id)
+		else this.props.saveReview(this.props.review._id)
+		this.setState({
+			isSaved: !this.state.isSaved
 		})
 	}
 
@@ -166,14 +199,17 @@ export class ReviewCard extends Component {
 			rating,
 			timestamp
 		} = this.props.review
-		// console.log(this.props.review, 'review')
+		console.log(this.props.review, 'review')
+		console.log(this.props.currentUser, 'current user')
 		return (
 			<View style={styles.container}>
 				<Header
 					user={user}
 					time={timestamp}
-					isSaved={false}
+					isSaved={this.state.isSaved}
 					setUser={this.props.setSelectedUser}
+					clickBookmark={() => this.clickBookmark()}
+					showBookmark={this.state.showBookmark}
 				/>
 				<Body
 					product_url={picture_cover_url}
@@ -274,13 +310,23 @@ const styles = StyleSheet.create({
 	}
 })
 
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser
+})
+
 const mapDispatchToProps = dispatch => ({
 	setCurrentReview: review => {
 		dispatch(ReviewActions.setCurrentReview(review))
 	},
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
+	},
+	saveReview: review_id => {
+		dispatch(ReviewActions.saveReview(review_id))
+	},
+	unsaveReview: review_id => {
+		dispatch(ReviewActions.unsaveReview(review_id))
 	}
 })
 
-export default connect(null, mapDispatchToProps)(ReviewCard)
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewCard)

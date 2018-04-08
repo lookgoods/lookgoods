@@ -12,7 +12,6 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
 import UserActions from 'src/redux/actions/user'
-import reviewsMock from 'src/mockData/reviews'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -32,6 +31,18 @@ export class HomePage extends Component {
 		this.fetchData()
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return (this.props.currentUser !== nextProps.currentUser) || 
+		(this.props.reviews !== nextProps.reviews) || 
+		(this.props.currentPage !== nextProps.currentPage)
+	}
+	
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'home') {
+			this.fetchData()
+		}
+	}
+
 	setIsSearch() {
 		this.setState({ isSearch: true })
 	}
@@ -46,16 +57,18 @@ export class HomePage extends Component {
 	}
 
 	async cancelSearch() {
-		// Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
-			// overlaySearch: false,
 			searchText: ''
 		})
 		Actions.SearchPage()
 	}
 
 	render() {
+		if (!this.props.currentUser && this.props.success) {
+			this.goToLoginPage()
+			return <View/>
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -93,7 +106,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	reviews: state.reviewReducer.reviews
+	reviews: state.reviewReducer.reviews,
+	currentPage: state.menuReducer.currentPage
 })
 
 const mapDispatchToProps = dispatch => ({
