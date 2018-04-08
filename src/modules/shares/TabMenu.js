@@ -10,12 +10,14 @@ import UserPage from 'src/modules/user/UserPage'
 import { colors } from 'src/constants/mixins'
 import FBSDK from 'react-native-fbsdk'
 import to from 'await-to-js'
+import MenuActions from 'src/redux/actions/menu'
+import { connect } from 'react-redux'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
 const { AccessToken } = FBSDK
 
-export default class TabMenu extends Component {
+export class TabMenu extends Component {
 	state = {
 		selectedTab: 'home'
 	}
@@ -39,9 +41,11 @@ export default class TabMenu extends Component {
 			<TabNavigator style={styles.container}>
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'home'}
-					// title="Home"
 					selectedTitleStyle={{ color: colors.blue }}
-					onPress={() => this.setState({ selectedTab: 'home' })}
+					onPress={() => {
+						this.setState({ selectedTab: 'home' })
+						this.props.setCurrentPage('home')
+					}}
 					renderIcon={() => (
 						<Icon name="home" size={this.px2dp(22)} color={colors.gray} />
 					)}
@@ -49,13 +53,15 @@ export default class TabMenu extends Component {
 						<Icon name="home" size={this.px2dp(22)} color={colors.blue} />
 					)}
 				>
-					<HomePage />
+					<HomePage/>
 				</TabNavigator.Item>
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'global'}
-					// title="Global"
 					selectedTitleStyle={{ color: colors.blue }}
-					onPress={() => this.setState({ selectedTab: 'global' })}
+					onPress={() => {
+						this.setState({ selectedTab: 'global' })
+						this.props.setCurrentPage('global')
+					}}
 					renderIcon={() => (
 						<Icon name="globe" size={this.px2dp(22)} color={colors.gray} />
 					)}
@@ -63,11 +69,10 @@ export default class TabMenu extends Component {
 						<Icon name="globe" size={this.px2dp(22)} color={colors.blue} />
 					)}
 				>
-					<GlobalPage />
+					<GlobalPage/>
 				</TabNavigator.Item>
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'add'}
-					// title="Add"
 					selectedTitleStyle={{ color: colors.blue }}
 					onPress={() => Actions.addProductPage()}
 					renderIcon={() => (
@@ -79,9 +84,11 @@ export default class TabMenu extends Component {
 				/>
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'notification'}
-					// title="Notification"
 					selectedTitleStyle={{ color: colors.blue }}
-					onPress={() => this.setState({ selectedTab: 'notification' })}
+					onPress={() => {
+						this.setState({ selectedTab: 'notification' })
+						this.props.setCurrentPage('notification')
+					}}
 					renderIcon={() => (
 						<Icon name="bell" size={this.px2dp(22)} color={colors.gray} />
 					)}
@@ -89,13 +96,15 @@ export default class TabMenu extends Component {
 						<Icon name="bell" size={this.px2dp(22)} color={colors.blue} />
 					)}
 				>
-					<NotificationPage />
+					<NotificationPage/>
 				</TabNavigator.Item>
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'user'}
-					// title="Profile"
 					selectedTitleStyle={{ color: colors.blue }}
-					onPress={() => this.setState({ selectedTab: 'user' })}
+					onPress={() => {
+						this.setState({ selectedTab: 'user' })
+						this.props.setCurrentPage('user')
+					}}
 					renderIcon={() => (
 						<Icon name="user" size={this.px2dp(22)} color={colors.gray} />
 					)}
@@ -103,7 +112,7 @@ export default class TabMenu extends Component {
 						<Icon name="user" size={this.px2dp(22)} color={colors.blue} />
 					)}
 				>
-					<UserPage />
+					<UserPage/>
 				</TabNavigator.Item>
 			</TabNavigator>
 		)
@@ -118,3 +127,11 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.white
 	}
 })
+
+const mapDispatchToProps = dispatch => ({
+	setCurrentPage: (page) => {
+		dispatch(MenuActions.setCurrentPage(page))
+	}
+})
+
+export default connect(null, mapDispatchToProps)(TabMenu)

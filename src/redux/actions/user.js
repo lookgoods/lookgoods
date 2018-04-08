@@ -58,42 +58,88 @@ const UserActions = {
 	},
 	followUser: user_id => async dispatch => {
 		dispatch(actions.followUserRequest())
-		const [err, response] = await to(
-			axios.get(`${AppURL}/users/${user_id}/follow`)
-		)
+		const [ err, response ] = await to(axios.put(`${AppURL}/currentuser/follow/users/${user_id}`))
 		if (err) dispatch(actions.followUserError(err))
 		else {
+			dispatch(UserActions.getCurrentUser())
+			dispatch(UserActions.getUser(user_id))
 			dispatch(actions.followUserSuccess(response))
 		}
 	},
 	unfollowUser: user_id => async dispatch => {
 		dispatch(actions.unfollowUserRequest())
-		const [err, response] = await to(
-			axios.get(`${AppURL}/users/${user_id}/unfollow`)
-		)
+		const [ err, response ] = await to(axios.put(`${AppURL}/currentuser/unfollow/users/${user_id}`))
 		if (err) dispatch(actions.unfollowUserError(err))
 		else {
+			dispatch(UserActions.getCurrentUser())
+			dispatch(UserActions.getUser(user_id))
 			dispatch(actions.unfollowUserSuccess(response))
 		}
 	},
-	getFollowerUsers: user_id => async dispatch => {
-		dispatch(actions.getFollowerUsersRequest())
-		const [err, response] = await to(
-			axios.get(`${AppURL}/users/${user_id}/follower`)
-		)
-		if (err) dispatch(actions.getFollowerUsersError(err))
+	getUserOwnReviews: (user_id) => async dispatch => {
+		dispatch(actions.getUserOwnReviewsRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/ownpostlist`))
+		if (err) dispatch(actions.getUserOwnReviewsError(err))
 		else {
-			dispatch(actions.getFollowerUsersSuccess(response))
+			dispatch(actions.getUserOwnReviewsSuccess(response.data))
 		}
 	},
-	getFollowingUsers: user_id => async dispatch => {
-		dispatch(actions.getFollowingUsersRequest())
-		const [err, response] = await to(
-			axios.get(`${AppURL}/users/${user_id}/following`)
-		)
-		if (err) dispatch(actions.getFollowingUsersError(err))
+	getUserSaveReviews: (user_id) => async dispatch => {
+		dispatch(actions.getUserSaveReviewsRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/savepostlist`))
+		if (err) dispatch(actions.getUserSaveReviewsError(err))
 		else {
-			dispatch(actions.getFollowingUsersSuccess(response))
+			dispatch(actions.getUserSaveReviewsSuccess(response.data))
+		}
+	},
+	getCurrentUserOwnReviews: () => async dispatch => {
+		dispatch(actions.getCurrentUserOwnReviewsRequest())
+		console.log('request get cu reviews')
+		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/ownpostlist`))
+		if (err) dispatch(actions.getCurrentUserOwnReviewsError(err))
+		else {
+			console.log(response.data, 'get cu reviews')
+			dispatch(actions.getCurrentUserOwnReviewsSuccess(response.data))
+		}
+	},
+	getCurrentUserSaveReviews: () => async dispatch => {
+		dispatch(actions.getCurrentUserSaveReviewsRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/savepostlist`))
+		if (err) dispatch(actions.getCurrentUserSaveReviewsError(err))
+		else {
+			dispatch(actions.getCurrentUserSaveReviewsSuccess(response.data))
+		}
+	},
+	getUserFollower: (user_id) => async dispatch => {
+		dispatch(actions.getUserFollowerRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/follower`))
+		if (err) dispatch(actions.getUserFollowerError(err))
+		else {
+			dispatch(actions.getUserFollowerSuccess(response.data))
+		}
+	},
+	getUserFollowing: (user_id) => async dispatch => {
+		dispatch(actions.getUserFollowingRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/following`))
+		if (err) dispatch(actions.getUserFollowingError(err))
+		else {
+			dispatch(actions.getUserFollowingSuccess(response.data))
+		}
+	},
+	getCurrentUserFollower: () => async dispatch => {
+		dispatch(actions.getCurrentUserFollowerRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/follower`))
+		if (err) dispatch(actions.getCurrentUserFollowerError(err))
+		else {
+			dispatch(actions.getCurrentUserFollowerSuccess(response.data))
+		}
+	},
+	getCurrentUserFollowing: () => async dispatch => {
+		dispatch(actions.getCurrentUserFollowingRequest())
+		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/following`))
+		if (err) dispatch(actions.getCurrentUserFollowingError(err))
+		else {
+			dispatch(actions.getCurrentUserFollowingrSuccess(response.data))
 		}
 	}
 }
@@ -104,99 +150,165 @@ const actions = {
 	}),
 	loginFacebookSuccess: response => ({
 		type: constants.LOGIN_FACEBOOK_SUCCESS,
-		payload: { response }
+		payload: response
 	}),
 	loginFacebookError: error => ({
 		type: constants.LOGIN_FACEBOOK_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	getCurrentUserRequest: () => ({
 		type: constants.GET_CURRENT_USER_REQUEST
 	}),
 	getCurrentUserSuccess: user => ({
 		type: constants.GET_CURRENT_USER_SUCCESS,
-		payload: { user }
+		payload: user
 	}),
 	getCurrentUserError: error => ({
 		type: constants.GET_CURRENT_USER_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	changeUserDescriptionRequest: () => ({
 		type: constants.CHANGE_USER_DESCRIPTION_REQUEST
 	}),
 	changeUserDescriptionSuccess: response => ({
 		type: constants.CHANGE_USER_DESCRIPTION_SUCCESS,
-		payload: { response }
+		payload: response
 	}),
 	changeUserDescriptionError: error => ({
 		type: constants.CHANGE_USER_DESCRIPTION_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	getUserRequest: () => ({
 		type: constants.GET_USER_REQUEST
 	}),
 	getUserSuccess: user => ({
 		type: constants.GET_USER_SUCCESS,
-		payload: { user }
+		payload: user
 	}),
 	getUserError: error => ({
 		type: constants.GET_USER_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	getUserReviewsRequest: () => ({
 		type: constants.GET_USER_REVIEWS_REQUEST
 	}),
 	getUserReviewsSuccess: user => ({
 		type: constants.GET_USER_REVIEWS_SUCCESS,
-		payload: { user }
+		payload: user
 	}),
 	getUserReviewsError: error => ({
 		type: constants.GET_USER_REVIEWS_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	followUserRequest: () => ({
 		type: constants.FOLLOW_USER_REQUEST
 	}),
 	followUserSuccess: user => ({
 		type: constants.FOLLOW_USER_SUCCESS,
-		payload: { user }
+		payload: user
 	}),
 	followUserError: error => ({
 		type: constants.FOLLOW_USER_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	unfollowUserRequest: () => ({
 		type: constants.UNFOLLOW_USER_REQUEST
 	}),
 	unfollowUserSuccess: user => ({
 		type: constants.UNFOLLOW_USER_SUCCESS,
-		payload: { user }
+		payload: user
 	}),
 	unfollowUserError: error => ({
 		type: constants.UNFOLLOW_USER_FAILURE,
-		payload: { error }
+		payload: error
 	}),
-	getFollowerUsersRequest: () => ({
-		type: constants.GET_FOLLOWER_USERS_REQUEST
+	getUserOwnReviewsRequest: () => ({
+		type: constants.GET_USER_OWN_REVIEWS_REQUEST
 	}),
-	getFollowerUsersSuccess: users => ({
-		type: constants.GET_FOLLOWER_USERS_SUCCESS,
-		payload: { users }
+	getUserOwnReviewsSuccess: (reviews) => ({
+		type: constants.GET_USER_OWN_REVIEWS_SUCCESS,
+		payload: reviews
 	}),
-	getFollowerUsersError: error => ({
-		type: constants.GET_FOLLOWER_USERS_FAILURE,
-		payload: { error }
+	getUserOwnReviewsError: error => ({
+		type: constants.GET_USER_OWN_REVIEWS_FAILURE,
+		payload: error
 	}),
-	getFollowingUsersRequest: () => ({
-		type: constants.GET_FOLLOWING_USERS_REQUEST
+	getUserSaveReviewsRequest: () => ({
+		type: constants.GET_USER_SAVE_REVIEWS_REQUEST
 	}),
-	getFollowingUsersSuccess: users => ({
-		type: constants.GET_FOLLOWING_USERS_SUCCESS,
-		payload: { users }
+	getUserSaveReviewsSuccess: (reviews) => ({
+		type: constants.GET_USER_SAVE_REVIEWS_SUCCESS,
+		payload: reviews
 	}),
-	getFollowingUsersError: error => ({
-		type: constants.GET_FOLLOWING_USERS_FAILURE,
-		payload: { error }
+	getUserSaveReviewsError: error => ({
+		type: constants.GET_USER_SAVE_REVIEWS_FAILURE,
+		payload: error
+	}),
+	getCurrentUserOwnReviewsRequest: () => ({
+		type: constants.GET_CURRENTUSER_OWN_REVIEWS_REQUEST
+	}),
+	getCurrentUserOwnReviewsSuccess: (reviews) => ({
+		type: constants.GET_CURRENTUSER_OWN_REVIEWS_SUCCESS,
+		payload: reviews
+	}),
+	getCurrentUserOwnReviewsError: error => ({
+		type: constants.GET_CURRENTUSER_OWN_REVIEWS_FAILURE,
+		payload: error
+	}),
+	getCurrentUserSaveReviewsRequest: () => ({
+		type: constants.GET_CURRENTUSER_SAVE_REVIEWS_REQUEST
+	}),
+	getCurrentUserSaveReviewsSuccess: (reviews) => ({
+		type: constants.GET_CURRENTUSER_SAVE_REVIEWS_SUCCESS,
+		payload: reviews
+	}),
+	getCurrentUserSaveReviewsError: error => ({
+		type: constants.GET_CURRENTUSER_SAVE_REVIEWS_FAILURE,
+		payload: error
+	}),
+	getUserFollowerRequest: () => ({
+		type: constants.GET_USER_FOLLOWER_REQUEST
+	}),
+	getUserFollowerSuccess: (users) => ({
+		type: constants.GET_USER_FOLLOWER_SUCCESS,
+		payload: users
+	}),
+	getUserFollowerError: error => ({
+		type: constants.GET_USER_FOLLOWER_FAILURE,
+		payload: error
+	}),
+	getUserFollowingRequest: () => ({
+		type: constants.GET_USER_FOLLOWING_REQUEST
+	}),
+	getUserFollowingSuccess: (users) => ({
+		type: constants.GET_USER_FOLLOWING_SUCCESS,
+		payload: users
+	}),
+	getUserFollowingError: error => ({
+		type: constants.GET_USER_FOLLOWING_FAILURE,
+		payload: error
+	}),
+	getCurrentUserFollowerRequest: () => ({
+		type: constants.GET_CURRENTUSER_FOLLOWER_REQUEST
+	}),
+	getCurrentUserFollowerSuccess: (users) => ({
+		type: constants.GET_CURRENTUSER_FOLLOWER_SUCCESS,
+		payload: users
+	}),
+	getCurrentUserFollowerError: error => ({
+		type: constants.GET_CURRENTUSER_FOLLOWER_FAILURE,
+		payload: error
+	}),
+	getCurrentUserFollowingRequest: () => ({
+		type: constants.GET_CURRENTUSER_FOLLOWING_REQUEST
+	}),
+	getCurrentFollowingSuccess: (users) => ({
+		type: constants.GET_CURRENTUSER_FOLLOWING_SUCCESS,
+		payload: users
+	}),
+	getCurrentFollowingError: error => ({
+		type: constants.GET_CURRENTUSER_FOLLOWING_FAILURE,
+		payload: error
 	})
 }
 
