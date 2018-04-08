@@ -10,7 +10,7 @@ import StarBar from 'src/modules/viewReview/components/StarBar'
 
 const ProfilePicture = ({ image_url }) => (
 	<View style={styles.profileImage}>
-		<CoverImage size={70} url={image_url}/>
+		<CoverImage size={70} uri={image_url}/>
 	</View>
 )
 
@@ -31,9 +31,10 @@ export default class Comment extends Component {
 
 	render() {
 		const { user, description, rating } = this.props.comment
+		console.log(user.picture_url, 'user.picture_url')
 		return (
 			<View style={styles.container}>
-				<ProfilePicture image_url={user.profile_url}/>
+				<ProfilePicture image_url={user.picture_url}/>
 				<Content username={user.name} rating={rating} message={description}/>
 			</View>
 		)

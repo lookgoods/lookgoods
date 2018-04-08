@@ -26,9 +26,8 @@ export class ViewReviewPage extends Component {
 
 	render() {
 		const { product } = this.props.review
-		console.log(this.props.review, 'review')
-		console.log(this.props.currentUser, 'currentUser')
-		console.log(this.props.comments, 'comments')
+		// console.log(this.props.review, 'review')
+		// console.log(this.props.currentUser, 'currentUser')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -38,8 +37,7 @@ export class ViewReviewPage extends Component {
 				</View>
 				<ScrollView>
 					<ContentSection review={this.props.review} />
-					<Divider style={styles.divider} />
-					{/* <CommentSection review={this.props.review} /> */}
+					<CommentSection/>
 					<Divider style={styles.divider} />
 					<AddComment 
 						style={styles.addComment} 
@@ -82,8 +80,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,
-	currentUser: state.userReducer.currentUser,
-	comments: state.commentReducer.comments
+	currentUser: state.userReducer.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({

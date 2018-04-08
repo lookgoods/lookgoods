@@ -166,7 +166,7 @@ export class ReviewCard extends Component {
 			rating,
 			timestamp
 		} = this.props.review
-		console.log(this.props.review, 'review')
+		// console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<Header
