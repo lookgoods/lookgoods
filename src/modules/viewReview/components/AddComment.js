@@ -7,16 +7,19 @@ import {
 	View
 } from 'react-native'
 import React, { Component } from 'react'
-
+import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
+import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
+import { connect } from 'react-redux'
 
-export default class AddComment extends Component {
+class AddComment extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			message: '',
+			desc: '',
+			descErr: '',
 			rating: 0,
 			stars: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
@@ -35,65 +38,99 @@ export default class AddComment extends Component {
 		})
 	}
 
-	render() {
-		if (!this.props.user) return <View />
-		else {
-			const { picture_url } = this.props.user
-			return (
-				<View style={{ marginTop: 10, marginBottom: 50 }}>
-					<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-						<CoverImage uri={picture_url} size={80} />
-					</View>
-					<View
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'center',
-							alignItems: 'center',
-							marginTop: 10
-						}}
-					>
-						<Text style={{ position: 'absolute', left: 20, fontSize: 12 }}>
-							Tap to rate
-						</Text>
-						<View style={{ flexDirection: 'row' }}>
-							{this.state.stars.map((item, index) => (
-								<TouchableOpacity
-									key={index}
-									onPress={() => this.changeRating(index)}
-								>
-									<IconFontAwesome
-										style={styles.star}
-										name={this.state.stars[index]}
-										size={40}
-										color={colors.yellow}
-									/>
-								</TouchableOpacity>
-							))}
-						</View>
-					</View>
-					{this.state.rating !== 0 && (
-						<View style={{ flexDirection: 'row', marginTop: 10 }}>
-							<View style={styles.bodyTextInput}>
-								<TextInput
-									style={styles.textInput}
-									multiline
-									maxHeight={300}
-									underlineColorAndroid="transparent"
-									onChangeText={message => this.setState({ message })}
-									value={this.state.message}
-									keyboardType="default"
-								/>
-							</View>
-							<TouchableOpacity style={styles.buttonSend}>
-								<Text style={styles.fontSend}>Send</Text>
-							</TouchableOpacity>
-						</View>
-					)}
-				</View>
-			)
+	async addComment() {
+		const descErr = validate(['desc'], [this.state.desc.trim()])
+		await this.setState({ descErr })
+
+		if (!descErr) {
+			const comment = {
+				user_id: this.props.user._id, 
+				desc: this.state.desc.trim(), 
+				rating: this.state.rating
+			}
+			console.log(comment, 'comment befor post')
+			this.props.addComment(comment)
+		} else {
+			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
 		}
 	}
+
+	checkUserComment(comment_list) {
+		const commentsUser = comment_list.filter((item) => item.user._id === this.props.currentUser._id)
+		if (commentsUser.length > 0) return true
+		return false
+	}
+
+	render() {
+		const { picture_url } = this.props.currentUser
+		return (
+			this.props.success && (
+				<View>
+					{ this.checkUserComment(this.props.comments) ? 
+						<View/> :
+						<View style={{ marginTop: 10, marginBottom: 50 }}>
+							<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+								<CoverImage uri={picture_url} size={80} />
+							</View>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+									marginTop: 10
+								}}
+							>
+								<Text style={{ position: 'absolute', left: 20, fontSize: 12 }}>
+							Tap to rate
+								</Text>
+								<View style={{ flexDirection: 'row' }}>
+									{this.state.stars.map((item, index) => (
+										<TouchableOpacity
+											key={index}
+											onPress={() => this.changeRating(index)}
+										>
+											<IconFontAwesome
+												style={styles.star}
+												name={this.state.stars[index]}
+												size={40}
+												color={colors.yellow}
+											/>
+										</TouchableOpacity>
+									))}
+								</View>
+							</View>
+							{this.state.rating !== 0 && (
+								<View style={{ flexDirection: 'row', marginTop: 10 }}>
+									<View style={styles.bodyTextInput}>
+										<TextInput
+											style={styles.textInput}
+											multiline
+											maxHeight={300}
+											underlineColorAndroid="transparent"
+											onChangeText={desc => this.setState({ desc })}
+											value={this.state.desc}
+											keyboardType="default"
+											onBlur={() => {
+												this.setState({
+													titleErr: validate(['title'], [this.state.title])
+												})
+											}}
+											error={this.state.titleErr}
+										/>
+									</View>
+									<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>
+										<Text style={styles.fontSend}>Send</Text>
+									</TouchableOpacity>
+								</View>
+							)}
+						</View>
+					}
+				</View>
+			)
+		)
+	}
 }
+
 
 const styles = StyleSheet.create({
 	star: {
@@ -128,3 +165,11 @@ const styles = StyleSheet.create({
 		borderWidth: 1
 	}
 })
+
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
+	comments: state.commentReducer.comments,
+	success: state.commentReducer.success
+})
+
+export default connect(mapStateToProps, null)(AddComment)

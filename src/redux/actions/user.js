@@ -5,78 +5,92 @@ import to from 'await-to-js'
 const AppURL = constants.AppURL
 
 const UserActions = {
-	loginWithFacebook: (token) => async dispatch => {
+	loginWithFacebook: token => async dispatch => {
 		dispatch(actions.loginFacebookRequest())
-		const [ err, response ] = await to(axios.post(`${AppURL}/auth/facebook/token`, {
-			access_token: token
-		}))
+		const [err, response] = await to(
+			axios.post(`${AppURL}/auth/facebook/token`, {
+				access_token: token
+			})
+		)
 		if (err) dispatch(actions.loginFacebookError(err))
 		else dispatch(actions.loginFacebookSuccess(response))
 	},
 	getCurrentUser: () => async dispatch => {
 		dispatch(actions.getCurrentUserRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser`))
+		const [err, response] = await to(axios.get(`${AppURL}/currentuser`))
 		if (err) dispatch(actions.getCurrentUserError(err))
 		else dispatch(actions.getCurrentUserSuccess(response.data))
 	},
-	setSelectedUser: (user) => ({
+	setSelectedUser: user => ({
 		type: constants.SET_SELECTED_USER,
 		payload: user
 	}),
 	changeUserDescription: (user_id, description) => async dispatch => {
 		dispatch(actions.changeUserDescriptionRequest())
-		const [ err, response ] = await to(axios.put(`${AppURL}/users/${user_id}`, {
-			description: description
-		}))
+		const [err, response] = await to(
+			axios.put(`${AppURL}/users/${user_id}`, {
+				description: description
+			})
+		)
 		if (err) dispatch(actions.changeUserDescriptionError(err))
 		else {
 			dispatch(actions.changeUserDescriptionSuccess(response))
 			dispatch(UserActions.getCurrentUser())
 		}
 	},
-	getUser: (user_id) => async dispatch => {
+	getUser: user_id => async dispatch => {
 		dispatch(actions.getUserRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}`))
+		const [err, response] = await to(axios.get(`${AppURL}/users/${user_id}`))
 		if (err) dispatch(actions.getUserError(err))
 		else {
 			dispatch(actions.getUserSuccess(response.data))
 		}
 	},
-	getUserReviews: (user_id) => async dispatch => {
+	getUserReviews: user_id => async dispatch => {
 		dispatch(actions.getUserReviewsRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/reviews`))
+		const [err, response] = await to(
+			axios.get(`${AppURL}/users/${user_id}/reviews`)
+		)
 		if (err) dispatch(actions.getUserReviewsError(err))
 		else {
 			dispatch(actions.getUserReviewsSuccess(response))
 		}
 	},
-	followUser: (user_id) => async dispatch => {
+	followUser: user_id => async dispatch => {
 		dispatch(actions.followUserRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/follow`))
+		const [err, response] = await to(
+			axios.get(`${AppURL}/users/${user_id}/follow`)
+		)
 		if (err) dispatch(actions.followUserError(err))
 		else {
 			dispatch(actions.followUserSuccess(response))
 		}
 	},
-	unfollowUser: (user_id) => async dispatch => {
+	unfollowUser: user_id => async dispatch => {
 		dispatch(actions.unfollowUserRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/unfollow`))
+		const [err, response] = await to(
+			axios.get(`${AppURL}/users/${user_id}/unfollow`)
+		)
 		if (err) dispatch(actions.unfollowUserError(err))
 		else {
 			dispatch(actions.unfollowUserSuccess(response))
 		}
 	},
-	getFollowerUsers: (user_id) => async dispatch => {
+	getFollowerUsers: user_id => async dispatch => {
 		dispatch(actions.getFollowerUsersRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/follower`))
+		const [err, response] = await to(
+			axios.get(`${AppURL}/users/${user_id}/follower`)
+		)
 		if (err) dispatch(actions.getFollowerUsersError(err))
 		else {
 			dispatch(actions.getFollowerUsersSuccess(response))
 		}
 	},
-	getFollowingUsers: (user_id) => async dispatch => {
+	getFollowingUsers: user_id => async dispatch => {
 		dispatch(actions.getFollowingUsersRequest())
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/following`))
+		const [err, response] = await to(
+			axios.get(`${AppURL}/users/${user_id}/following`)
+		)
 		if (err) dispatch(actions.getFollowingUsersError(err))
 		else {
 			dispatch(actions.getFollowingUsersSuccess(response))
@@ -110,7 +124,7 @@ const actions = {
 	changeUserDescriptionRequest: () => ({
 		type: constants.CHANGE_USER_DESCRIPTION_REQUEST
 	}),
-	changeUserDescriptionSuccess: (response) => ({
+	changeUserDescriptionSuccess: response => ({
 		type: constants.CHANGE_USER_DESCRIPTION_SUCCESS,
 		payload: { response }
 	}),
@@ -121,7 +135,7 @@ const actions = {
 	getUserRequest: () => ({
 		type: constants.GET_USER_REQUEST
 	}),
-	getUserSuccess: (user) => ({
+	getUserSuccess: user => ({
 		type: constants.GET_USER_SUCCESS,
 		payload: { user }
 	}),
@@ -132,7 +146,7 @@ const actions = {
 	getUserReviewsRequest: () => ({
 		type: constants.GET_USER_REVIEWS_REQUEST
 	}),
-	getUserReviewsSuccess: (user) => ({
+	getUserReviewsSuccess: user => ({
 		type: constants.GET_USER_REVIEWS_SUCCESS,
 		payload: { user }
 	}),
@@ -143,7 +157,7 @@ const actions = {
 	followUserRequest: () => ({
 		type: constants.FOLLOW_USER_REQUEST
 	}),
-	followUserSuccess: (user) => ({
+	followUserSuccess: user => ({
 		type: constants.FOLLOW_USER_SUCCESS,
 		payload: { user }
 	}),
@@ -154,7 +168,7 @@ const actions = {
 	unfollowUserRequest: () => ({
 		type: constants.UNFOLLOW_USER_REQUEST
 	}),
-	unfollowUserSuccess: (user) => ({
+	unfollowUserSuccess: user => ({
 		type: constants.UNFOLLOW_USER_SUCCESS,
 		payload: { user }
 	}),
@@ -165,7 +179,7 @@ const actions = {
 	getFollowerUsersRequest: () => ({
 		type: constants.GET_FOLLOWER_USERS_REQUEST
 	}),
-	getFollowerUsersSuccess: (users) => ({
+	getFollowerUsersSuccess: users => ({
 		type: constants.GET_FOLLOWER_USERS_SUCCESS,
 		payload: { users }
 	}),
@@ -176,7 +190,7 @@ const actions = {
 	getFollowingUsersRequest: () => ({
 		type: constants.GET_FOLLOWING_USERS_REQUEST
 	}),
-	getFollowingUsersSuccess: (users) => ({
+	getFollowingUsersSuccess: users => ({
 		type: constants.GET_FOLLOWING_USERS_SUCCESS,
 		payload: { users }
 	}),

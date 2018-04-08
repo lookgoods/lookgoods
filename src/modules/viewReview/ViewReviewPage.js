@@ -6,6 +6,7 @@ import ContentSection from 'src/modules/viewReview/components/ContentSection'
 import { Divider } from 'react-native-elements'
 import NavBar from 'src/modules/shares/NavBar'
 import UserActions from 'src/redux/actions/user'
+import CommentActions from 'src/redux/actions/comment'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 
@@ -16,10 +17,17 @@ export class ViewReviewPage extends Component {
 
 	componentDidMount() {
 		this.props.getCurrentUser()
+		this.props.getComments(this.props.review._id)
+	}
+
+	addComment(comment) {
+		this.props.addComment(comment, this.props.review._id)
 	}
 
 	render() {
 		const { product } = this.props.review
+		// console.log(this.props.review, 'review')
+		// console.log(this.props.currentUser, 'currentUser')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -29,10 +37,13 @@ export class ViewReviewPage extends Component {
 				</View>
 				<ScrollView>
 					<ContentSection review={this.props.review} />
+					<CommentSection/>
 					<Divider style={styles.divider} />
-					<CommentSection review={this.props.review} />
-					<Divider style={styles.divider} />
-					<AddComment style={styles.addComment} user={this.props.currentUser} />
+					<AddComment 
+						style={styles.addComment} 
+						user={this.props.currentUser} 
+						addComment={(comment) => this.addComment(comment)}
+					/>
 				</ScrollView>
 			</View>
 		)
@@ -75,6 +86,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
+	},
+	addComment: (comment, review_id) => {
+		dispatch(CommentActions.addComment(comment, review_id))
+	},
+	getComments: (review_id) => {
+		dispatch(CommentActions.getComments(review_id))
 	}
 })
 

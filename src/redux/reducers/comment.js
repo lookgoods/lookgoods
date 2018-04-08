@@ -2,7 +2,7 @@ import constants from 'src/redux/constants'
 
 const initialState = {
 	comments: null,
-	loading: false,
+	success: false,
 	error: null
 }
 
@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
 	case constants.ADD_COMMENT_REQUEST:
 		return {
 			...state,
-			loading: true,
+			success: false,
 			error: null
 		}
 
@@ -19,24 +19,82 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			comments: action.payload.comments,
-			loading: false,
+			success: true,
 			error: null
 		}
 
 	case constants.ADD_COMMENT_FAILURE:
 		return {
 			...state,
-			loading: false,
+			success: false,
 			error: action.payload.error
 		}
 
 	case constants.GET_COMMENT_REQUEST:
 		return {
 			...state,
-			loading: true,
+			success: false,
 			error: null
 		}
 
+	case constants.GET_COMMENT_SUCCESS:
+		return {
+			...state,
+			comments: action.payload.comments,
+			success: true,
+			error: null
+		}
+
+	case constants.GET_COMMENT_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload.error
+		}	
+
+	case constants.EDIT_COMMENT_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.EDIT_COMMENT_SUCCESS:
+		return {
+			...state,
+			comments: action.payload.comments,
+			success: true,
+			error: null
+		}
+
+	case constants.EDIT_COMMENT_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload.error
+		}	
+
+	case constants.DELETE_COMMENT_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.DELETE_COMMENT_SUCCESS:
+		return {
+			...state,
+			comments: action.payload.comments,
+			success: true,
+			error: null
+		}
+
+	case constants.DELETE_COMMENT_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload.error
+		}	
 
 	default:
 		return state
