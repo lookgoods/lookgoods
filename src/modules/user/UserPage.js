@@ -19,7 +19,25 @@ export class UserPage extends Component {
 	}
 
 	componentDidMount() {
+		this.fetchData()
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return (this.props.currentUser !== nextProps.currentUser) || 
+		(this.props.ownReviews !== nextProps.ownReviews) || 
+		(this.props.currentPage !== nextProps.currentPage) ||
+		(this.props.saveReviews !== nextProps.saveReviews)
+	}
+	
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'user') {
+			this.fetchData()
+		}
+	}
+
+	fetchData() {
 		this.props.getCurrentUser()
+		this.props.getCurrentUserOwnReviews()
 	}
 
 	goToSettingPage() {
@@ -30,17 +48,31 @@ export class UserPage extends Component {
 		Actions.loginPage()
 	}
 
+	fetchSaveReviews() {
+		if (this.props.saveReviews == null) {
+			this.props.getCurrentUserSaveReviews()
+		}
+	}
+
+	getTotalLike(ownReviews) {
+		let total = 0
+		ownReviews.map((review) => {
+			total += review.like_by_list.length
+		})
+		return total
+	}
+
 	render() {
-		console.log('loading user', this.props.success)
-		console.log('currentuser', this.props.currentUser)
-		if (!this.props.currentUser && this.props.success) {
-			this.goToLoginPage()
+		if (!this.props.currentUser) {
+			if (this.props.success) {
+				this.goToLoginPage()
+			}
 			return <View/>
 		}
 		else {
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
-					{ !this.props.success ? 
+					{ !this.props.currentUser || !this.props.ownReviews ? 
 						<View style={styles.loadingContainer}>
 							<ActivityIndicator size="large" />
 						</View>
@@ -61,7 +93,7 @@ export class UserPage extends Component {
 							<View style={styles.infoBar}>
 								<InfoBar
 									review_num={this.props.currentUser.own_post_list.length}
-									comment_num={0}
+									like_num={this.getTotalLike(this.props.ownReviews)}
 									follower_num={this.props.currentUser.follower_list.length}
 									following_num={this.props.currentUser.following_list.length}
 								/>
@@ -72,10 +104,10 @@ export class UserPage extends Component {
 							<View style={styles.tabsContainer}>
 								<Tabs>
 									<View title="Reviews">
-										<ReviewsGrid review_list={this.props.currentUser.own_post_list} />
+										<ReviewsGrid review_list={this.props.ownReviews} />
 									</View>
-									<View title="Saved">
-										<ReviewsGrid review_list={this.props.currentUser.saved_post_list} />
+									<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
+										<ReviewsGrid review_list={this.props.saveReviews} />
 									</View>
 								</Tabs>
 							</View>
@@ -120,12 +152,21 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	success: state.userReducer.success
+	success: state.userReducer.success,
+	ownReviews: state.userReducer.ownReviews,
+	saveReviews: state.userReducer.saveReviews,
+	currentPage: state.menuReducer.currentPage
 })
 
 const mapDispatchToProps = dispatch => ({
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
+	},
+	getCurrentUserOwnReviews: () => {
+		dispatch(UserActions.getCurrentUserOwnReviews())
+	},
+	getCurrentUserSaveReviews: () => {
+		dispatch(UserActions.getCurrentUserSaveReviews())
 	}
 })
 

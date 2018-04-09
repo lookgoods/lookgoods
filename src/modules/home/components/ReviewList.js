@@ -16,7 +16,7 @@ export default class ReviewList extends Component {
 			<View style={styles.container}>
 				{ this.props.review_list ? this.props.review_list.map((review, index) => (
 					<View key={index} style={styles.reviewCard}>
-						<ReviewCard key={index} review={review}/>
+						<ReviewCard key={index} review={review} user={this.props.user}/>
 					</View>
 				)) : <View/>}
 			</View>

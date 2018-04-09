@@ -8,6 +8,8 @@ import {
 import Comment from 'src/modules/viewReview/components/Comment'
 import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
+import { connect } from 'react-redux'
+import { Divider } from 'react-native-elements'
 
 function countRatingFrequency(comment_list) {
 	let rating_frequency_list = [0, 0, 0, 0, 0]
@@ -45,20 +47,29 @@ const CommentList = ({ comment_list }) => (
 )
     
 
-export default class CommentSection extends Component {
+class CommentSection extends Component {
 	constructor (props) {
 		super(props)
 	}
 
 	render() {
-		const { comment_list } = this.props.review
-		if (comment_list.length === 0) return <View/>
+		const comment_list = this.props.comments
 		return (
-			<View>
-				<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-				<RatingFrequency comment_list={comment_list}/>
-				<CommentList comment_list={comment_list}/>
-			</View>
+			this.props.success && (
+				<View>
+					{comment_list.length === 0 && <View/>}
+					{comment_list.length !== 0 &&
+					<View>
+						<Divider style={styles.divider} />
+						<View>
+							<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
+							<RatingFrequency comment_list={comment_list}/>
+							<CommentList comment_list={comment_list}/>
+						</View>
+					</View>
+					}
+				</View>
+			)
 		)
 	}
 }
@@ -91,5 +102,19 @@ const styles = StyleSheet.create({
 	},
 	commentItem: {
 		marginBottom: 20
+	},
+	divider: {
+		backgroundColor: colors.lightGray,
+		marginTop: 5,
+		height: 1.2,
+		width: '100%'
 	}
 })
+
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
+	comments: state.commentReducer.comments,
+	success: state.commentReducer.success
+})
+
+export default connect(mapStateToProps, null)(CommentSection)

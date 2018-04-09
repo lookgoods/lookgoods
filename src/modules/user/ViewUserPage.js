@@ -22,16 +22,59 @@ import UserActions from 'src/redux/actions/user'
 export class ViewUserPage extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			isFollowed: false
+		}
 	}
 
 	componentDidMount() {
+		this.props.getCurrentUser()
 		this.props.getUser(this.props.selectedUser._id)
+		this.props.getUserOwnReviews(this.props.selectedUser._id)
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.currentUser.following_list !== prevProps.currentUser.following_list) {
+			this.checkFollow()
+		}
+	}
+
+	checkFollow() {
+		if (this.props.currentUser.following_list.includes(this.props.selectedUser._id)) {
+			this.setState({
+				isFollowed: true
+			})
+		} else {
+			this.setState({
+				isFollowed: false
+			})
+		}
+	}
+
+	followUser(user_id) {
+		this.props.followUser(user_id)
+	}
+	
+	unfollowUser(user_id) {
+		this.props.unfollowUser(user_id)
+	}
+
+	fetchSaveReviews() {
+		if (this.props.saveReviews == null) {
+			this.props.getUserSaveReviews(this.props.selectedUser._id)
+		}
+	}
+
+	getTotalLike(ownReviews) {
+		let total = 0
+		ownReviews.map((review) => {
+			total += review.like_by_list.length
+		})
+		return total
 	}
 
 	render() {
-		console.log(this.props.selectedUser, 'selected user')
-		console.log(this.props.user, 'user')
-		if (!this.props.user) {
+		if (!this.props.selectedUser || !this.props.currentUser || !this.props.user || !this.props.ownReviews) {
 			return <View/>
 		}
 		else {
@@ -43,7 +86,7 @@ export class ViewUserPage extends Component {
 						bounces={false}
 						style={styles.body}
 					>
-						{ !this.props.success ? 
+						{ !this.props.currentUser ? 
 							<View style={styles.loadingContainer}>
 								<ActivityIndicator size="large" />
 							</View> :
@@ -62,10 +105,15 @@ export class ViewUserPage extends Component {
 										}}
 									>
 										<Text style={styles.usernameText}>{this.props.user.name}</Text>
-										{ this.props.currentUser._id !== this.props.user._id &&
-											<TouchableOpacity style={styles.buttonFollow}>
-												<Text style={styles.fontFollow}>Follow</Text>
-											</TouchableOpacity>
+										{ ((this.props.currentUser._id !== this.props.user._id) && this.props.user && this.props.currentUser) && (
+											this.state.isFollowed ? 
+												<TouchableOpacity style={styles.buttonUnfollow} onPress={() => this.unfollowUser(this.props.selectedUser._id)}>
+													<Text style={styles.fontFollow}>Unfollow</Text>
+												</TouchableOpacity>
+												: 
+												<TouchableOpacity style={styles.buttonFollow} onPress={() => this.followUser(this.props.selectedUser._id)}>
+													<Text style={styles.fontFollow}>Follow</Text>
+												</TouchableOpacity>)
 										}
 									</View>
 								</View>
@@ -87,7 +135,7 @@ export class ViewUserPage extends Component {
 								<View style={styles.infoBar}>
 									<InfoBar
 										review_num={this.props.user.own_post_list.length}
-										comment_num={0}
+										like_num={this.getTotalLike(this.props.ownReviews)}
 										follower_num={this.props.user.follower_list.length}
 										following_num={this.props.user.following_list.length}
 									/>
@@ -98,10 +146,10 @@ export class ViewUserPage extends Component {
 								<View style={styles.tabsContainer}>
 									<Tabs>
 										<View title="Reviews">
-											<ReviewsGrid review_list={this.props.user.own_post_list} />
+											<ReviewsGrid review_list={this.props.ownReviews} />
 										</View>
-										<View title="Saved">
-											<ReviewsGrid review_list={this.props.user.saved_post_list} />
+										<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
+											<ReviewsGrid review_list={this.props.saveReviews} />
 										</View>
 									</Tabs>
 								</View>
@@ -110,8 +158,8 @@ export class ViewUserPage extends Component {
 					</ScrollView>
 					<View style={styles.header}>
 						<View style={styles.platformHeader}>
-							{ this.props.success ? 
-								<NavBar titleName={this.props.user.name} /> :
+							{ this.props.selectedUser ? 
+								<NavBar titleName={this.props.selectedUser.name} /> :
 								<NavBar />
 							} 
 						</View>
@@ -176,6 +224,15 @@ const styles = StyleSheet.create({
 		height: 30,
 		borderRadius: 3
 	},
+	buttonUnfollow: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row',
+		marginTop: 20,
+		backgroundColor: colors.lightGray,
+		height: 30,
+		borderRadius: 3
+	},
 	loadingContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -185,14 +242,31 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	selectedUser: state.userReducer.selectedUser,
-	user: state.userReducer.user,
 	currentUser: state.userReducer.currentUser,
-	success: state.userReducer.success
+	user: state.userReducer.user,
+	success: state.userReducer.success,
+	ownReviews: state.userReducer.ownReviews,
+	saveReviews: state.userReducer.saveReviews
 })
 
 const mapDispatchToProps = dispatch => ({
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
+	},
 	getUser: (user_id) => {
 		dispatch(UserActions.getUser(user_id))
+	},
+	followUser: (user_id) => {
+		dispatch(UserActions.followUser(user_id))
+	},
+	unfollowUser: (user_id) => {
+		dispatch(UserActions.unfollowUser(user_id))
+	},
+	getUserOwnReviews: (user_id) => {
+		dispatch(UserActions.getUserOwnReviews(user_id))
+	},
+	getUserSaveReviews: (user_id) => {
+		dispatch(UserActions.getUserSaveReviews(user_id))
 	}
 })
 

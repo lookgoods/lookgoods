@@ -1,7 +1,6 @@
 import constants from 'src/redux/constants'
 
 const AppURL = constants.AppURL
-const TestURL = constants.TestURL
 
 const ImageActions = {
 	uploadImage: (image) => async dispatch => {
