@@ -54,6 +54,14 @@ export class UserPage extends Component {
 		}
 	}
 
+	getTotalLike(ownReviews) {
+		let total = 0
+		ownReviews.map((review) => {
+			total += review.like_by_list.length
+		})
+		return total
+	}
+
 	render() {
 		if (!this.props.currentUser && this.props.success) {
 			this.goToLoginPage()
@@ -62,7 +70,7 @@ export class UserPage extends Component {
 		else {
 			return (
 				<ScrollView contentContainerStyle={styles.container}>
-					{ !this.props.currentUser ? 
+					{ !this.props.currentUser || !this.props.ownReviews ? 
 						<View style={styles.loadingContainer}>
 							<ActivityIndicator size="large" />
 						</View>
@@ -83,7 +91,7 @@ export class UserPage extends Component {
 							<View style={styles.infoBar}>
 								<InfoBar
 									review_num={this.props.currentUser.own_post_list.length}
-									comment_num={0}
+									like_num={this.getTotalLike(this.props.ownReviews)}
 									follower_num={this.props.currentUser.follower_list.length}
 									following_num={this.props.currentUser.following_list.length}
 								/>

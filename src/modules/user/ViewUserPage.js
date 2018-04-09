@@ -65,8 +65,16 @@ export class ViewUserPage extends Component {
 		}
 	}
 
+	getTotalLike(ownReviews) {
+		let total = 0
+		ownReviews.map((review) => {
+			total += review.like_by_list.length
+		})
+		return total
+	}
+
 	render() {
-		if (!this.props.selectedUser || !this.props.currentUser || !this.props.user) {
+		if (!this.props.selectedUser || !this.props.currentUser || !this.props.user || !this.props.ownReviews) {
 			return <View/>
 		}
 		else {
@@ -127,7 +135,7 @@ export class ViewUserPage extends Component {
 								<View style={styles.infoBar}>
 									<InfoBar
 										review_num={this.props.user.own_post_list.length}
-										comment_num={0}
+										like_num={this.getTotalLike(this.props.ownReviews)}
 										follower_num={this.props.user.follower_list.length}
 										following_num={this.props.user.following_list.length}
 									/>
