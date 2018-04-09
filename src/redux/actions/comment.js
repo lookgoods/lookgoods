@@ -30,7 +30,6 @@ const CommentActions = {
 			dispatch(actions.getCommentError(err))
 		} 
 		else {
-			console.log(response.data, 'getComments')
 			dispatch(actions.getCommentSuccess(response.data))
 		}
 	},
@@ -39,9 +38,8 @@ const CommentActions = {
 		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
 		if (err) dispatch(actions.editCommentError(err))
 		else {
-			console.log(response, 'response')
-			// dispatch(actions.editCommentSuccess(response))
-			// dispatch(actions.getCommentSuccess(response.data))
+			dispatch(actions.editCommentSuccess(response))
+			dispatch(CommentActions.getComments(review_id))
 		}
 	},
 	deleteComment: (review_id, comment_id) => async dispatch => {

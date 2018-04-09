@@ -48,7 +48,6 @@ class CommentSection extends Component {
 	}
 
 	async componentWillReceiveProps(nextProps) {
-		console.log(nextProps)
 		await this.setState({comment_list: nextProps.comments})
 	}
 
