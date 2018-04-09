@@ -13,7 +13,6 @@ import CoverImage from 'src/modules/shares/CoverImage'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
-import Tabs from 'src/modules/shares/Tabs'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -57,12 +56,6 @@ export class ViewUserPage extends Component {
 	
 	unfollowUser(user_id) {
 		this.props.unfollowUser(user_id)
-	}
-
-	fetchSaveReviews() {
-		if (this.props.saveReviews == null) {
-			this.props.getUserSaveReviews(this.props.selectedUser._id)
-		}
 	}
 
 	getTotalLike(ownReviews) {
@@ -144,14 +137,10 @@ export class ViewUserPage extends Component {
 									<Divider style={styles.divider} />
 								</View>
 								<View style={styles.tabsContainer}>
-									<Tabs>
-										<View title="Reviews">
-											<ReviewsGrid review_list={this.props.ownReviews} />
-										</View>
-										<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
-											<ReviewsGrid review_list={this.props.saveReviews} />
-										</View>
-									</Tabs>
+									<View style={styles.reviewTextContainer}>
+										<Text style={styles.reviewText}>Reviews</Text>
+									</View>
+									<ReviewsGrid review_list={this.props.ownReviews} />
 								</View>
 							</View>
 						}
@@ -195,7 +184,7 @@ const styles = StyleSheet.create({
 		marginTop: 20
 	},
 	divider: {
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.lightGray,
 		marginTop: 15,
 		height: 1.2,
 		width: '100%'
@@ -237,6 +226,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	reviewText: {
+		marginBottom: 10,
+		color: colors.orange,
+		textAlign: 'center'
+	},
+	reviewTextContainer: {
+		flex: 1,
+		borderBottomWidth: 2,
+		borderBottomColor: colors.orange,
+		marginBottom: 5
 	}
 })
 
@@ -245,8 +245,7 @@ const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	user: state.userReducer.user,
 	success: state.userReducer.success,
-	ownReviews: state.userReducer.ownReviews,
-	saveReviews: state.userReducer.saveReviews
+	ownReviews: state.userReducer.ownReviews
 })
 
 const mapDispatchToProps = dispatch => ({

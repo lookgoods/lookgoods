@@ -10,7 +10,6 @@ import {
 import { colors } from 'src/constants/mixins'
 import UserActions from 'src/redux/actions/user'
 import { connect } from 'react-redux'
-import { Actions } from 'react-native-router-flux'
 
 export class ChangeStatusPage extends Component {
 	constructor (props) {
@@ -27,8 +26,7 @@ export class ChangeStatusPage extends Component {
 	}
 
 	saveButtonClick() {
-		this.props.changeUserStatus(this.props.currentUser._id, this.state.description)
-		Actions.pop()
+		this.props.changeUserStatus(this.state.description)
 	}
 
 	render() {
@@ -94,8 +92,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	changeUserStatus: (user_id, description) => {
-		dispatch(UserActions.changeUserDescription(user_id, description))
+	changeUserStatus: (description) => {
+		dispatch(UserActions.changeUserDescription(description))
 	}       
 })
 
