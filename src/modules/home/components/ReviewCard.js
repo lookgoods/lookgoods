@@ -153,7 +153,10 @@ export class ReviewCard extends Component {
 	}
 
 	componentDidMount() {
-		this.checkLove()
+		if (this.props.review && this.props.user) {
+			this.checkLove()
+			this.checkBookmark()
+		}
 	}
 
 	clickLove() {
@@ -165,8 +168,8 @@ export class ReviewCard extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.currentUser !== null && this.props.currentUser) { 
-			if (this.props.currentUser.saved_post_list !== prevProps.currentUser.saved_post_list) {
+		if (this.props.user !== null && this.props.user && prevProps.user) { 
+			if (this.props.user.saved_post_list !== prevProps.user.saved_post_list) {
 				this.checkBookmark()
 			}
 			if (this.props.review.like_by_list !== prevProps.review.like_by_list) {
@@ -176,7 +179,7 @@ export class ReviewCard extends Component {
 	}
 
 	checkBookmark() {
-		if (this.props.currentUser.saved_post_list.includes(this.props.review._id)) {
+		if (this.props.user.saved_post_list.includes(this.props.review._id)) {
 			this.setState({
 				isSaved: true
 			})
@@ -185,7 +188,7 @@ export class ReviewCard extends Component {
 				isSaved: false
 			})
 		}
-		if (this.props.currentUser.client_id === this.props.review.user.client_id) {
+		if (this.props.user._id === this.props.review.user._id) {
 			this.setState({
 				showBookmark: false
 			})
@@ -193,7 +196,7 @@ export class ReviewCard extends Component {
 	}
 
 	checkLove() {
-		if (this.props.review.like_by_list.includes(this.props.currentUser._id)) {
+		if (this.props.review.like_by_list.includes(this.props.user._id)) {
 			this.setState({
 				isLove: true
 			})
@@ -223,8 +226,6 @@ export class ReviewCard extends Component {
 			timestamp,
 			like_by_list
 		} = this.props.review
-		console.log(this.props.review, 'review')
-		console.log(this.props.currentUser, 'current user')
 		return (
 			<View style={styles.container}>
 				<Header
@@ -335,10 +336,6 @@ const styles = StyleSheet.create({
 	}
 })
 
-const mapStateToProps = state => ({
-	currentUser: state.userReducer.currentUser
-})
-
 const mapDispatchToProps = dispatch => ({
 	setCurrentReview: review => {
 		dispatch(ReviewActions.setCurrentReview(review))
@@ -360,4 +357,4 @@ const mapDispatchToProps = dispatch => ({
 	}
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewCard)
+export default connect(null, mapDispatchToProps)(ReviewCard)

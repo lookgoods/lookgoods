@@ -78,7 +78,7 @@ export class HomePage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewList review_list={this.props.reviews} />
+						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
 					</View>
 				</ScrollView>
 			</View>
