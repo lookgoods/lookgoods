@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
 		marginTop: 20
 	},
 	divider: {
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.lightGray,
 		marginTop: 15,
 		height: 1.2,
 		width: '100%'

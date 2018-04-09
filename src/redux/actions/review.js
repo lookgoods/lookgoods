@@ -23,7 +23,7 @@ const ReviewActions = {
 			})
 			const data = await response.json()
 			dispatch(actions.addReviewSuccess(data))
-			Actions.tabMenu()
+			Actions.tabMenu({ page: 'home' })
 		} catch (err) {
 			dispatch(actions.addReviewError(err))
 		}
