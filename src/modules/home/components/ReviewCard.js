@@ -17,15 +17,15 @@ const ProfilePicture = ({ image_url }) => {
 	return <CoverImage size={50} uri={image_url} />
 }
 
-const BookMark = ({ isActive }) => {
+const BookMark = ({ isActive, clickBookmark }) => {
 	return (
-		<View style={styles.bookmark}>
+		<TouchableOpacity style={styles.bookmark} onPress={clickBookmark}>
 			{isActive ? (
 				<IconMaterial name="bookmark" size={36} />
 			) : (
 				<IconMaterial name="bookmark-border" size={36} />
 			)}
-		</View>
+		</TouchableOpacity>
 	)
 }
 
@@ -41,7 +41,7 @@ function getTimeText(time) {
 	return moment(time).fromNow()
 }
 
-function Header({ user, time, isSaved, setUser }) {
+function Header({ user, time, isSaved, setUser, clickBookmark, showBookmark }) {
 	return (
 		<View style={styles.headerContainer}>
 			<TouchableOpacity
@@ -56,7 +56,7 @@ function Header({ user, time, isSaved, setUser }) {
 				</TouchableOpacity>
 				<Text style={styles.timeText}>{getTimeText(time)}</Text>
 			</View>
-			<BookMark isActive={isSaved} />
+			{ showBookmark && <BookMark isActive={isSaved} clickBookmark={clickBookmark} /> }
 		</View>
 	)
 }
@@ -97,7 +97,7 @@ function Body({ product_url, title, review, setReview }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment, isLove, clickLove }) {
+function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove }) {
 	return (
 		<View style={styles.footerContainer}>
 			<View style={{ flexDirection: 'row' }}>
@@ -125,18 +125,18 @@ function Footer({ rating, price, numberOfComment, isLove, clickLove }) {
 			</View>
 
 			<View style={{ flexDirection: 'row' }}>
-				<View style={styles.productDetailHeart}>
+				<TouchableOpacity style={styles.productDetailHeart}>
 					{isLove ? (
-						<TouchableOpacity onPress={() => clickLove()}>
+						<TouchableOpacity onPress={clickLove}>
 							<Ionicons name="md-heart" color={colors.red} size={24} />
 						</TouchableOpacity>
 					) : (
-						<TouchableOpacity onPress={() => clickLove()}>
+						<TouchableOpacity onPress={clickLove}>
 							<Ionicons name="md-heart-outline" color={'#777777'} size={24} />
 						</TouchableOpacity>
 					)}
-					<Text style={styles.productDetailLove}>{numberOfComment} likes</Text>
-				</View>
+					<Text style={styles.productDetailLove}>{numberOfLike} likes</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	)
@@ -146,13 +146,72 @@ export class ReviewCard extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			isLove: false
+			isLove: false,
+			isSaved: false,
+			showBookmark: true
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.review && this.props.user) {
+			this.checkLove()
+			this.checkBookmark()
 		}
 	}
 
 	clickLove() {
+		if (this.state.isLove) this.props.unlikeReview(this.props.review._id)
+		else this.props.likeReview(this.props.review._id)
 		this.setState({
 			isLove: !this.state.isLove
+		})
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.user !== null && this.props.user && prevProps.user) { 
+			if (this.props.user.saved_post_list !== prevProps.user.saved_post_list) {
+				this.checkBookmark()
+			}
+			if (this.props.review.like_by_list !== prevProps.review.like_by_list) {
+				this.checkLove()
+			}
+		}
+	}
+
+	checkBookmark() {
+		if (this.props.user.saved_post_list.includes(this.props.review._id)) {
+			this.setState({
+				isSaved: true
+			})
+		} else {
+			this.setState({
+				isSaved: false
+			})
+		}
+		if (this.props.user._id === this.props.review.user._id) {
+			this.setState({
+				showBookmark: false
+			})
+		}
+	}
+
+	checkLove() {
+		if (this.props.review.like_by_list.includes(this.props.user._id)) {
+			this.setState({
+				isLove: true
+			})
+		} else {
+			this.setState({
+				isLove: false
+			})
+		}
+	}
+
+	clickBookmark() {
+		if (this.state.isSaved) this.props.unsaveReview(this.props.review._id)
+		else this.props.saveReview(this.props.review._id)
+		this.setState({
+			isSaved: !this.state.isSaved
 		})
 	}
 
@@ -164,16 +223,18 @@ export class ReviewCard extends Component {
 			price,
 			comment_list,
 			rating,
-			timestamp
+			timestamp,
+			like_by_list
 		} = this.props.review
-		// console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<Header
 					user={user}
 					time={timestamp}
-					isSaved={false}
+					isSaved={this.state.isSaved}
 					setUser={this.props.setSelectedUser}
+					clickBookmark={() => this.clickBookmark()}
+					showBookmark={this.state.showBookmark}
 				/>
 				<Body
 					product_url={picture_cover_url}
@@ -185,6 +246,7 @@ export class ReviewCard extends Component {
 					rating={rating}
 					price={price}
 					numberOfComment={comment_list.length}
+					numberOfLike={like_by_list.length}
 					isLove={this.state.isLove}
 					clickLove={() => this.clickLove()}
 				/>
@@ -280,6 +342,18 @@ const mapDispatchToProps = dispatch => ({
 	},
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
+	},
+	saveReview: review_id => {
+		dispatch(ReviewActions.saveReview(review_id))
+	},
+	unsaveReview: review_id => {
+		dispatch(ReviewActions.unsaveReview(review_id))
+	},
+	likeReview: review_id => {
+		dispatch(ReviewActions.likeReview(review_id))
+	},
+	unlikeReview: review_id => {
+		dispatch(ReviewActions.unlikeReview(review_id))
 	}
 })
 

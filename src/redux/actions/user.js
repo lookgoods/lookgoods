@@ -94,11 +94,9 @@ const UserActions = {
 	},
 	getCurrentUserOwnReviews: () => async dispatch => {
 		dispatch(actions.getCurrentUserOwnReviewsRequest())
-		console.log('request get cu reviews')
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/ownpostlist`))
 		if (err) dispatch(actions.getCurrentUserOwnReviewsError(err))
 		else {
-			console.log(response.data, 'get cu reviews')
 			dispatch(actions.getCurrentUserOwnReviewsSuccess(response.data))
 		}
 	},

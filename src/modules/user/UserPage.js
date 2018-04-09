@@ -25,7 +25,8 @@ export class UserPage extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return (this.props.currentUser !== nextProps.currentUser) || 
 		(this.props.ownReviews !== nextProps.ownReviews) || 
-		(this.props.currentPage !== nextProps.currentPage)
+		(this.props.currentPage !== nextProps.currentPage) ||
+		(this.props.saveReviews !== nextProps.saveReviews)
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
@@ -54,7 +55,6 @@ export class UserPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.ownReviews, 'ownReviews')
 		if (!this.props.currentUser && this.props.success) {
 			this.goToLoginPage()
 			return <View/>
