@@ -25,19 +25,20 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
-		const { product } = this.props.review
-		// console.log(this.props.review, 'review')
-		// console.log(this.props.currentUser, 'currentUser')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName={product.name} />
+						<NavBar titleName={this.props.review.product.name} />
 					</View>
 				</View>
 				<ScrollView>
 					<ContentSection review={this.props.review} />
-					<CommentSection/>
+					<CommentSection 
+						review={this.props.review}
+						editComment={(comment, review_id, comment_id) => this.props.editComment(comment, review_id, comment_id)} 
+						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
+					/>
 					<Divider style={styles.divider} />
 					<AddComment 
 						style={styles.addComment} 
@@ -92,6 +93,12 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getComments: (review_id) => {
 		dispatch(CommentActions.getComments(review_id))
+	},
+	editComment: (comment, review_id, comment_id) => {
+		dispatch(CommentActions.editComment(comment, review_id, comment_id))
+	},
+	deleteComment: (review_id, comment_id) => {
+		dispatch(CommentActions.deleteComment(review_id, comment_id))
 	}
 })
 

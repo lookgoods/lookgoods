@@ -18,7 +18,6 @@ export default (state = initialState, action) => {
 	case constants.ADD_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
 			success: true,
 			error: null
 		}
@@ -40,7 +39,7 @@ export default (state = initialState, action) => {
 	case constants.GET_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
+			comments: action.payload,
 			success: true,
 			error: null
 		}
@@ -62,7 +61,6 @@ export default (state = initialState, action) => {
 	case constants.EDIT_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
 			success: true,
 			error: null
 		}
@@ -84,7 +82,6 @@ export default (state = initialState, action) => {
 	case constants.DELETE_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
 			success: true,
 			error: null
 		}

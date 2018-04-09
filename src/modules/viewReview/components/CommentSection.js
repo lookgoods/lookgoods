@@ -41,31 +41,52 @@ function RatingFrequency ({ comment_list }) {
 class CommentSection extends Component {
 	constructor (props) {
 		super(props)
+		this.state = {
+			comment_list: [],
+			indexComment: -1
+		}
 	}
 
-	showActionSheet() {	
+	async componentWillReceiveProps(nextProps) {
+		console.log(nextProps)
+		await this.setState({comment_list: nextProps.comments})
+	}
+
+	async showActionSheet(index) {
+		await this.setState({ indexComment: index})
 		this.ActionSheet.show()
+	}
+	// editComment={(comment, review_id, comment_id) => this.props.editComment(comment, review_id, comment_id)} 
+	// deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
+	optionsSelect(index) {
+		const comment_list = this.props.comments
+		if (index === 0) {
+			// this.props.editComment(comment, this.props.review._id, comment_id)
+		} else if (index === 1) {
+			// console.log(this.state.indexComment)
+			// console.log(this.props.review._id, comment_list[this.state.indexComment], '<3 <3 <3')
+			this.props.deleteComment(this.props.review._id, comment_list[this.state.indexComment]._id)
+		}
 	}
 
 	render() {
-		const comment_list = this.props.comments
+		console.log(this.state.comment_list, 'comment_list')
 		return (
 			this.props.success && (
 				<View>
-					{comment_list.length === 0 ? <View/> :
+					{this.state.comment_list.length <= 0 ? <View/> :
 						<View>
-							<Text onPress={() => this.showActionSheet()}>Open ActionSheet</Text>
 							<Divider style={styles.divider} />
 							<View>
-								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-								<RatingFrequency comment_list={comment_list}/>
+								<Text style={styles.totalText}>{this.state.comment_list.length} Reviews</Text>
+								<RatingFrequency comment_list={this.state.comment_list}/>
 								<View style={styles.commentList}>
-									{ comment_list.map((comment, index) => (
-										<View key={index} >
+									{ this.state.comment_list.map((comment, index) => (
+										<View key={index}>
 											<TouchableOpacity 
 												delayLongPress={1000} 
-												onLongPress ={() => this.showActionSheet()}>
-												<View style={styles.commentItem} >
+												onLongPress = {() => this.showActionSheet(index)}>
+												<View style = {styles.commentItem} >
 													<Comment comment={comment}/>
 												</View>
 											</TouchableOpacity>
@@ -78,7 +99,7 @@ class CommentSection extends Component {
 								options={['Edit', 'Delete', 'Cancel']}
 								cancelButtonIndex={2}
 								destructiveButtonIndex={1}
-								onPress={(index) => { console.log(index, 'index') }}
+								onPress={(index) => this.optionsSelect(index)}
 							/>
 						</View>
 					}
@@ -131,13 +152,4 @@ const mapStateToProps = state => ({
 	success: state.commentReducer.success
 })
 
-const mapDispatchToProps = dispatch => ({
-	editComment: (comment, review_id, comment_id) => {
-		dispatch(CommentActions.editComment(comment, review_id, comment_id))
-	},
-	deleteComment: (review_id, comment_id) => {
-		dispatch(CommentActions.deleteComment(review_id, comment_id))
-	}
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CommentSection)
+export default connect(mapStateToProps, null)(CommentSection)

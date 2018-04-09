@@ -17,6 +17,7 @@ const CommentActions = {
 			})
 			const data = await response.json()
 			dispatch(actions.addCommentSuccess(data))
+			dispatch(CommentActions.getComments(review_id))
 		} catch (err) {
 			dispatch(actions.addCommentError(err))
 		}
@@ -29,6 +30,7 @@ const CommentActions = {
 			dispatch(actions.getCommentError(err))
 		} 
 		else {
+			console.log(response.data, 'getComments')
 			dispatch(actions.getCommentSuccess(response.data))
 		}
 	},
@@ -36,13 +38,21 @@ const CommentActions = {
 		dispatch(actions.editCommentRequest())
 		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
 		if (err) dispatch(actions.editCommentError(err))
-		else dispatch(actions.editCommentSuccess(response))
+		else {
+			console.log(response, 'response')
+			// dispatch(actions.editCommentSuccess(response))
+			// dispatch(actions.getCommentSuccess(response.data))
+		}
 	},
 	deleteComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())
+		console.log(review_id, comment_id, 'delete')
 		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`))
 		if (err) dispatch(actions.deleteCommentError(err))
-		else dispatch(actions.deleteCommentSuccess(response))
+		else {
+			dispatch(actions.deleteCommentSuccess(response))
+			dispatch(CommentActions.getComments(review_id))
+		}
 	}
 }
 
@@ -52,7 +62,7 @@ const actions = {
 	}),
 	addCommentSuccess: comments => ({
 		type: constants.ADD_COMMENT_SUCCESS,
-		payload: { comments }
+		payload: comments 
 	}),
 	addCommentError: error => ({
 		type: constants.ADD_COMMENT_FAILURE,
@@ -63,7 +73,7 @@ const actions = {
 	}),
 	getCommentSuccess: comments => ({
 		type: constants.GET_COMMENT_SUCCESS,
-		payload: { comments }
+		payload: comments
 	}),
 	getCommentError: error => ({
 		type: constants.GET_COMMENT_FAILURE,
