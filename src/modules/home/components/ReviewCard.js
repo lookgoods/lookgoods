@@ -157,10 +157,6 @@ export class ReviewCard extends Component {
 		this.checkBookmark()
 	}
 
-	componentWillRecieveProps() {
-		console.log('recieve new props')
-	}
-
 	clickLove() {
 		if (this.state.isLove) this.props.unlikeReview(this.props.review._id)
 		else this.props.likeReview(this.props.review._id)
