@@ -9,9 +9,9 @@ import React, { Component } from 'react'
 import NavBarSearch from 'src/modules/shares/NavBarSearch'
 import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
-import reviewsMock from 'src/mockData/reviews'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
+import UserActions from 'src/redux/actions/user'
 
 export class GlobalPage extends Component {
 	constructor(props) {
@@ -22,12 +22,25 @@ export class GlobalPage extends Component {
 		}
 	}
 
-	fetchReviews() {
+	fetchData() {
 		this.props.getReviews()
+		this.props.getCurrentUser()
 	}
 
 	componentDidMount() {
-		this.fetchReviews()
+		this.fetchData()
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return (this.props.currentUser !== nextProps.currentUser) || 
+		(this.props.reviews !== nextProps.reviews) || 
+		(this.props.currentPage !== nextProps.currentPage)
+	}
+	
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'global') {
+			this.fetchData()
+		}
 	}
 
 	setIsSearch() {
@@ -44,15 +57,19 @@ export class GlobalPage extends Component {
 	}
 
 	async cancelSearch() {
-		// Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
-			// overlaySearch: false,
 			searchText: ''
 		})
 	}
 
 	render() {
+		if (!this.props.currentUser) {
+			if (this.props.success) {
+				this.goToLoginPage()
+			}
+			return <View/>
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -68,7 +85,7 @@ export class GlobalPage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewList review_list={this.props.reviews}/>
+						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
 					</View>
 				</ScrollView>
 			</View>
@@ -95,12 +112,16 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-	reviews: state.reviewReducer.reviews
+	reviews: state.reviewReducer.reviews,
+	currentUser: state.userReducer.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
 	getReviews: () => {
 		dispatch(ReviewActions.getReviews())
+	},
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
 	}
 })
 
