@@ -12,7 +12,7 @@ export default class InfoBar extends Component {
 		return (
 			<View style={styles.container}>
 				<InfoText title='Reviews' number={this.props.review_num} />
-				<InfoText title='Comments' number={this.props.comment_num} />
+				<InfoText title='Likes' number={this.props.like_num} />
 				<InfoText title='Follower' number={this.props.follower_num} />
 				<InfoText title='Following' number={this.props.following_num} />
 			</View>

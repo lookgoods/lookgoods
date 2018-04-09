@@ -153,10 +153,12 @@ export class ReviewCard extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.review && this.props.user) {
-			this.checkLove()
-			this.checkBookmark()
-		}
+		this.checkLove()
+		this.checkBookmark()
+	}
+
+	componentWillRecieveProps() {
+		console.log('recieve new props')
 	}
 
 	clickLove() {
@@ -168,7 +170,7 @@ export class ReviewCard extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.user !== null && this.props.user && prevProps.user) { 
+		if (this.props.user && prevProps.user && this.props.review && prevProps.review) { 
 			if (this.props.user.saved_post_list !== prevProps.user.saved_post_list) {
 				this.checkBookmark()
 			}
