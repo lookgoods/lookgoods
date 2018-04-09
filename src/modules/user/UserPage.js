@@ -63,8 +63,10 @@ export class UserPage extends Component {
 	}
 
 	render() {
-		if (!this.props.currentUser && this.props.success) {
-			this.goToLoginPage()
+		if (!this.props.currentUser) {
+			if (this.props.success) {
+				this.goToLoginPage()
+			}
 			return <View/>
 		}
 		else {
