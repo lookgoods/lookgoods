@@ -68,6 +68,24 @@ const ReviewActions = {
 			dispatch(actions.unsaveReviewSuccess(response))
 			dispatch(UserActions.getCurrentUser())
 		}
+	},
+	likeReview: (review_id) => async dispatch => {
+		dispatch(actions.likeReviewRequest())
+		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/like`))
+		if (err) dispatch(actions.likeReviewError(err))
+		else {
+			dispatch(actions.likeReviewSuccess(response))
+			dispatch(ReviewActions.getReviews())
+		}
+	},
+	unlikeReview: (review_id) => async dispatch => {
+		dispatch(actions.unlikeReviewRequest())
+		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/unlike`))
+		if (err) dispatch(actions.unlikeReviewError(err))
+		else {
+			dispatch(actions.unlikeReviewSuccess(response))
+			dispatch(ReviewActions.getReviews())
+		}
 	}
 }
 
@@ -136,6 +154,28 @@ const actions = {
 	}),
 	unsaveReviewError: error => ({
 		type: constants.UNSAVE_REVIEW_FAILURE,
+		payload: error
+	}),
+	likeReviewRequest: () => ({
+		type: constants.LIKE_REVIEW_REQUEST
+	}),
+	likeReviewSuccess: response => ({
+		type: constants.LIKE_REVIEW_SUCCESS,
+		payload: response
+	}),
+	likeReviewError: error => ({
+		type: constants.LIKE_REVIEW_FAILURE,
+		payload: error
+	}),
+	unlikeReviewRequest: () => ({
+		type: constants.UNLIKE_REVIEW_REQUEST
+	}),
+	unlikeReviewSuccess: response => ({
+		type: constants.UNLIKE_REVIEW_SUCCESS,
+		payload: response
+	}),
+	unlikeReviewError: error => ({
+		type: constants.UNLIKE_REVIEW_FAILURE,
 		payload: error
 	})
 }

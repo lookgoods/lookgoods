@@ -97,7 +97,7 @@ function Body({ product_url, title, review, setReview }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment, isLove, clickLove }) {
+function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove }) {
 	return (
 		<View style={styles.footerContainer}>
 			<View style={{ flexDirection: 'row' }}>
@@ -125,18 +125,18 @@ function Footer({ rating, price, numberOfComment, isLove, clickLove }) {
 			</View>
 
 			<View style={{ flexDirection: 'row' }}>
-				<View style={styles.productDetailHeart}>
+				<TouchableOpacity style={styles.productDetailHeart}>
 					{isLove ? (
-						<TouchableOpacity onPress={() => clickLove()}>
+						<TouchableOpacity onPress={clickLove}>
 							<Ionicons name="md-heart" color={colors.red} size={24} />
 						</TouchableOpacity>
 					) : (
-						<TouchableOpacity onPress={() => clickLove()}>
+						<TouchableOpacity onPress={clickLove}>
 							<Ionicons name="md-heart-outline" color={'#777777'} size={24} />
 						</TouchableOpacity>
 					)}
-					<Text style={styles.productDetailLove}>{numberOfComment} likes</Text>
-				</View>
+					<Text style={styles.productDetailLove}>{numberOfLike} likes</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	)
@@ -152,15 +152,26 @@ export class ReviewCard extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.checkLove()
+	}
+
 	clickLove() {
+		if (this.state.isLove) this.props.unlikeReview(this.props.review._id)
+		else this.props.likeReview(this.props.review._id)
 		this.setState({
 			isLove: !this.state.isLove
 		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.currentUser && (this.props.currentUser.saved_post_list !== prevProps.currentUser.saved_post_list)) {
-			this.checkBookmark()
+		if (this.props.currentUser !== null && this.props.currentUser) { 
+			if (this.props.currentUser.saved_post_list !== prevProps.currentUser.saved_post_list) {
+				this.checkBookmark()
+			}
+			if (this.props.review.like_by_list !== prevProps.review.like_by_list) {
+				this.checkLove()
+			}
 		}
 	}
 
@@ -181,6 +192,18 @@ export class ReviewCard extends Component {
 		}
 	}
 
+	checkLove() {
+		if (this.props.review.like_by_list.includes(this.props.currentUser._id)) {
+			this.setState({
+				isLove: true
+			})
+		} else {
+			this.setState({
+				isLove: false
+			})
+		}
+	}
+
 	clickBookmark() {
 		if (this.state.isSaved) this.props.unsaveReview(this.props.review._id)
 		else this.props.saveReview(this.props.review._id)
@@ -197,7 +220,8 @@ export class ReviewCard extends Component {
 			price,
 			comment_list,
 			rating,
-			timestamp
+			timestamp,
+			like_by_list
 		} = this.props.review
 		console.log(this.props.review, 'review')
 		console.log(this.props.currentUser, 'current user')
@@ -221,6 +245,7 @@ export class ReviewCard extends Component {
 					rating={rating}
 					price={price}
 					numberOfComment={comment_list.length}
+					numberOfLike={like_by_list.length}
 					isLove={this.state.isLove}
 					clickLove={() => this.clickLove()}
 				/>
@@ -326,6 +351,12 @@ const mapDispatchToProps = dispatch => ({
 	},
 	unsaveReview: review_id => {
 		dispatch(ReviewActions.unsaveReview(review_id))
+	},
+	likeReview: review_id => {
+		dispatch(ReviewActions.likeReview(review_id))
+	},
+	unlikeReview: review_id => {
+		dispatch(ReviewActions.unlikeReview(review_id))
 	}
 })
 
