@@ -11,19 +11,25 @@ import IconIonicons from 'react-native-vector-icons/Ionicons'
 import { colors } from 'src/constants/mixins'
 
 class NavBar extends Component {
-
 	render () {
 		const { titleName } = this.props
 		return (
 			<View style={styles.navBar} >
-				<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }} >
+				<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row'}} >
 					<TouchableOpacity 
-						style={{ width: 50, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }} 
+						style={{ width: 50, alignItems: 'center', justifyContent: 'center'}} 
 						onPress={() => Actions.pop()}
 					>
-						<IconIonicons name='ios-arrow-back' size={20} color={colors.gray} />
+						<IconIonicons name='ios-arrow-back' size={30} color={colors.gray} />
 					</TouchableOpacity>
-					<Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ titleName }</Text>
+					<View style={{ flex: 1 }}>
+						<Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ titleName }</Text>
+					</View>
+					<TouchableOpacity 
+						style={{ width: 50, alignItems: 'center', justifyContent: 'flex-end'}} 
+					>
+						<IconIonicons name='md-more' size={35} color={colors.gray}/>
+					</TouchableOpacity>
 				</View>
 			</View>
 		)
