@@ -51,6 +51,10 @@ const CommentActions = {
 			dispatch(actions.deleteCommentSuccess(response))
 			dispatch(CommentActions.getComments(review_id))
 		}
+	},
+	setEditComment: (review_id, comment_id) => async dispatch => {
+		dispatch(actions.setEditComment(comment_id))
+		dispatch(CommentActions.getComments(review_id))
 	}
 }
 
@@ -93,11 +97,15 @@ const actions = {
 	}),
 	deleteCommentSuccess: comments => ({
 		type: constants.DELETE_COMMENT_SUCCESS,
-		payload: { comments }
+		payload: comments 
 	}),
 	deleteCommentError: error => ({
 		type: constants.DELETE_COMMENT_FAILURE,
 		payload: { error }
+	}),
+	setEditComment: comment => ({
+		type: constants.SET_EDIT_COMMENT,
+		payload: comment
 	})
 }
 

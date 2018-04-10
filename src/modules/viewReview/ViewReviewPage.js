@@ -38,6 +38,7 @@ export class ViewReviewPage extends Component {
 						review={this.props.review}
 						editComment={(comment, review_id, comment_id) => this.props.editComment(comment, review_id, comment_id)} 
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
+						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>
 					<Divider style={styles.divider} />
 					<AddComment 
@@ -99,6 +100,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	deleteComment: (review_id, comment_id) => {
 		dispatch(CommentActions.deleteComment(review_id, comment_id))
+	},
+	setEditComment: (review_id, comment_id) => {
+		dispatch(CommentActions.setEditComment(review_id, comment_id))
 	}
 })
 

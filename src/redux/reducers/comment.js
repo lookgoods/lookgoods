@@ -1,6 +1,7 @@
 import constants from 'src/redux/constants'
 
 const initialState = {
+	editComment: null,
 	comments: null,
 	success: false,
 	error: null
@@ -91,6 +92,15 @@ export default (state = initialState, action) => {
 			...state,
 			success: false,
 			error: action.payload.error
+		}
+		
+	case constants.SET_EDIT_COMMENT:
+		console.log(action.payload, 'SET_EDIT_COMMENT')
+		return {
+			...state,
+			editComment: action.payload,
+			success: false,
+			error: null
 		}	
 
 	default:
