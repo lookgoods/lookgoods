@@ -96,6 +96,7 @@ export class UserPage extends Component {
 									like_num={this.getTotalLike(this.props.ownReviews)}
 									follower_num={this.props.currentUser.follower_list.length}
 									following_num={this.props.currentUser.following_list.length}
+									user_id={this.props.currentUser._id}
 								/>
 							</View>
 							<View style={{ alignItems: 'center' }}>
