@@ -3,7 +3,8 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	TouchableOpacity
+	TouchableOpacity,
+	Clipboard
 } from 'react-native'
 import ActionSheet from 'react-native-actionsheet'
 import Comment from 'src/modules/viewReview/components/Comment'
@@ -41,14 +42,9 @@ class CommentSection extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			// comment_list: [],
 			indexComment: -1
 		}
 	}
-
-	// async componentWillReceiveProps(nextProps) {
-	// 	await this.setState({comment_list: nextProps.comments})
-	// }
 
 	handleEditComment(property, text) {
 		const contact = this.state.isEdit
@@ -62,26 +58,26 @@ class CommentSection extends Component {
 	}
 
 	async showActionSheet2(index) {
-		// await this.setState({ indexComment: index })
+		await this.setState({ indexComment: index })
 		this.ActionSheet2.show()
 	}
 
-
-	// editComment={(comment, review_id, comment_id) => this.props.editComment(comment, review_id, comment_id)} 
-	// deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
-	optionsSelect(index) {
+	optionsSelect1(index) {
 		const comment_list = this.props.comments
 		if (index === 0) {
 			this.props.setEditComment(this.props.review._id, comment_list[this.state.indexComment]._id)
 		} else if (index === 1) {
-			// console.log(this.state.indexComment)
-			// console.log(this.props.review._id, comment_list[this.state.indexComment], '<3 <3 <3')
+			Clipboard.setString(comment_list[this.state.indexComment].description)
+		} else if (index === 2) {
 			this.props.deleteComment(this.props.review._id, comment_list[this.state.indexComment]._id)
 		}
 	}
 
-	copyComment() {
-		
+	optionsSelect2(index) {
+		const comment_list = this.props.comments
+		if (index === 0) {
+			Clipboard.setString(comment_list[this.state.indexComment].description)
+		}
 	}
 
 	render() {
@@ -113,7 +109,8 @@ class CommentSection extends Component {
 															setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 														/>
 													</View>
-												</TouchableOpacity> :
+												</TouchableOpacity> 
+												:
 												<TouchableOpacity 
 													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet2(index)}>
@@ -130,16 +127,16 @@ class CommentSection extends Component {
 							</View> 
 							<ActionSheet
 								ref={o => this.ActionSheet1 = o}
-								options={['Edit', 'Delete', 'Cancel']}
-								cancelButtonIndex={2}
-								destructiveButtonIndex={1}
-								onPress={(index) => this.optionsSelect(index)}
+								options={['Edit', 'Copy', 'Delete', 'Cancel']}
+								cancelButtonIndex={3}
+								destructiveButtonIndex={2}
+								onPress={(index) => this.optionsSelect1(index)}
 							/>
 							<ActionSheet
 								ref={o => this.ActionSheet2 = o}
 								options={['Copy', 'Cancel']}
 								cancelButtonIndex={1}
-								onPress={() => this.copyComment()}
+								onPress={(index) => this.optionsSelect2(index)}
 							/>
 						</View>
 					}
