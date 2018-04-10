@@ -69,6 +69,7 @@ class Comment extends Component {
 
 	render() {
 		const { user, rating, _id } = this.props.comment
+		console.log(this.props, 'props')
 		// console.log(user.picture_url, 'user.picture_url')
 		return (
 			<View style={styles.container}>

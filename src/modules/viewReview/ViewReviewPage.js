@@ -25,6 +25,7 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
+		console.log(this.props, 'ViewReview')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>

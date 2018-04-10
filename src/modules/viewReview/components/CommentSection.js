@@ -83,8 +83,8 @@ class CommentSection extends Component {
 	render() {
 		const comment_list = this.props.comments
 		const user = this.props.currentUser
-		console.log(comment_list, 'comment_list')
-		console.log(this.props.currentUser, 'user')
+		// console.log(comment_list, 'comment_list')
+		console.log(this.props, 'props commentsection')
 		// console.log(this.props.editComment, 'editComment')
 		return (
 			this.props.success && (
