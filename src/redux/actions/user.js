@@ -142,27 +142,22 @@ const UserActions = {
 			dispatch(actions.getCurrentUserFollowingSuccess(response.data))
 		}
 	},
-	viewFollower: (user_id) => async dispatch => {
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/follower`))
-		if (err) dispatch(actions.getUserFollowerError(err))
+	getUsers: () => async dispatch => {
+		const [err, response] = await to(axios.get(`${AppURL}/users`))
+		dispatch(actions.getUsersRequest())
+		if (err) dispatch(actions.getUsersError(err))
 		else {
-			Actions.viewUserListPage({ users: response.data, title: 'Followers' })
+			dispatch(actions.getUsersSuccess(response.data))
 		}
+	},
+	viewFollower: (user_id) => async dispatch => {
+		Actions.viewUserListPage({ title: 'Followers', user_id: user_id })
 	},
 	viewFollowing: (user_id) => async dispatch => {
-		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/following`))
-		if (err) dispatch(actions.getUserFollowerError(err))
-		else {
-			Actions.viewUserListPage({ users: response.data, title: 'Followings' })
-		}
+		Actions.viewUserListPage({ title: 'Following', user_id: user_id })
 	},
-	getUsers: user_id => async dispatch => {
-		dispatch(actions.getUserRequest())
-		const [err, response] = await to(axios.get(`${AppURL}/users/${user_id}`))
-		if (err) dispatch(actions.getUserError(err))
-		else {
-			dispatch(actions.getUserSuccess(response.data))
-		}
+	viewReviewer: () => async dispatch => {
+		Actions.viewUserListPage({ title: 'Reviewers' })
 	}
 }
 
@@ -332,9 +327,16 @@ const actions = {
 		type: constants.GET_CURRENTUSER_FOLLOWING_FAILURE,
 		payload: error
 	}),
-	setUserList: (users) => ({
-		type: constants.SET_USER_LIST,
+	getUsersRequest: () => ({
+		type: constants.GET_USERS_REQUEST
+	}),
+	getUsersSuccess: (users) => ({
+		type: constants.GET_USERS_SUCCESS,
 		payload: users
+	}),
+	getUsersError: error => ({
+		type: constants.GET_USERS_FAILURE,
+		payload: error
 	})
 }
 

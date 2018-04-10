@@ -3,7 +3,8 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	StyleSheet,
-	View
+	View,
+	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -19,20 +20,44 @@ export class ViewUserPage extends Component {
 	constructor(props) {
 		super(props)
 	}
+
+	componentDidMount() {
+		this.fetchData()
+	}
     
 	goToViewUser(user) {
-		console.log(user, 'go to view user')
 		this.props.setSelectedUser(user)
 		Actions.viewUserPage()
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.props.currentUser !== prevProps.currentUser) || (this.props.user !== prevProps.user)) {
+			this.fetchData()
+		}
+		if (this.props.users !== prevProps.users) {
+			if (this.props.users.length === 0) {
+				Actions.pop()
+			}
+		}
+	}
+
+	fetchData() {
+		if (this.props.title === 'Followers') {
+			this.props.getUserFollower(this.props.user_id)
+		} else if (this.props.title === 'Following') {
+			this.props.getUserFollowing(this.props.user_id)
+		} else {
+			this.props.getUsers()
+		}
+	}
 
 	render() {
-		if (!this.props.users || !this.props.title) {
-			return <View/>
+		if (!this.props.users || !this.props.title || !this.props.success) {
+			return (<View style={styles.loadingContainer}>
+				<ActivityIndicator size="large" />
+			</View>)
 		}
 		else {
-			console.log(this.props.users, 'user')
 			return (
 				<View style={styles.container}>
 					<ScrollView
@@ -51,14 +76,13 @@ export class ViewUserPage extends Component {
 								this.props.users.map((user, index) => (
 									<ListItem
 										avatar={
-											<TouchableOpacity onPress={() => this.goToViewUser(user)}>
-												<CoverImage size={70} uri={user.picture_url} />
-											</TouchableOpacity>
+											<CoverImage size={70} uri={user.picture_url} />
 										}
 										key={index}
 										title={user.name}
 										hideChevron={true}
 										titleStyle={{ fontWeight: 'bold', color: colors.gray }}
+										onPress={() => this.goToViewUser(user)}
 									/>
 								))
 							}
@@ -75,8 +99,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: colors.white
 	},
-	body: {
-	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
 		paddingTop: Platform.OS === 'ios' ? 25 : 0
@@ -84,13 +106,34 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.white,
 		overflow: 'hidden'
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
+})
+
+const mapStateToProps = state => ({
+	users: state.userReducer.users,
+	user: state.userReducer.user,
+	currentUser: state.userReducer.currentUser,
+	success: state.userReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
+	},
+	getUserFollowing: user_id => {
+		dispatch(UserActions.getUserFollowing(user_id))
+	},
+	getUserFollower: user_id => {
+		dispatch(UserActions.getUserFollower(user_id))
+	},
+	getUsers: () => {
+		dispatch(UserActions.getUsers())
 	}
 })
 
-export default connect(null, mapDispatchToProps)(ViewUserPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ViewUserPage)
