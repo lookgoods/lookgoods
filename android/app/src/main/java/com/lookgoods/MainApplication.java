@@ -47,10 +47,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
               new MainReactPackage(),
-            new VectorIconsPackage(),
-            new ImagePickerPackage(),
-            new PickerPackage(),
-            new FBSDKPackage(),
             new PickerPackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
