@@ -7,10 +7,12 @@ import {
 	TouchableOpacity
 } from 'react-native'
 import { colors } from 'src/constants/mixins'
+import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
 import { connect } from 'react-redux'
 import CommentActions from 'src/redux/actions/comment'
+import Toast from 'react-native-simple-toast'
 
 const ProfilePicture = ({ image_url }) => (
 	<View style={styles.profileImage}>
@@ -22,7 +24,8 @@ class Comment extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			description: ''
+			description: '',
+			descriptionErr: ''
 		}
 	}
 
@@ -30,10 +33,17 @@ class Comment extends Component {
 		await this.setState({description: this.props.comment.description})
 	}
 
-	saveEditComment(rating, comment_id) {
-		const comment = {description: this.state.description, rating: rating}
-		this.props.editComment(comment, this.props.review._id, comment_id)
-		this.props.setEditComment(this.props.review._id, null)
+	async saveEditComment(rating, comment_id) {
+		const descriptionErr = validate(['description'], [this.state.description.trim()])
+		await this.setState({ descriptionErr })
+
+		if (!descriptionErr) {
+			const comment = {description: this.state.description, rating: rating}
+			this.props.editComment(comment, this.props.review._id, comment_id)
+			this.props.setEditComment(this.props.review._id, null)
+		} else {
+			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
+		}		
 	}
 
 	render() {
@@ -59,12 +69,12 @@ class Comment extends Component {
 										onChangeText={description => this.setState({ description })}
 										value={this.state.description}
 										keyboardType="default"
-										// onBlur={() => {
-										// 	this.setState({
-										// 		titleErr: validate(['title'], [this.state.title])
-										// 	})
-										// }}
-										// error={this.state.titleErr}
+										onBlur={() => {
+											this.setState({
+												descriptionErr: validate(['description'], [this.state.description])
+											})
+										}}
+										error={this.state.descriptionErr}
 									/>
 								</View>
 							</View>

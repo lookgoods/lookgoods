@@ -111,10 +111,10 @@ class AddComment extends Component {
 											keyboardType="default"
 											onBlur={() => {
 												this.setState({
-													titleErr: validate(['title'], [this.state.title])
+													descriptionErr: validate(['description'], [this.state.description])
 												})
 											}}
-											error={this.state.titleErr}
+											error={this.state.descriptionErr}
 										/>
 									</View>
 									<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>
