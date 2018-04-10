@@ -68,7 +68,9 @@ export class ViewUserPage extends Component {
 
 	render() {
 		if (!this.props.selectedUser || !this.props.currentUser || !this.props.user || !this.props.ownReviews) {
-			return <View/>
+			return (<View style={styles.loadingContainer}>
+				<ActivityIndicator size="large" />
+			</View>)
 		}
 		else {
 			return (
@@ -131,15 +133,13 @@ export class ViewUserPage extends Component {
 										like_num={this.getTotalLike(this.props.ownReviews)}
 										follower_num={this.props.user.follower_list.length}
 										following_num={this.props.user.following_list.length}
+										user_id={this.props.user._id}
 									/>
 								</View>
 								<View style={{ alignItems: 'center' }}>
 									<Divider style={styles.divider} />
 								</View>
 								<View style={styles.tabsContainer}>
-									<View style={styles.reviewTextContainer}>
-										<Text style={styles.reviewText}>Reviews</Text>
-									</View>
 									<ReviewsGrid review_list={this.props.ownReviews} />
 								</View>
 							</View>
@@ -226,17 +226,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
-	},
-	reviewText: {
-		marginBottom: 10,
-		color: colors.orange,
-		textAlign: 'center'
-	},
-	reviewTextContainer: {
-		flex: 1,
-		borderBottomWidth: 2,
-		borderBottomColor: colors.orange,
-		marginBottom: 5
 	}
 })
 

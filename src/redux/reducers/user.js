@@ -7,7 +7,8 @@ const initialState = {
 	selectedUser: null,
 	user: null,
 	ownReviews: null,
-	saveReviews: null
+	saveReviews: null,
+	users: []
 }
 
 export default (state = initialState, action) => {
@@ -151,6 +152,69 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_CURRENTUSER_SAVE_REVIEWS_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
+		}
+	
+	case constants.GET_USER_FOLLOWER_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_USER_FOLLOWER_SUCCESS:
+		return {
+			...state,
+			success: true,
+			users: action.payload
+		}
+
+	case constants.GET_USER_FOLLOWER_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
+		}
+	
+	case constants.GET_USER_FOLLOWING_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_USER_FOLLOWING_SUCCESS:
+		return {
+			...state,
+			success: true,
+			users: action.payload
+		}
+
+	case constants.GET_USER_FOLLOWING_FAILURE:
+		return {
+			...state,
+			success: false,
+			error: action.payload
+		}
+
+	case constants.GET_USERS_REQUEST:
+		return {
+			...state,
+			success: false,
+			error: null
+		}
+
+	case constants.GET_USERS_SUCCESS:
+		return {
+			...state,
+			success: true,
+			users: action.payload
+		}
+
+	case constants.GET_USERS_FAILURE:
 		return {
 			...state,
 			success: false,

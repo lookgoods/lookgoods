@@ -102,7 +102,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 		<View style={styles.footerContainer}>
 			<View style={{ flexDirection: 'row' }}>
 				<View style={styles.productDetail}>
-					<IconMaterial name="star-border" color={'#777777'} size={24} />
+					<IconMaterial name="star-border" color={colors.gray} size={24} />
 					<Text style={styles.productDetailRating}>{rating}</Text>
 				</View>
 				<View style={styles.productDetail}>
@@ -117,7 +117,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 					<IconMaterial
 						style={styles.iconComment}
 						name="chat-bubble-outline"
-						color={'#777777'}
+						color={colors.gray}
 						size={22}
 					/>
 					<Text style={styles.productDetailComment}>{numberOfComment}</Text>
@@ -125,18 +125,22 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 			</View>
 
 			<View style={{ flexDirection: 'row' }}>
-				<TouchableOpacity style={styles.productDetailHeart}>
+				<View style={styles.productDetailHeart}>
 					{isLove ? (
-						<TouchableOpacity onPress={clickLove}>
-							<Ionicons name="md-heart" color={colors.red} size={24} />
+						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
+							<Ionicons name="md-heart" color={colors.red} size={26} />
 						</TouchableOpacity>
 					) : (
-						<TouchableOpacity onPress={clickLove}>
-							<Ionicons name="md-heart-outline" color={'#777777'} size={24} />
+						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
+							<Ionicons name="md-heart-outline" color={colors.gray} size={26} />
 						</TouchableOpacity>
 					)}
-					<Text style={styles.productDetailLove}>{numberOfLike} likes</Text>
-				</TouchableOpacity>
+					{numberOfLike !== 0 && (
+						numberOfLike == 1 ? 
+							<Text style={styles.productDetailLove}>{numberOfLike} like</Text>
+							: <Text style={styles.productDetailLove}>{numberOfLike} likes</Text>
+					)}
+				</View>
 			</View>
 		</View>
 	)
@@ -331,6 +335,9 @@ const styles = StyleSheet.create({
 	productDetailLove: {
 		marginTop: 4,
 		marginLeft: 6
+	},
+	heartIcon: {
+		marginTop: 2
 	}
 })
 

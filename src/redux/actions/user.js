@@ -83,7 +83,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/ownpostlist`))
 		if (err) dispatch(actions.getUserOwnReviewsError(err))
 		else {
-			dispatch(actions.getUserOwnReviewsSuccess(response.data))
+			dispatch(actions.getUserOwnReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getUserSaveReviews: (user_id) => async dispatch => {
@@ -91,7 +91,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/savepostlist`))
 		if (err) dispatch(actions.getUserSaveReviewsError(err))
 		else {
-			dispatch(actions.getUserSaveReviewsSuccess(response.data))
+			dispatch(actions.getUserSaveReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getCurrentUserOwnReviews: () => async dispatch => {
@@ -99,7 +99,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/ownpostlist`))
 		if (err) dispatch(actions.getCurrentUserOwnReviewsError(err))
 		else {
-			dispatch(actions.getCurrentUserOwnReviewsSuccess(response.data))
+			dispatch(actions.getCurrentUserOwnReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getCurrentUserSaveReviews: () => async dispatch => {
@@ -107,7 +107,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/savepostlist`))
 		if (err) dispatch(actions.getCurrentUserSaveReviewsError(err))
 		else {
-			dispatch(actions.getCurrentUserSaveReviewsSuccess(response.data))
+			dispatch(actions.getCurrentUserSaveReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getUserFollower: (user_id) => async dispatch => {
@@ -139,8 +139,25 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/following`))
 		if (err) dispatch(actions.getCurrentUserFollowingError(err))
 		else {
-			dispatch(actions.getCurrentUserFollowingrSuccess(response.data))
+			dispatch(actions.getCurrentUserFollowingSuccess(response.data))
 		}
+	},
+	getUsers: () => async dispatch => {
+		const [err, response] = await to(axios.get(`${AppURL}/users`))
+		dispatch(actions.getUsersRequest())
+		if (err) dispatch(actions.getUsersError(err))
+		else {
+			dispatch(actions.getUsersSuccess(response.data))
+		}
+	},
+	viewFollower: (user_id) => async dispatch => {
+		Actions.viewUserListPage({ title: 'Followers', user_id: user_id })
+	},
+	viewFollowing: (user_id) => async dispatch => {
+		Actions.viewUserListPage({ title: 'Following', user_id: user_id })
+	},
+	viewReviewer: () => async dispatch => {
+		Actions.viewUserListPage({ title: 'Reviewers' })
 	}
 }
 
@@ -308,6 +325,17 @@ const actions = {
 	}),
 	getCurrentFollowingError: error => ({
 		type: constants.GET_CURRENTUSER_FOLLOWING_FAILURE,
+		payload: error
+	}),
+	getUsersRequest: () => ({
+		type: constants.GET_USERS_REQUEST
+	}),
+	getUsersSuccess: (users) => ({
+		type: constants.GET_USERS_SUCCESS,
+		payload: users
+	}),
+	getUsersError: error => ({
+		type: constants.GET_USERS_FAILURE,
 		payload: error
 	})
 }

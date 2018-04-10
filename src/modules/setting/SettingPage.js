@@ -10,8 +10,10 @@ import { LoginManager } from 'react-native-fbsdk'
 
 import { Actions } from 'react-native-router-flux'
 import { colors } from 'src/constants/mixins'
+import UserActions from 'src/redux/actions/user'
+import { connect } from 'react-redux'
 
-export default class SettingPage extends Component {
+class SettingPage extends Component {
 	constructor (props) {
 		super(props)
 	}
@@ -41,6 +43,12 @@ export default class SettingPage extends Component {
 				</List>
 				<List>
 					<ListItem
+						title='Find Reviewer'
+						onPress={ () => this.props.viewReviewer() }
+					/>
+				</List>
+				<List>
+					<ListItem
 						title={<Text style={styles.logoutText}>Logout</Text>}
 						onPress={ () => this.logout() }
 					/>
@@ -61,3 +69,11 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	}
 })
+
+const mapDispatchToProps = dispatch => ({
+	viewReviewer: () => {
+		dispatch(UserActions.viewReviewer())
+	}
+})
+
+export default connect(null, mapDispatchToProps)(SettingPage)
