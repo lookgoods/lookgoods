@@ -20,7 +20,6 @@ export default class InfoText extends Component {
   
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		flexDirection: 'column',
 		alignItems: 'center'
 	},

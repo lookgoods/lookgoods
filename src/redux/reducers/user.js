@@ -7,7 +7,8 @@ const initialState = {
 	selectedUser: null,
 	user: null,
 	ownReviews: null,
-	saveReviews: null
+	saveReviews: null,
+	users: []
 }
 
 export default (state = initialState, action) => {

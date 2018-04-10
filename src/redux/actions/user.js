@@ -139,7 +139,21 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/following`))
 		if (err) dispatch(actions.getCurrentUserFollowingError(err))
 		else {
-			dispatch(actions.getCurrentUserFollowingrSuccess(response.data))
+			dispatch(actions.getCurrentUserFollowingSuccess(response.data))
+		}
+	},
+	viewFollower: (user_id) => async dispatch => {
+		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/follower`))
+		if (err) dispatch(actions.getUserFollowerError(err))
+		else {
+			Actions.viewUserListPage({ users: response.data, title: 'Followers' })
+		}
+	},
+	viewFollowing: (user_id) => async dispatch => {
+		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/following`))
+		if (err) dispatch(actions.getUserFollowerError(err))
+		else {
+			Actions.viewUserListPage({ users: response.data, title: 'Followings' })
 		}
 	}
 }
@@ -309,6 +323,10 @@ const actions = {
 	getCurrentFollowingError: error => ({
 		type: constants.GET_CURRENTUSER_FOLLOWING_FAILURE,
 		payload: error
+	}),
+	setUserList: (users) => ({
+		type: constants.SET_USER_LIST,
+		payload: users
 	})
 }
 

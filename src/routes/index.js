@@ -9,6 +9,7 @@ import SettingPage from 'src/modules/setting/SettingPage'
 import TabMenu from 'src/modules/shares/TabMenu'
 import ViewReviewPage from 'src/modules/viewReview/ViewReviewPage'
 import ViewUserPage from 'src/modules/user/ViewUserPage'
+import ViewUserListPage from 'src/modules/user/ViewUserListPage'
 import SearchPage from 'src/modules/search/SearchPage'
 import store from 'src/redux/store'
 
@@ -24,6 +25,7 @@ const App = () => {
 					<Scene key="settingPage" component={SettingPage} title='Settings' panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="viewUserPage" component={ViewUserPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="changeStatusPage" component={ChangeStatusPage} title='Change Status' panHandlers={null} hideTabBar={1} direction='vertical'/>
+					<Scene key="viewUserListPage" component={ViewUserListPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene
 						key="SearchPage"
 						component={SearchPage}

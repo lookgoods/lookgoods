@@ -32,3 +32,5 @@ export const user3 = {
 	own_review_list: [review1, review2],
 	description: 'My name is Steve Roger and I loved LookGoods :)'
 }
+
+export default [user1, user2, user3]
