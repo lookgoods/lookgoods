@@ -46,12 +46,6 @@ class CommentSection extends Component {
 		}
 	}
 
-	handleEditComment(property, text) {
-		const contact = this.state.isEdit
-		contact[property] = text
-		this.setState({ contentMessage: contact })
-	}
-
 	async showActionSheet1(index) {
 		await this.setState({ indexComment: index })
 		this.ActionSheet1.show()
@@ -83,9 +77,6 @@ class CommentSection extends Component {
 	render() {
 		const comment_list = this.props.comments
 		const user = this.props.currentUser
-		// console.log(comment_list, 'comment_list')
-		console.log(this.props, 'props commentsection')
-		// console.log(this.props.editComment, 'editComment')
 		return (
 			this.props.success && (
 				<View>
@@ -105,8 +96,8 @@ class CommentSection extends Component {
 													<View style = {styles.commentItem} >
 														<Comment
 															comment={comment}
-															editComment={(comment, review_id, comment_id) => this.props.editComment(comment, review_id, comment_id)} 
-															setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
+															// editCommentMessage={(comment, review_id, comment_id) => this.props.editCommentView(comment, review_id, comment_id)} 
+															// setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 														/>
 													</View>
 												</TouchableOpacity> 
@@ -187,7 +178,7 @@ const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	comments: state.commentReducer.comments,
 	success: state.commentReducer.success,
-	editComment: state.commentReducer.editComment
+	editCommentId: state.commentReducer.editCommentId
 })
 
 export default connect(mapStateToProps, null)(CommentSection)

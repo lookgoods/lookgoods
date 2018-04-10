@@ -37,7 +37,6 @@ export class ViewReviewPage extends Component {
 					<ContentSection review={this.props.review} />
 					<CommentSection 
 						review={this.props.review}
-						editComment={(comment, review_id, comment_id) => this.props.editComment(comment, review_id, comment_id)} 
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>
@@ -95,9 +94,6 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getComments: (review_id) => {
 		dispatch(CommentActions.getComments(review_id))
-	},
-	editComment: (comment, review_id, comment_id) => {
-		dispatch(CommentActions.editComment(comment, review_id, comment_id))
 	},
 	deleteComment: (review_id, comment_id) => {
 		dispatch(CommentActions.deleteComment(review_id, comment_id))

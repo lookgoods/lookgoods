@@ -24,7 +24,6 @@ const CommentActions = {
 	},
 	getComments: (review_id) => async dispatch => {
 		dispatch(actions.getCommentRequest())
-		console.log(review_id, 'xxxxxx')
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}/comments`))
 		if (err) {
 			dispatch(actions.getCommentError(err))
@@ -34,13 +33,34 @@ const CommentActions = {
 		}
 	},
 	editComment: (comment, review_id, comment_id) => async dispatch => {
+		console.log(comment, 'action comment')
+		console.log(review_id, 'action comment')
+		console.log(comment_id, 'action comment')
 		dispatch(actions.editCommentRequest())
-		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
-		if (err) dispatch(actions.editCommentError(err))
-		else {
+		try {
+			const response = await fetch(`${AppURL}/reviews/${review_id}/comments/${comment_id}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(comment)
+			})
+			// const data = await response.json()
 			dispatch(actions.editCommentSuccess(response))
 			dispatch(CommentActions.getComments(review_id))
+		} catch (err) {
+			dispatch(actions.editCommentError(err))
 		}
+		// const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), JSON.stringify(comment))
+		// if (err) {
+		// 	console.log(err, 'err')
+		// 	dispatch(actions.editCommentError(err))
+		// }
+		// else {
+		// 	console.log(response, 'response')
+		// 	dispatch(actions.editCommentSuccess(response))
+		// 	dispatch(CommentActions.getComments(review_id))
+		// }
 	},
 	deleteComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())

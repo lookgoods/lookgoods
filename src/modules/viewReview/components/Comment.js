@@ -10,6 +10,7 @@ import { colors } from 'src/constants/mixins'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
 import { connect } from 'react-redux'
+import CommentActions from 'src/redux/actions/comment'
 
 const ProfilePicture = ({ image_url }) => (
 	<View style={styles.profileImage}>
@@ -62,25 +63,27 @@ class Comment extends Component {
 	}
 
 	saveEditComment(rating, comment_id) {
-		console.log(rating, comment_id)
-		const comment = {description: this.props.comment.description, rating: rating}
+		console.log(this.state.description)
+		const comment = {description: this.state.description, rating: rating}
+		console.log(comment)
 		this.props.editComment(comment, this.props.review._id, comment_id)
+		this.props.setEditComment(this.props.review._id, null)
 	}
 
 	render() {
 		const { user, rating, _id } = this.props.comment
-		console.log(this.props, 'props')
-		// console.log(user.picture_url, 'user.picture_url')
+		// console.log(this.props, 'props')
+		console.log(this.props.comment, 'comment')
+		// console.log(this.props.editCommentId, 'editCommentId')
 		return (
 			<View style={styles.container}>
 				<ProfilePicture image_url={user.picture_url}/>
-				{/* <Content username={user.name} rating={rating} message={description}/> */}
 				<View style={styles.content}>
 					<Text style={styles.username}>{user.name}</Text>
 					<View style={styles.starBar}>
 						<StarBar rating={rating} size={15}/>
 					</View>
-					{ _id !== this.props.editComment ?
+					{ _id !== this.props.editCommentId ?
 						<Text>{this.state.description}</Text> :
 						<View>
 							<View style={{ flex: 1, flexDirection: 'row'}}>
@@ -108,6 +111,7 @@ class Comment extends Component {
 										<Text style={styles.fontCancel}>Cancel</Text>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditComment(rating, _id)}>
+										{/* <TouchableOpacity style={styles.buttonSave} onPress={() => this.props.editCommentMessage({ description: this.state.description, rating }, this.props.review._id, _id)}> */}
 										<Text style={styles.fontSave}>Save</Text>
 									</TouchableOpacity>
 								</View>
@@ -176,7 +180,16 @@ const styles = StyleSheet.create({
  
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,   
-	editComment: state.commentReducer.editComment
+	editCommentId: state.commentReducer.editCommentId
 })
 
-export default connect(mapStateToProps, null)(Comment)
+const mapDispatchToProps = dispatch => ({
+	editComment: (comment, review_id, comment_id) => {
+		dispatch(CommentActions.editComment(comment, review_id, comment_id))
+	},
+	setEditComment: (review_id, comment_id) => {
+		dispatch(CommentActions.setEditComment(review_id, comment_id))
+	}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment)
