@@ -18,38 +18,6 @@ const ProfilePicture = ({ image_url }) => (
 	</View>
 )
 
-// const Content = ({ username, rating, message }) => (
-// 	<View style={styles.content}>
-// 		<Text style={styles.username}>{username}</Text>
-// 		<View style={styles.starBar}>
-// 			<StarBar rating={rating} size={15}/>
-// 		</View>
-// 		{/* <Text>{message}</Text> */}
-// 		<View style={{ flexDirection: 'row', marginTop: 10 }}>
-// 			<View style={styles.bodyTextInput}>
-// 				<TextInput
-// 					style={styles.textInput}
-// 					multiline
-// 					maxHeight={300}
-// 					underlineColorAndroid="transparent"
-// 					onChangeText={description => this.setState({ description })}
-// 					value={this.state.description}
-// 					keyboardType="default"
-// 					// onBlur={() => {
-// 					// 	this.setState({
-// 					// 		titleErr: validate(['title'], [this.state.title])
-// 					// 	})
-// 					// }}
-// 					// error={this.state.titleErr}
-// 				/>
-// 			</View>
-// 			<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>
-// 				<Text style={styles.fontSend}>Send</Text>
-// 			</TouchableOpacity>
-// 		</View>
-// 	</View>
-// )
-
 class Comment extends Component {
 	constructor (props) {
 		super(props)
@@ -63,18 +31,13 @@ class Comment extends Component {
 	}
 
 	saveEditComment(rating, comment_id) {
-		console.log(this.state.description)
 		const comment = {description: this.state.description, rating: rating}
-		console.log(comment)
 		this.props.editComment(comment, this.props.review._id, comment_id)
 		this.props.setEditComment(this.props.review._id, null)
 	}
 
 	render() {
 		const { user, rating, _id } = this.props.comment
-		// console.log(this.props, 'props')
-		console.log(this.props.comment, 'comment')
-		// console.log(this.props.editCommentId, 'editCommentId')
 		return (
 			<View style={styles.container}>
 				<ProfilePicture image_url={user.picture_url}/>
@@ -111,7 +74,6 @@ class Comment extends Component {
 										<Text style={styles.fontCancel}>Cancel</Text>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditComment(rating, _id)}>
-										{/* <TouchableOpacity style={styles.buttonSave} onPress={() => this.props.editCommentMessage({ description: this.state.description, rating }, this.props.review._id, _id)}> */}
 										<Text style={styles.fontSave}>Save</Text>
 									</TouchableOpacity>
 								</View>

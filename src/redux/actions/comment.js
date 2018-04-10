@@ -33,9 +33,6 @@ const CommentActions = {
 		}
 	},
 	editComment: (comment, review_id, comment_id) => async dispatch => {
-		console.log(comment, 'action comment')
-		console.log(review_id, 'action comment')
-		console.log(comment_id, 'action comment')
 		dispatch(actions.editCommentRequest())
 		try {
 			const response = await fetch(`${AppURL}/reviews/${review_id}/comments/${comment_id}`, {
@@ -45,22 +42,11 @@ const CommentActions = {
 				},
 				body: JSON.stringify(comment)
 			})
-			// const data = await response.json()
 			dispatch(actions.editCommentSuccess(response))
 			dispatch(CommentActions.getComments(review_id))
 		} catch (err) {
 			dispatch(actions.editCommentError(err))
 		}
-		// const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), JSON.stringify(comment))
-		// if (err) {
-		// 	console.log(err, 'err')
-		// 	dispatch(actions.editCommentError(err))
-		// }
-		// else {
-		// 	console.log(response, 'response')
-		// 	dispatch(actions.editCommentSuccess(response))
-		// 	dispatch(CommentActions.getComments(review_id))
-		// }
 	},
 	deleteComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())

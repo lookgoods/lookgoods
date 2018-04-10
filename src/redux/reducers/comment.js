@@ -95,7 +95,6 @@ export default (state = initialState, action) => {
 		}
 		
 	case constants.SET_EDIT_COMMENT:
-		console.log(action.payload, 'SET_EDIT_COMMENT')
 		return {
 			...state,
 			editCommentId: action.payload,
