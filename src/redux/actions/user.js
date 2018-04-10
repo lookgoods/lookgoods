@@ -83,7 +83,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/ownpostlist`))
 		if (err) dispatch(actions.getUserOwnReviewsError(err))
 		else {
-			dispatch(actions.getUserOwnReviewsSuccess(response.data))
+			dispatch(actions.getUserOwnReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getUserSaveReviews: (user_id) => async dispatch => {
@@ -91,7 +91,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/users/${user_id}/savepostlist`))
 		if (err) dispatch(actions.getUserSaveReviewsError(err))
 		else {
-			dispatch(actions.getUserSaveReviewsSuccess(response.data))
+			dispatch(actions.getUserSaveReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getCurrentUserOwnReviews: () => async dispatch => {
@@ -99,7 +99,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/ownpostlist`))
 		if (err) dispatch(actions.getCurrentUserOwnReviewsError(err))
 		else {
-			dispatch(actions.getCurrentUserOwnReviewsSuccess(response.data))
+			dispatch(actions.getCurrentUserOwnReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getCurrentUserSaveReviews: () => async dispatch => {
@@ -107,7 +107,7 @@ const UserActions = {
 		const [ err, response ] = await to(axios.get(`${AppURL}/currentuser/savepostlist`))
 		if (err) dispatch(actions.getCurrentUserSaveReviewsError(err))
 		else {
-			dispatch(actions.getCurrentUserSaveReviewsSuccess(response.data))
+			dispatch(actions.getCurrentUserSaveReviewsSuccess(response.data.reverse()))
 		}
 	},
 	getUserFollower: (user_id) => async dispatch => {
@@ -154,6 +154,14 @@ const UserActions = {
 		if (err) dispatch(actions.getUserFollowerError(err))
 		else {
 			Actions.viewUserListPage({ users: response.data, title: 'Followings' })
+		}
+	},
+	getUsers: user_id => async dispatch => {
+		dispatch(actions.getUserRequest())
+		const [err, response] = await to(axios.get(`${AppURL}/users/${user_id}`))
+		if (err) dispatch(actions.getUserError(err))
+		else {
+			dispatch(actions.getUserSuccess(response.data))
 		}
 	}
 }
