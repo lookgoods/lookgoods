@@ -1,6 +1,5 @@
 import {
 	Platform,
-	TouchableOpacity,
 	ScrollView,
 	StyleSheet,
 	View,
