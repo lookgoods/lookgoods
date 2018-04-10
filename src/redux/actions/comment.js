@@ -17,34 +17,50 @@ const CommentActions = {
 			})
 			const data = await response.json()
 			dispatch(actions.addCommentSuccess(data))
+			dispatch(CommentActions.getComments(review_id))
 		} catch (err) {
 			dispatch(actions.addCommentError(err))
 		}
 	},
 	getComments: (review_id) => async dispatch => {
 		dispatch(actions.getCommentRequest())
-		console.log(review_id, 'xxxxxx')
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}/comments`))
 		if (err) {
-			console.log(err, 'err')
 			dispatch(actions.getCommentError(err))
 		} 
 		else {
-			console.log(response.data, 'eiei')
 			dispatch(actions.getCommentSuccess(response.data))
 		}
 	},
 	editComment: (comment, review_id, comment_id) => async dispatch => {
 		dispatch(actions.editCommentRequest())
-		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
-		if (err) dispatch(actions.editCommentError(err))
-		else dispatch(actions.editCommentSuccess(response))
+		try {
+			const response = await fetch(`${AppURL}/reviews/${review_id}/comments/${comment_id}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(comment)
+			})
+			dispatch(actions.editCommentSuccess(response))
+			dispatch(CommentActions.getComments(review_id))
+		} catch (err) {
+			dispatch(actions.editCommentError(err))
+		}
 	},
-	deleteComment: (comment, review_id, comment_id) => async dispatch => {
+	deleteComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())
-		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`), comment)
+		console.log(review_id, comment_id, 'delete')
+		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`))
 		if (err) dispatch(actions.deleteCommentError(err))
-		else dispatch(actions.deleteCommentSuccess(response))
+		else {
+			dispatch(actions.deleteCommentSuccess(response))
+			dispatch(CommentActions.getComments(review_id))
+		}
+	},
+	setEditComment: (review_id, comment_id) => async dispatch => {
+		dispatch(actions.setEditComment(comment_id))
+		dispatch(CommentActions.getComments(review_id))
 	}
 }
 
@@ -54,7 +70,7 @@ const actions = {
 	}),
 	addCommentSuccess: comments => ({
 		type: constants.ADD_COMMENT_SUCCESS,
-		payload: { comments }
+		payload: comments 
 	}),
 	addCommentError: error => ({
 		type: constants.ADD_COMMENT_FAILURE,
@@ -65,7 +81,7 @@ const actions = {
 	}),
 	getCommentSuccess: comments => ({
 		type: constants.GET_COMMENT_SUCCESS,
-		payload: { comments }
+		payload: comments
 	}),
 	getCommentError: error => ({
 		type: constants.GET_COMMENT_FAILURE,
@@ -87,11 +103,15 @@ const actions = {
 	}),
 	deleteCommentSuccess: comments => ({
 		type: constants.DELETE_COMMENT_SUCCESS,
-		payload: { comments }
+		payload: comments 
 	}),
 	deleteCommentError: error => ({
 		type: constants.DELETE_COMMENT_FAILURE,
 		payload: { error }
+	}),
+	setEditComment: comment => ({
+		type: constants.SET_EDIT_COMMENT,
+		payload: comment
 	})
 }
 

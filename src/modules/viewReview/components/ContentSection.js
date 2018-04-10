@@ -122,7 +122,7 @@ export class ContentSection extends Component {
 			content_list,
 			price
 		} = this.props.review
-		console.log(picture_cover_url, 'pic url')
+		// console.log(picture_cover_url, 'pic url') 
 		return (
 			<View>
 				<CoverPhoto image_url={picture_cover_url} />

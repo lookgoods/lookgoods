@@ -1,6 +1,7 @@
 import constants from 'src/redux/constants'
 import axios from 'axios'
 import to from 'await-to-js'
+import { Actions } from 'react-native-router-flux'
 
 const AppURL = constants.AppURL
 
@@ -25,10 +26,10 @@ const UserActions = {
 		type: constants.SET_SELECTED_USER,
 		payload: user
 	}),
-	changeUserDescription: (user_id, description) => async dispatch => {
+	changeUserDescription: (description) => async dispatch => {
 		dispatch(actions.changeUserDescriptionRequest())
 		const [err, response] = await to(
-			axios.put(`${AppURL}/users/${user_id}`, {
+			axios.put(`${AppURL}/currentuser`, {
 				description: description
 			})
 		)
@@ -36,6 +37,7 @@ const UserActions = {
 		else {
 			dispatch(actions.changeUserDescriptionSuccess(response))
 			dispatch(UserActions.getCurrentUser())
+			Actions.tabMenu({ page: 'user' })
 		}
 	},
 	getUser: user_id => async dispatch => {

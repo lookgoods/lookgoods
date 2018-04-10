@@ -20,7 +20,7 @@ export default function validate(fieldName, value) {
 			presence: { allowEmpty: false },
 			length: { minimum: 1, message: 'must be at least one content' }
 		},
-		desc: {
+		description: {
 			presence: { allowEmpty: false, message: 'field is required.' }
 		}
 	}

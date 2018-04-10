@@ -30,6 +30,12 @@ export class TabMenu extends Component {
 
 	componentDidMount() {
 		this.checkLogin()
+		this.checkPage()
+	}
+
+	checkPage() {
+		if (this.props.page) this.setState({ selectedTab: this.props.page })
+		else this.setState({ selectedTab: 'home' })
 	}
 
 	px2dp(px) {
