@@ -1,6 +1,7 @@
 import constants from 'src/redux/constants'
 
 const initialState = {
+	editCommentId: null,
 	comments: null,
 	success: false,
 	error: null
@@ -18,7 +19,6 @@ export default (state = initialState, action) => {
 	case constants.ADD_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
 			success: true,
 			error: null
 		}
@@ -40,7 +40,7 @@ export default (state = initialState, action) => {
 	case constants.GET_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
+			comments: action.payload,
 			success: true,
 			error: null
 		}
@@ -62,7 +62,6 @@ export default (state = initialState, action) => {
 	case constants.EDIT_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
 			success: true,
 			error: null
 		}
@@ -84,7 +83,6 @@ export default (state = initialState, action) => {
 	case constants.DELETE_COMMENT_SUCCESS:
 		return {
 			...state,
-			comments: action.payload.comments,
 			success: true,
 			error: null
 		}
@@ -94,6 +92,14 @@ export default (state = initialState, action) => {
 			...state,
 			success: false,
 			error: action.payload.error
+		}
+		
+	case constants.SET_EDIT_COMMENT:
+		return {
+			...state,
+			editCommentId: action.payload,
+			success: false,
+			error: null
 		}	
 
 	default:

@@ -18,8 +18,8 @@ class AddComment extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			desc: '',
-			descErr: '',
+			description: '',
+			descriptionErr: '',
 			rating: 0,
 			stars: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
@@ -39,13 +39,12 @@ class AddComment extends Component {
 	}
 
 	async addComment() {
-		const descErr = validate(['desc'], [this.state.desc.trim()])
-		await this.setState({ descErr })
+		const descriptionErr = validate(['description'], [this.state.description.trim()])
+		await this.setState({ descriptionErr })
 
-		if (!descErr) {
+		if (!descriptionErr) {
 			const comment = {
-				user_id: this.props.user._id, 
-				desc: this.state.desc.trim(), 
+				description: this.state.description.trim(), 
 				rating: this.state.rating
 			}
 			console.log(comment, 'comment befor post')
@@ -107,15 +106,15 @@ class AddComment extends Component {
 											multiline
 											maxHeight={300}
 											underlineColorAndroid="transparent"
-											onChangeText={desc => this.setState({ desc })}
-											value={this.state.desc}
+											onChangeText={description => this.setState({ description })}
+											value={this.state.description}
 											keyboardType="default"
 											onBlur={() => {
 												this.setState({
-													titleErr: validate(['title'], [this.state.title])
+													descriptionErr: validate(['description'], [this.state.description])
 												})
 											}}
-											error={this.state.titleErr}
+											error={this.state.descriptionErr}
 										/>
 									</View>
 									<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>
