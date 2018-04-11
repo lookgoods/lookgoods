@@ -1,10 +1,10 @@
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
+import { Platform, ScrollView, StyleSheet, View, Text } from 'react-native'
 import AddComment from 'src/modules/viewReview/components/AddComment'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
 import { Divider } from 'react-native-elements'
-import NavBar from 'src/modules/shares/NavBar'
+import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
 import { colors } from 'src/constants/mixins'
@@ -29,7 +29,7 @@ export class ViewReviewPage extends Component {
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName={this.props.review.product.name} />
+						<NavBarViewReview titleName={this.props.review.product.name}/>
 					</View>
 				</View>
 				<ScrollView>

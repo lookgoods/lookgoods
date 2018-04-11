@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
-import {
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View
-} from 'react-native'
-
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
 import { colors } from 'src/constants/mixins'
+import ActionSheet from 'react-native-actionsheet'
 
-class NavBar extends Component {
+class NavBarViewReview extends Component {
+
+	showActionSheet(index) {
+		this.ActionSheet.show()
+	}
+
+	optionsSelect(index) {
+		console.log(index)
+	}
+
 	render () {
 		const { titleName } = this.props
 		return (
@@ -25,6 +29,16 @@ class NavBar extends Component {
 					<View style={{ flex: 1 }}>
 						<Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ titleName }</Text>
 					</View>
+					<TouchableOpacity style={{ width: 50, alignItems: 'center', justifyContent: 'flex-end'}} onPress={() => this.showActionSheet()} >
+						<IconIonicons name='md-more' size={35} color={colors.gray}/>
+					</TouchableOpacity>
+					<ActionSheet
+						ref={o => this.ActionSheet = o}
+						options={['Edit', 'Delete', 'Cancel']}
+						cancelButtonIndex={2}
+						destructiveButtonIndex={1}
+						onPress={(index) => this.optionsSelect(index)}
+					/>
 				</View>
 			</View>
 		)
@@ -46,4 +60,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default NavBar
+export default NavBarViewReview
