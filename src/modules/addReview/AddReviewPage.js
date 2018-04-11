@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 import validate from 'src/services/validate'
-import ContentView from 'src/modules/addProduct/components/ContentView'
+import ContentView from 'src/modules/addReview/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
@@ -24,7 +24,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
 
-export class AddProductPage extends Component {
+export class AddReviewPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -638,4 +638,4 @@ const mapDispatchToProps = dispatch => ({
 	}
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddProductPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AddReviewPage)
