@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View, Text } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View } from 'react-native'
 import AddComment from 'src/modules/viewReview/components/AddComment'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
@@ -7,6 +7,7 @@ import { Divider } from 'react-native-elements'
 import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
+import ReviewActions from 'src/redux/actions/review'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 
@@ -29,7 +30,10 @@ export class ViewReviewPage extends Component {
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBarViewReview titleName={this.props.review.product.name}/>
+						<NavBarViewReview 
+							review={this.props.review}
+							deleteReview={(review_id) => this.props.deleteReview(review_id)}
+						/>
 					</View>
 				</View>
 				<ScrollView>
@@ -99,6 +103,12 @@ const mapDispatchToProps = dispatch => ({
 	},
 	setEditComment: (review_id, comment_id) => {
 		dispatch(CommentActions.setEditComment(review_id, comment_id))
+	},
+	editReview: (review, review_id) => {
+		dispatch(ReviewActions.editReview(review, review_id))
+	},
+	deleteReview: (review_id) => {
+		dispatch(ReviewActions.deleteReview(review_id))
 	}
 })
 

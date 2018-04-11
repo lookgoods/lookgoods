@@ -12,11 +12,16 @@ class NavBarViewReview extends Component {
 	}
 
 	optionsSelect(index) {
-		console.log(index)
+		if (index === 0) {
+			console.log(index)
+		} else if (index === 1) {
+			this.props.deleteReview(this.props.review._id)
+			Actions.pop()
+		}
 	}
 
 	render () {
-		const { titleName } = this.props
+		const { name } = this.props.review.product
 		return (
 			<View style={styles.navBar} >
 				<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row'}} >
@@ -27,7 +32,7 @@ class NavBarViewReview extends Component {
 						<IconIonicons name='ios-arrow-back' size={30} color={colors.gray} />
 					</TouchableOpacity>
 					<View style={{ flex: 1 }}>
-						<Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ titleName }</Text>
+						<Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ name }</Text>
 					</View>
 					<TouchableOpacity style={{ width: 50, alignItems: 'center', justifyContent: 'flex-end'}} onPress={() => this.showActionSheet()} >
 						<IconIonicons name='md-more' size={35} color={colors.gray}/>
