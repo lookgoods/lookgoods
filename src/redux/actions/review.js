@@ -35,10 +35,33 @@ const ReviewActions = {
 		else dispatch(actions.getReviewSuccess(response.data.reverse()))
 	},
 	editReview: (review, review_id) => async dispatch => {
-		dispatch(actions.getReviewRequest())
-		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}`), review)
-		if (err) dispatch(actions.getReviewError(err))
-		else dispatch(actions.getReviewSuccess(response))
+		console.log(review, review_id, 'action edit review')
+		const trasformReview = {
+			...review,
+			product: {
+				name: review.name,
+				brand: review.brand
+			}
+		}
+		delete trasformReview.name
+		delete trasformReview.brand
+		dispatch(actions.editReviewRequest())
+		try {
+			const response = await fetch(`${AppURL}/reviews/${review_id}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(review)
+			})
+			console.log(response, 'response edit review')
+			dispatch(actions.editReviewSuccess(response))
+			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.setCurrentReview(trasformReview))
+
+		} catch (err) {
+			dispatch(actions.editReviewError(err))
+		}
 	},
 	deleteReview: (review_id) => async dispatch => {
 		dispatch(actions.deleteReviewRequest())

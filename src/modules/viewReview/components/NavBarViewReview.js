@@ -14,6 +14,7 @@ class NavBarViewReview extends Component {
 	optionsSelect(index) {
 		if (index === 0) {
 			console.log(index)
+			Actions.editReviewPage({review: this.props.review})
 		} else if (index === 1) {
 			this.props.deleteReview(this.props.review._id)
 			Actions.pop()
