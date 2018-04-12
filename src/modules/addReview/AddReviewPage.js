@@ -250,8 +250,6 @@ export class AddReviewPage extends Component {
 	}
 
 	render() {
-		console.log(this.state.coverImage.url, 'cover image')
-		console.log(this.state.imageSize, 'cover size')
 		return (
 			<View
 				style={styles.container}

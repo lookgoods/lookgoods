@@ -23,6 +23,7 @@ import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
+import { APP_FULL_WIDTH } from 'src/constants'
 
 export class EditReviewPage extends Component {
 	constructor(props) {
@@ -48,12 +49,12 @@ export class EditReviewPage extends Component {
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
-			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
+			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
+			imageSize: { width: 0, height: 0 }
 		}
 	}
 
 	componentDidMount() {
-		// console.log(this.props.review, 'review')
 		const coverImage = {
 			url: this.props.review.picture_cover_url,
 			thumbnail_url: this.props.review.picture_thumbnail_url
@@ -81,6 +82,18 @@ export class EditReviewPage extends Component {
 			isTagsButton: true
 		})
 		this.setAmountRating(this.props.review.rating)
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.state.coverImage.url !== '') && (this.state.coverImage.url !== prevState.coverImage.url)) {
+			this.getImageSize()
+		}
+	}
+
+	getImageSize() {
+		Image.getSize(this.state.coverImage.url, (width, height) => {
+			this.setState({ imageSize: { width, height } })
+		})
 	}
 
 	handleChangeTextBox(property, text) {
@@ -195,7 +208,6 @@ export class EditReviewPage extends Component {
 
 	async addTagsBox() {
 		const tagsArr = this.state.tagsList
-		// console.log(tagsArr, 'tagsArr')
 		tagsArr.push({ tags: '' })
 		await this.setState({ tagsList: tagsArr })
 	}
@@ -218,7 +230,7 @@ export class EditReviewPage extends Component {
 		const ratingErr = validate(['rating'], [this.state.rating])
 		const contentMeassageErr = validate(
 			['contentMessage'],
-			[this.state.contentMessage]
+			[this.state.contentList]
 		)
 		await this.setState({
 			titleErr,
@@ -240,7 +252,6 @@ export class EditReviewPage extends Component {
 				rating: this.state.rating,
 				user: this.props.review.user
 			}
-			// console.log(review, 'review')
 			await this.props.editReview(review, this.props.review._id)
 			await Actions.pop()
 		} else {
@@ -253,7 +264,6 @@ export class EditReviewPage extends Component {
 		const contentMessage = this.state.contentMessage
 		contentList.splice(key, 1)
 		contentMessage.splice(key, 1)
-		// console.log(contentList, contentMessage, 'deleteContentBox')
 		if (contentList.length === 0) {
 			this.setState({ isEditButton: !this.state.isEditButton })
 		}
@@ -269,7 +279,6 @@ export class EditReviewPage extends Component {
 	}
 
 	render() {
-		// console.log(this.props.review, 'review')
 		return (
 			<View
 				style={styles.container}
@@ -289,14 +298,15 @@ export class EditReviewPage extends Component {
 						style={{
 							alignItems: 'center',
 							justifyContent: 'center',
-							flexDirection: 'row'
+							flexDirection: 'row',
+							backgroundColor: colors.lightGray2
 						}}
 					>
 						{this.state.coverImage.url === '' ? (
 							<TouchableOpacity
 								style={{
 									flex: 1,
-									height: 200,
+									height: 260,
 									backgroundColor: colors.gray3,
 									alignItems: 'center',
 									justifyContent: 'center'
@@ -307,17 +317,15 @@ export class EditReviewPage extends Component {
 							</TouchableOpacity>
 						) : (
 							<TouchableOpacity
-								style={{ flex: 1, height: 200 }}
 								onPress={() => this.addCoverImage()}
 							>
 								<Image
 									style={{
-										flex: 1,
-										height: 200,
-										resizeMode: 'cover',
-										zIndex: 1
+										height: 260,
+										width: APP_FULL_WIDTH
 									}}
 									source={{ uri: this.state.coverImage.url }}
+									resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
 								/>
 							</TouchableOpacity>
 						)}
