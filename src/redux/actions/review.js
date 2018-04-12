@@ -104,7 +104,7 @@ const ReviewActions = {
 		if (err) dispatch(actions.likeReviewError(err))
 		else {
 			dispatch(actions.likeReviewSuccess(response))
-			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.getFollowingReviews())
 		}
 	},
 	unlikeReview: (review_id) => async dispatch => {
@@ -113,7 +113,7 @@ const ReviewActions = {
 		if (err) dispatch(actions.unlikeReviewError(err))
 		else {
 			dispatch(actions.unlikeReviewSuccess(response))
-			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.getFollowingReviews())
 		}
 	}
 }
