@@ -11,7 +11,6 @@ import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
-import UserActions from 'src/redux/actions/user'
 
 export class HomePage extends Component {
 	constructor(props) {

@@ -75,11 +75,18 @@ export class ViewUserPage extends Component {
 		else {
 			return (
 				<View style={styles.container}>
+					<View style={styles.header}>
+						<View style={styles.platformHeader}>
+							{ this.props.selectedUser ? 
+								<NavBar titleName={this.props.selectedUser.name} /> :
+								<NavBar />
+							} 
+						</View>
+					</View>
 					<ScrollView
 						showsVerticalScrollIndicator={false}
 						scrollEventThrottle={16}
 						bounces={false}
-						style={styles.body}
 					>
 						{ !this.props.currentUser ? 
 							<View style={styles.loadingContainer}>
@@ -136,23 +143,16 @@ export class ViewUserPage extends Component {
 										user_id={this.props.user._id}
 									/>
 								</View>
+
 								<View style={{ alignItems: 'center' }}>
 									<Divider style={styles.divider} />
 								</View>
-								<View style={styles.tabsContainer}>
+								<View style={styles.gridContainer}>
 									<ReviewsGrid review_list={this.props.ownReviews} />
 								</View>
 							</View>
 						}
 					</ScrollView>
-					<View style={styles.header}>
-						<View style={styles.platformHeader}>
-							{ this.props.selectedUser ? 
-								<NavBar titleName={this.props.selectedUser.name} /> :
-								<NavBar />
-							} 
-						</View>
-					</View>
 				</View>
 			)
 		}
@@ -164,21 +164,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: colors.white
 	},
-	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60
-	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
 		paddingTop: Platform.OS === 'ios' ? 25 : 0
 	},
 	header: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		zIndex: 1
+		backgroundColor: colors.white,
+		overflow: 'hidden'
 	},
 	infoBar: {
 		marginTop: 20
@@ -189,10 +181,10 @@ const styles = StyleSheet.create({
 		height: 1.2,
 		width: '100%'
 	},
-	tabsContainer: {
-		marginTop: 20,
-		paddingLeft: 12,
-		paddingRight: 12
+	gridContainer: {
+		marginTop: 10,
+		marginLeft: 10,
+		marginRight: 10
 	},
 	usernameText: {
 		fontSize: 18,

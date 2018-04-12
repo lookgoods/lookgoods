@@ -33,7 +33,6 @@ export class TabMenu extends Component {
 
 	fetchData() {
 		this.props.getCurrentUser()
-		console.log('fetchUser1')
 	}
 
 	checkPage() {
