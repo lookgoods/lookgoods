@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 	},
 	reviewPhoto: {
 		paddingVertical: 2,
-		paddingHorizontal: 2,
+		paddingHorizontal: 1,
 		width: '33.33%',
 		aspectRatio: 1
 	}

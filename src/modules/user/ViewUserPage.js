@@ -129,7 +129,7 @@ export class ViewUserPage extends Component {
 
 								<View style={styles.infoBar}>
 									<InfoBar
-										review_num={this.props.user.own_post_list.length}
+										review_num={this.props.ownReviews.length}
 										like_num={this.getTotalLike(this.props.ownReviews)}
 										follower_num={this.props.user.follower_list.length}
 										following_num={this.props.user.following_list.length}
