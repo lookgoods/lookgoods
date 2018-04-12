@@ -26,6 +26,7 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
+		console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -103,9 +104,6 @@ const mapDispatchToProps = dispatch => ({
 	},
 	setEditComment: (review_id, comment_id) => {
 		dispatch(CommentActions.setEditComment(review_id, comment_id))
-	},
-	editReview: (review, review_id) => {
-		dispatch(ReviewActions.editReview(review, review_id))
 	},
 	deleteReview: (review_id) => {
 		dispatch(ReviewActions.deleteReview(review_id))

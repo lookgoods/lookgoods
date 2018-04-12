@@ -1,6 +1,7 @@
 import { Router, Scene } from 'react-native-router-flux'
 
 import AddReviewPage from 'src/modules/addReview/AddReviewPage'
+import EditReviewPage from 'src/modules/editReview/EditReviewPage'
 import ChangeStatusPage from 'src/modules/setting/ChangeStatusPage'
 import LoginPage from 'src/modules/login/LoginPage'
 import { Provider } from 'react-redux'
@@ -26,14 +27,8 @@ const App = () => {
 					<Scene key="viewUserPage" component={ViewUserPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="changeStatusPage" component={ChangeStatusPage} title='Change Status' panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="viewUserListPage" component={ViewUserListPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
-					<Scene
-						key="SearchPage"
-						component={SearchPage}
-						hideNavBar={1}
-						panHandlers={null}
-						hideTabBar={1}
-						direction="vertical"
-					/>
+					<Scene key="SearchPage" component={SearchPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction="vertical"/>
+					<Scene key="editReviewPage" component={EditReviewPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction="vertical"/>
 				</Scene>
 			</Router>
 		</Provider>
