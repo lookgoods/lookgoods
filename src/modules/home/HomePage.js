@@ -56,10 +56,6 @@ export class HomePage extends Component {
 		this.setState({ searchText: text })
 	}
 
-	goToLoginPage() {
-		Actions.loginPage()
-	}
-
 	async cancelSearch() {
 		await this.setState({
 			isSearch: false,
@@ -71,7 +67,7 @@ export class HomePage extends Component {
 	render() {
 		if (!this.props.currentUser) {
 			if (this.props.userSuccess) {
-				this.goToLoginPage()
+				Actions.loginPage()
 			}
 			return <View/>
 		}

@@ -12,6 +12,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
 import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import { Actions } from 'react-native-router-flux'
 
 export class GlobalPage extends Component {
 	constructor(props) {
@@ -66,7 +67,7 @@ export class GlobalPage extends Component {
 	render() {
 		if (!this.props.currentUser) {
 			if (this.props.userSuccess) {
-				this.goToLoginPage()
+				Actions.loginPage()
 			}
 			return <View/>
 		}
