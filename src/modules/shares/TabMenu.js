@@ -80,7 +80,7 @@ export class TabMenu extends Component {
 				<TabNavigator.Item
 					selected={this.state.selectedTab === 'add'}
 					selectedTitleStyle={{ color: colors.blue }}
-					onPress={() => Actions.addProductPage()}
+					onPress={() => Actions.addReviewPage()}
 					renderIcon={() => (
 						<Icon name="plus" size={this.px2dp(22)} color={colors.gray} />
 					)}

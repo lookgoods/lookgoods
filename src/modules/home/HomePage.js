@@ -56,6 +56,10 @@ export class HomePage extends Component {
 		this.setState({ searchText: text })
 	}
 
+	goToLoginPage() {
+		Actions.loginPage()
+	}
+
 	async cancelSearch() {
 		await this.setState({
 			isSearch: false,
@@ -66,11 +70,12 @@ export class HomePage extends Component {
 
 	render() {
 		if (!this.props.currentUser) {
-			if (this.props.success) {
+			if (this.props.userSuccess) {
 				this.goToLoginPage()
 			}
 			return <View/>
 		}
+		if (!this.props.reviews) return <View/>
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -109,7 +114,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	reviews: state.reviewReducer.reviews,
-	currentPage: state.menuReducer.currentPage
+	currentPage: state.menuReducer.currentPage,
+	userSuccess: state.userReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({
