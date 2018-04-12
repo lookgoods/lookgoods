@@ -36,7 +36,6 @@ export class UserPage extends Component {
 	}
 
 	fetchData() {
-		this.props.getCurrentUser()
 		this.props.getCurrentUserOwnReviews()
 	}
 
@@ -64,59 +63,54 @@ export class UserPage extends Component {
 
 	render() {
 		if (!this.props.currentUser) {
-			if (this.props.success) {
-				Actions.loginPage()
-			}
 			return <View/>
 		}
-		else {
-			return (
-				<ScrollView contentContainerStyle={styles.container}>
-					{ !this.props.currentUser || !this.props.ownReviews ? 
-						<View style={styles.loadingContainer}>
-							<ActivityIndicator size="large" />
-						</View>
-						: <View style={styles.body}>
-							<View style={[styles.settingIconContainer, { right: 10 }]}>
-								<MaterialIcons
-									name="settings"
-									size={25}
-									onPress={() => this.goToSettingPage()}
-								/>
-							</View>
-							<UserPhoto
-								username={this.props.currentUser.name}
-								description={this.props.currentUser.description}
-								size={120}
-								image_url={this.props.currentUser.picture_url}
+		return (
+			<ScrollView contentContainerStyle={styles.container}>
+				{ !this.props.currentUser || !this.props.ownReviews ? 
+					<View style={styles.loadingContainer}>
+						<ActivityIndicator size="large" />
+					</View>
+					: <View style={styles.body}>
+						<View style={[styles.settingIconContainer, { right: 10 }]}>
+							<MaterialIcons
+								name="settings"
+								size={25}
+								onPress={() => this.goToSettingPage()}
 							/>
-							<View style={styles.infoBar}>
-								<InfoBar
-									review_num={this.props.currentUser.own_post_list.length}
-									like_num={this.getTotalLike(this.props.ownReviews)}
-									follower_num={this.props.currentUser.follower_list.length}
-									following_num={this.props.currentUser.following_list.length}
-									user_id={this.props.currentUser._id}
-								/>
-							</View>
-							<View style={{ alignItems: 'center' }}>
-								<Divider style={styles.divider} />
-							</View>
-							<View style={styles.tabsContainer}>
-								<Tabs>
-									<View title="Reviews">
-										<ReviewsGrid review_list={this.props.ownReviews} />
-									</View>
-									<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
-										<ReviewsGrid review_list={this.props.saveReviews} />
-									</View>
-								</Tabs>
-							</View>
 						</View>
-					}
-				</ScrollView>
-			)
-		}
+						<UserPhoto
+							username={this.props.currentUser.name}
+							description={this.props.currentUser.description}
+							size={120}
+							image_url={this.props.currentUser.picture_url}
+						/>
+						<View style={styles.infoBar}>
+							<InfoBar
+								review_num={this.props.currentUser.own_post_list.length}
+								like_num={this.getTotalLike(this.props.ownReviews)}
+								follower_num={this.props.currentUser.follower_list.length}
+								following_num={this.props.currentUser.following_list.length}
+								user_id={this.props.currentUser._id}
+							/>
+						</View>
+						<View style={{ alignItems: 'center' }}>
+							<Divider style={styles.divider} />
+						</View>
+						<View style={styles.tabsContainer}>
+							<Tabs>
+								<View title="Reviews">
+									<ReviewsGrid review_list={this.props.ownReviews} />
+								</View>
+								<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
+									<ReviewsGrid review_list={this.props.saveReviews} />
+								</View>
+							</Tabs>
+						</View>
+					</View>
+				}
+			</ScrollView>
+		)
 	}
 }
 
@@ -160,9 +154,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	getCurrentUser: () => {
-		dispatch(UserActions.getCurrentUser())
-	},
 	getCurrentUserOwnReviews: () => {
 		dispatch(UserActions.getCurrentUserOwnReviews())
 	},

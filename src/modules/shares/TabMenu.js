@@ -8,29 +8,32 @@ import NotificationPage from 'src/modules/notification/NotificationPage'
 import TabNavigator from 'react-native-tab-navigator'
 import UserPage from 'src/modules/user/UserPage'
 import { colors } from 'src/constants/mixins'
-import FBSDK from 'react-native-fbsdk'
-import to from 'await-to-js'
 import MenuActions from 'src/redux/actions/menu'
 import { connect } from 'react-redux'
+import UserActions from 'src/redux/actions/user'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
-const { AccessToken } = FBSDK
 
 export class TabMenu extends Component {
 	state = {
 		selectedTab: 'home'
 	}
 
-	async checkLogin() {
-		const [err, token] = await to(AccessToken.getCurrentAccessToken())
-		if (err) console.log('get token error', err)
-		if (!token) Actions.loginPage()
+	componentDidMount() {
+		this.checkPage()
+		this.fetchData()
 	}
 
-	componentDidMount() {
-		this.checkLogin()
-		this.checkPage()
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.state.selectedTab !== prevState.selectedTab)) {
+			this.fetchData()
+		}
+	}
+
+	fetchData() {
+		this.props.getCurrentUser()
+		console.log('fetchUser1')
 	}
 
 	checkPage() {
@@ -43,6 +46,9 @@ export class TabMenu extends Component {
 	}
 
 	render() {
+		if (!this.props.currentUser && this.props.success) {
+			Actions.loginPage()
+		}
 		return (
 			<TabNavigator style={styles.container}>
 				<TabNavigator.Item
@@ -125,6 +131,11 @@ export class TabMenu extends Component {
 	}
 }
 
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
+	success: state.userReducer.success
+})
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -137,7 +148,10 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => ({
 	setCurrentPage: (page) => {
 		dispatch(MenuActions.setCurrentPage(page))
+	},
+	getCurrentUser: () => {
+		dispatch(UserActions.getCurrentUser())
 	}
 })
 
-export default connect(null, mapDispatchToProps)(TabMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(TabMenu)

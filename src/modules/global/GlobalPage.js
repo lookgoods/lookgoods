@@ -10,10 +10,7 @@ import NavBarSearch from 'src/modules/shares/NavBarSearch'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
-import UserActions from 'src/redux/actions/user'
 import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
-import { Actions } from 'react-native-router-flux'
-
 export class GlobalPage extends Component {
 	constructor(props) {
 		super(props)
@@ -25,7 +22,6 @@ export class GlobalPage extends Component {
 
 	fetchData() {
 		this.props.getReviews()
-		this.props.getCurrentUser()
 	}
 
 	componentDidMount() {
@@ -33,8 +29,7 @@ export class GlobalPage extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.currentUser !== nextProps.currentUser) || 
-		(this.props.reviews !== nextProps.reviews) || 
+		return (this.props.reviews !== nextProps.reviews) || 
 		(this.props.currentPage !== nextProps.currentPage)
 	}
 	
@@ -65,12 +60,6 @@ export class GlobalPage extends Component {
 	}
 
 	render() {
-		if (!this.props.currentUser) {
-			if (this.props.userSuccess) {
-				Actions.loginPage()
-			}
-			return <View/>
-		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -114,17 +103,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	reviews: state.reviewReducer.reviews,
-	currentUser: state.userReducer.currentUser,
-	currentPage: state.menuReducer.currentPage,
-	userSuccess: state.userReducer.success
+	currentPage: state.menuReducer.currentPage
 })
 
 const mapDispatchToProps = dispatch => ({
 	getReviews: () => {
 		dispatch(ReviewActions.getReviews())
-	},
-	getCurrentUser: () => {
-		dispatch(UserActions.getCurrentUser())
 	}
 })
 

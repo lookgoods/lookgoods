@@ -24,7 +24,6 @@ export class HomePage extends Component {
 
 	fetchData() {
 		this.props.getReviews()
-		this.props.getCurrentUser()
 	}
 
 	componentDidMount() {
@@ -65,12 +64,6 @@ export class HomePage extends Component {
 	}
 
 	render() {
-		if (!this.props.currentUser) {
-			if (this.props.userSuccess) {
-				Actions.loginPage()
-			}
-			return <View/>
-		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -109,16 +102,12 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	reviews: state.reviewReducer.followingReviews,
-	currentPage: state.menuReducer.currentPage,
-	userSuccess: state.userReducer.success
+	currentPage: state.menuReducer.currentPage
 })
 
 const mapDispatchToProps = dispatch => ({
 	getReviews: () => {
 		dispatch(ReviewActions.getFollowingReviews())
-	},
-	getCurrentUser: () => {
-		dispatch(UserActions.getCurrentUser())
 	}
 })
 
