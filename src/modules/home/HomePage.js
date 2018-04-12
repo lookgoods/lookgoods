@@ -64,6 +64,9 @@ export class HomePage extends Component {
 	}
 
 	render() {
+		if (!this.props.currentUser || !this.props.reviews) {
+			return <View/>
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
