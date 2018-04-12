@@ -9,12 +9,12 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { APP_FULL_WIDTH } from 'src/constants'
 
-function CoverPhoto ({ image_url }) {
+function CoverPhoto ({ image_url, imageSize }) {
 	if (image_url) {
 		return <Image
 			style={styles.coverImage}
 			source={{ uri: image_url }}
-			resizeMode="cover"
+			resizeMode={ imageSize.width > imageSize.height ? 'cover' : 'contain' }
 		/>
 	}
 	return <View />
@@ -110,6 +110,19 @@ const TagList = ({ tags }) => (
 export class ContentSection extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			imageSize: { width: 0, height: 0 }
+		}
+	}
+
+	componentDidMount() {
+		this.getImageSize()
+	}
+
+	getImageSize() {
+		Image.getSize(this.props.review.picture_cover_url, (width, height) => {
+			this.setState({ imageSize: { width, height } })
+		})
 	}
 
 	render() {
@@ -122,10 +135,10 @@ export class ContentSection extends Component {
 			content_list,
 			price
 		} = this.props.review
-		// console.log(picture_cover_url, 'pic url') 
+
 		return (
 			<View>
-				<CoverPhoto image_url={picture_cover_url} />
+				<CoverPhoto image_url={picture_cover_url} imageSize={this.state.imageSize} />
 				<ReviewerBar
 					reviewer={user}
 					rating={rating}
@@ -146,7 +159,7 @@ export class ContentSection extends Component {
 const styles = StyleSheet.create({
 	coverImage: {
 		width: APP_FULL_WIDTH,
-		height: 250
+		height: 260
 	},
 	profileImage: {
 		marginLeft: 10

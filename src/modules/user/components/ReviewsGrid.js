@@ -11,14 +11,14 @@ export default class ReviewsGrid extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{this.props.review_list ? (
-					this.props.review_list.map((review, index) => (
-						<View key={index} style={styles.reviewPhoto}>
-							<ReviewPhoto key={index} review={review} />
-						</View>
-					))
-				) : (
-					<View />
+				{this.props.review_list && (
+					this.props.review_list.map((review, index) => {
+						if (!review.available) return
+						else return (
+							<View key={index} style={styles.reviewPhoto}>
+								<ReviewPhoto key={index} review={review} />
+							</View>
+						) })
 				)}
 			</View>
 		)

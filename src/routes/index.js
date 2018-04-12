@@ -1,6 +1,7 @@
 import { Router, Scene } from 'react-native-router-flux'
 
-import AddProductPage from 'src/modules/addProduct/AddProductPage'
+import AddReviewPage from 'src/modules/addReview/AddReviewPage'
+import EditReviewPage from 'src/modules/editReview/EditReviewPage'
 import ChangeStatusPage from 'src/modules/setting/ChangeStatusPage'
 import LoginPage from 'src/modules/login/LoginPage'
 import { Provider } from 'react-redux'
@@ -18,7 +19,7 @@ const App = () => {
 		<Provider store={store}>
 			<Router>
 				<Scene key="root">
-					<Scene key="addProductPage" component={AddProductPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
+					<Scene key="addReviewPage" component={AddReviewPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="viewReviewPage" component={ViewReviewPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="tabMenu" component={TabMenu} hideNavBar={1} type="reset" hideTabBar={1} direction='vertical' initial/>
 					<Scene key="loginPage" component={LoginPage} hideNavBar={1} type="reset" hideTabBar={1} direction='vertical'/>
@@ -26,14 +27,8 @@ const App = () => {
 					<Scene key="viewUserPage" component={ViewUserPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="changeStatusPage" component={ChangeStatusPage} title='Change Status' panHandlers={null} hideTabBar={1} direction='vertical'/>
 					<Scene key="viewUserListPage" component={ViewUserListPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction='vertical'/>
-					<Scene
-						key="SearchPage"
-						component={SearchPage}
-						hideNavBar={1}
-						panHandlers={null}
-						hideTabBar={1}
-						direction="vertical"
-					/>
+					<Scene key="SearchPage" component={SearchPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction="vertical"/>
+					<Scene key="editReviewPage" component={EditReviewPage} hideNavBar={1} panHandlers={null} hideTabBar={1} direction="vertical"/>
 				</Scene>
 			</Router>
 		</Provider>

@@ -11,11 +11,11 @@ import {
 } from 'react-native'
 import React, { Component } from 'react'
 import validate from 'src/services/validate'
-import ContentView from 'src/modules/addProduct/components/ContentView'
+import { Actions } from 'react-native-router-flux'
+import ContentView from 'src/modules/editReview/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
-import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
 import Toast from 'react-native-simple-toast'
@@ -24,7 +24,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
 
-export class AddProductPage extends Component {
+export class EditReviewPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -50,6 +50,37 @@ export class AddProductPage extends Component {
 			isTagsButton: false,
 			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
 		}
+	}
+
+	componentDidMount() {
+		// console.log(this.props.review, 'review')
+		const coverImage = {
+			url: this.props.review.picture_cover_url,
+			thumbnail_url: this.props.review.picture_thumbnail_url
+		}
+		const tagsList = []
+		for (let i = 0 ; i < this.props.review.tag.length ; i++) {
+			tagsList.push({ tags: '' })
+		}
+		const contentMessage = []
+		this.props.review.content_list.map((item, index) => {
+			if (item.type === 'text') contentMessage.push(item.value)
+			else contentMessage.push(null)
+		})
+		this.setState({
+			coverImage,
+			title: this.props.review.title,
+			name: this.props.review.product.name,
+			brand: this.props.review.product.brand,
+			price: this.props.review.price.toString(),
+			tagsList: tagsList,
+			tagsMessage: this.props.review.tag,
+			rating: this.props.review.rating,
+			contentList: this.props.review.content_list,
+			contentMessage,
+			isTagsButton: true
+		})
+		this.setAmountRating(this.props.review.rating)
 	}
 
 	handleChangeTextBox(property, text) {
@@ -102,14 +133,6 @@ export class AddProductPage extends Component {
 				this.setState({ coverImage })
 			}
 		})
-		// ImageCropPicker.openPicker({
-		// 	width: 370,
-		// 	height: 200,
-		// 	cropping: true
-		// }).then(image => {
-		// 	console.log(image)
-		// 	this.setState({ coverImage: image.sourceURL })
-		// })
 	}
 
 	attachPhotos() {
@@ -172,12 +195,12 @@ export class AddProductPage extends Component {
 
 	async addTagsBox() {
 		const tagsArr = this.state.tagsList
-		console.log(tagsArr, 'tagsArr')
+		// console.log(tagsArr, 'tagsArr')
 		tagsArr.push({ tags: '' })
 		await this.setState({ tagsList: tagsArr })
 	}
 
-	async addReview() {
+	async saveReview() {
 		const contentMessage = this.state.contentMessage
 		const contentList = this.state.contentList.map(
 			(content, index) =>
@@ -187,8 +210,6 @@ export class AddProductPage extends Component {
 		)
 		await this.setState({ contentList })
 		await this.checkValidate()
-
-		
 	}
 
 	async checkValidate() {
@@ -205,12 +226,6 @@ export class AddProductPage extends Component {
 			ratingErr,
 			contentMeassageErr
 		})
-		console.log(
-			this.state.titleErr,
-			this.state.nameErr,
-			this.state.ratingErr,
-			this.state.contentMessageErr
-		)
 
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			const review = {
@@ -222,10 +237,12 @@ export class AddProductPage extends Component {
 				picture_cover_url: this.state.coverImage.url,
 				picture_thumbnail_url: this.state.coverImage.thumbnail_url,
 				content_list: this.state.contentList,
-				rating: this.state.rating	
+				rating: this.state.rating,
+				user: this.props.review.user
 			}
-	
-			this.props.addReview(review)
+			// console.log(review, 'review')
+			await this.props.editReview(review, this.props.review._id)
+			await Actions.pop()
 		} else {
 			Toast.show('กรุณาเติมข้อมูลที่ * ให้ครบถ้วน', Toast.SHORT)
 		}
@@ -236,7 +253,7 @@ export class AddProductPage extends Component {
 		const contentMessage = this.state.contentMessage
 		contentList.splice(key, 1)
 		contentMessage.splice(key, 1)
-		console.log(contentList, contentMessage, 'deleteContentBox')
+		// console.log(contentList, contentMessage, 'deleteContentBox')
 		if (contentList.length === 0) {
 			this.setState({ isEditButton: !this.state.isEditButton })
 		}
@@ -252,7 +269,7 @@ export class AddProductPage extends Component {
 	}
 
 	render() {
-		console.log(this.state.coverImage, 'cover')
+		// console.log(this.props.review, 'review')
 		return (
 			<View
 				style={styles.container}
@@ -469,9 +486,9 @@ export class AddProductPage extends Component {
 						<View style={styles.blockSave}>
 							<TouchableOpacity
 								style={styles.buttonSave}
-								onPress={() => this.addReview()}
+								onPress={() => this.saveReview()}
 							>
-								<Text style={{ fontSize: 18, color: '#FFF' }}>ADD REVIEW</Text>
+								<Text style={{ fontSize: 18, color: '#FFF' }}>SAVE REVIEW</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -479,7 +496,7 @@ export class AddProductPage extends Component {
 				{this.renderLoading()}
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
-						<NavBar titleName="Add Review" />
+						<NavBar titleName="Edit Review" />
 					</View>
 				</View>
 			</View>
@@ -630,12 +647,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	addReview: review => {
-		dispatch(ReviewActions.addReview(review))
+	editReview: (review, review_id) => {
+		dispatch(ReviewActions.editReview(review, review_id))
 	},
 	uploadImage: image => {
 		dispatch(ImageActions.uploadImage(image))
 	}
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddProductPage)
+export default connect(mapStateToProps, mapDispatchToProps)(EditReviewPage)

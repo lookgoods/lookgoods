@@ -61,36 +61,33 @@ function Header({ user, time, isSaved, setUser, clickBookmark, showBookmark }) {
 	)
 }
 
-const ProductPicture = ({ image_url, review, setReview }) => {
+const ProductPicture = ({ image_url, review, setReview, imageSize }) => {
 	return (
-		<View>
-			{image_url ? (
-				<TouchableOpacity
-					onPress={() => {
-						setReview(review)
-						Actions.viewReviewPage()
-					}}
-				>
-					<Image
-						style={styles.productImage}
-						source={{ uri: image_url }}
-						resizeMode="cover"
-					/>
-				</TouchableOpacity>
-			) : (
-				<View />
-			)}
+		<View style={{ backgroundColor: colors.lightGray2 }}>
+			<TouchableOpacity
+				onPress={() => {
+					setReview(review)
+					Actions.viewReviewPage()
+				}}
+			>
+				<Image
+					style={styles.productImage}
+					source={{ uri: image_url }}
+					resizeMode={ imageSize.width > imageSize.height ? 'cover' : 'contain' }
+				/>
+			</TouchableOpacity>
 		</View>
 	)
 }
 
-function Body({ product_url, title, review, setReview }) {
+function Body({ product_url, title, review, setReview, imageSize }) {
 	return (
 		<View>
 			<ProductPicture
 				image_url={product_url}
 				review={review}
 				setReview={setReview}
+				imageSize={imageSize}
 			/>
 			<Text style={styles.titleText}>{title}</Text>
 		</View>
@@ -152,13 +149,21 @@ export class ReviewCard extends Component {
 		this.state = {
 			isLove: false,
 			isSaved: false,
-			showBookmark: true
+			showBookmark: true,
+			imageSize: { width: 0, height: 0 }
 		}
 	}
 
 	componentDidMount() {
 		this.checkLove()
 		this.checkBookmark()
+		this.getImageSize()
+	}
+
+	getImageSize() {
+		Image.getSize(this.props.review.picture_cover_url, (width, height) => {
+			this.setState({ imageSize: { width, height } })
+		})
 	}
 
 	clickLove() {
@@ -243,6 +248,7 @@ export class ReviewCard extends Component {
 					title={title}
 					review={this.props.review}
 					setReview={this.props.setCurrentReview}
+					imageSize={this.state.imageSize}
 				/>
 				<Footer
 					rating={rating}

@@ -12,13 +12,18 @@ export default class ReviewList extends Component {
 	}
   
 	render() {
+		console.log(this.props.review_list, 'review list')
 		return (
 			<View style={styles.container}>
-				{ this.props.review_list ? this.props.review_list.map((review, index) => (
-					<View key={index} style={styles.reviewCard}>
-						<ReviewCard key={index} review={review} user={this.props.user}/>
-					</View>
-				)) : <View/>}
+				{ this.props.review_list && (
+					this.props.review_list.map((review, index) => (
+						<View key={index} style={styles.reviewCard}>
+							{ review.available && (
+								<ReviewCard key={index} review={review} user={this.props.user}/>
+							)}
+						</View>
+					))
+				)}
 			</View>
 		)
 	}

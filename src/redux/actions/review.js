@@ -34,11 +34,40 @@ const ReviewActions = {
 		if (err) dispatch(actions.getReviewError(err))
 		else dispatch(actions.getReviewSuccess(response.data.reverse()))
 	},
-	editReview: (review) => async dispatch => {
-		dispatch(actions.getReviewRequest())
-		const [err, response ] = await to(axios.put(`${AppURL}/reviews`), review)
-		if (err) dispatch(actions.getReviewError(err))
-		else dispatch(actions.getReviewSuccess(response))
+	getFollowingReviews: () => async dispatch => {
+		dispatch(actions.getFollowingReviewRequest())
+		const [err, response ] = await to(axios.get(`${AppURL}/currentuser/following/reviews`))
+		if (err) dispatch(actions.getFollowingReviewError(err))
+		else dispatch(actions.getFollowingReviewSuccess(response.data.reverse()))
+	},
+	editReview: (review, review_id) => async dispatch => {
+		console.log(review, review_id, 'action edit review')
+		const trasformReview = {
+			...review,
+			product: {
+				name: review.name,
+				brand: review.brand
+			}
+		}
+		delete trasformReview.name
+		delete trasformReview.brand
+		dispatch(actions.editReviewRequest())
+		try {
+			const response = await fetch(`${AppURL}/reviews/${review_id}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(review)
+			})
+			console.log(response, 'response edit review')
+			dispatch(actions.editReviewSuccess(response))
+			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.setCurrentReview(trasformReview))
+
+		} catch (err) {
+			dispatch(actions.editReviewError(err))
+		}
 	},
 	deleteReview: (review_id) => async dispatch => {
 		dispatch(actions.deleteReviewRequest())
@@ -110,6 +139,17 @@ const actions = {
 	}),
 	getReviewError: error => ({
 		type: constants.GET_REVIEW_FAILURE,
+		payload: { error }
+	}),
+	getFollowingReviewRequest: () => ({
+		type: constants.GET_FOLLOWING_REVIEW_REQUEST
+	}),
+	getFollowingReviewSuccess: reviews => ({
+		type: constants.GET_FOLLOWING_REVIEW_SUCCESS,
+		payload: { reviews }
+	}),
+	getFollowingReviewError: error => ({
+		type: constants.GET_FOLLOWING_REVIEW_FAILURE,
 		payload: { error }
 	}),
 	editReviewRequest: () => ({
