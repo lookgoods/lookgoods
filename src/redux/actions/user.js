@@ -2,6 +2,7 @@ import constants from 'src/redux/constants'
 import axios from 'axios'
 import to from 'await-to-js'
 import { Actions } from 'react-native-router-flux'
+import ReviewActions from 'src/redux/actions/review'
 
 const AppURL = constants.AppURL
 
@@ -65,6 +66,7 @@ const UserActions = {
 		else {
 			dispatch(UserActions.getCurrentUser())
 			dispatch(UserActions.getUser(user_id))
+			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(actions.followUserSuccess(response))
 		}
 	},
@@ -75,6 +77,7 @@ const UserActions = {
 		else {
 			dispatch(UserActions.getCurrentUser())
 			dispatch(UserActions.getUser(user_id))
+			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(actions.unfollowUserSuccess(response))
 		}
 	},

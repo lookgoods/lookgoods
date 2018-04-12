@@ -4,7 +4,8 @@ const initialState = {
 	currentReview: null,
 	loading: false,
 	error: null,
-	reviews: null
+	reviews: null,
+	followingReviews: null
 }
 
 export default (state = initialState, action) => {
@@ -52,6 +53,28 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_REVIEW_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload.error
+		}
+	
+	case constants.GET_FOLLOWING_REVIEW_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+	case constants.GET_FOLLOWING_REVIEW_SUCCESS:
+		return {
+			...state,
+			loading: false,
+			error: null,
+			followingReviews: action.payload.reviews
+		}
+
+	case constants.GET_FOLLOWING_REVIEW_FAILURE:
 		return {
 			...state,
 			loading: false,

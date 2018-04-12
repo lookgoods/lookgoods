@@ -7,11 +7,11 @@ import {
 import React, { Component } from 'react'
 
 import NavBarSearch from 'src/modules/shares/NavBarSearch'
-import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
+import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
 
 export class GlobalPage extends Component {
 	constructor(props) {
@@ -85,7 +85,7 @@ export class GlobalPage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
+						<ReviewsGrid review_list={this.props.reviews} />
 					</View>
 				</ScrollView>
 			</View>
@@ -96,10 +96,10 @@ export class GlobalPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.lightGray
+		backgroundColor: colors.white
 	},
 	body: {
-		backgroundColor: colors.lightGray
+		backgroundColor: colors.white
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,

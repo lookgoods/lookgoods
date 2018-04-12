@@ -34,6 +34,12 @@ const ReviewActions = {
 		if (err) dispatch(actions.getReviewError(err))
 		else dispatch(actions.getReviewSuccess(response.data.reverse()))
 	},
+	getFollowingReviews: () => async dispatch => {
+		dispatch(actions.getFollowingReviewRequest())
+		const [err, response ] = await to(axios.get(`${AppURL}/currentuser/following/reviews`))
+		if (err) dispatch(actions.getFollowingReviewError(err))
+		else dispatch(actions.getFollowingReviewSuccess(response.data.reverse()))
+	},
 	editReview: (review, review_id) => async dispatch => {
 		console.log(review, review_id, 'action edit review')
 		const trasformReview = {
@@ -133,6 +139,17 @@ const actions = {
 	}),
 	getReviewError: error => ({
 		type: constants.GET_REVIEW_FAILURE,
+		payload: { error }
+	}),
+	getFollowingReviewRequest: () => ({
+		type: constants.GET_FOLLOWING_REVIEW_REQUEST
+	}),
+	getFollowingReviewSuccess: reviews => ({
+		type: constants.GET_FOLLOWING_REVIEW_SUCCESS,
+		payload: { reviews }
+	}),
+	getFollowingReviewError: error => ({
+		type: constants.GET_FOLLOWING_REVIEW_FAILURE,
 		payload: { error }
 	}),
 	editReviewRequest: () => ({

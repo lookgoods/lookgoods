@@ -15,7 +15,6 @@ import ContentView from 'src/modules/addReview/components/ContentView'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
-import ImageCropPicker from 'react-native-image-crop-picker'
 import ImagePicker from 'react-native-image-picker'
 import NavBar from 'src/modules/shares/NavBar'
 import Toast from 'react-native-simple-toast'
@@ -48,8 +47,21 @@ export class AddReviewPage extends Component {
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
-			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o']
+			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
+			imageSize: { width: 0, height: 0 }
 		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.coverImage.url !== '') {
+			this.getImageSize()
+		}
+	}
+
+	getImageSize() {
+		Image.getSize(this.state.coverImage.url, (width, height) => {
+			this.setState({ imageSize: { width, height } })
+		})
 	}
 
 	handleChangeTextBox(property, text) {
@@ -279,7 +291,7 @@ export class AddReviewPage extends Component {
 							<TouchableOpacity
 								style={{
 									flex: 1,
-									height: 200,
+									height: 260,
 									backgroundColor: colors.gray3,
 									alignItems: 'center',
 									justifyContent: 'center'
@@ -290,17 +302,18 @@ export class AddReviewPage extends Component {
 							</TouchableOpacity>
 						) : (
 							<TouchableOpacity
-								style={{ flex: 1, height: 200 }}
+								style={{ backgroundColor: colors.lightGray2 }}
 								onPress={() => this.addCoverImage()}
 							>
 								<Image
 									style={{
 										flex: 1,
-										height: 200,
-										resizeMode: 'cover',
+										height: 260,
 										zIndex: 1
 									}}
 									source={{ uri: this.state.coverImage.url }}
+									resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
+
 								/>
 							</TouchableOpacity>
 						)}
