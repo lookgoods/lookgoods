@@ -120,7 +120,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	getReviews: () => {
-		dispatch(ReviewActions.getReviews())
+		dispatch(ReviewActions.getFollowingReviews())
 	},
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
