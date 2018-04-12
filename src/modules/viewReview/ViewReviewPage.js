@@ -26,13 +26,13 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarViewReview 
 							review={this.props.review}
+							currentUser={this.props.currentUser}
 							deleteReview={(review_id) => this.props.deleteReview(review_id)}
 						/>
 					</View>
