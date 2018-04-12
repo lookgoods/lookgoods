@@ -41,7 +41,6 @@ const ReviewActions = {
 		else dispatch(actions.getFollowingReviewSuccess(response.data.reverse()))
 	},
 	editReview: (review, review_id) => async dispatch => {
-		console.log(review, review_id, 'action edit review')
 		const trasformReview = {
 			...review,
 			product: {
@@ -60,9 +59,9 @@ const ReviewActions = {
 				},
 				body: JSON.stringify(review)
 			})
-			console.log(response, 'response edit review')
 			dispatch(actions.editReviewSuccess(response))
 			dispatch(ReviewActions.getReviews())
+			dispatch(UserActions.getCurrentUserOwnReviews())
 			dispatch(ReviewActions.setCurrentReview(trasformReview))
 
 		} catch (err) {
@@ -73,7 +72,11 @@ const ReviewActions = {
 		dispatch(actions.deleteReviewRequest())
 		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}`))
 		if (err) dispatch(actions.deleteReviewError(err))
-		else dispatch(actions.deleteReviewSuccess(response))
+		else {
+			dispatch(actions.deleteReviewSuccess(response))
+			dispatch(ReviewActions.getReviews())
+			dispatch(UserActions.getCurrentUserOwnReviews())
+		}
 	},
 	saveReview: (review_id) => async dispatch => {
 		dispatch(actions.saveReviewRequest())

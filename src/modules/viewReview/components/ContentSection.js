@@ -200,7 +200,8 @@ const styles = StyleSheet.create({
 	contentImageWrapper: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: 10
 	},
 	contentText: {
 		marginBottom: 10,
@@ -210,7 +211,8 @@ const styles = StyleSheet.create({
 	},
 	productDetail: {
 		flexDirection: 'row',
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: 10
 	},
 	productDetailName: {
 		marginRight: 40,

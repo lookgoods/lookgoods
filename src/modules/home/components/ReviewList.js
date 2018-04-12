@@ -12,7 +12,6 @@ export default class ReviewList extends Component {
 	}
   
 	render() {
-		console.log(this.props.review_list, 'review list')
 		return (
 			<View style={styles.container}>
 				{ this.props.review_list && (
