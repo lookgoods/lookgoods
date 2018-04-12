@@ -65,7 +65,7 @@ export class GlobalPage extends Component {
 
 	render() {
 		if (!this.props.currentUser) {
-			if (this.props.success) {
+			if (this.props.userSuccess) {
 				this.goToLoginPage()
 			}
 			return <View/>
@@ -113,7 +113,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	reviews: state.reviewReducer.reviews,
-	currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser,
+	currentPage: state.menuReducer.currentPage,
+	userSuccess: state.userReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({

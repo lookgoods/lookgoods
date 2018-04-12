@@ -77,16 +77,13 @@ const ReviewActions = {
 	},
 	saveReview: (review_id) => async dispatch => {
 		dispatch(actions.saveReviewRequest())
-		console.log(review_id, 'save bookmark request')
 		const [err, response ] = await to(axios.put(`${AppURL}/reviews/${review_id}/save`))
 		if (err) {
 			dispatch(actions.saveReviewError(err))
-			console.log(err, 'save bookmark error')
 		}
 		else {
 			dispatch(actions.saveReviewSuccess(response))
 			dispatch(UserActions.getCurrentUser())
-			console.log(response, 'save bookmark success')
 		}
 	},
 	unsaveReview: (review_id) => async dispatch => {

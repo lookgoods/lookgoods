@@ -75,7 +75,6 @@ export class HomePage extends Component {
 			}
 			return <View/>
 		}
-		if (!this.props.reviews) return <View/>
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	reviews: state.reviewReducer.reviews,
+	reviews: state.reviewReducer.followingReviews,
 	currentPage: state.menuReducer.currentPage,
 	userSuccess: state.userReducer.success
 })
