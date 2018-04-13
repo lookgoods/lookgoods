@@ -100,10 +100,10 @@ export class UserPage extends Component {
 						<View style={styles.tabsContainer}>
 							<Tabs>
 								<View title="Reviews">
-									<ReviewsGrid review_list={this.props.ownReviews} />
+									<ReviewsGrid review_list={this.props.ownReviews} page={'UserPage'}/>
 								</View>
 								<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
-									<ReviewsGrid review_list={this.props.saveReviews} />
+									<ReviewsGrid review_list={this.props.saveReviews} page={'UserPage'}/>
 								</View>
 							</Tabs>
 						</View>
