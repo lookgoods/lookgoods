@@ -75,7 +75,7 @@ export class GlobalPage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.body}>
-						<ReviewsGrid review_list={this.props.reviews} />
+						<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
 					</View>
 				</ScrollView>
 			</View>

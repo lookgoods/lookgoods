@@ -148,7 +148,7 @@ export class ViewUserPage extends Component {
 									<Divider style={styles.divider} />
 								</View>
 								<View style={styles.gridContainer}>
-									<ReviewsGrid review_list={this.props.ownReviews} />
+									<ReviewsGrid review_list={this.props.ownReviews} page={'ViewUserPage'}/>
 								</View>
 							</View>
 						}

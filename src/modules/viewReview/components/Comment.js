@@ -10,6 +10,7 @@ import { colors } from 'src/constants/mixins'
 import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import CommentActions from 'src/redux/actions/comment'
 import Toast from 'react-native-simple-toast'
@@ -24,13 +25,17 @@ class Comment extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
+			rating: 0,
 			description: '',
 			descriptionErr: ''
 		}
 	}
 
 	async componentDidMount() {
-		await this.setState({description: this.props.comment.description})
+		await this.setState({
+			rating: this.props.comment.rating,
+			description: this.props.comment.description
+		})
 	}
 
 	async saveEditComment(rating, comment_id) {
@@ -46,19 +51,29 @@ class Comment extends Component {
 		}		
 	}
 
+	async handleChangeRating(rating) {
+		await this.setState({ rating })
+	}
+	
 	render() {
-		const { user, rating, _id } = this.props.comment
+		const { user, _id } = this.props.comment
 		return (
 			<View style={styles.container}>
 				<ProfilePicture image_url={user.picture_url}/>
 				<View style={styles.content}>
 					<Text style={styles.username}>{user.name}</Text>
-					<View style={styles.starBar}>
-						<StarBar rating={rating} size={15}/>
-					</View>
+					
 					{ _id !== this.props.editCommentId ?
-						<Text>{this.state.description}</Text> :
 						<View>
+							<View style={styles.starBar}>
+								<StarBar rating={this.state.rating} size={15} type={'view'}/>
+							</View>
+							<Text>{this.state.description}</Text>
+						</View> :
+						<View>
+							<View style={styles.starBar}>
+								<StarBar rating={this.state.rating} handleChangeRating={(rating) => this.handleChangeRating(rating)} size={15} type={'edit'}/>
+							</View>
 							<View style={{ flex: 1, flexDirection: 'row'}}>
 								<View style={styles.bodyTextInput}>
 									<TextInput
@@ -83,7 +98,7 @@ class Comment extends Component {
 									<TouchableOpacity style={styles.buttonCancel} onPress={() => this.props.setEditComment(this.props.review._id, null)}>
 										<Text style={styles.fontCancel}>Cancel</Text>
 									</TouchableOpacity>
-									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditComment(rating, _id)}>
+									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditComment(this.state.rating, _id)}>
 										<Text style={styles.fontSave}>Save</Text>
 									</TouchableOpacity>
 								</View>
