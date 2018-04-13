@@ -20,7 +20,14 @@ const ImageActions = {
 		} catch (err) {
 			dispatch(actions.uploadImageError(err))
 		}
-	}
+	},
+	showPreviewImageModal: (image_url) => ({
+		type: constants.SHOW_PREVIEW_IMAGE_MODAL,
+		payload: image_url
+	}),
+	hidePreviewImageModal: () => ({
+		type: constants.HIDE_PREVIEW_IMAGE_MODAL
+	})
 }
 
 const actions = {
@@ -29,11 +36,11 @@ const actions = {
 	}),
 	uploadImageSuccess: image => ({
 		type: constants.UPLOAD_IMAGE_SUCCESS,
-		payload: { image }
+		payload: image
 	}),
 	uploadImageError: error => ({
 		type: constants.UPLOAD_IMAGE_FAILURE,
-		payload: { error }
+		payload: error
 	})
 }
 

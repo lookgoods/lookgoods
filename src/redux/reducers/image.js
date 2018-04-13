@@ -4,7 +4,9 @@ const initialState = {
 	picture_url: null,
 	thumbnail_url: null,
 	loading: false,
-	error: null
+	error: null,
+	showPreviewImage: false,
+	previewImageUrl: null
 }
 
 export default (state = initialState, action) => {
@@ -13,8 +15,8 @@ export default (state = initialState, action) => {
 	case constants.UPLOAD_IMAGE_SUCCESS: 
 		return {
 			...state,
-			picture_url: action.payload.image.picture_url,
-			thumbnail_url: action.payload.image.picture_thumbnail_url,
+			picture_url: action.payload.picture_url,
+			thumbnail_url: action.payload.picture_thumbnail_url,
 			loading: false,
 			error: null
 		}
@@ -29,8 +31,22 @@ export default (state = initialState, action) => {
 	case constants.UPLOAD_IMAGE_FAILURE: 
 		return {
 			...state,
-			error: action.payload.error,
+			error: action.payload,
 			loading: false
+		}
+
+	case constants.SHOW_PREVIEW_IMAGE_MODAL: 
+		return {
+			...state,
+			showPreviewImage: true,
+			previewImageUrl: action.payload
+		}
+
+	case constants.HIDE_PREVIEW_IMAGE_MODAL: 
+		return {
+			...state,
+			showPreviewImage: false,
+			previewImageUrl: null
 		}
 
 	default:
