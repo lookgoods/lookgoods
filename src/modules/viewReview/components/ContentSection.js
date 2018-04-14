@@ -78,7 +78,7 @@ const ProductDetail = ({ name, value }) => (
 		{value && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>{name}</Text>
-				<Text style={{ color: colors.gray }}>{value}</Text>
+				<Text style={{ fontSize: 15, color: colors.gray6 }}>{value}</Text>
 			</View>
 		)}
 	</View>
@@ -133,9 +133,9 @@ export class ContentSection extends Component {
 			rating,
 			title,
 			content_list,
-			price
+			price,
+			tag
 		} = this.props.review
-
 		return (
 			<View>
 				<CoverPhoto image_url={picture_cover_url} imageSize={this.state.imageSize} />
@@ -150,7 +150,7 @@ export class ContentSection extends Component {
 					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={product.tag} />
+				<TagList tags={tag} />
 			</View>
 		)
 	}
@@ -183,14 +183,14 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginTop: 5,
 		marginLeft: 5,
-		color: colors.gray
+		color: colors.black2
 	},
 	titleText: {
 		marginLeft: 20,
 		marginTop: 20,
-		fontSize: 15,
+		fontSize: 18,
 		fontWeight: 'bold',
-		color: colors.gray
+		color: colors.black2
 	},
 	contentList: {
 		marginTop: 5
@@ -210,7 +210,8 @@ const styles = StyleSheet.create({
 		paddingLeft: 30,
 		paddingRight: 30,
 		lineHeight: 25,
-		color: colors.gray
+		fontSize: 15,
+		color: colors.gray6
 	},
 	productDetail: {
 		flexDirection: 'row',
@@ -220,8 +221,9 @@ const styles = StyleSheet.create({
 	productDetailName: {
 		marginRight: 40,
 		marginLeft: 30,
+		fontSize: 15,
 		fontWeight: 'bold',
-		color: colors.black
+		color: colors.black2
 	},
 	tagWrapper: {
 		marginBottom: 5

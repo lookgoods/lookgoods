@@ -541,7 +541,7 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		flex: 1,
-		color: colors.gray,
+		color: colors.gray6,
 		fontSize: 15,
 		height: 35,
 		padding: 0
