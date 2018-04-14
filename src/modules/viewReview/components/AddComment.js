@@ -10,6 +10,7 @@ import React, { Component } from 'react'
 import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
+import IconIonicons from 'react-native-vector-icons/Ionicons'
 import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -71,6 +72,9 @@ class AddComment extends Component {
 							<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 								<CoverImage uri={picture_url} size={80} />
 							</View>
+							<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
+								<Text style={{ fontSize: 12, color: colors.gray6 }}>Tap to rate</Text>
+							</View>
 							<View
 								style={{
 									flexDirection: 'row',
@@ -79,9 +83,6 @@ class AddComment extends Component {
 									marginTop: 10
 								}}
 							>
-								<Text style={{ position: 'absolute', left: 20, fontSize: 12 }}>
-							Tap to rate
-								</Text>
 								<View style={{ flexDirection: 'row' }}>
 									{this.state.stars.map((item, index) => (
 										<TouchableOpacity
@@ -99,7 +100,7 @@ class AddComment extends Component {
 								</View>
 							</View>
 							{this.state.rating !== 0 && (
-								<View style={{ flexDirection: 'row', marginTop: 10 }}>
+								<View style={{ flexDirection: 'row', marginTop: 10}}>
 									<View style={styles.bodyTextInput}>
 										<TextInput
 											style={styles.textInput}
@@ -118,7 +119,7 @@ class AddComment extends Component {
 										/>
 									</View>
 									<TouchableOpacity style={styles.buttonSend} onPress={() => this.addComment()}>
-										<Text style={styles.fontSend}>Send</Text>
+										<IconIonicons name='md-send' size={30}/>
 									</TouchableOpacity>
 								</View>
 							)}
@@ -136,21 +137,16 @@ const styles = StyleSheet.create({
 		marginRight: 5
 	},
 	textInput: {
+		flex: 1,
+		color: colors.gray6,
 		fontSize: 15,
-		color: colors.black,
-		minHeight: 15,
-		paddingTop: 0,
-		paddingBottom: 0
-	},
-	fontSend: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		color: colors.orange
+		minHeight: 35,
+		padding: 0
 	},
 	buttonSend: {
 		alignItems: 'flex-end',
 		flexDirection: 'row',
-		marginBottom: 10,
+		marginBottom: 3,
 		right: 8,
 		borderRadius: 3
 	},
@@ -159,9 +155,12 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		marginLeft: 15,
 		marginRight: 15,
-		padding: 10,
 		borderColor: '#dfdfdf',
-		borderWidth: 1
+		borderWidth: 1,
+		borderRadius: 3,
+		justifyContent: 'center',
+		backgroundColor: '#FFF',
+		paddingHorizontal: 15
 	}
 })
 

@@ -85,7 +85,7 @@ const ProductDetail = ({ name, value }) => (
 		{value && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>{name}</Text>
-				<Text>{value}</Text>
+				<Text style={{ fontSize: 15, color: colors.gray6 }}>{value}</Text>
 			</View>
 		)}
 	</View>
@@ -140,9 +140,9 @@ export class ContentSection extends Component {
 			rating,
 			title,
 			content_list,
-			price
+			price,
+			tag
 		} = this.props.review
-
 		return (
 			<View>
 				<TouchableOpacity 
@@ -171,7 +171,7 @@ export class ContentSection extends Component {
 					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={product.tag} />
+				<TagList tags={tag} />
 			</View>
 		)
 	}
@@ -209,7 +209,9 @@ const styles = StyleSheet.create({
 	titleText: {
 		marginLeft: 20,
 		marginTop: 20,
-		fontWeight: 'bold'
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: colors.gray
 	},
 	contentList: {
 		marginTop: 5
@@ -228,7 +230,9 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		paddingLeft: 30,
 		paddingRight: 30,
-		lineHeight: 25
+		lineHeight: 25,
+		fontSize: 15,
+		color: colors.gray6
 	},
 	productDetail: {
 		flexDirection: 'row',
@@ -238,7 +242,9 @@ const styles = StyleSheet.create({
 	productDetailName: {
 		marginRight: 40,
 		marginLeft: 30,
-		fontWeight: 'bold'
+		fontSize: 15,
+		fontWeight: 'bold',
+		color: colors.gray
 	},
 	tagWrapper: {
 		marginBottom: 5

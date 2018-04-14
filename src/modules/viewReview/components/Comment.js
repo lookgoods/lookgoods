@@ -68,11 +68,11 @@ class Comment extends Component {
 							<View style={styles.starBar}>
 								<StarBar rating={this.state.rating} size={15} type={'view'}/>
 							</View>
-							<Text>{this.state.description}</Text>
+							<Text style={styles.textLabel}>{this.state.description}</Text>
 						</View> :
 						<View>
 							<View style={styles.starBar}>
-								<StarBar rating={this.state.rating} handleChangeRating={(rating) => this.handleChangeRating(rating)} size={15} type={'edit'}/>
+								<StarBar rating={this.state.rating} handleChangeRating={(rating) => this.handleChangeRating(rating)} size={25} type={'edit'}/>
 							</View>
 							<View style={{ flex: 1, flexDirection: 'row'}}>
 								<View style={styles.bodyTextInput}>
@@ -128,10 +128,14 @@ const styles = StyleSheet.create({
 		marginTop: 2,
 		marginBottom: 2
 	},
+	textLabel: {
+		color: colors.gray6,
+		fontSize: 15
+	},
 	textInput: {
 		fontSize: 15,
-		color: colors.black,
-		minHeight: 10,
+		color: colors.gray6,
+		minHeight: 20,
 		paddingTop: 0,
 		paddingBottom: 0
 	},
