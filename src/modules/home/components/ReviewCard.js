@@ -7,7 +7,6 @@ import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ReviewActions from 'src/redux/actions/review'
 import UserActions from 'src/redux/actions/user'
-import ImageActions from 'src/redux/actions/image'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
@@ -62,7 +61,7 @@ function Header({ user, time, isSaved, setUser, clickBookmark, showBookmark }) {
 	)
 }
 
-const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewReview, hidePreviewReview }) => {
+const ProductPicture = ({ image_url, review, setReview, imageSize }) => {
 	return (
 		<View style={{ backgroundColor: colors.lightGray2 }}>
 			<TouchableOpacity
@@ -70,9 +69,6 @@ const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewRe
 					setReview(review)
 					Actions.viewReviewPage()
 				}}
-				delayLongPress={200} 
-				onLongPress={() => showPreviewReview(review)}
-				onPressOut={() => hidePreviewReview()}
 			>
 				<Image
 					style={styles.productImage}
@@ -84,7 +80,7 @@ const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewRe
 	)
 }
 
-function Body({ product_url, title, review, setReview, imageSize, showPreviewReview, hidePreviewReview }) {
+function Body({ product_url, title, review, setReview, imageSize }) {
 	return (
 		<View>
 			<ProductPicture
@@ -92,8 +88,6 @@ function Body({ product_url, title, review, setReview, imageSize, showPreviewRev
 				review={review}
 				setReview={setReview}
 				imageSize={imageSize}
-				showPreviewReview={showPreviewReview}
-				hidePreviewReview={hidePreviewReview}
 			/>
 			<Text style={styles.titleText}>{title}</Text>
 		</View>
@@ -255,8 +249,6 @@ export class ReviewCard extends Component {
 					review={this.props.review}
 					setReview={this.props.setCurrentReview}
 					imageSize={this.state.imageSize}
-					showPreviewReview={this.props.showPreviewReview}
-					hidePreviewReview={this.props.hidePreviewReview}
 				/>
 				<Footer
 					rating={rating}
@@ -373,12 +365,6 @@ const mapDispatchToProps = dispatch => ({
 	},
 	unlikeReview: review_id => {
 		dispatch(ReviewActions.unlikeReview(review_id))
-	},
-	showPreviewReview: review => {
-		dispatch(ImageActions.showPreviewReviewModal(review))
-	},
-	hidePreviewReview: () => {
-		dispatch(ImageActions.hidePreviewReviewModal())
 	}
 })
 

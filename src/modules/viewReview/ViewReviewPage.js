@@ -66,9 +66,6 @@ const styles = StyleSheet.create({
 		paddingTop: Platform.OS === 'ios' ? 25 : 0
 	},
 	header: {
-		top: 0,
-		left: 0,
-		right: 0,
 		backgroundColor: colors.transparent,
 		overflow: 'hidden',
 		zIndex: 1

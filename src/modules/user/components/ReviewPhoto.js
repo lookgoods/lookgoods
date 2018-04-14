@@ -6,6 +6,7 @@ import { PICTURE_GRID_SIZE } from 'src/constants'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
+import ImageActions from 'src/redux/actions/image'
 
 export class ReviewPhoto extends Component {
 	constructor(props) {
@@ -33,6 +34,9 @@ export class ReviewPhoto extends Component {
 							this.props.setCurrentReview(this.props.review)
 							Actions.viewReviewPage()
 						}}
+						delayLongPress={200} 
+						onLongPress={() => this.props.showPreviewReview(this.props.review)}
+						onPressOut={() => this.props.hidePreviewReview()}
 					>
 						<Image
 							source={{ uri: this.props.review.picture_thumbnail_url }}
@@ -71,6 +75,12 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => ({
 	setCurrentReview: review => {
 		dispatch(ReviewActions.setCurrentReview(review))
+	},
+	showPreviewReview: review => {
+		dispatch(ImageActions.showPreviewReviewModal(review))
+	},
+	hidePreviewReview: () => {
+		dispatch(ImageActions.hidePreviewReviewModal())
 	}
 })
 

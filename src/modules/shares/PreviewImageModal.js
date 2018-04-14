@@ -33,7 +33,7 @@ class PreviewImageModal extends Component {
 
 const mapStateToProps = state => ({
 	showPreviewImage: state.imageReducer.showPreviewImage,
-	previewImageUrl: state.imageReducer.previewItem
+	previewImageUrl: state.imageReducer.previewImage
 })
 
 const styles = StyleSheet.create({

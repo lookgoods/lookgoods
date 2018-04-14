@@ -7,7 +7,8 @@ const initialState = {
 	error: null,
 	showPreviewReview: false,
 	showPreviewImage: false,
-	previewItem: null
+	previewImage: null,
+	previewReview: null
 }
 
 export default (state = initialState, action) => {
@@ -40,28 +41,28 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			showPreviewReview: true,
-			previewItem: action.payload
+			previewReview: action.payload
 		}
 
 	case constants.HIDE_PREVIEW_REVIEW_MODAL: 
 		return {
 			...state,
 			showPreviewReview: false,
-			previewItem: null
+			previewReview: null
 		}
 
 	case constants.SHOW_PREVIEW_IMAGE_MODAL: 
 		return {
 			...state,
 			showPreviewImage: true,
-			previewItem: action.payload
+			previewImage: action.payload
 		}
 
 	case constants.HIDE_PREVIEW_IMAGE_MODAL: 
 		return {
 			...state,
 			showPreviewImage: false,
-			previewItem: null
+			previewImage: null
 		}
 
 	default:

@@ -8,6 +8,7 @@ import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { APP_FULL_WIDTH } from 'src/constants'
+import ImageActions from 'src/redux/actions/image'
 
 function CoverPhoto ({ image_url, imageSize }) {
 	if (image_url) {
@@ -49,26 +50,32 @@ function ReviewerBar({ reviewer, rating, setUser }) {
 	)
 }
 
-function getContent(content, index) {
+function getContent(content, index, showPreviewImage, hidePreviewImage) {
 	if (content.type === 'picture')
 		return (
-			<View key={index} style={styles.contentImageWrapper}>
+			<TouchableOpacity 
+				key={index} 
+				style={styles.contentImageWrapper}
+				delayLongPress={200} 
+				onLongPress={() => showPreviewImage(content.value)}
+				onPressOut={() => hidePreviewImage()}
+			>
 				<Image
 					source={{ uri: content.value }}
 					resizeMode="contain"
 					style={styles.contentImage}
 				/>
-			</View>
+			</TouchableOpacity>
 		)
 	else if (content.type === 'text')
 		return <Text key={index} style={styles.contentText}>{content.value}</Text>
 	else return <View key={index}/>
 }
 
-function Content({ content_list }) {
+function Content({ content_list, showPreviewImage, hidePreviewImage }) {
 	return (
 		<View style={styles.contentList}>
-			{content_list.map((content, index) => getContent(content, index))}
+			{content_list.map((content, index) => getContent(content, index, showPreviewImage, hidePreviewImage))}
 		</View>
 	)
 }
@@ -138,14 +145,28 @@ export class ContentSection extends Component {
 
 		return (
 			<View>
-				<CoverPhoto image_url={picture_cover_url} imageSize={this.state.imageSize} />
+				<TouchableOpacity 
+					style={{ backgroundColor: colors.lightGray2 }}
+					delayLongPress={200} 
+					onLongPress={() => this.props.showPreviewImage(picture_cover_url)}
+					onPressOut={() => this.props.hidePreviewImage()}
+				>
+					<CoverPhoto
+						image_url={picture_cover_url} 
+						imageSize={this.state.imageSize} 
+					/>
+				</TouchableOpacity>
 				<ReviewerBar
 					reviewer={user}
 					rating={rating}
 					setUser={this.props.setSelectedUser}
 				/>
 				<Text style={styles.titleText}>{title}</Text>
-				<Content content_list={content_list} />
+				<Content 
+					content_list={content_list} 
+					showPreviewImage={this.props.showPreviewImage}
+					hidePreviewImage={this.props.hidePreviewImage}
+				/>
 				<View style={{ flexDirection: 'row' }}>
 					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
@@ -241,6 +262,12 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => ({
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
+	},
+	showPreviewImage: image_url => {
+		dispatch(ImageActions.showPreviewImageModal(image_url))
+	},
+	hidePreviewImage: () => {
+		dispatch(ImageActions.hidePreviewImageModal())
 	}
 })
 
