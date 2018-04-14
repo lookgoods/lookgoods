@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			showPreviewImage: false,
-			previewImage: null
+			previewImage: ''
 		}
 
 	default:

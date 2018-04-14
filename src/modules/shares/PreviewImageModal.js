@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	imageStyle: {
-		width: APP_FULL_WIDTH,
+		width: '100%',
 		aspectRatio: 1
 	}
 })

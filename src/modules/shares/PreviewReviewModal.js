@@ -8,7 +8,6 @@ import {
 import Modal from 'react-native-modal'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import { APP_FULL_WIDTH } from 'src/constants'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import icons from 'src/constants/icons'
 
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	imageStyle: {
-		width: APP_FULL_WIDTH,
+		width: '100%',
 		aspectRatio: 1
 	},
 	productName: {
