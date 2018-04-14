@@ -72,7 +72,7 @@ class Comment extends Component {
 						</View> :
 						<View>
 							<View style={styles.starBar}>
-								<StarBar rating={this.state.rating} handleChangeRating={(rating) => this.handleChangeRating(rating)} size={15} type={'edit'}/>
+								<StarBar rating={this.state.rating} handleChangeRating={(rating) => this.handleChangeRating(rating)} size={25} type={'edit'}/>
 							</View>
 							<View style={{ flex: 1, flexDirection: 'row'}}>
 								<View style={styles.bodyTextInput}>
