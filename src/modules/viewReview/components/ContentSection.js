@@ -145,17 +145,12 @@ export class ContentSection extends Component {
 		} = this.props.review
 		return (
 			<View>
-				<TouchableOpacity 
-					style={{ backgroundColor: colors.lightGray2 }}
-					delayLongPress={200} 
-					onLongPress={() => this.props.showPreviewImage(picture_cover_url)}
-					onPressOut={() => this.props.hidePreviewImage()}
-				>
+				<View style={{ backgroundColor: colors.lightGray2 }}>
 					<CoverPhoto
 						image_url={picture_cover_url} 
 						imageSize={this.state.imageSize} 
 					/>
-				</TouchableOpacity>
+				</View>
 				<ReviewerBar
 					reviewer={user}
 					rating={rating}

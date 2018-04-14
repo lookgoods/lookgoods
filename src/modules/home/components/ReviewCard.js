@@ -286,7 +286,8 @@ const styles = StyleSheet.create({
 		fontSize: 12
 	},
 	timeText: {
-		fontSize: 12
+		fontSize: 12,
+		color: colors.gray2
 	},
 	bookmark: {
 		flex: 1,
