@@ -27,6 +27,13 @@ const ImageActions = {
 	}),
 	hidePreviewImageModal: () => ({
 		type: constants.HIDE_PREVIEW_IMAGE_MODAL
+	}),
+	showPreviewReviewModal: (review) => ({
+		type: constants.SHOW_PREVIEW_REVIEW_MODAL,
+		payload: review
+	}),
+	hidePreviewReviewModal: () => ({
+		type: constants.HIDE_PREVIEW_REVIEW_MODAL
 	})
 }
 

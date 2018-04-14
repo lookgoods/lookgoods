@@ -11,7 +11,7 @@ import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
-import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
+import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -79,7 +79,7 @@ export class HomePage extends Component {
 						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
 					</View>
 				</ScrollView>
-				<PreviewImageModal />
+				<PreviewReviewModal />
 			</View>
 		)
 	}

@@ -5,8 +5,9 @@ const initialState = {
 	thumbnail_url: null,
 	loading: false,
 	error: null,
+	showPreviewReview: false,
 	showPreviewImage: false,
-	previewImageUrl: null
+	previewItem: null
 }
 
 export default (state = initialState, action) => {
@@ -35,18 +36,32 @@ export default (state = initialState, action) => {
 			loading: false
 		}
 
+	case constants.SHOW_PREVIEW_REVIEW_MODAL: 
+		return {
+			...state,
+			showPreviewReview: true,
+			previewItem: action.payload
+		}
+
+	case constants.HIDE_PREVIEW_REVIEW_MODAL: 
+		return {
+			...state,
+			showPreviewReview: false,
+			previewItem: null
+		}
+
 	case constants.SHOW_PREVIEW_IMAGE_MODAL: 
 		return {
 			...state,
 			showPreviewImage: true,
-			previewImageUrl: action.payload
+			previewItem: action.payload
 		}
 
 	case constants.HIDE_PREVIEW_IMAGE_MODAL: 
 		return {
 			...state,
 			showPreviewImage: false,
-			previewImageUrl: null
+			previewItem: null
 		}
 
 	default:

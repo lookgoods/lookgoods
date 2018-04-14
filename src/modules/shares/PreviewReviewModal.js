@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {
 	StyleSheet,
+	Text,
 	View,
 	Image
 } from 'react-native'
@@ -9,11 +10,12 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { APP_FULL_WIDTH } from 'src/constants'
 
-class PreviewImageModal extends Component {
+class PreviewReviewModal extends Component {
 	render () {
+		if (!this.props.review) return <View/>
 		return (
 			<Modal 
-				isVisible={this.props.showPreviewImage}
+				isVisible={this.props.showPreviewReview}
 				backdropColor={colors.gray2}
 				backdropOpacity={0.5}
 				backdropTransitionInTiming={100}
@@ -22,7 +24,7 @@ class PreviewImageModal extends Component {
 				<View style={styles.container}>
 					<Image
 						style={styles.imageStyle}
-						source={{ uri: this.props.previewImageUrl }}
+						source={{ uri: this.props.review.picture_cover_url }}
 						resizeMode='contain'
 					/>
 				</View>
@@ -32,8 +34,8 @@ class PreviewImageModal extends Component {
 }
 
 const mapStateToProps = state => ({
-	showPreviewImage: state.imageReducer.showPreviewImage,
-	previewImageUrl: state.imageReducer.previewItem
+	showPreviewReview: state.imageReducer.showPreviewReview,
+	review: state.imageReducer.previewItem
 })
 
 const styles = StyleSheet.create({
@@ -48,4 +50,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default connect(mapStateToProps, null)(PreviewImageModal)
+export default connect(mapStateToProps, null)(PreviewReviewModal)

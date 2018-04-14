@@ -62,7 +62,7 @@ function Header({ user, time, isSaved, setUser, clickBookmark, showBookmark }) {
 	)
 }
 
-const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewImage, hidePreviewImage }) => {
+const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewReview, hidePreviewReview }) => {
 	return (
 		<View style={{ backgroundColor: colors.lightGray2 }}>
 			<TouchableOpacity
@@ -70,9 +70,9 @@ const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewIm
 					setReview(review)
 					Actions.viewReviewPage()
 				}}
-				delayLongPress={500} 
-				onLongPress={() => showPreviewImage(image_url)}
-				onPressOut={() => hidePreviewImage()}
+				delayLongPress={200} 
+				onLongPress={() => showPreviewReview(review)}
+				onPressOut={() => hidePreviewReview()}
 			>
 				<Image
 					style={styles.productImage}
@@ -84,7 +84,7 @@ const ProductPicture = ({ image_url, review, setReview, imageSize, showPreviewIm
 	)
 }
 
-function Body({ product_url, title, review, setReview, imageSize, showPreviewImage, hidePreviewImage }) {
+function Body({ product_url, title, review, setReview, imageSize, showPreviewReview, hidePreviewReview }) {
 	return (
 		<View>
 			<ProductPicture
@@ -92,8 +92,8 @@ function Body({ product_url, title, review, setReview, imageSize, showPreviewIma
 				review={review}
 				setReview={setReview}
 				imageSize={imageSize}
-				showPreviewImage={showPreviewImage}
-				hidePreviewImage={hidePreviewImage}
+				showPreviewReview={showPreviewReview}
+				hidePreviewReview={hidePreviewReview}
 			/>
 			<Text style={styles.titleText}>{title}</Text>
 		</View>
@@ -255,8 +255,8 @@ export class ReviewCard extends Component {
 					review={this.props.review}
 					setReview={this.props.setCurrentReview}
 					imageSize={this.state.imageSize}
-					showPreviewImage={this.props.showPreviewImageModal}
-					hidePreviewImage={this.props.hidePreviewImageModal}
+					showPreviewReview={this.props.showPreviewReview}
+					hidePreviewReview={this.props.hidePreviewReview}
 				/>
 				<Footer
 					rating={rating}
@@ -374,11 +374,11 @@ const mapDispatchToProps = dispatch => ({
 	unlikeReview: review_id => {
 		dispatch(ReviewActions.unlikeReview(review_id))
 	},
-	showPreviewImageModal: image_url => {
-		dispatch(ImageActions.showPreviewImageModal(image_url))
+	showPreviewReview: review => {
+		dispatch(ImageActions.showPreviewReviewModal(review))
 	},
-	hidePreviewImageModal: () => {
-		dispatch(ImageActions.hidePreviewImageModal())
+	hidePreviewReview: () => {
+		dispatch(ImageActions.hidePreviewReviewModal())
 	}
 })
 
