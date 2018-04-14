@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {
+	Platform,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -10,6 +11,7 @@ import {
 import { colors } from 'src/constants/mixins'
 import UserActions from 'src/redux/actions/user'
 import { connect } from 'react-redux'
+import NavBar from 'src/modules/shares/NavBar'
 
 export class ChangeStatusPage extends Component {
 	constructor (props) {
@@ -32,6 +34,11 @@ export class ChangeStatusPage extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				<View style={styles.header}>
+					<View style={styles.platformHeader}>
+						<NavBar titleName='Change Status' />
+					</View>
+				</View>
 				<View style={styles.toCenter}>
 					<Text style={styles.statusText}>Change your status</Text>
 				</View>
@@ -61,6 +68,14 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: colors.white
+	},
+	platformHeader: {
+		height: Platform.OS === 'ios' ? 75 : 60,
+		paddingTop: Platform.OS === 'ios' ? 25 : 0
+	},
+	header: {
+		backgroundColor: colors.white,
+		overflow: 'hidden'
 	},
 	statusText: {
 		fontSize: 16,

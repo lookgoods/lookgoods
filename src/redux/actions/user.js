@@ -167,7 +167,7 @@ const UserActions = {
 		Actions.viewUserListPage({ title: 'Following', user_id: user_id })
 	},
 	viewReviewer: () => async dispatch => {
-		Actions.viewUserListPage({ title: 'Reviewers' })
+		Actions.viewUserListPage({ title: 'People' })
 	}
 }
 
