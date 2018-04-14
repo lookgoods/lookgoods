@@ -183,14 +183,14 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginTop: 5,
 		marginLeft: 5,
-		color: colors.black2
+		color: colors.gray
 	},
 	titleText: {
 		marginLeft: 20,
 		marginTop: 20,
 		fontSize: 18,
 		fontWeight: 'bold',
-		color: colors.black2
+		color: colors.gray
 	},
 	contentList: {
 		marginTop: 5
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
 		marginLeft: 30,
 		fontSize: 15,
 		fontWeight: 'bold',
-		color: colors.black2
+		color: colors.gray
 	},
 	tagWrapper: {
 		marginBottom: 5
