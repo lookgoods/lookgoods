@@ -78,7 +78,7 @@ const ProductDetail = ({ name, value }) => (
 		{value && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>{name}</Text>
-				<Text>{value}</Text>
+				<Text style={{ color: colors.gray }}>{value}</Text>
 			</View>
 		)}
 	</View>
@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
 	titleText: {
 		marginLeft: 20,
 		marginTop: 20,
-		fontWeight: 'bold'
+		fontSize: 15,
+		fontWeight: 'bold',
+		color: colors.gray
 	},
 	contentList: {
 		marginTop: 5
@@ -207,7 +209,8 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		paddingLeft: 30,
 		paddingRight: 30,
-		lineHeight: 25
+		lineHeight: 25,
+		color: colors.gray
 	},
 	productDetail: {
 		flexDirection: 'row',
@@ -217,7 +220,8 @@ const styles = StyleSheet.create({
 	productDetailName: {
 		marginRight: 40,
 		marginLeft: 30,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		color: colors.black
 	},
 	tagWrapper: {
 		marginBottom: 5
