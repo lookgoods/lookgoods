@@ -103,7 +103,7 @@ const TagList = ({ tags, viewTagReviews }) => (
 		{tags && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>Tags</Text>
-				<View>
+				<View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
 					{tags.map((tag, index) => (
 						<View key={index} style={styles.tagWrapper}>
 							<TagButton title={tag} viewTagReviews={viewTagReviews}/>
@@ -236,14 +236,15 @@ const styles = StyleSheet.create({
 		marginTop: 10
 	},
 	productDetailName: {
-		marginRight: 40,
+		marginRight: 20,
 		marginLeft: 30,
 		fontSize: 15,
 		fontWeight: 'bold',
 		color: colors.gray
 	},
 	tagWrapper: {
-		marginBottom: 5
+		marginBottom: 5,
+		marginLeft: 5
 	},
 	fontTags: {
 		fontSize: 15,
