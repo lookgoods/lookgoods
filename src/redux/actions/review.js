@@ -115,6 +115,32 @@ const ReviewActions = {
 			dispatch(actions.unlikeReviewSuccess(response))
 			dispatch(ReviewActions.getFollowingReviews())
 		}
+	},
+	searchByTag: (tag) => async dispatch => {
+		dispatch(actions.searchByTagRequest())
+		try {
+			const response = await fetch(`${AppURL}/search/reviews/tag`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ key: tag })
+			})
+			const data = await response.json()
+			let transformData = []
+			if	(data.length !== 0) {
+				data.map((item) => {
+					transformData.push(item._id)
+				})
+			}
+			dispatch(actions.searchByTagSuccess(transformData, tag))
+		} catch (err) {
+			dispatch(actions.searchByTagError(err))
+		}
+	},
+	viewTagReviews: (tag) => async dispatch => {
+		await dispatch(ReviewActions.searchByTag(tag))
+		Actions.viewTagReviewsPage()
 	}
 }
 
@@ -124,55 +150,55 @@ const actions = {
 	}),
 	addReviewSuccess: response => ({
 		type: constants.ADD_REVIEW_SUCCESS,
-		payload: { response }
+		payload: response
 	}),
 	addReviewError: error => ({
 		type: constants.ADD_REVIEW_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	getReviewRequest: () => ({
 		type: constants.GET_REVIEW_REQUEST
 	}),
 	getReviewSuccess: reviews => ({
 		type: constants.GET_REVIEW_SUCCESS,
-		payload: { reviews }
+		payload: reviews
 	}),
 	getReviewError: error => ({
 		type: constants.GET_REVIEW_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	getFollowingReviewRequest: () => ({
 		type: constants.GET_FOLLOWING_REVIEW_REQUEST
 	}),
 	getFollowingReviewSuccess: reviews => ({
 		type: constants.GET_FOLLOWING_REVIEW_SUCCESS,
-		payload: { reviews }
+		payload: reviews
 	}),
 	getFollowingReviewError: error => ({
 		type: constants.GET_FOLLOWING_REVIEW_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	editReviewRequest: () => ({
 		type: constants.EDIT_REVIEW_REQUEST
 	}),
 	editReviewSuccess: reviews => ({
 		type: constants.EDIT_REVIEW_SUCCESS,
-		payload: { reviews }
+		payload: reviews
 	}),
 	editReviewError: error => ({
 		type: constants.EDIT_REVIEW_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	deleteReviewRequest: () => ({
 		type: constants.DELETE_REVIEW_REQUEST
 	}),
 	deleteReviewSuccess: reviews => ({
 		type: constants.DELETE_REVIEW_SUCCESS,
-		payload: { reviews }
+		payload: reviews
 	}),
 	deleteReviewError: error => ({
 		type: constants.DELETE_REVIEW_FAILURE,
-		payload: { error }
+		payload: error
 	}),
 	saveReviewRequest: () => ({
 		type: constants.SAVE_REVIEW_REQUEST
@@ -216,6 +242,17 @@ const actions = {
 	}),
 	unlikeReviewError: error => ({
 		type: constants.UNLIKE_REVIEW_FAILURE,
+		payload: error
+	}),
+	searchByTagRequest: () => ({
+		type: constants.SEARCH_BY_TAG_REQUEST
+	}),
+	searchByTagSuccess: (reviews, tag) => ({
+		type: constants.SEARCH_BY_TAG_SUCCESS,
+		payload: { reviews, tag }
+	}),
+	searchByTagError: error => ({
+		type: constants.SEARCH_BY_TAG_FAILURE,
 		payload: error
 	})
 }

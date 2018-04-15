@@ -4,11 +4,12 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
-import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { APP_FULL_WIDTH } from 'src/constants'
 import ImageActions from 'src/redux/actions/image'
+import UserActions from 'src/redux/actions/user'
+import ReviewActions from 'src/redux/actions/review'
 
 function CoverPhoto ({ image_url, imageSize }) {
 	if (image_url) {
@@ -91,13 +92,13 @@ const ProductDetail = ({ name, value }) => (
 	</View>
 )
 
-const TagButton = ({ title }) => (
-	<TouchableOpacity style={styles.buttonTag}>
+const TagButton = ({ title, viewTagReviews }) => (
+	<TouchableOpacity style={styles.buttonTag} onPress={() => viewTagReviews(title)}>
 		<Text style={styles.fontTags}>{title}</Text>
 	</TouchableOpacity>
 )
 
-const TagList = ({ tags }) => (
+const TagList = ({ tags, viewTagReviews }) => (
 	<View>
 		{tags && (
 			<View style={styles.productDetail}>
@@ -105,7 +106,7 @@ const TagList = ({ tags }) => (
 				<View>
 					{tags.map((tag, index) => (
 						<View key={index} style={styles.tagWrapper}>
-							<TagButton title={tag} />
+							<TagButton title={tag} viewTagReviews={viewTagReviews}/>
 						</View>
 					))}
 				</View>
@@ -166,7 +167,7 @@ export class ContentSection extends Component {
 					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={tag} />
+				<TagList tags={tag} viewTagReviews={this.props.viewTagReviews}/>
 			</View>
 		)
 	}
@@ -269,6 +270,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	hidePreviewImage: () => {
 		dispatch(ImageActions.hidePreviewImageModal())
+	},
+	viewTagReviews: (tag) => {
+		dispatch(ReviewActions.viewTagReviews(tag))
 	}
 })
 
