@@ -5,7 +5,9 @@ const initialState = {
 	loading: false,
 	error: null,
 	reviews: null,
-	followingReviews: null
+	followingReviews: null,
+	tagReviews: null,
+	tagName: ''
 }
 
 export default (state = initialState, action) => {
@@ -13,7 +15,7 @@ export default (state = initialState, action) => {
 	case constants.SET_CURRENT_REVIEW:
 		return {
 			...state,
-			currentReview: { ...action.payload }
+			currentReview: action.payload
 		}
 
 	case constants.ADD_REVIEW_REQUEST:
@@ -34,7 +36,7 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			loading: false,
-			error: action.payload.error
+			error: action.payload
 		}
 
 	case constants.GET_REVIEW_REQUEST:
@@ -49,14 +51,14 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: null,
-			reviews: action.payload.reviews
+			reviews: action.payload
 		}
 
 	case constants.GET_REVIEW_FAILURE:
 		return {
 			...state,
 			loading: false,
-			error: action.payload.error
+			error: action.payload
 		}
 	
 	case constants.GET_FOLLOWING_REVIEW_REQUEST:
@@ -71,10 +73,33 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: null,
-			followingReviews: action.payload.reviews
+			followingReviews: action.payload
 		}
 
 	case constants.GET_FOLLOWING_REVIEW_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload.error
+		}
+
+	case constants.SEARCH_BY_TAG_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+	case constants.SEARCH_BY_TAG_SUCCESS:
+		return {
+			...state,
+			loading: false,
+			error: null,
+			tagReviews: action.payload.reviews,
+			tagName: action.payload.tag
+		}
+
+	case constants.SEARCH_BY_TAG_FAILURE:
 		return {
 			...state,
 			loading: false,

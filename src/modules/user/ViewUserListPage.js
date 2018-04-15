@@ -3,7 +3,6 @@ import {
 	ScrollView,
 	StyleSheet,
 	View,
-	Text,
 	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
