@@ -22,6 +22,7 @@ import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
+import { APP_FULL_WIDTH } from 'src/constants'
 
 export class AddReviewPage extends Component {
 	constructor(props) {
@@ -53,7 +54,7 @@ export class AddReviewPage extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state.coverImage.url !== '') {
+		if ((this.state.coverImage.url !== '') && (this.state.coverImage.url !== prevState.coverImage.url)) {
 			this.getImageSize()
 		}
 	}
@@ -114,14 +115,6 @@ export class AddReviewPage extends Component {
 				this.setState({ coverImage })
 			}
 		})
-		// ImageCropPicker.openPicker({
-		// 	width: 370,
-		// 	height: 200,
-		// 	cropping: true
-		// }).then(image => {
-		// 	console.log(image)
-		// 	this.setState({ coverImage: image.sourceURL })
-		// })
 	}
 
 	attachPhotos() {
@@ -184,7 +177,6 @@ export class AddReviewPage extends Component {
 
 	async addTagsBox() {
 		const tagsArr = this.state.tagsList
-		console.log(tagsArr, 'tagsArr')
 		tagsArr.push({ tags: '' })
 		await this.setState({ tagsList: tagsArr })
 	}
@@ -209,7 +201,7 @@ export class AddReviewPage extends Component {
 		const ratingErr = validate(['rating'], [this.state.rating])
 		const contentMeassageErr = validate(
 			['contentMessage'],
-			[this.state.contentMessage]
+			[this.state.contentList]
 		)
 		await this.setState({
 			titleErr,
@@ -217,12 +209,6 @@ export class AddReviewPage extends Component {
 			ratingErr,
 			contentMeassageErr
 		})
-		console.log(
-			this.state.titleErr,
-			this.state.nameErr,
-			this.state.ratingErr,
-			this.state.contentMessageErr
-		)
 
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			const review = {
@@ -264,7 +250,6 @@ export class AddReviewPage extends Component {
 	}
 
 	render() {
-		console.log(this.state.coverImage, 'cover')
 		return (
 			<View
 				style={styles.container}
@@ -284,7 +269,8 @@ export class AddReviewPage extends Component {
 						style={{
 							alignItems: 'center',
 							justifyContent: 'center',
-							flexDirection: 'row'
+							flexDirection: 'row',
+							backgroundColor: colors.lightGray2
 						}}
 					>
 						{this.state.coverImage.url === '' ? (
@@ -302,14 +288,12 @@ export class AddReviewPage extends Component {
 							</TouchableOpacity>
 						) : (
 							<TouchableOpacity
-								style={{ backgroundColor: colors.lightGray2 }}
 								onPress={() => this.addCoverImage()}
 							>
 								<Image
 									style={{
-										flex: 1,
 										height: 260,
-										zIndex: 1
+										width: APP_FULL_WIDTH
 									}}
 									source={{ uri: this.state.coverImage.url }}
 									resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
@@ -557,7 +541,7 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		flex: 1,
-		color: '#000',
+		color: colors.gray6,
 		fontSize: 15,
 		height: 35,
 		padding: 0

@@ -16,7 +16,7 @@ export default class ReviewsGrid extends Component {
 						if (!review.available) return
 						else return (
 							<View key={index} style={styles.reviewPhoto}>
-								<ReviewPhoto key={index} review={review} />
+								<ReviewPhoto key={index} review={review} page={this.props.page}/>
 							</View>
 						) })
 				)}
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 	},
 	reviewPhoto: {
 		paddingVertical: 2,
-		paddingHorizontal: 2,
+		paddingHorizontal: 1,
 		width: '33.33%',
 		aspectRatio: 1
 	}

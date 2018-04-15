@@ -4,10 +4,12 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
-import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { APP_FULL_WIDTH } from 'src/constants'
+import ImageActions from 'src/redux/actions/image'
+import UserActions from 'src/redux/actions/user'
+import ReviewActions from 'src/redux/actions/review'
 
 function CoverPhoto ({ image_url, imageSize }) {
 	if (image_url) {
@@ -49,26 +51,32 @@ function ReviewerBar({ reviewer, rating, setUser }) {
 	)
 }
 
-function getContent(content, index) {
+function getContent(content, index, showPreviewImage, hidePreviewImage) {
 	if (content.type === 'picture')
 		return (
-			<View key={index} style={styles.contentImageWrapper}>
+			<TouchableOpacity 
+				key={index} 
+				style={styles.contentImageWrapper}
+				delayLongPress={200} 
+				onLongPress={() => showPreviewImage(content.value)}
+				onPressOut={() => hidePreviewImage()}
+			>
 				<Image
 					source={{ uri: content.value }}
 					resizeMode="contain"
 					style={styles.contentImage}
 				/>
-			</View>
+			</TouchableOpacity>
 		)
 	else if (content.type === 'text')
 		return <Text key={index} style={styles.contentText}>{content.value}</Text>
 	else return <View key={index}/>
 }
 
-function Content({ content_list }) {
+function Content({ content_list, showPreviewImage, hidePreviewImage }) {
 	return (
 		<View style={styles.contentList}>
-			{content_list.map((content, index) => getContent(content, index))}
+			{content_list.map((content, index) => getContent(content, index, showPreviewImage, hidePreviewImage))}
 		</View>
 	)
 }
@@ -78,27 +86,27 @@ const ProductDetail = ({ name, value }) => (
 		{value && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>{name}</Text>
-				<Text>{value}</Text>
+				<Text style={{ fontSize: 15, color: colors.gray6 }}>{value}</Text>
 			</View>
 		)}
 	</View>
 )
 
-const TagButton = ({ title }) => (
-	<TouchableOpacity style={styles.buttonTag}>
+const TagButton = ({ title, viewTagReviews }) => (
+	<TouchableOpacity style={styles.buttonTag} onPress={() => viewTagReviews(title)}>
 		<Text style={styles.fontTags}>{title}</Text>
 	</TouchableOpacity>
 )
 
-const TagList = ({ tags }) => (
+const TagList = ({ tags, viewTagReviews }) => (
 	<View>
 		{tags && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>Tags</Text>
-				<View>
+				<View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
 					{tags.map((tag, index) => (
 						<View key={index} style={styles.tagWrapper}>
-							<TagButton title={tag} />
+							<TagButton title={tag} viewTagReviews={viewTagReviews}/>
 						</View>
 					))}
 				</View>
@@ -133,24 +141,33 @@ export class ContentSection extends Component {
 			rating,
 			title,
 			content_list,
-			price
+			price,
+			tag
 		} = this.props.review
-
 		return (
 			<View>
-				<CoverPhoto image_url={picture_cover_url} imageSize={this.state.imageSize} />
+				<View style={{ backgroundColor: colors.lightGray2 }}>
+					<CoverPhoto
+						image_url={picture_cover_url} 
+						imageSize={this.state.imageSize} 
+					/>
+				</View>
 				<ReviewerBar
 					reviewer={user}
 					rating={rating}
 					setUser={this.props.setSelectedUser}
 				/>
 				<Text style={styles.titleText}>{title}</Text>
-				<Content content_list={content_list} />
+				<Content 
+					content_list={content_list} 
+					showPreviewImage={this.props.showPreviewImage}
+					hidePreviewImage={this.props.hidePreviewImage}
+				/>
 				<View style={{ flexDirection: 'row' }}>
 					<ProductDetail name="Price" value={price} />
 					<ProductDetail name="Brand" value={product.brand} />
 				</View>
-				<TagList tags={product.tag} />
+				<TagList tags={tag} viewTagReviews={this.props.viewTagReviews}/>
 			</View>
 		)
 	}
@@ -188,7 +205,9 @@ const styles = StyleSheet.create({
 	titleText: {
 		marginLeft: 20,
 		marginTop: 20,
-		fontWeight: 'bold'
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: colors.gray
 	},
 	contentList: {
 		marginTop: 5
@@ -200,25 +219,32 @@ const styles = StyleSheet.create({
 	contentImageWrapper: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: 10
 	},
 	contentText: {
 		marginBottom: 10,
 		paddingLeft: 30,
 		paddingRight: 30,
-		lineHeight: 25
+		lineHeight: 25,
+		fontSize: 15,
+		color: colors.gray6
 	},
 	productDetail: {
 		flexDirection: 'row',
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: 10
 	},
 	productDetailName: {
-		marginRight: 40,
+		marginRight: 20,
 		marginLeft: 30,
-		fontWeight: 'bold'
+		fontSize: 15,
+		fontWeight: 'bold',
+		color: colors.gray
 	},
 	tagWrapper: {
-		marginBottom: 5
+		marginBottom: 5,
+		marginLeft: 5
 	},
 	fontTags: {
 		fontSize: 15,
@@ -239,6 +265,15 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => ({
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
+	},
+	showPreviewImage: image_url => {
+		dispatch(ImageActions.showPreviewImageModal(image_url))
+	},
+	hidePreviewImage: () => {
+		dispatch(ImageActions.hidePreviewImageModal())
+	},
+	viewTagReviews: (tag) => {
+		dispatch(ReviewActions.viewTagReviews(tag))
 	}
 })
 

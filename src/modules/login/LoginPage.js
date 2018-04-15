@@ -32,7 +32,6 @@ export class LoginPage extends Component {
 						const token = data.accessToken.toString()
 						console.log('token', token)
 						self.props.loginWithFacebook(token)
-						Actions.tabMenu()
 					})
 				}
 			},

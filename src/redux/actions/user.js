@@ -14,8 +14,15 @@ const UserActions = {
 				access_token: token
 			})
 		)
-		if (err) dispatch(actions.loginFacebookError(err))
-		else dispatch(actions.loginFacebookSuccess(response))
+		if (err) {
+			console.log(err, 'login err')
+			dispatch(actions.loginFacebookError(err))
+		}
+		else {
+			console.log(response, 'login success')
+			dispatch(actions.loginFacebookSuccess(response))
+			Actions.tabMenu()
+		}
 	},
 	getCurrentUser: () => async dispatch => {
 		dispatch(actions.getCurrentUserRequest())
@@ -160,7 +167,7 @@ const UserActions = {
 		Actions.viewUserListPage({ title: 'Following', user_id: user_id })
 	},
 	viewReviewer: () => async dispatch => {
-		Actions.viewUserListPage({ title: 'Reviewers' })
+		Actions.viewUserListPage({ title: 'People' })
 	}
 }
 

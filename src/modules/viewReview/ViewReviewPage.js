@@ -26,13 +26,13 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.review, 'review')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarViewReview 
 							review={this.props.review}
+							currentUser={this.props.currentUser}
 							deleteReview={(review_id) => this.props.deleteReview(review_id)}
 						/>
 					</View>
@@ -66,9 +66,6 @@ const styles = StyleSheet.create({
 		paddingTop: Platform.OS === 'ios' ? 25 : 0
 	},
 	header: {
-		top: 0,
-		left: 0,
-		right: 0,
 		backgroundColor: colors.transparent,
 		overflow: 'hidden',
 		zIndex: 1

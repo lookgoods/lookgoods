@@ -11,7 +11,8 @@ import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
-import UserActions from 'src/redux/actions/user'
+import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
+import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -24,7 +25,6 @@ export class HomePage extends Component {
 
 	fetchData() {
 		this.props.getReviews()
-		this.props.getCurrentUser()
 	}
 
 	componentDidMount() {
@@ -56,10 +56,6 @@ export class HomePage extends Component {
 		this.setState({ searchText: text })
 	}
 
-	goToLoginPage() {
-		Actions.loginPage()
-	}
-
 	async cancelSearch() {
 		await this.setState({
 			isSearch: false,
@@ -70,12 +66,8 @@ export class HomePage extends Component {
 
 	render() {
 		if (!this.props.currentUser) {
-			if (this.props.userSuccess) {
-				this.goToLoginPage()
-			}
 			return <View/>
 		}
-		if (!this.props.reviews) return <View/>
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -88,6 +80,8 @@ export class HomePage extends Component {
 						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
 					</View>
 				</ScrollView>
+				<PreviewReviewModal />
+				<PreviewImageModal />
 			</View>
 		)
 	}
@@ -113,17 +107,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	reviews: state.reviewReducer.reviews,
-	currentPage: state.menuReducer.currentPage,
-	userSuccess: state.userReducer.success
+	reviews: state.reviewReducer.followingReviews,
+	currentPage: state.menuReducer.currentPage
 })
 
 const mapDispatchToProps = dispatch => ({
 	getReviews: () => {
 		dispatch(ReviewActions.getFollowingReviews())
-	},
-	getCurrentUser: () => {
-		dispatch(UserActions.getCurrentUser())
 	}
 })
 

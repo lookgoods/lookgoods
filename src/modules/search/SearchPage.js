@@ -66,7 +66,7 @@ export class ViewUserPage extends Component {
 				</View>
 				<View>
 					<ScrollView>
-						<ReviewsGrid product_list={products} />
+						<ReviewsGrid product_list={products} page={'SearchPage'}/>
 					</ScrollView>
 				</View>
 			</View>

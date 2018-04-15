@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Image, Platform, View, TouchableOpacity } from 'react-native'
 import React, { Component } from 'react'
 
 import { colors } from 'src/constants/mixins'
@@ -6,10 +6,23 @@ import { PICTURE_GRID_SIZE } from 'src/constants'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
+import ImageActions from 'src/redux/actions/image'
 
 export class ReviewPhoto extends Component {
 	constructor(props) {
 		super(props)
+	}
+
+	styleImageGrid(page) {
+		if (Platform.OS === 'ios') {
+			if (page === 'GlobalPage' || page === 'SearchPage') {
+				return styles.review_image_grid
+			} else {
+				return styles.review_image_grid_user
+			}
+		} else {
+			return styles.review_image
+		}
 	}
 
 	render() {
@@ -21,10 +34,13 @@ export class ReviewPhoto extends Component {
 							this.props.setCurrentReview(this.props.review)
 							Actions.viewReviewPage()
 						}}
+						delayLongPress={200} 
+						onLongPress={() => this.props.showPreviewReview(this.props.review)}
+						onPressOut={() => this.props.hidePreviewReview()}
 					>
 						<Image
 							source={{ uri: this.props.review.picture_thumbnail_url }}
-							style={styles.review_image}
+							style={this.styleImageGrid(this.props.page)}
 							resizeMode="contain"
 						/>
 					</TouchableOpacity>
@@ -45,12 +61,26 @@ const styles = StyleSheet.create({
 	review_image: {
 		width: PICTURE_GRID_SIZE,
 		height: PICTURE_GRID_SIZE
+	},
+	review_image_grid: {
+		width: PICTURE_GRID_SIZE - 2,
+		height: PICTURE_GRID_SIZE - 2
+	},
+	review_image_grid_user: {
+		width: PICTURE_GRID_SIZE - 10,
+		height: PICTURE_GRID_SIZE - 10
 	}
 })
 
 const mapDispatchToProps = dispatch => ({
 	setCurrentReview: review => {
 		dispatch(ReviewActions.setCurrentReview(review))
+	},
+	showPreviewReview: review => {
+		dispatch(ImageActions.showPreviewReviewModal(review))
+	},
+	hidePreviewReview: () => {
+		dispatch(ImageActions.hidePreviewReviewModal())
 	}
 })
 

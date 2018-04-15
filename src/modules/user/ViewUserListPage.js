@@ -70,7 +70,7 @@ export class ViewUserPage extends Component {
 								<NavBar titleName={this.props.title} />
 							</View>
 						</View>
-						<List containerStyle={{ borderBottomColor: colors.transparent }}>
+						<List containerStyle={{ borderBottomColor: colors.transparent, marginTop: -5 }}>
 							{
 								this.props.users.map((user, index) => (
 									<ListItem

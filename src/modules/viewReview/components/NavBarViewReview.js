@@ -13,7 +13,6 @@ class NavBarViewReview extends Component {
 
 	optionsSelect(index) {
 		if (index === 0) {
-			console.log(index)
 			Actions.editReviewPage({review: this.props.review})
 		} else if (index === 1) {
 			this.props.deleteReview(this.props.review._id)
@@ -35,9 +34,11 @@ class NavBarViewReview extends Component {
 					<View style={{ flex: 1 }}>
 						<Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.gray }}>{ name }</Text>
 					</View>
-					<TouchableOpacity style={{ width: 50, alignItems: 'center', justifyContent: 'flex-end'}} onPress={() => this.showActionSheet()} >
-						<IconIonicons name='md-more' size={35} color={colors.gray}/>
-					</TouchableOpacity>
+					{ this.props.currentUser._id === this.props.review.user._id &&
+						<TouchableOpacity style={{ width: 50, alignItems: 'center', justifyContent: 'flex-end'}} onPress={() => this.showActionSheet()} >
+							<IconIonicons name='md-more' size={35} color={colors.gray}/>
+						</TouchableOpacity>
+					}
 					<ActionSheet
 						ref={o => this.ActionSheet = o}
 						options={['Edit', 'Delete', 'Cancel']}
