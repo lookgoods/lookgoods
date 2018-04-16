@@ -15,7 +15,7 @@ export class ReviewPhoto extends Component {
 
 	styleImageGrid(page) {
 		if (Platform.OS === 'ios') {
-			if (page === 'GlobalPage' || page === 'SearchPage') {
+			if (page === 'GlobalPage') {
 				return styles.review_image_grid
 			} else {
 				return styles.review_image_grid_user

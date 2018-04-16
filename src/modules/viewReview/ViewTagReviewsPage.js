@@ -8,7 +8,7 @@ import React, { Component } from 'react'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 
 export class ViewTagReviewsPage extends Component {
 	constructor(props) {
@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-	tagReviews: state.reviewReducer.tagReviews,
-	tagName: state.reviewReducer.tagName
+	tagReviews: state.searchReducer.tags,
+	tagName: state.searchReducer.tagName
 })
 
 export default connect(mapStateToProps, null)(ViewTagReviewsPage)

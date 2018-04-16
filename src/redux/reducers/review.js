@@ -83,29 +83,6 @@ export default (state = initialState, action) => {
 			error: action.payload.error
 		}
 
-	case constants.SEARCH_BY_TAG_REQUEST:
-		return {
-			...state,
-			loading: true,
-			error: null
-		}
-
-	case constants.SEARCH_BY_TAG_SUCCESS:
-		return {
-			...state,
-			loading: false,
-			error: null,
-			tagReviews: action.payload.reviews,
-			tagName: action.payload.tag
-		}
-
-	case constants.SEARCH_BY_TAG_FAILURE:
-		return {
-			...state,
-			loading: false,
-			error: action.payload.error
-		}
-
 	default:
 		return state
 	}

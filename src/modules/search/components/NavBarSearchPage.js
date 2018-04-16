@@ -16,10 +16,10 @@ class NavBarSearchPage extends Component {
 		} = this.props
 		return (
 			<View style={styles.navBar}>
-				<TouchableOpacity style={styles.boxIcon} onPress={() => Actions.pop()}>
+				<TouchableOpacity style={{ width: 50, alignItems: 'center', justifyContent: 'center'}} onPress={() => Actions.pop()}>
 					<IconIonicons
 						name={'ios-arrow-back'}
-						size={20}
+						size={30}
 						color={colors.gray}
 						style={styles.backgroundTranparent}
 					/>
@@ -34,7 +34,7 @@ class NavBarSearchPage extends Component {
 					<TextInput
 						style={{ flex: 1, marginTop: 5, color: '#FFF', fontSize: 15 }}
 						value={searchText}
-						autoFocus={isSearch}
+						autoFocus
 						placeholder="Search"
 						placeholderTextColor="rgba(255, 255, 255, 0.7)"
 						underlineColorAndroid="transparent"
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		backgroundColor: 'rgba(0, 0, 0, 0.16)',
-		paddingHorizontal: 15,
-		marginHorizontal: 10,
+		paddingHorizontal: 10, //15
+		marginHorizontal: 0, //10
 		marginTop: 5
 	},
 	searchIcon: {

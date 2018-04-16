@@ -10,8 +10,8 @@ import NavBarSearch from 'src/modules/shares/NavBarSearch'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
-import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
 import PTRView from 'react-native-pull-to-refresh'
+import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 
 export class GlobalPage extends Component {
 	constructor(props) {
