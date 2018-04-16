@@ -31,6 +31,10 @@ export class ViewUserPage extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.props.searchByTitle('')
+	}
+
 	setIsSearch() {
 		this.setState({ isSearch: true })
 	}
