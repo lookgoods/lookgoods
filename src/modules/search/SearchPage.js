@@ -27,7 +27,7 @@ export class ViewUserPage extends Component {
 		this.state = {
 			isSearch: false,
 			searchText: '',
-			tabBar: 1
+			tabBar: 'title'
 		}
 	}
 
@@ -43,7 +43,7 @@ export class ViewUserPage extends Component {
 		}
 
 		switch (this.state.tabBar) {
-		case 1 : this.props.searchByTitle(text)
+		case 'title' : this.props.searchByTitle(text)
 		}
 		this.setState({ searchText: text })
 	}
@@ -57,16 +57,20 @@ export class ViewUserPage extends Component {
 		})
 	}
 
+	fetchSearchTitle() {
+		this.setState({ tabBar: 'title' })
+	}
+
 	fetchSearchProduct() {
-		this.setState({ tabBar: 2 })
+		this.setState({ tabBar: 'product' })
 	}
 
 	fetchSearchTag() {
-		this.setState({ tabBar: 3 })
+		this.setState({ tabBar: 'tag' })
 	}
 
 	fetchSearchPeople() {
-		this.setState({ tabBar: 4 })
+		this.setState({ tabBar: 'people' })
 	}
 
 	render() {
@@ -89,7 +93,7 @@ export class ViewUserPage extends Component {
 						<ReviewsGrid product_list={products} page={'SearchPage'}/>
 						<View style={styles.tabsContainer}>
 							<Tabs>
-								<View title="Review">
+								<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
 									<ReviewsGrid review_list={this.props.searchTitle} page={'SearchPage'}/>
 								</View>
 								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>

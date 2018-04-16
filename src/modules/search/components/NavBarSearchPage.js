@@ -34,7 +34,7 @@ class NavBarSearchPage extends Component {
 					<TextInput
 						style={{ flex: 1, marginTop: 5, color: '#FFF', fontSize: 15 }}
 						value={searchText}
-						autoFocus={isSearch}
+						autoFocus
 						placeholder="Search"
 						placeholderTextColor="rgba(255, 255, 255, 0.7)"
 						underlineColorAndroid="transparent"
