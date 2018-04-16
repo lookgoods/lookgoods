@@ -12,6 +12,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import PTRView from 'react-native-pull-to-refresh'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
+
 export class GlobalPage extends Component {
 	constructor(props) {
 		super(props)
