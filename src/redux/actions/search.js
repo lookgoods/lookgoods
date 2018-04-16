@@ -25,7 +25,31 @@ const SearchActions = {
 			}
 			dispatch(actions.searchByTitleSuccess(transformData))
 		} catch (err) {
-			dispatch(actions.searchByTagError(err))
+			dispatch(actions.searchByTitleError(err))
+		}
+	},
+	searchByProduct: (product) => async dispatch => {
+		dispatch(actions.searchByProductRequest())
+		try {
+			const response = await fetch(`${AppURL}/search/reviews/products`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ key: product })
+			})
+			const data = await response.json()
+			console.log(response, 'searchByProduct')
+			console.log(data, 'data')
+			// let transformData = []
+			// if	(data.length !== 0) {
+			// 	data.map((item) => {
+			// 		transformData.push(item._id)
+			// 	})
+			// }
+			dispatch(actions.searchByProductSuccess(data))
+		} catch (err) {
+			dispatch(actions.searchByProductError(err))
 		}
 	},
 	searchByTag: (tag) => async dispatch => {
@@ -50,6 +74,31 @@ const SearchActions = {
 			dispatch(actions.searchByTagError(err))
 		}
 	},
+	searchByUser: (user) => async dispatch => {
+		console.log(user, 'user')
+		dispatch(actions.searchByUserRequest())
+		try {
+			const response = await fetch(`${AppURL}/search/users`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ key: user })
+			})
+			const data = await response.json()
+			console.log(response, 'searchByUser')
+			console.log(data, 'data')
+			let transformData = []
+			if	(data.length !== 0) {
+				data.map((item) => {
+					transformData.push(item._id)
+				})
+			}
+			dispatch(actions.searchByUserSuccess(transformData))
+		} catch (err) {
+			dispatch(actions.searchByUserError(err))
+		}
+	},
 	viewTagReviews: (tag) => async dispatch => {
 		await dispatch(SearchActions.searchByTag(tag))
 		Actions.viewTagReviewsPage()
@@ -68,6 +117,17 @@ const actions = {
 		type: constants.SEARCH_BY_TITLE_FAILURE,
 		payload: error
 	}),
+	searchByProductRequest: () => ({
+		type: constants.SEARCH_BY_PRODUCT_REQUEST
+	}),
+	searchByProductSuccess: (product) => ({
+		type: constants.SEARCH_BY_PRODUCT_SUCCESS,
+		payload: product
+	}),
+	searchByProductError: error => ({
+		type: constants.SEARCH_BY_PRODUCT_FAILURE,
+		payload: error
+	}),
 	searchByTagRequest: () => ({
 		type: constants.SEARCH_BY_TAG_REQUEST
 	}),
@@ -77,6 +137,17 @@ const actions = {
 	}),
 	searchByTagError: error => ({
 		type: constants.SEARCH_BY_TAG_FAILURE,
+		payload: error
+	}),
+	searchByUserRequest: () => ({
+		type: constants.SEARCH_BY_USER_REQUEST
+	}),
+	searchByUserSuccess: (user) => ({
+		type: constants.SEARCH_BY_USER_SUCCESS,
+		payload: user
+	}),
+	searchByUserError: error => ({
+		type: constants.SEARCH_BY_USER_FAILURE,
 		payload: error
 	})
 }

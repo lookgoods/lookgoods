@@ -34,14 +34,15 @@ export default (state = initialState, action) => {
 			error: action.payload
 		}
     
-	case constants.SEARCH_BY_NAME_REQUEST:
+	case constants.SEARCH_BY_PRODUCT_REQUEST:
 		return {
 			...state,
 			loading: true,
 			error: null
 		}
 
-	case constants.SEARCH_BY_NAME_SUCCESS:
+	case constants.SEARCH_BY_PRODUCT_SUCCESS:
+		console.log(action.payload, 'SEARCH_BY_PRODUCT_SUCCESS')
 		return {
 			...state,
 			products: action.payload,
@@ -49,7 +50,7 @@ export default (state = initialState, action) => {
 			error: null
 		}
 
-	case constants.SEARCH_BY_NAME_FAILURE:
+	case constants.SEARCH_BY_PRODUCT_FAILURE:
 		return {
 			...state,
 			loading: false,
@@ -64,6 +65,7 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.SEARCH_BY_USER_SUCCESS:
+		console.log(action.payload, 'SEARCH_BY_USER_SUCCESS')
 		return {
 			...state,
 			users: action.payload,

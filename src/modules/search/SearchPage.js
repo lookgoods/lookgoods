@@ -47,7 +47,15 @@ export class ViewUserPage extends Component {
 		}
 
 		switch (this.state.tabBar) {
-		case 'title' : this.props.searchByTitle(text)
+		case 'product' :
+			this.props.searchByProduct(text) 
+			break 
+		case 'people' : 
+			this.props.searchByUser(text) 
+			break 
+		default : 
+			this.props.searchByTitle(text)
+			break
 		}
 		this.setState({ searchText: text })
 	}
@@ -78,7 +86,10 @@ export class ViewUserPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.searchTitle, 'searchTitle')
+		// console.log(this.props.searchTitle, 'searchTitle')
+		console.log(this.props.searchProduct, 'searchProduct')
+		// console.log(this.props.searchTag, 'searchTag')
+		// console.log(this.props.searchUser, 'searchUser')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -101,13 +112,13 @@ export class ViewUserPage extends Component {
 									<ReviewsGrid review_list={this.props.searchTitle} page={'SearchPage'}/>
 								</View>
 								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>
-									<ReviewsGrid review_list={this.props.saveReviews} page={'SearchPage'}/>
+									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
 								</View>
 								<View title="Tag" onSelectedTab={() => this.fetchSearchTag()}>
-									<ReviewsGrid review_list={this.props.saveReviews} page={'SearchPage'}/>
+									<ReviewsGrid review_list={this.props.searchTag} page={'SearchPage'}/>
 								</View>
 								<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
-									<ReviewsGrid review_list={this.props.saveReviews} page={'SearchPage'}/>
+									<ReviewsGrid review_list={this.props.searchUser} page={'SearchPage'}/>
 								</View>
 							</Tabs>
 						</View>
@@ -149,6 +160,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	searchByTitle: title => {
 		dispatch(SearchActions.searchByTitle(title))
+	},
+	searchByProduct: product => {
+		dispatch(SearchActions.searchByProduct(product))
+	},
+	searchByUser: user => {
+		dispatch(SearchActions.searchByUser(user))
 	}
 })
 
