@@ -3,6 +3,7 @@ import axios from 'axios'
 import to from 'await-to-js'
 import { Actions } from 'react-native-router-flux'
 import UserActions from 'src/redux/actions/user'
+import SearchActions from 'src/redux/actions/search'
 
 const AppURL = constants.AppURL
 
@@ -117,30 +118,8 @@ const ReviewActions = {
 			dispatch(ReviewActions.getFollowingReviews())
 		}
 	},
-	searchByTag: (tag) => async dispatch => {
-		dispatch(actions.searchByTagRequest())
-		try {
-			const response = await fetch(`${AppURL}/search/reviews/tag`, {
-				method: 'post',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ key: tag })
-			})
-			const data = await response.json()
-			let transformData = []
-			if	(data.length !== 0) {
-				data.map((item) => {
-					transformData.push(item._id)
-				})
-			}
-			dispatch(actions.searchByTagSuccess(transformData, tag))
-		} catch (err) {
-			dispatch(actions.searchByTagError(err))
-		}
-	},
 	viewTagReviews: (tag) => async dispatch => {
-		await dispatch(ReviewActions.searchByTag(tag))
+		await dispatch(SearchActions.searchByTag(tag))
 		Actions.viewTagReviewsPage()
 	}
 }
@@ -243,17 +222,6 @@ const actions = {
 	}),
 	unlikeReviewError: error => ({
 		type: constants.UNLIKE_REVIEW_FAILURE,
-		payload: error
-	}),
-	searchByTagRequest: () => ({
-		type: constants.SEARCH_BY_TAG_REQUEST
-	}),
-	searchByTagSuccess: (reviews, tag) => ({
-		type: constants.SEARCH_BY_TAG_SUCCESS,
-		payload: { reviews, tag }
-	}),
-	searchByTagError: error => ({
-		type: constants.SEARCH_BY_TAG_FAILURE,
 		payload: error
 	})
 }

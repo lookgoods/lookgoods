@@ -6,7 +6,8 @@ const initialState = {
 	tags: null,
 	users: null,
 	loading: false,
-	error: null
+	error: null,
+	tagName: ''
 }
 
 export default (state = initialState, action) => {
@@ -78,6 +79,29 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: action.payload
+		}
+	
+	case constants.SEARCH_BY_TAG_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+	case constants.SEARCH_BY_TAG_SUCCESS:
+		return {
+			...state,
+			loading: false,
+			error: null,
+			tags: action.payload.reviews,
+			tagName: action.payload.tag
+		}
+
+	case constants.SEARCH_BY_TAG_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload.error
 		}
 
 	default:

@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-	tagReviews: state.reviewReducer.tagReviews,
-	tagName: state.reviewReducer.tagName
+	tagReviews: state.searchReducer.tags,
+	tagName: state.searchReducer.tagName
 })
 
 export default connect(mapStateToProps, null)(ViewTagReviewsPage)
