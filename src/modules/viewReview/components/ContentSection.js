@@ -44,7 +44,7 @@ function ReviewerBar({ reviewer, rating, setUser }) {
 					<Text style={styles.reviewerName}>{reviewer.name}</Text>
 				</TouchableOpacity>
 				<View style={styles.starBar}>
-					<StarBar rating={rating} size={30} />
+					<StarBar rating={rating} size={30} type='view'/>
 				</View>
 			</View>
 		</View>
@@ -57,7 +57,7 @@ function getContent(content, index, showPreviewImage, hidePreviewImage) {
 			<TouchableOpacity 
 				key={index} 
 				style={styles.contentImageWrapper}
-				delayLongPress={200} 
+				delayLongPress={1000} 
 				onLongPress={() => showPreviewImage(content.value)}
 				onPressOut={() => hidePreviewImage()}
 			>

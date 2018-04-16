@@ -44,12 +44,16 @@ export class ViewReviewPage extends Component {
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>
-					<Divider style={styles.divider} />
-					<AddComment 
-						style={styles.addComment} 
-						user={this.props.currentUser} 
-						addComment={(comment) => this.addComment(comment)}
-					/>
+					{ this.props.currentUser._id !== this.props.review.user._id &&
+						<View>
+							<Divider style={styles.divider} />
+							<AddComment 
+								style={styles.addComment} 
+								user={this.props.currentUser} 
+								addComment={(comment) => this.addComment(comment)}
+							/>
+						</View>
+					}
 				</ScrollView>
 			</View>
 		)

@@ -65,7 +65,7 @@ class Comment extends Component {
 					{ _id !== this.props.editCommentId ?
 						<View>
 							<View style={styles.starBar}>
-								<StarBar rating={this.state.rating} size={15} type={'view'}/>
+								<StarBar rating={this.state.rating} size={15} type='view'/>
 							</View>
 							<Text style={styles.textLabel}>{this.state.description}</Text>
 						</View> :
