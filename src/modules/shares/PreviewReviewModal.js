@@ -36,14 +36,15 @@ class PreviewReviewModal extends Component {
 							<IconMaterial name="star-border" color={colors.yellow} size={40} />
 							<Text style={{ fontSize: 20, marginLeft: 5, marginTop: 5 }}>{this.props.review.rating}</Text>
 						</View>
-						<View style={{ flexDirection: 'row', marginRight: 10, marginTop: 5 }}>
-							<Text style={{ fontSize: 20, marginRight: 5 }}>{this.props.review.price}</Text>
-							<Image
-								source={icons.baht}
-								resizeMode="cover"
-								style={styles.priceIcon}
-							/>
-						</View>
+						{ this.props.review.price &&
+							<View style={{ flexDirection: 'row', marginRight: 10, marginTop: 5 }}>
+								<Text style={{ fontSize: 20, marginRight: 5 }}>{this.props.review.price}</Text>
+								<Image
+									source={icons.baht}
+									resizeMode="cover"
+									style={styles.priceIcon}
+								/>
+							</View> }
 					</View>
 				</View>
 			</Modal>

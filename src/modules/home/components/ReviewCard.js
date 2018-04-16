@@ -98,18 +98,31 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 	return (
 		<View style={styles.footerContainer}>
 			<View style={{ flexDirection: 'row' }}>
+				<View style={{ marginLeft: 8 }}>
+					{isLove ? (
+						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
+							<Ionicons name="md-heart" color={colors.red} size={30} />
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
+							<Ionicons name="md-heart-outline" color={colors.gray} size={30} />
+						</TouchableOpacity>
+					)}
+				</View>
 				<View style={styles.productDetail}>
 					<IconMaterial name="star-border" color={colors.gray} size={24} />
 					<Text style={styles.productDetailRating}>{rating}</Text>
 				</View>
-				<View style={styles.productDetail}>
-					<Image
-						style={styles.bahtImage}
-						source={icons.baht}
-						resizeMode="cover"
-					/>
-					<Text style={styles.productDetailMoney}>{price}</Text>
-				</View>
+				{ price && 
+					<View style={styles.productDetail}>
+						<Image
+							style={styles.bahtImage}
+							source={icons.baht}
+							resizeMode="cover"
+						/>
+						<Text style={styles.productDetailMoney}>{price}</Text>
+					</View>
+				}
 				<View style={styles.productDetail}>
 					<IconMaterial
 						style={styles.iconComment}
@@ -123,15 +136,6 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 
 			<View style={{ flexDirection: 'row' }}>
 				<View style={styles.productDetailHeart}>
-					{isLove ? (
-						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
-							<Ionicons name="md-heart" color={colors.red} size={26} />
-						</TouchableOpacity>
-					) : (
-						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
-							<Ionicons name="md-heart-outline" color={colors.gray} size={26} />
-						</TouchableOpacity>
-					)}
 					{numberOfLike !== 0 && (
 						numberOfLike == 1 ? 
 							<Text style={styles.productDetailLove}>{numberOfLike} like</Text>
@@ -319,11 +323,12 @@ const styles = StyleSheet.create({
 	},
 	productDetail: {
 		flexDirection: 'row',
-		marginLeft: 8
+		marginLeft: 12,
+		marginTop: 5
 	},
 	productDetailHeart: {
 		flexDirection: 'row',
-		marginLeft: 10
+		marginLeft: 6
 	},
 	productDetailRating: {
 		marginTop: 4,

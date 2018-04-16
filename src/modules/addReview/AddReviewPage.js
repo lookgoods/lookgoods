@@ -214,7 +214,7 @@ export class AddReviewPage extends Component {
 			const review = {
 				title: this.state.title.trim(),
 				name: this.state.name.trim(),
-				price: this.state.price.trim(),
+				price: this.state.price,
 				brand: this.state.brand.trim(),
 				tag: this.state.tagsMessage,
 				picture_cover_url: this.state.coverImage.url,
@@ -367,7 +367,7 @@ export class AddReviewPage extends Component {
 										onChangeText={value =>
 											this.setState({ price: value })
 										}
-										keyboardType="default"
+										keyboardType='numeric'
 									/>
 								</View>
 							</View>

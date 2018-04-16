@@ -83,12 +83,12 @@ function Content({ content_list, showPreviewImage, hidePreviewImage }) {
 
 const ProductDetail = ({ name, value }) => (
 	<View>
-		{value && (
+		{(value && value !== '') ? (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>{name}</Text>
 				<Text style={{ fontSize: 15, color: colors.gray6 }}>{value}</Text>
 			</View>
-		)}
+		) : <View/>}
 	</View>
 )
 
