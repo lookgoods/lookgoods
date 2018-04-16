@@ -50,6 +50,8 @@ const ReviewActions = {
 		}
 		delete trasformReview.name
 		delete trasformReview.brand
+		console.log(trasformReview, 'trasformReview')
+		console.log(review, 'edit review')
 		dispatch(actions.editReviewRequest())
 		try {
 			const response = await fetch(`${AppURL}/reviews/${review_id}`, {
@@ -61,6 +63,7 @@ const ReviewActions = {
 			})
 			dispatch(actions.editReviewSuccess(response))
 			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(UserActions.getCurrentUserOwnReviews())
 			dispatch(ReviewActions.setCurrentReview(trasformReview))
 

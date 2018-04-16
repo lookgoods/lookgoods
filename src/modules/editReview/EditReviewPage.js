@@ -73,7 +73,7 @@ export class EditReviewPage extends Component {
 			title: this.props.review.title,
 			name: this.props.review.product.name,
 			brand: this.props.review.product.brand,
-			price: this.props.review.price.toString(),
+			price: this.props.review.price ? this.props.review.price.toString() : '',
 			tagsList: tagsList,
 			tagsMessage: this.props.review.tag,
 			rating: this.props.review.rating,
@@ -243,7 +243,7 @@ export class EditReviewPage extends Component {
 			const review = {
 				title: this.state.title.trim(),
 				name: this.state.name.trim(),
-				price: this.state.price.trim(),
+				price: this.state.price,
 				brand: this.state.brand.trim(),
 				tag: this.state.tagsMessage,
 				picture_cover_url: this.state.coverImage.url,
@@ -395,7 +395,7 @@ export class EditReviewPage extends Component {
 										onChangeText={value =>
 											this.setState({ price: value })
 										}
-										keyboardType="default"
+										keyboardType='numeric'
 									/>
 								</View>
 							</View>
