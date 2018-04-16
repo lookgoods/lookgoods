@@ -11,6 +11,8 @@ import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import PTRView from 'react-native-pull-to-refresh'
+
 export class GlobalPage extends Component {
 	constructor(props) {
 		super(props)
@@ -22,6 +24,10 @@ export class GlobalPage extends Component {
 
 	fetchData() {
 		this.props.getReviews()
+	}
+
+	refreshData () {
+		this.fetchData()
 	}
 
 	componentDidMount() {
@@ -73,11 +79,13 @@ export class GlobalPage extends Component {
 						/>
 					</View>
 				</View>
-				<ScrollView>
-					<View style={styles.body}>
-						<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
-					</View>
-				</ScrollView>
+				<PTRView onRefresh={() => this.refreshData()}>
+					<ScrollView>
+						<View style={styles.body}>
+							<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
+						</View>
+					</ScrollView>
+				</PTRView>
 			</View>
 		)
 	}

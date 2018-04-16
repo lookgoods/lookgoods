@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
 import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
+import PTRView from 'react-native-pull-to-refresh'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -24,7 +25,11 @@ export class HomePage extends Component {
 	}
 
 	fetchData() {
-		this.props.getReviews()
+		this.props.getFollowingReviews()
+	}
+
+	refreshData () {
+		this.fetchData()
 	}
 
 	componentDidMount() {
@@ -75,11 +80,13 @@ export class HomePage extends Component {
 						<NavBarSearch />
 					</View>
 				</View>
-				<ScrollView>
-					<View style={styles.body}>
-						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
-					</View>
-				</ScrollView>
+				<PTRView onRefresh={() => this.refreshData()}>
+					<ScrollView>
+						<View style={styles.body}>
+							<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
+						</View>
+					</ScrollView>
+				</PTRView>
 				<PreviewReviewModal />
 				<PreviewImageModal />
 			</View>
@@ -108,11 +115,12 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	reviews: state.reviewReducer.followingReviews,
-	currentPage: state.menuReducer.currentPage
+	currentPage: state.menuReducer.currentPage,
+	loading: state.reviewReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({
-	getReviews: () => {
+	getFollowingReviews: () => {
 		dispatch(ReviewActions.getFollowingReviews())
 	}
 })
