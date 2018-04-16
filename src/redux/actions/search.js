@@ -39,14 +39,6 @@ const SearchActions = {
 				body: JSON.stringify({ key: product })
 			})
 			const data = await response.json()
-			console.log(response, 'searchByProduct')
-			console.log(data, 'data')
-			// let transformData = []
-			// if	(data.length !== 0) {
-			// 	data.map((item) => {
-			// 		transformData.push(item._id)
-			// 	})
-			// }
 			dispatch(actions.searchByProductSuccess(data))
 		} catch (err) {
 			dispatch(actions.searchByProductError(err))
