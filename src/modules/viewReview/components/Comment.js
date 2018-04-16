@@ -10,7 +10,6 @@ import { colors } from 'src/constants/mixins'
 import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
-import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import CommentActions from 'src/redux/actions/comment'
 import Toast from 'react-native-simple-toast'
@@ -66,7 +65,7 @@ class Comment extends Component {
 					{ _id !== this.props.editCommentId ?
 						<View>
 							<View style={styles.starBar}>
-								<StarBar rating={this.state.rating} size={15} type={'view'}/>
+								<StarBar rating={this.state.rating} size={15} type='view'/>
 							</View>
 							<Text style={styles.textLabel}>{this.state.description}</Text>
 						</View> :

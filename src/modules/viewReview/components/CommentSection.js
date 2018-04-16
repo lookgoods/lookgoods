@@ -27,7 +27,7 @@ function RatingFrequency ({ comment_list }) {
 		<View style={styles.ratingFrequencyPanel}>
 			{ rating_frequency_list.map((rating_count, index) => (
 				<View style={styles.ratingRow} key={index}>
-					<StarBar rating={5-index} size={20}/>
+					<StarBar rating={5-index} size={20} type='view' />
 					<View style={styles.progressBar}>
 						<View style={{ height: 15, width: `${rating_count/(comment_list.length)*100}%`, backgroundColor: colors.darkBlue}}/>
 					</View>
@@ -44,6 +44,10 @@ class CommentSection extends Component {
 		this.state = {
 			indexComment: -1
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return (this.props.comments !== nextProps.comments)
 	}
 
 	async showActionSheet1(index) {
@@ -91,19 +95,17 @@ class CommentSection extends Component {
 										<View key={index}>
 											{ user._id === comment.user._id ?
 												<TouchableOpacity 
-													delayLongPress={1000} 
+													delayLongPress={1300} 
 													onLongPress = {() => this.showActionSheet1(index)}>
 													<View style = {styles.commentItem} >
 														<Comment
 															comment={comment}
-															// editCommentMessage={(comment, review_id, comment_id) => this.props.editCommentView(comment, review_id, comment_id)} 
-															// setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 														/>
 													</View>
 												</TouchableOpacity> 
 												:
 												<TouchableOpacity 
-													delayLongPress={1000} 
+													delayLongPress={1300} 
 													onLongPress = {() => this.showActionSheet2(index)}>
 													<View style = {styles.commentItem} >
 														<Comment
