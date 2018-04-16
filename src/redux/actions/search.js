@@ -67,7 +67,7 @@ const SearchActions = {
 		}
 	},
 	searchByUser: (user) => async dispatch => {
-		console.log(user, 'user')
+		console.log(user.toLowerCase(), 'user')
 		dispatch(actions.searchByUserRequest())
 		try {
 			const response = await fetch(`${AppURL}/search/users`, {
@@ -75,7 +75,7 @@ const SearchActions = {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ key: user })
+				body: JSON.stringify({ key: user.toLowerCase() })
 			})
 			const data = await response.json()
 			console.log(response, 'searchByUser')
