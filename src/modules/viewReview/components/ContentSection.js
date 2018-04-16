@@ -57,7 +57,7 @@ function getContent(content, index, showPreviewImage, hidePreviewImage) {
 			<TouchableOpacity 
 				key={index} 
 				style={styles.contentImageWrapper}
-				delayLongPress={1000} 
+				delayLongPress={500} 
 				onLongPress={() => showPreviewImage(content.value)}
 				onPressOut={() => hidePreviewImage()}
 			>
