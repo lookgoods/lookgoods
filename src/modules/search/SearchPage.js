@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Platform, ScrollView, StyleSheet, View } from 'react-native'
-import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
