@@ -96,8 +96,6 @@ class CommentSection extends Component {
 													<View style = {styles.commentItem} >
 														<Comment
 															comment={comment}
-															// editCommentMessage={(comment, review_id, comment_id) => this.props.editCommentView(comment, review_id, comment_id)} 
-															// setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 														/>
 													</View>
 												</TouchableOpacity> 
