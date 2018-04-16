@@ -2,11 +2,15 @@ import React, { Component } from 'react'
 import { Platform, ScrollView, StyleSheet, View, Keyboard } from 'react-native'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
+import CoverImage from 'src/modules/shares/CoverImage'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import UserActions from 'src/redux/actions/user'
 import SearchActions from 'src/redux/actions/search'
+import { List, ListItem } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
 import images from 'src/constants/images'
+import { Actions } from 'react-native-router-flux'
 
 const products = [
 	{ name: 'product1', image_url: images.product1 },
@@ -32,7 +36,7 @@ export class ViewUserPage extends Component {
 	}
 
 	componentDidMount() {
-		this.props.searchByTitle('')
+		if (this.props.searchTitle === null) this.props.searchByTitle('')
 	}
 
 	setIsSearch() {
@@ -53,6 +57,9 @@ export class ViewUserPage extends Component {
 		case 'people' : 
 			this.props.searchByUser(text) 
 			break 
+		case 'tag' :
+			this.props.searchByTag(text)
+			break
 		default : 
 			this.props.searchByTitle(text)
 			break
@@ -69,28 +76,36 @@ export class ViewUserPage extends Component {
 		})
 	}
 
+	goToViewUser(user) {
+		this.props.setSelectedUser(user)
+		Actions.viewUserPage()
+	}
+
 	fetchSearchTitle() {
 		this.setState({ tabBar: 'title' })
+		if (this.props.searchTitle === null) this.props.searchByTitle('')
 	}
 
 	fetchSearchProduct() {
 		this.setState({ tabBar: 'product' })
-		this.props.searchByProduct('') 
+		if (this.props.searchProduct === null) this.props.searchByProduct('') 
 	}
 
 	fetchSearchTag() {
 		this.setState({ tabBar: 'tag' })
+		if (this.props.searchTag === null) this.props.searchByTag('')
 	}
 
 	fetchSearchPeople() {
 		this.setState({ tabBar: 'people' })
+		if (this.props.searchUser === null) this.props.searchByUser('')
 	}
 
 	render() {
 		// console.log(this.props.searchTitle, 'searchTitle')
 		// console.log(this.props.searchProduct, 'searchProduct')
-		console.log(this.props.searchTag, 'searchTag')
-		// console.log(this.props.searchUser, 'searchUser')
+		// console.log(this.props.searchTag, 'searchTag')
+		console.log(this.props.searchUser, 'searchUser')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -119,7 +134,23 @@ export class ViewUserPage extends Component {
 									<ReviewsGrid review_list={this.props.searchTag} page={'SearchPage'}/>
 								</View>
 								<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
-									<ReviewsGrid review_list={this.props.searchUser} page={'SearchPage'}/>
+									{/* <ReviewsGrid review_list={this.props.searchUser} page={'SearchPage'}/> */}
+									<List containerStyle={{ borderBottomColor: colors.transparent, marginTop: -5 }}>
+										{ this.props.searchUser !== null &&
+											this.props.searchUser.map((user, index) => (
+												<ListItem
+													avatar={
+														<CoverImage size={70} uri={user.picture_url} />
+													}
+													key={index}
+													title={user.name}
+													hideChevron={true}
+													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
+													onPress={() => this.goToViewUser(user)}
+												/>
+											))
+										}
+									</List>
 								</View>
 							</Tabs>
 						</View>
@@ -159,11 +190,17 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+	setSelectedUser: user => {
+		dispatch(UserActions.setSelectedUser(user))
+	},
 	searchByTitle: title => {
 		dispatch(SearchActions.searchByTitle(title))
 	},
 	searchByProduct: product => {
 		dispatch(SearchActions.searchByProduct(product))
+	},
+	searchByTag: tag => {
+		dispatch(SearchActions.searchByTag(tag))
 	},
 	searchByUser: user => {
 		dispatch(SearchActions.searchByUser(user))

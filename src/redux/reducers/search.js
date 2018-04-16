@@ -20,7 +20,6 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.SEARCH_BY_TITLE_SUCCESS:
-		console.log(action.payload, 'SEARCH_BY_TITLE_SUCCESS')
 		return {
 			...state,
 			reviews: action.payload,
@@ -43,7 +42,6 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.SEARCH_BY_PRODUCT_SUCCESS:
-		console.log(action.payload, 'SEARCH_BY_PRODUCT_SUCCESS')
 		return {
 			...state,
 			products: action.payload,
@@ -66,7 +64,6 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.SEARCH_BY_USER_SUCCESS:
-		console.log(action.payload, 'SEARCH_BY_USER_SUCCESS')
 		return {
 			...state,
 			users: action.payload,
@@ -89,6 +86,7 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.SEARCH_BY_TAG_SUCCESS:
+		console.log(action.payload.reviews, 'SEARCH_BY_TAG_SUCCESS')
 		return {
 			...state,
 			loading: false,

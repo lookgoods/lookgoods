@@ -6,7 +6,6 @@ import {
 	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
-
 import CoverImage from 'src/modules/shares/CoverImage'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
