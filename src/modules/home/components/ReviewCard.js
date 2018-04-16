@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import CoverImage from 'src/modules/shares/CoverImage'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ReviewActions from 'src/redux/actions/review'
 import UserActions from 'src/redux/actions/user'
@@ -12,6 +13,8 @@ import { connect } from 'react-redux'
 import icons from 'src/constants/icons'
 import { APP_FULL_WIDTH } from 'src/constants'
 import moment from 'moment'
+import { ShareDialog } from 'react-native-fbsdk'
+
 
 const ProfilePicture = ({ image_url }) => {
 	return <CoverImage size={50} uri={image_url} />
@@ -94,11 +97,11 @@ function Body({ product_url, title, review, setReview, imageSize }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove }) {
+function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove, clickShare }) {
 	return (
 		<View style={styles.footerContainer}>
-			<View style={{ flexDirection: 'row' }}>
-				<View style={{ marginLeft: 8 }}>
+			<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+				<View style={{ flex: 1, flexDirection: 'row', marginLeft: 8 }}>
 					{isLove ? (
 						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
 							<Ionicons name="md-heart" color={colors.red} size={30} />
@@ -108,12 +111,16 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 							<Ionicons name="md-heart-outline" color={colors.gray} size={30} />
 						</TouchableOpacity>
 					)}
+					<TouchableOpacity onPress={clickShare} style={{ marginLeft: 30, marginTop: 3 }}>
+						<FontAwesome name="share-alt" color={colors.blue} size={25} />
+					</TouchableOpacity>
 				</View>
-				<View style={styles.productDetail}>
-					<IconMaterial name="star-border" color={colors.gray} size={24} />
-					<Text style={styles.productDetailRating}>{rating}</Text>
-				</View>
-				{ price && 
+				<View style={{ flexDirection: 'row', marginRight: 15 }}>
+					<View style={styles.productDetail}>
+						<IconMaterial name="star-border" color={colors.gray} size={26} />
+						<Text style={styles.productDetailRating}>{rating}</Text>
+					</View>
+					{ price && 
 					<View style={styles.productDetail}>
 						<Image
 							style={styles.bahtImage}
@@ -122,15 +129,16 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 						/>
 						<Text style={styles.productDetailMoney}>{price}</Text>
 					</View>
-				}
-				<View style={styles.productDetail}>
-					<IconMaterial
-						style={styles.iconComment}
-						name="chat-bubble-outline"
-						color={colors.gray}
-						size={22}
-					/>
-					<Text style={styles.productDetailComment}>{numberOfComment}</Text>
+					}
+					<View style={styles.productDetail}>
+						<IconMaterial
+							style={styles.iconComment}
+							name="chat-bubble-outline"
+							color={colors.gray}
+							size={24}
+						/>
+						<Text style={styles.productDetailComment}>{numberOfComment}</Text>
+					</View>
 				</View>
 			</View>
 
@@ -226,6 +234,24 @@ export class ReviewCard extends Component {
 		})
 	}
 
+	shareToFacebook() {
+		const shareLinkContent = {
+			contentType: 'link',
+			contentUrl: this.props.review.picture_cover_url,
+			contentDescription: this.props.review.title,
+			contentTitle: this.props.review.title
+		}
+			
+		ShareDialog.canShow(shareLinkContent).then((canShow) => {		
+			if (canShow) return ShareDialog.show(shareLinkContent)
+		}).then((result) => {
+			if (result.isCancelled) console.log('Share is cancelled')
+			else console.log('Share successfull')
+		},	function(error) { 
+			console.log('Share fail with error', error)
+		})
+	}
+
 	render() {
 		const {
 			title,
@@ -261,6 +287,7 @@ export class ReviewCard extends Component {
 					numberOfLike={like_by_list.length}
 					isLove={this.state.isLove}
 					clickLove={() => this.clickLove()}
+					clickShare={() => this.shareToFacebook()}
 				/>
 			</View>
 		)
@@ -305,8 +332,8 @@ const styles = StyleSheet.create({
 	},
 	bahtImage: {
 		marginTop: 3,
-		width: 20,
-		height: 20
+		width: 22,
+		height: 22
 	},
 	iconComment: {
 		marginTop: 3
@@ -323,8 +350,8 @@ const styles = StyleSheet.create({
 	},
 	productDetail: {
 		flexDirection: 'row',
-		marginLeft: 12,
-		marginTop: 5
+		marginLeft: 10,
+		marginTop: 3
 	},
 	productDetailHeart: {
 		flexDirection: 'row',
