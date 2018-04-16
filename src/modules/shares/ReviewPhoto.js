@@ -34,7 +34,7 @@ export class ReviewPhoto extends Component {
 							this.props.setCurrentReview(this.props.review)
 							Actions.viewReviewPage()
 						}}
-						delayLongPress={1000} 
+						delayLongPress={500} 
 						onLongPress={() => this.props.showPreviewReview(this.props.review)}
 						onPressOut={() => this.props.hidePreviewReview()}
 					>

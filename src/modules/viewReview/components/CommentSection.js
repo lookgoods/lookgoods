@@ -95,7 +95,7 @@ class CommentSection extends Component {
 										<View key={index}>
 											{ user._id === comment.user._id ?
 												<TouchableOpacity 
-													delayLongPress={1300} 
+													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet1(index)}>
 													<View style = {styles.commentItem} >
 														<Comment
@@ -105,7 +105,7 @@ class CommentSection extends Component {
 												</TouchableOpacity> 
 												:
 												<TouchableOpacity 
-													delayLongPress={1300} 
+													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet2(index)}>
 													<View style = {styles.commentItem} >
 														<Comment
