@@ -67,7 +67,6 @@ const SearchActions = {
 		}
 	},
 	searchByUser: (user) => async dispatch => {
-		console.log(user.toLowerCase(), 'user')
 		dispatch(actions.searchByUserRequest())
 		try {
 			const response = await fetch(`${AppURL}/search/users`, {
@@ -78,8 +77,6 @@ const SearchActions = {
 				body: JSON.stringify({ key: user.toLowerCase() })
 			})
 			const data = await response.json()
-			console.log(response, 'searchByUser')
-			console.log(data, 'data')
 			let transformData = []
 			if	(data.length !== 0) {
 				data.map((item) => {

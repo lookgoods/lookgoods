@@ -102,10 +102,6 @@ export class ViewUserPage extends Component {
 	}
 
 	render() {
-		// console.log(this.props.searchTitle, 'searchTitle')
-		// console.log(this.props.searchProduct, 'searchProduct')
-		// console.log(this.props.searchTag, 'searchTag')
-		console.log(this.props.searchUser, 'searchUser')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>

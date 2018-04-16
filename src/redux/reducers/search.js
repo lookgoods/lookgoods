@@ -86,7 +86,6 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.SEARCH_BY_TAG_SUCCESS:
-		console.log(action.payload.reviews, 'SEARCH_BY_TAG_SUCCESS')
 		return {
 			...state,
 			loading: false,
