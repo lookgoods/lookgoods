@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View, Keyboard } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, Keyboard, Image, Text, TouchableOpacity } from 'react-native'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
 import CoverImage from 'src/modules/shares/CoverImage'
@@ -11,6 +11,9 @@ import { List, ListItem } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
 import images from 'src/constants/images'
 import { Actions } from 'react-native-router-flux'
+import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import icons from 'src/constants/icons'
 
 const products = [
 	{ name: 'product1', image_url: images.product1 },
@@ -97,6 +100,7 @@ export class ViewUserPage extends Component {
 	}
 
 	render() {
+		console.log(this.props.searchTitle, 'this.props.searchTitle')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -116,7 +120,66 @@ export class ViewUserPage extends Component {
 						<View style={styles.tabsContainer}>
 							<Tabs>
 								<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
-									<ReviewsGrid review_list={this.props.searchTitle} page={'SearchPage'}/>
+									<List containerStyle={{ flex: 1, borderBottomColor: colors.transparent, marginTop: -5 }}>
+										{ this.props.searchTitle !== null &&
+											this.props.searchTitle.map((review, index) => (
+												<ListItem
+													avatar={
+														<Image
+															style={{
+																width: 100,
+																height: 100,
+																resizeMode: 'cover',
+																borderWidth: 1,
+																borderRadius: 3,
+																borderColor: '#f1f1f1'
+															}}
+															source={{uri: review.picture_thumbnail_url}}
+															resizeMode="cover"
+														/>
+													}
+													key={index}
+													title={review.title}
+													subtitle={
+														<View style={{ marginLeft: 15 }}>
+															<Text/>
+															<Text>{review.user.name}</Text>
+															<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+																<View style={{ flexDirection: 'row', marginRight: 15 }}>
+																	<View style={styles.productDetail}>
+																		<IconMaterial name="star-border" color={colors.gray} size={26} />
+																		<Text style={styles.productDetailRating}>{review.rating}</Text>
+																	</View>
+																	{ review.price && 
+																	<View style={styles.productDetailLeft}>
+																		<Image
+																			style={styles.bahtImage}
+																			source={icons.baht}
+																			resizeMode="cover"
+																		/>
+																		<Text style={styles.productDetailMoney}>{review.price}</Text>
+																	</View>
+																	}
+																	<View style={styles.productDetailLeft}>
+																		<IconMaterial
+																			style={styles.iconComment}
+																			name="chat-bubble-outline"
+																			color={colors.gray}
+																			size={24}
+																		/>
+																		<Text style={styles.productDetailComment}>{review.comment_list.length}</Text>
+																	</View>
+																</View>
+															</View>
+														</View>
+													}
+													hideChevron={true}
+													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
+													// onPress={() => this.goToViewUser(user)}
+												/>
+											))
+										}
+									</List>
 								</View>
 								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>
 									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
@@ -165,10 +228,43 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		paddingLeft: 12,
 		paddingRight: 12
+	},
+	bahtImage: {
+		marginTop: 3,
+		width: 22,
+		height: 22
+	},
+	iconComment: {
+		marginTop: 3
+	},
+	productDetail: {
+		flexDirection: 'row',
+		marginLeft: -5,
+		marginTop: 3
+	},
+	productDetailLeft: {
+		flexDirection: 'row',
+		marginLeft: 10,
+		marginTop: 3
+	},
+	productDetailRating: {
+		marginTop: 4,
+		marginLeft: 2,
+		marginVertical: 1
+	},
+	productDetailMoney: {
+		marginTop: 4,
+		marginLeft: 1,
+		marginVertical: 1
+	},
+	productDetailComment: {
+		marginTop: 4,
+		marginLeft: 6
 	}
 })
 
 const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
 	selectedUser: state.userReducer.selectedUser,
 	searchTitle: state.searchReducer.reviews,
 	searchProduct: state.searchReducer.products,
