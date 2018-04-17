@@ -1,14 +1,11 @@
-import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import { AccessToken, LoginManager } from 'react-native-fbsdk'
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import { Actions } from 'react-native-router-flux'
 import { Button } from 'react-native-elements'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import images from 'src/constants/images'
-
-const { AccessToken } = FBSDK
 
 export class LoginPage extends Component {
 	constructor(props) {
