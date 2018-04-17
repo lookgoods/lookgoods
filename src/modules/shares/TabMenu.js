@@ -11,6 +11,7 @@ import { colors } from 'src/constants/mixins'
 import MenuActions from 'src/redux/actions/menu'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
+import { AccessToken } from 'react-native-fbsdk'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
@@ -23,12 +24,19 @@ export class TabMenu extends Component {
 	componentDidMount() {
 		this.checkPage()
 		this.fetchData()
+		this.checkAccessToken()
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.state.selectedTab !== prevState.selectedTab)) {
 			this.fetchData()
 		}
+	}
+
+	checkAccessToken() {
+		AccessToken.getCurrentAccessToken().then(data => {
+			if (!data) Actions.loginPage()
+		})
 	}
 
 	fetchData() {
