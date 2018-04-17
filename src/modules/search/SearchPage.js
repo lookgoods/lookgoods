@@ -126,11 +126,7 @@ export class ViewUserPage extends Component {
 								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>
 									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
 								</View>
-								<View title="Tag" onSelectedTab={() => this.fetchSearchTag()}>
-									<ReviewsGrid review_list={this.props.searchTag} page={'SearchPage'}/>
-								</View>
 								<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
-									{/* <ReviewsGrid review_list={this.props.searchUser} page={'SearchPage'}/> */}
 									<List containerStyle={{ borderBottomColor: colors.transparent, marginTop: -5 }}>
 										{ this.props.searchUser !== null &&
 											this.props.searchUser.map((user, index) => (
@@ -181,7 +177,6 @@ const mapStateToProps = state => ({
 	selectedUser: state.userReducer.selectedUser,
 	searchTitle: state.searchReducer.reviews,
 	searchProduct: state.searchReducer.products,
-	searchTag: state.searchReducer.tags,
 	searchUser: state.searchReducer.users
 })
 
@@ -194,9 +189,6 @@ const mapDispatchToProps = dispatch => ({
 	},
 	searchByProduct: product => {
 		dispatch(SearchActions.searchByProduct(product))
-	},
-	searchByTag: tag => {
-		dispatch(SearchActions.searchByTag(tag))
 	},
 	searchByUser: user => {
 		dispatch(SearchActions.searchByUser(user))
