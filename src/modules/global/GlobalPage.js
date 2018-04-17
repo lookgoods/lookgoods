@@ -2,8 +2,7 @@ import {
 	Platform,
 	ScrollView,
 	StyleSheet,
-	View,
-	BackHandler
+	View
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -13,7 +12,6 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import PTRView from 'react-native-pull-to-refresh'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
-import { Actions } from 'react-native-router-flux'
 
 export class GlobalPage extends Component {
 	constructor(props) {
@@ -34,14 +32,6 @@ export class GlobalPage extends Component {
 
 	componentDidMount() {
 		this.fetchData()
-		this.androidBackHandler()
-	}
-
-	androidBackHandler() {
-		BackHandler.addEventListener('hardwareBackPress', () => {
-			Actions.tabMenu({ page: 'home' })
-			return false
-		})
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -52,7 +42,6 @@ export class GlobalPage extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'global') {
 			this.fetchData()
-			this.androidBackHandler()
 		}
 	}
 
