@@ -7,6 +7,7 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
 import SearchActions from 'src/redux/actions/search'
+import ReviewActions from 'src/redux/actions/review'
 import { List, ListItem } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
 import images from 'src/constants/images'
@@ -78,6 +79,15 @@ export class ViewUserPage extends Component {
 			searchText: ''
 		})
 	}
+	
+	replaceMarks(text) {
+		const str = text.replace(/ุ|ู|ิ|ี|ึ|ื|่|้|๊|๋|ั|ํ|็/g, '')
+		return str
+	}
+	goToViewReviewPage(review) {
+		this.props.setCurrentReview(review)
+		Actions.viewReviewPage()
+	}
 
 	goToViewUser(user) {
 		this.props.setSelectedUser(user)
@@ -127,23 +137,31 @@ export class ViewUserPage extends Component {
 													avatar={
 														<Image
 															style={{
-																width: 100,
+																width: 150,
 																height: 100,
-																resizeMode: 'cover',
 																borderWidth: 1,
 																borderRadius: 3,
 																borderColor: '#f1f1f1'
 															}}
-															source={{uri: review.picture_thumbnail_url}}
+															// source={{uri: review.picture_thumbnail_url}}
+															source={{uri: review.picture_cover_url}}
 															resizeMode="cover"
 														/>
 													}
 													key={index}
-													title={review.title}
+													// title={review.title}
+													title={
+														<View style={{ marginLeft: 15 }}>
+															<Text>{this.replaceMarks(review.title).length}</Text>
+															<Text style={{ fontSize: 16, color: colors.gray, fontWeight: 'bold' }}>123456789123456789123456789</Text>
+															{/* <Text style={{ fontSize: 16, color: colors.gray, fontWeight: 'bold' }}>{review.title}</Text> */}
+														</View>
+													}
 													subtitle={
 														<View style={{ marginLeft: 15 }}>
-															<Text/>
-															<Text>{review.user.name}</Text>
+															<Text></Text>
+															{/* <Text>2</Text> */}
+															<Text style={{ marginBottom: -5, color: colors.gray }}>{review.user.name}</Text>
 															<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 																<View style={{ flexDirection: 'row', marginRight: 15 }}>
 																	<View style={styles.productDetail}>
@@ -160,7 +178,7 @@ export class ViewUserPage extends Component {
 																		<Text style={styles.productDetailMoney}>{review.price}</Text>
 																	</View>
 																	}
-																	<View style={styles.productDetailLeft}>
+																	{/* <View style={styles.productDetailLeft}>
 																		<IconMaterial
 																			style={styles.iconComment}
 																			name="chat-bubble-outline"
@@ -168,14 +186,14 @@ export class ViewUserPage extends Component {
 																			size={24}
 																		/>
 																		<Text style={styles.productDetailComment}>{review.comment_list.length}</Text>
-																	</View>
+																	</View> */}
 																</View>
 															</View>
 														</View>
 													}
 													hideChevron={true}
 													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
-													// onPress={() => this.goToViewUser(user)}
+													onPress={() => this.goToViewReviewPage(review)}
 												/>
 											))
 										}
@@ -248,11 +266,13 @@ const styles = StyleSheet.create({
 		marginTop: 3
 	},
 	productDetailRating: {
+		color: colors.gray,
 		marginTop: 4,
 		marginLeft: 2,
 		marginVertical: 1
 	},
 	productDetailMoney: {
+		color: colors.gray,
 		marginTop: 4,
 		marginLeft: 1,
 		marginVertical: 1
@@ -274,6 +294,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
+	},
+	setCurrentReview: review => {
+		dispatch(ReviewActions.setCurrentReview(review))
 	},
 	searchByTitle: title => {
 		dispatch(SearchActions.searchByTitle(title))
