@@ -83,22 +83,17 @@ export class ViewUserPage extends Component {
 
 	fetchSearchTitle() {
 		this.setState({ tabBar: 'title' })
-		if (this.props.searchTitle === null) this.props.searchByTitle('')
+		if (this.props.searchTitle === null) this.props.searchByTitle(this.state.searchText)
 	}
 
 	fetchSearchProduct() {
 		this.setState({ tabBar: 'product' })
-		if (this.props.searchProduct === null) this.props.searchByProduct('') 
-	}
-
-	fetchSearchTag() {
-		this.setState({ tabBar: 'tag' })
-		if (this.props.searchTag === null) this.props.searchByTag('')
+		if (this.props.searchProduct === null) this.props.searchByProduct(this.state.searchText) 
 	}
 
 	fetchSearchPeople() {
 		this.setState({ tabBar: 'people' })
-		if (this.props.searchUser === null) this.props.searchByUser('')
+		if (this.props.searchUser === null) this.props.searchByUser(this.state.searchText)
 	}
 
 	render() {
