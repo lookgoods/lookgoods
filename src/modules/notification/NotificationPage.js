@@ -12,6 +12,8 @@ import React, { Component } from 'react'
 import CoverImage from 'src/modules/shares/CoverImage'
 import NavBarSearch from '../shares/NavBarSearch'
 import images from 'src/constants/images'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 export default class NotificationPage extends Component {
 	constructor(props) {
@@ -20,6 +22,7 @@ export default class NotificationPage extends Component {
 			isSearch: false,
 			searchText: ''
 		}
+		this.socket = SocketIOClient(constants.AppURL)
 	}
 
 	setIsSearch() {
