@@ -81,60 +81,57 @@ class CommentSection extends Component {
 	render() {
 		const comment_list = this.props.comments
 		const user = this.props.currentUser
+		if (!this.props.comments || !this.props.success || this.props.comments.length === 0) return <View/>
 		return (
-			this.props.success && (
+			<View>
 				<View>
-					{comment_list.length <= 0 ? <View/> :
-						<View>
-							<Divider style={styles.divider} />
-							<View>
-								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-								<RatingFrequency comment_list={comment_list}/>
-								<View style={styles.commentList}>
-									{ comment_list.map((comment, index) => (
-										<View key={index}>
-											{ user._id === comment.user._id ?
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet1(index)}>
-													<View style = {styles.commentItem} >
-														<Comment
-															comment={comment}
-														/>
-													</View>
-												</TouchableOpacity> 
-												:
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet2(index)}>
-													<View style = {styles.commentItem} >
-														<Comment
-															comment={comment}
-														/>
-													</View>
-												</TouchableOpacity>
-											}
-										</View>
-									))}
+					<Divider style={styles.divider} />
+					<View>
+						<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
+						<RatingFrequency comment_list={comment_list}/>
+						<View style={styles.commentList}>
+							{ comment_list.map((comment, index) => (
+								<View key={index}>
+									{ user._id === comment.user._id ?
+										<TouchableOpacity 
+											delayLongPress={1000} 
+											onLongPress = {() => this.showActionSheet1(index)}>
+											<View style = {styles.commentItem} >
+												<Comment
+													comment={comment}
+												/>
+											</View>
+										</TouchableOpacity> 
+										:
+										<TouchableOpacity 
+											delayLongPress={1000} 
+											onLongPress = {() => this.showActionSheet2(index)}>
+											<View style = {styles.commentItem} >
+												<Comment
+													comment={comment}
+												/>
+											</View>
+										</TouchableOpacity>
+									}
 								</View>
-							</View> 
-							<ActionSheet
-								ref={o => this.ActionSheet1 = o}
-								options={['Edit', 'Copy', 'Delete', 'Cancel']}
-								cancelButtonIndex={3}
-								destructiveButtonIndex={2}
-								onPress={(index) => this.optionsSelect1(index)}
-							/>
-							<ActionSheet
-								ref={o => this.ActionSheet2 = o}
-								options={['Copy', 'Cancel']}
-								cancelButtonIndex={1}
-								onPress={(index) => this.optionsSelect2(index)}
-							/>
+							))}
 						</View>
-					}
+					</View> 
+					<ActionSheet
+						ref={o => this.ActionSheet1 = o}
+						options={['Edit', 'Copy', 'Delete', 'Cancel']}
+						cancelButtonIndex={3}
+						destructiveButtonIndex={2}
+						onPress={(index) => this.optionsSelect1(index)}
+					/>
+					<ActionSheet
+						ref={o => this.ActionSheet2 = o}
+						options={['Copy', 'Cancel']}
+						cancelButtonIndex={1}
+						onPress={(index) => this.optionsSelect2(index)}
+					/>
 				</View>
-			)
+			</View>
 		)
 	}
 }
