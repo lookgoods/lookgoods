@@ -14,13 +14,15 @@ import NavBarSearch from '../shares/NavBarSearch'
 import images from 'src/constants/images'
 import SocketIOClient from 'socket.io-client'
 import constants from 'src/redux/constants'
+import { connect } from 'react-redux'
 
-export default class NotificationPage extends Component {
+export class NotificationPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			isSearch: false,
-			searchText: ''
+			searchText: '',
+			notifications: null
 		}
 		this.socket = SocketIOClient(constants.AppURL)
 	}
@@ -39,10 +41,8 @@ export default class NotificationPage extends Component {
 	}
 
 	async cancelSearch() {
-		// Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
-			// overlaySearch: false,
 			searchText: ''
 		})
 	}
@@ -140,17 +140,6 @@ const styles = StyleSheet.create({
 		borderWidth: 1 / PixelRatio.get(),
 		height: 100
 	},
-	// coverIcon: {
-	// 	height: 30,
-	// 	width: 30,
-	// 	borderWidth: 1.3,
-	// 	borderRadius: 15,
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// 	backgroundColor: '#FFF',
-	// 	borderColor: '#c8c8c8',
-	// 	marginRight: 5
-	// },
 	textName: {
 		fontSize: 15,
 		fontWeight: 'bold',
@@ -161,3 +150,9 @@ const styles = StyleSheet.create({
 		width: 85
 	}
 })
+
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser
+})
+
+export default connect(mapStateToProps, null)(NotificationPage)

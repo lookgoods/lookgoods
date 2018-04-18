@@ -12,19 +12,39 @@ import MenuActions from 'src/redux/actions/menu'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
 import { AccessToken } from 'react-native-fbsdk'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
 
 export class TabMenu extends Component {
-	state = {
-		selectedTab: 'home'
+
+	constructor(props) {
+		super(props)
+		this.state = {
+			selectedTab: 'home',
+			notification: null
+		}
+		this.socket = SocketIOClient(constants.AppURL)
+		this.socket.on('notify', (message) => {
+			this.setState({ notification: message })
+		})
 	}
 
 	componentDidMount() {
 		this.checkPage()
 		this.fetchData()
 		this.checkAccessToken()
+		this.openSocket()
+	}
+
+	openSocket() {
+		if (this.props.currentUser) {
+			console.log('send user to socket')
+			this.socket.emit('authenUser', { userId: this.props.currentUser })
+			this.socket.emit('notify', { followerList: this.props.currentUser.follower_list })
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -53,6 +73,7 @@ export class TabMenu extends Component {
 	}
 
 	render() {
+		console.log(this.state.notification, 'notification')
 		if (!this.props.currentUser && this.props.success) {
 			Actions.loginPage()
 		}

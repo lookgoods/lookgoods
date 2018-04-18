@@ -20,6 +20,7 @@ const UserActions = {
 		}
 		else {
 			console.log(response, 'login success')
+			dispatch(UserActions.getCurrentUser())
 			dispatch(actions.loginFacebookSuccess(response))
 			Actions.tabMenu()
 		}
