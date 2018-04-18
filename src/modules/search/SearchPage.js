@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View, Keyboard, Image, Text, TouchableOpacity } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, Keyboard, Image, Text } from 'react-native'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
 import CoverImage from 'src/modules/shares/CoverImage'
@@ -13,7 +13,6 @@ import Tabs from 'src/modules/shares/Tabs'
 import images from 'src/constants/images'
 import { Actions } from 'react-native-router-flux'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import icons from 'src/constants/icons'
 
 const products = [
@@ -143,24 +142,19 @@ export class ViewUserPage extends Component {
 																borderRadius: 3,
 																borderColor: '#f1f1f1'
 															}}
-															// source={{uri: review.picture_thumbnail_url}}
 															source={{uri: review.picture_cover_url}}
 															resizeMode="cover"
 														/>
 													}
 													key={index}
-													// title={review.title}
-													title={
-														<View style={{ marginLeft: 15 }}>
-															<Text>{this.replaceMarks(review.title).length}</Text>
-															<Text style={{ fontSize: 16, color: colors.gray, fontWeight: 'bold' }}>123456789123456789123456789</Text>
-															{/* <Text style={{ fontSize: 16, color: colors.gray, fontWeight: 'bold' }}>{review.title}</Text> */}
-														</View>
-													}
+													title={review.title}
+													titleNumberOfLines={2}
 													subtitle={
-														<View style={{ marginLeft: 15 }}>
+														<View style={{ marginLeft: 15, buttom: 0}}>
 															<Text></Text>
-															{/* <Text>2</Text> */}
+															{ this.replaceMarks(review.title).length <= 19 &&
+																<Text></Text>
+															}
 															<Text style={{ marginBottom: -5, color: colors.gray }}>{review.user.name}</Text>
 															<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 																<View style={{ flexDirection: 'row', marginRight: 15 }}>
@@ -178,15 +172,6 @@ export class ViewUserPage extends Component {
 																		<Text style={styles.productDetailMoney}>{review.price}</Text>
 																	</View>
 																	}
-																	{/* <View style={styles.productDetailLeft}>
-																		<IconMaterial
-																			style={styles.iconComment}
-																			name="chat-bubble-outline"
-																			color={colors.gray}
-																			size={24}
-																		/>
-																		<Text style={styles.productDetailComment}>{review.comment_list.length}</Text>
-																	</View> */}
 																</View>
 															</View>
 														</View>
@@ -252,9 +237,6 @@ const styles = StyleSheet.create({
 		width: 22,
 		height: 22
 	},
-	iconComment: {
-		marginTop: 3
-	},
 	productDetail: {
 		flexDirection: 'row',
 		marginLeft: -5,
@@ -276,10 +258,6 @@ const styles = StyleSheet.create({
 		marginTop: 4,
 		marginLeft: 1,
 		marginVertical: 1
-	},
-	productDetailComment: {
-		marginTop: 4,
-		marginLeft: 6
 	}
 })
 
