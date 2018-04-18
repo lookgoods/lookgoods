@@ -19,6 +19,11 @@ export class ViewReviewPage extends Component {
 	componentDidMount() {
 		this.props.getCurrentUser()
 		this.props.getComments(this.props.review._id)
+		if (this.props.review_id) this.fetchReview()
+	}
+
+	fetchReview() {
+		this.props.getReview(this.props.review_id)
 	}
 
 	addComment(comment) {
@@ -38,7 +43,9 @@ export class ViewReviewPage extends Component {
 					</View>
 				</View>
 				<ScrollView>
-					<ContentSection review={this.props.review} />
+					{ this.props.review && 
+						<ContentSection review={this.props.review} />
+					}
 					<CommentSection 
 						review={this.props.review}
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
@@ -108,6 +115,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	deleteReview: (review_id) => {
 		dispatch(ReviewActions.deleteReview(review_id))
+	},
+	getReview: (review_id) => {
+		dispatch(ReviewActions.getReview(review_id))
 	}
 })
 

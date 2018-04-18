@@ -39,6 +39,28 @@ export default (state = initialState, action) => {
 			error: action.payload
 		}
 
+	case constants.GET_REVIEWS_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+	case constants.GET_REVIEWS_SUCCESS:
+		return {
+			...state,
+			loading: false,
+			error: null,
+			reviews: action.payload
+		}
+
+	case constants.GET_REVIEWS_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload
+		}
+
 	case constants.GET_REVIEW_REQUEST:
 		return {
 			...state,
@@ -51,7 +73,7 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: null,
-			reviews: action.payload
+			currentReview: action.payload
 		}
 
 	case constants.GET_REVIEW_FAILURE:

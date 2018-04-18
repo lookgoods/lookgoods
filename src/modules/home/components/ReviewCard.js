@@ -111,7 +111,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 							<Ionicons name="md-heart-outline" color={colors.gray} size={30} />
 						</TouchableOpacity>
 					)}
-					<TouchableOpacity onPress={clickShare} style={{ marginLeft: 30, marginTop: 3 }}>
+					<TouchableOpacity onPress={clickShare} style={{ marginLeft: 20, marginTop: 3 }}>
 						<FontAwesome name="share-alt" color={colors.blue} size={25} />
 					</TouchableOpacity>
 				</View>
@@ -241,7 +241,7 @@ export class ReviewCard extends Component {
 			contentDescription: this.props.review.title,
 			contentTitle: this.props.review.title
 		}
-			
+		
 		ShareDialog.canShow(shareLinkContent).then((canShow) => {		
 			if (canShow) return ShareDialog.show(shareLinkContent)
 		}).then((result) => {
