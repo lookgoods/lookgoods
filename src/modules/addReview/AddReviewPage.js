@@ -233,7 +233,7 @@ export class AddReviewPage extends Component {
 	}
 
 	notify() {
-		this.socket.emit('notify', { followerList: this.props.currentUser.follower_list })
+		this.socket.emit('notify', JSON.stringify({ followerList: this.props.currentUser.follower_list }))
 	}
 
 	deleteContentBox(key) {

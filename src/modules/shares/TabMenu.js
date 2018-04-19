@@ -41,15 +41,15 @@ export class TabMenu extends Component {
 
 	openSocket() {
 		if (this.props.currentUser) {
-			console.log('send user to socket')
-			this.socket.emit('authenUser', { userId: this.props.currentUser })
-			this.socket.emit('notify', { followerList: this.props.currentUser.follower_list })
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.state.selectedTab !== prevState.selectedTab)) {
 			this.fetchData()
+			this.openSocket()
 		}
 	}
 
