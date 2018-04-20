@@ -33,25 +33,11 @@ export class TabMenu extends Component {
 		this.checkPage()
 		this.fetchData()
 		this.checkAccessToken()
-		this.checkNotification()
-	}
-
-	checkNotification() {
-		// if (this.props.currentUser) {
-		// 	console.log('send user to socket', this.props.currentUser._id)
-		// 	this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
-		// }
-		console.log('check noti')
-		this.socket.on('notify', (message) => {
-			console.log('notify message', message)
-			this.setState({ notification: message })
-		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.state.selectedTab !== prevState.selectedTab)) {
 			this.fetchData()
-			this.checkNotification()
 		}
 	}
 
@@ -75,7 +61,6 @@ export class TabMenu extends Component {
 	}
 
 	render() {
-		console.log(this.state.notification, 'notification')
 		if (!this.props.currentUser && this.props.success) {
 			Actions.loginPage()
 		}

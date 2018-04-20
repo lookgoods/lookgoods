@@ -45,6 +45,9 @@ export class HomePage extends Component {
 		if (this.props.currentUser) {
 			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+			this.socket.on('notify', (message) => {
+				console.log('notify socket', message)
+			})
 		}
 	}
 
