@@ -235,15 +235,25 @@ export class ReviewCard extends Component {
 	}
 
 	shareToFacebook() {
-		const shareLinkContent = {
+		const shareContent = {
 			contentType: 'link',
-			contentUrl: this.props.review.picture_cover_url,
+			// contentUrl: `lookgoods://viewReview/${this.props.review._id}`,
+			contentUrl: this.props.review.picture_thumbnail_url,
 			contentDescription: this.props.review.title,
 			contentTitle: this.props.review.title
+			// imageUrl: this.props.review.picture_thumbnail_url
+			// photos: [
+			// 	{ 	caption: this.props.review.product.name,
+			// 		imageUrl: { uri: this.props.review.picture_cover_url },
+			// 		userGenerated: false
+			// 	}
+			// ]
 		}
-		
-		ShareDialog.canShow(shareLinkContent).then((canShow) => {		
-			if (canShow) return ShareDialog.show(shareLinkContent)
+		console.log(this.props.review.picture_cover_url, 'cover url')
+
+		ShareDialog.canShow(shareContent).then((canShow) => {	
+			console.log(canShow, 'can show')	
+			if (canShow) return ShareDialog.show(shareContent)
 		}).then((result) => {
 			if (result.isCancelled) console.log('Share is cancelled')
 			else console.log('Share successfull')

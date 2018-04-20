@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
 import AddComment from 'src/modules/viewReview/components/AddComment'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
@@ -18,8 +18,12 @@ export class ViewReviewPage extends Component {
 
 	componentDidMount() {
 		this.props.getCurrentUser()
-		this.props.getComments(this.props.review._id)
-		if (this.props.review_id) this.fetchReview()
+		if (this.props.review_id) {
+			this.fetchReview()
+			this.props.getComments(this.props.review_id)
+		} else {
+			this.props.getComments(this.props.review._id)
+		}
 	}
 
 	fetchReview() {
@@ -31,6 +35,11 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
+		if (!this.props.review) {
+			return (<View style={styles.loadingContainer}>
+				<ActivityIndicator size="large" />
+			</View>)
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -89,6 +98,11 @@ const styles = StyleSheet.create({
 	},
 	addComment: {
 		marginTop: 10
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 })
 
