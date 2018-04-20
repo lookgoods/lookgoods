@@ -10,23 +10,9 @@ import SearchActions from 'src/redux/actions/search'
 import ReviewActions from 'src/redux/actions/review'
 import { List, ListItem } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
-import images from 'src/constants/images'
 import { Actions } from 'react-native-router-flux'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import icons from 'src/constants/icons'
-
-const products = [
-	{ name: 'product1', image_url: images.product1 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product4', image_url: images.product4 },
-	{ name: 'product5', image_url: images.product5 }
-]
 
 export class ViewUserPage extends Component {
 	constructor(props) {
@@ -74,7 +60,6 @@ export class ViewUserPage extends Component {
 		Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
-			// overlaySearch: false,
 			searchText: ''
 		})
 	}
@@ -109,7 +94,6 @@ export class ViewUserPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.searchTitle, 'this.props.searchTitle')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -125,7 +109,6 @@ export class ViewUserPage extends Component {
 				</View>
 				<View>
 					<ScrollView>
-						<ReviewsGrid product_list={products} page={'SearchPage'}/>
 						<View style={styles.tabsContainer}>
 							<Tabs>
 								<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
@@ -148,6 +131,7 @@ export class ViewUserPage extends Component {
 													}
 													key={index}
 													title={review.title}
+													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 													titleNumberOfLines={2}
 													subtitle={
 														<View style={{ marginLeft: 15, buttom: 0}}>
@@ -177,11 +161,11 @@ export class ViewUserPage extends Component {
 														</View>
 													}
 													hideChevron={true}
-													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 													onPress={() => this.goToViewReviewPage(review)}
 												/>
 											))
 										}
+										<View style={{height: 100}}/>
 									</List>
 								</View>
 								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>
