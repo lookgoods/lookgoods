@@ -27,29 +27,31 @@ export class TabMenu extends Component {
 			notification: null
 		}
 		this.socket = SocketIOClient(constants.AppURL)
-		this.socket.on('notify', (message) => {
-			this.setState({ notification: message })
-		})
 	}
 
 	componentDidMount() {
 		this.checkPage()
 		this.fetchData()
 		this.checkAccessToken()
-		// this.openSocket()
+		this.checkNotification()
 	}
 
-	openSocket() {
-		if (this.props.currentUser) {
-			console.log('send user to socket', this.props.currentUser._id)
-			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
-		}
+	checkNotification() {
+		// if (this.props.currentUser) {
+		// 	console.log('send user to socket', this.props.currentUser._id)
+		// 	this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+		// }
+		console.log('check noti')
+		this.socket.on('notify', (message) => {
+			console.log('notify message', message)
+			this.setState({ notification: message })
+		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.state.selectedTab !== prevState.selectedTab)) {
 			this.fetchData()
-			// this.openSocket()
+			this.checkNotification()
 		}
 	}
 
