@@ -14,6 +14,8 @@ import ReviewActions from 'src/redux/actions/review'
 import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 import PTRView from 'react-native-pull-to-refresh'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -22,6 +24,8 @@ export class HomePage extends Component {
 			isSearch: false,
 			searchText: ''
 		}
+		this.socket = SocketIOClient(constants.AppURL)
+
 	}
 
 	fetchData() {
@@ -34,6 +38,14 @@ export class HomePage extends Component {
 
 	componentDidMount() {
 		this.fetchData()
+		this.openSocket()
+	}
+
+	openSocket() {
+		if (this.props.currentUser) {
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

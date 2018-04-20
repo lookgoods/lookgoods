@@ -36,7 +36,7 @@ export class TabMenu extends Component {
 		this.checkPage()
 		this.fetchData()
 		this.checkAccessToken()
-		this.openSocket()
+		// this.openSocket()
 	}
 
 	openSocket() {
@@ -49,7 +49,7 @@ export class TabMenu extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.state.selectedTab !== prevState.selectedTab)) {
 			this.fetchData()
-			this.openSocket()
+			// this.openSocket()
 		}
 	}
 
