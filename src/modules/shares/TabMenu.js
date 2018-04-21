@@ -28,17 +28,45 @@ export class TabMenu extends Component {
 			notification: null
 		}
 		this.socket = SocketIOClient(constants.AppURL)
+		this.handleNotify()
 	}
 
 	componentDidMount() {
 		this.checkPage()
 		this.fetchData()
 		this.checkAccessToken()
+		this.openSocket()
+	}
+
+	openSocket() {
+		if (this.props.currentUser) {
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+			this.props.openSocket()
+		}
+	}
+
+	firstOpenSocket() {
+		if (this.props.currentUser && !this.props.isSocketOpen) {
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+			this.props.openSocket()
+		}
+	}
+
+	handleNotify() {
+		this.socket.on('notify', (message) => {
+			console.log('notify socket', message)
+			this.props.increaseNotificationNumber()
+		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((this.state.selectedTab !== prevState.selectedTab)) {
+		if (this.state.selectedTab !== prevState.selectedTab) {
 			this.fetchData()
+		}
+		if (this.props.currentUser !== prevProps.currentUser) {
+			this.firstOpenSocket()
 		}
 	}
 
@@ -152,7 +180,8 @@ export class TabMenu extends Component {
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	success: state.userReducer.success,
-	notifyNumber: state.notificationReducer.notifyNumber
+	notifyNumber: state.notificationReducer.notifyNumber,
+	isSocketOpen: state.notificationReducer.isSocketOpen
 })
 
 const styles = StyleSheet.create({
@@ -173,6 +202,12 @@ const mapDispatchToProps = dispatch => ({
 	},
 	clearNotificationNumber: () => {
 		dispatch(NotificationActions.clearNotificationNumber())
+	},
+	increaseNotificationNumber: () => {
+		dispatch(NotificationActions.increaseNotificationNumber())
+	},
+	openSocket: () => {
+		dispatch(NotificationActions.openSocket())
 	}
 })
 

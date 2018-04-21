@@ -4,7 +4,8 @@ const initialState = {
 	notifications: null,
 	notifyNumber: 0,
 	loading: false,
-	error: null
+	error: null,
+	isSocketOpen: false
 }
 
 export default (state = initialState, action) => {
@@ -44,6 +45,12 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			notifyNumber: 0
+		}
+		
+	case constants.OPEN_SOCKET: 
+		return {
+			...state,
+			isSocketOpen: true
 		}
 
 	default:

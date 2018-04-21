@@ -226,7 +226,7 @@ const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	user: state.userReducer.user,
 	success: state.userReducer.success,
-	ownReviews: state.userReducer.ownReviews
+	ownReviews: state.userReducer.ownOtherReviews
 })
 
 const mapDispatchToProps = dispatch => ({
