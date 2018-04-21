@@ -2,7 +2,8 @@ import {
 	Platform,
 	StyleSheet,
 	View,
-	TouchableOpacity
+	TouchableOpacity,
+	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -14,6 +15,7 @@ import NotificationActions from 'src/redux/actions/notification'
 import { colors } from 'src/constants/mixins'
 import NotifyComment from 'src/modules/notification/components/NotifyComment'
 import NotifyReview from 'src/modules/notification/components/NotifyReview'
+import { Actions } from 'react-native-router-flux'
 
 export class NotificationPage extends Component {
 	constructor(props) {
@@ -26,9 +28,10 @@ export class NotificationPage extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.notifications !== nextProps.notifications) || 
-		(this.props.currentPage !== nextProps.currentPage) ||
-		(this.props.notifyNumber !== nextProps.notifyNumber)
+		return ((this.props.notifications !== nextProps.notifications) || 
+		(this.props.notifyNumber !== nextProps.notifyNumber) ||
+		(this.props.loading !== nextProps.loading)) && 
+		this.props.currentPage === 'notification' 
 	}
 
 	componentDidMount() {
@@ -36,22 +39,13 @@ export class NotificationPage extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log('prevProps', prevProps)
-		console.log('props', this.props)
-
 		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'notification') {
-			this.clearNotifyNumber()
 			this.fetchData()
 		}
 	}
 
 	fetchData() {
 		this.props.getNotifications()
-	}
-
-	clearNotifyNumber() {
-		console.log('clear noti')
-		this.props.clearNotificationNumber()
 	}
 
 	setIsSearch() {
@@ -65,6 +59,10 @@ export class NotificationPage extends Component {
 			this.setState({ isSearch: true })
 		}
 		this.setState({ searchText: text })
+	}
+
+	goToViewReview(review_id) {
+		Actions.viewReviewPage({ review_id })
 	}
 
 	async cancelSearch() {
@@ -90,15 +88,22 @@ export class NotificationPage extends Component {
 					</View>
 				</View>
 				<View style={styles.body}>
-					{ this.props.notifications &&
-							this.props.notifications.map((notification, index) => (
-								<TouchableOpacity key={index}>
-									{ notification.type === 'Comment' ?
-										<NotifyComment review={notification.item} user={notification.user} />
-										:<NotifyReview review={notification.item} user={notification.user} />
-									}
-								</TouchableOpacity>
-							))
+					{ this.props.notifications ?
+						this.props.notifications.map((notification, index) => (
+							<TouchableOpacity 
+								key={index}
+								onPress= {() => this.goToViewReview(notification.item._id)}
+							>
+								{ notification.type === 'Comment' ?
+									<NotifyComment review={notification.item} user={notification.user} />
+									:<NotifyReview review={notification.item} user={notification.user} />
+								}
+							</TouchableOpacity>
+						))
+						: this.props.loading && 
+						<View style={styles.loadingContainer}>
+							<ActivityIndicator size="large" />
+						</View>
 					}
 				</View>
 			</View>
@@ -121,6 +126,9 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.white,
 		overflow: 'hidden'
+	},
+	loadingContainer: {
+		marginTop: 250
 	}
 })
 
@@ -128,15 +136,13 @@ const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	notifications: state.notificationReducer.notifications,
 	notifyNumber: state.notificationReducer.notifyNumber,
-	currentPage: state.menuReducer.currentPage
+	currentPage: state.menuReducer.currentPage,
+	loading: state.notificationReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({
 	getNotifications: () => {
 		dispatch(NotificationActions.getNotifications())
-	},
-	clearNotificationNumber: () => {
-		dispatch(NotificationActions.clearNotificationNumber())
 	}
 })
 

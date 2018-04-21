@@ -65,7 +65,8 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			loading: true,
-			error: null
+			error: null,
+			currentReview: null
 		}
 
 	case constants.GET_REVIEW_SUCCESS:

@@ -7,10 +7,18 @@ import {
 import React, { Component } from 'react'
 import { colors } from 'src/constants/mixins'
 import CoverImage from 'src/modules/shares/CoverImage'
+import moment from 'moment'
 
 export class NotifyComment extends Component {
 	constructor(props) {
 		super(props)
+	}
+
+	getTimeText(time) {
+		if (Math.abs(moment().diff(time)) < 25000) {
+			return 'Just now'
+		}
+		return moment(time).fromNow()
 	}
 
 	render() {
@@ -28,7 +36,7 @@ export class NotifyComment extends Component {
 						</Text>
 					</Text>
 					<Text style={[styles.font15, { marginBottom: 4 }]}>
-                        4 minutes ago
+						{ this.getTimeText(this.props.review.timestamp) }
 					</Text>
 				</View>
 			</View>

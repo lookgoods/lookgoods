@@ -83,6 +83,7 @@ const ReviewActions = {
 		else {
 			dispatch(actions.deleteReviewSuccess(response))
 			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(UserActions.getCurrentUserOwnReviews())
 		}
 	},

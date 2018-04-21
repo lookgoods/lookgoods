@@ -1,9 +1,9 @@
 import constants from 'src/redux/constants'
 
 const initialState = {
-	notifications: [],
+	notifications: null,
 	notifyNumber: 0,
-	success: false,
+	loading: false,
 	error: null
 }
 
@@ -13,15 +13,15 @@ export default (state = initialState, action) => {
 	case constants.GET_NOTIFICATIONS_REQUEST: 
 		return {
 			...state,
-			notifications: [],
-			success: false,
+			notifications: null,
+			loading: true,
 			error: null
 		}
 
 	case constants.GET_NOTIFICATIONS_SUCCESS: 
 		return {
 			...state,
-			success: true,
+			loading: false,
 			error: null,
 			notifications: action.payload
 		}
@@ -30,8 +30,8 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			error: action.payload,
-			success: false,
-			notifications: []
+			loading: false,
+			notifications: null
 		}
     
 	case constants.INCREASE_NOTIFICATION_NUMBER: 

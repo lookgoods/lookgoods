@@ -11,6 +11,7 @@ import { colors } from 'src/constants/mixins'
 import MenuActions from 'src/redux/actions/menu'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
+import NotificationActions from 'src/redux/actions/notification'
 import { AccessToken } from 'react-native-fbsdk'
 import SocketIOClient from 'socket.io-client'
 import constants from 'src/redux/constants'
@@ -114,6 +115,7 @@ export class TabMenu extends Component {
 					selectedTitleStyle={{ color: colors.blue }}
 					onPress={() => {
 						this.setState({ selectedTab: 'notification' })
+						this.props.clearNotificationNumber()
 						this.props.setCurrentPage('notification')
 					}}
 					renderIcon={() => (
@@ -168,6 +170,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
+	},
+	clearNotificationNumber: () => {
+		dispatch(NotificationActions.clearNotificationNumber())
 	}
 })
 

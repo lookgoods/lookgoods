@@ -17,6 +17,7 @@ import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 import PTRView from 'react-native-pull-to-refresh'
 import SocketIOClient from 'socket.io-client'
 import constants from 'src/redux/constants'
+import MenuActions from 'src/redux/actions/menu'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -40,6 +41,7 @@ export class HomePage extends Component {
 	componentDidMount() {
 		this.fetchData()
 		this.openSocket()
+		this.props.setCurrentPage('home')
 	}
 
 	openSocket() {
@@ -54,9 +56,9 @@ export class HomePage extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.currentUser !== nextProps.currentUser) || 
-		(this.props.reviews !== nextProps.reviews) || 
-		(this.props.currentPage !== nextProps.currentPage)
+		return ((this.props.currentUser !== nextProps.currentUser) || 
+		(this.props.reviews !== nextProps.reviews)) &&
+		this.props.currentPage === 'home'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
@@ -142,6 +144,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	increaseNotificationNumber: () => {
 		dispatch(NotificationActions.increaseNotificationNumber())
+	},
+	setCurrentPage: (page) => {
+		dispatch(MenuActions.setCurrentPage(page))
 	}
 })
 
