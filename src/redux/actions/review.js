@@ -30,10 +30,16 @@ const ReviewActions = {
 		}
 	},
 	getReviews: () => async dispatch => {
-		dispatch(actions.getReviewRequest())
+		dispatch(actions.getReviewsRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews`))
+		if (err) dispatch(actions.getReviewsError(err))
+		else dispatch(actions.getReviewsSuccess(response.data.reverse()))
+	},
+	getReview: (review_id) => async dispatch => {
+		dispatch(actions.getReviewRequest())
+		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}`))
 		if (err) dispatch(actions.getReviewError(err))
-		else dispatch(actions.getReviewSuccess(response.data.reverse()))
+		else dispatch(actions.getReviewSuccess(response.data))
 	},
 	getFollowingReviews: () => async dispatch => {
 		dispatch(actions.getFollowingReviewRequest())
@@ -136,12 +142,23 @@ const actions = {
 		type: constants.ADD_REVIEW_FAILURE,
 		payload: error
 	}),
+	getReviewsRequest: () => ({
+		type: constants.GET_REVIEWS_REQUEST
+	}),
+	getReviewsSuccess: reviews => ({
+		type: constants.GET_REVIEWS_SUCCESS,
+		payload: reviews
+	}),
+	getReviewsError: error => ({
+		type: constants.GET_REVIEWS_FAILURE,
+		payload: error
+	}),
 	getReviewRequest: () => ({
 		type: constants.GET_REVIEW_REQUEST
 	}),
-	getReviewSuccess: reviews => ({
+	getReviewSuccess: review => ({
 		type: constants.GET_REVIEW_SUCCESS,
-		payload: reviews
+		payload: review
 	}),
 	getReviewError: error => ({
 		type: constants.GET_REVIEW_FAILURE,
