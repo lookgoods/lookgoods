@@ -16,13 +16,15 @@ import { colors } from 'src/constants/mixins'
 import NotifyComment from 'src/modules/notification/components/NotifyComment'
 import NotifyReview from 'src/modules/notification/components/NotifyReview'
 import { Actions } from 'react-native-router-flux'
+import ActionSheet from 'react-native-actionsheet'
 
 export class NotificationPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			isSearch: false,
-			searchText: ''
+			searchText: '',
+			item_id: ''
 		}
 		this.socket = SocketIOClient(constants.AppURL)
 	}
@@ -65,6 +67,17 @@ export class NotificationPage extends Component {
 		Actions.viewReviewPage({ review_id })
 	}
 
+	showActionSheet(item_id) {
+		this.setState({ item_id })
+		this.ActionSheet.show()
+	}
+
+	optionsSelect(index) {
+		if (index === 0) {
+			this.props.deleteNotification(this.state.item_id)
+		}
+	}
+
 	async cancelSearch() {
 		await this.setState({
 			isSearch: false,
@@ -93,6 +106,8 @@ export class NotificationPage extends Component {
 							<TouchableOpacity 
 								key={index}
 								onPress= {() => this.goToViewReview(notification.item._id)}
+								delayLongPress={1000} 
+								onLongPress = {() => this.showActionSheet(notification.item._id)}
 							>
 								{ notification.type === 'Comment' ?
 									<NotifyComment review={notification.item} user={notification.user} />
@@ -106,6 +121,13 @@ export class NotificationPage extends Component {
 						</View>
 					}
 				</View>
+				<ActionSheet
+					ref={o => this.ActionSheet = o}
+					options={['Delete', 'Cancel']}
+					cancelButtonIndex={1}
+					destructiveButtonIndex={0}
+					onPress={(index) => this.optionsSelect(index)}
+				/>
 			</View>
 		)
 	}
@@ -143,7 +165,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getNotifications: () => {
 		dispatch(NotificationActions.getNotifications())
-	}
+	},
+	deleteNotification: (item_id) => {
+		dispatch(NotificationActions.deleteNotification(item_id))
+	} 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage)

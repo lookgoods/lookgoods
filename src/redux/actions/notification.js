@@ -11,6 +11,15 @@ const NotificationActions = {
 		if (err) dispatch(actions.getNotificationsError(err))
 		else dispatch(actions.getNotificationsSuccess(response.data))
 	},
+	deleteNotification: (item_id) => async dispatch => {
+		dispatch(actions.deleteNotificationRequest())
+		const [err, response ] = await to(axios.delete(`${AppURL}/currentuser/notifications/${item_id}`))
+		if (err) dispatch(actions.deleteNotificationError(err))
+		else {
+			dispatch(actions.deleteNotificationSuccess(response))
+			dispatch(NotificationActions.getNotifications())
+		}
+	},
 	increaseNotificationNumber: () => ({
 		type: constants.INCREASE_NOTIFICATION_NUMBER
 	}),
@@ -29,6 +38,17 @@ const actions = {
 	}),
 	getNotificationsError: error => ({
 		type: constants.GET_NOTIFICATIONS_FAILURE,
+		payload: error
+	}),
+	deleteNotificationRequest: () => ({
+		type: constants.DELETE_NOTIFICATION_REQUEST
+	}),
+	deleteNotificationSuccess: notifications => ({
+		type: constants.DELETE_NOTIFICATION_SUCCESS,
+		payload: notifications
+	}),
+	deleteNotificationError: error => ({
+		type: constants.DELETE_NOTIFICATION_FAILURE,
 		payload: error
 	})
 }
