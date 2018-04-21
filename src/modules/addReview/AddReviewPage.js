@@ -12,6 +12,7 @@ import {
 import React, { Component } from 'react'
 import validate from 'src/services/validate'
 import ContentView from 'src/modules/addReview/components/ContentView'
+import Autocomplete from 'src/modules/addReview/components/Autocomplete'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
@@ -26,8 +27,6 @@ import ImageActions from 'src/redux/actions/image'
 import { APP_FULL_WIDTH } from 'src/constants'
 import SocketIOClient from 'socket.io-client'
 import constants from 'src/redux/constants'
-import Autocomplete from 'react-native-autocomplete-input'
-
 
 export class AddReviewPage extends Component {
 	constructor(props) {
@@ -54,6 +53,7 @@ export class AddReviewPage extends Component {
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
+			showListProductName: true,
 			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
 			imageSize: { width: 0, height: 0 }
 		}
@@ -260,6 +260,8 @@ export class AddReviewPage extends Component {
 
 	searchProductName(text) {
 		this.setState({ name: text })
+		if (text === '') this.setState({ showListProductName: true })
+		else this.setState({ showListProductName: false })
 		this.props.searchProductName(text)
 	}
 
@@ -341,18 +343,22 @@ export class AddReviewPage extends Component {
 						<Text style={styles.label}>
 							Name<Text style={styles.fontRed}>*</Text>
 						</Text>
-						<View style={styles.textBox}>
-							<Autocomplete
-								// data={data}
-								defaultValue={this.state.name}
-								onChangeText={text => this.searchProductName(text)}
-								renderItem={item => (
-									<TouchableOpacity onPress={() => console.log(item)}>
-										<Text>{item}</Text>
-									</TouchableOpacity>
-								)}
-							/>
-							{/* <TextInput
+						{/* <View style={styles.textBox}> */}
+						<Autocomplete
+							containerStyle={styles.textBox}
+							data={this.props.productsName === null ? [] : this.props.productsName}
+							defaultValue={this.state.name}
+							onChangeText={text => this.searchProductName(text)}
+							hideResults={this.state.showListProductName}
+							renderItem={item => (
+								<TouchableOpacity onPress={() => this.setState({ name: item.name, showListProductName: true})}>
+									<Text>{item.name}</Text>
+								</TouchableOpacity>
+							)}
+						/>
+
+							
+						{/* <TextInput
 								style={styles.textInput}
 								value={this.state.name}
 								underlineColorAndroid="transparent"
@@ -365,7 +371,7 @@ export class AddReviewPage extends Component {
 								}}
 								error={this.state.nameErr}
 							/> */}
-						</View>
+						{/* </View> */}
 
 						<View style={{ flexDirection: 'row' }}>
 							<View style={{ flex: 1, paddingRight: 10 }}>
