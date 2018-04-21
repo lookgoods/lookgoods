@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@ideming1990/react-native-actionsheet": "0.0.1",
+    "autosuggest": "0.0.2",
     "await-to-js": "^2.0.1",
     "axios": "^0.18.0",
     "babel-eslint": "^8.2.2",
@@ -21,6 +22,7 @@
     "react": "16.2.0",
     "react-native": "^0.54.0",
     "react-native-actionsheet": "^2.4.0",
+    "react-native-autocomplete-input": "^3.5.0",
     "react-native-axios": "^0.17.1",
     "react-native-elements": "^0.19.0",
     "react-native-fbsdk": "^0.7.0",

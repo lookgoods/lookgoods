@@ -25,6 +25,8 @@ import ImageActions from 'src/redux/actions/image'
 import { APP_FULL_WIDTH } from 'src/constants'
 import SocketIOClient from 'socket.io-client'
 import constants from 'src/redux/constants'
+import Autocomplete from 'react-native-autocomplete-input'
+
 
 export class AddReviewPage extends Component {
 	constructor(props) {
@@ -303,11 +305,11 @@ export class AddReviewPage extends Component {
 									}}
 									source={{ uri: this.state.coverImage.url }}
 									resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
-
 								/>
 							</TouchableOpacity>
 						)}
 					</View>
+					
 					<View style={styles.sectionBody}>
 						<Text style={styles.label}>
 							Title
@@ -333,7 +335,17 @@ export class AddReviewPage extends Component {
 							Name<Text style={styles.fontRed}>*</Text>
 						</Text>
 						<View style={styles.textBox}>
-							<TextInput
+							<Autocomplete
+								// data={data}
+								defaultValue={this.state.name}
+								onChangeText={text => this.setState({ name: text })}
+								renderItem={item => (
+									<TouchableOpacity onPress={() => console.log(item)}>
+										<Text>{item}</Text>
+									</TouchableOpacity>
+								)}
+							/>
+							{/* <TextInput
 								style={styles.textInput}
 								value={this.state.name}
 								underlineColorAndroid="transparent"
@@ -345,7 +357,7 @@ export class AddReviewPage extends Component {
 									})
 								}}
 								error={this.state.nameErr}
-							/>
+							/> */}
 						</View>
 
 						<View style={{ flexDirection: 'row' }}>
