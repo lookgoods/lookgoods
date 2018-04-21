@@ -64,8 +64,13 @@ class AddComment extends Component {
 	}
 
 	notify() {
-		console.log('notify', this.props.currentUser.follower_list)
-		this.socket.emit('notify', JSON.stringify({ followerList: this.props.currentUser.follower_list }))
+		const user_list = []
+		user_list.push(this.props.review.user._id)
+		this.props.comments.map((comment) => {
+			user_list.push(comment.user._id)
+		})
+
+		this.socket.emit('notify', JSON.stringify({ followerList: user_list }))
 	}
 
 	render() {
@@ -174,7 +179,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	comments: state.commentReducer.comments,
-	success: state.commentReducer.success
+	success: state.commentReducer.success,
+	review: state.reviewReducer.currentReview
 })
 
 export default connect(mapStateToProps, null)(AddComment)

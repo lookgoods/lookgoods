@@ -25,6 +25,9 @@ const NotificationActions = {
 	}),
 	clearNotificationNumber: () => ({
 		type: constants.CLEAR_NOTIFICATION_NUMBER
+	}),
+	openSocket: () => ({
+		type: constants.OPEN_SOCKET
 	})
 }
 

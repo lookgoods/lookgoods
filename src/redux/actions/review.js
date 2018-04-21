@@ -95,6 +95,7 @@ const ReviewActions = {
 		}
 		else {
 			dispatch(actions.saveReviewSuccess(response))
+			dispatch(UserActions.getCurrentUserSaveReviews())
 			dispatch(UserActions.getCurrentUser())
 		}
 	},
@@ -104,6 +105,7 @@ const ReviewActions = {
 		if (err) dispatch(actions.unsaveReviewError(err))
 		else {
 			dispatch(actions.unsaveReviewSuccess(response))
+			dispatch(UserActions.getCurrentUserSaveReviews())
 			dispatch(UserActions.getCurrentUser())
 		}
 	},

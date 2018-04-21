@@ -109,7 +109,7 @@ const TagButton = ({ title, viewTagReviews }) => (
 
 const TagList = ({ tags, viewTagReviews }) => (
 	<View>
-		{tags && (
+		{tags.length !== 0 && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>Tags</Text>
 				<View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
