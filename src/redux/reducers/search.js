@@ -7,7 +7,8 @@ const initialState = {
 	users: null,
 	loading: false,
 	error: null,
-	tagName: ''
+	tagName: '',
+	productsName: null
 }
 
 export default (state = initialState, action) => {
@@ -99,6 +100,28 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: action.payload.error
+		}
+
+	case constants.SEARCH_PRODUCT_NAME_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+	case constants.SEARCH_PRODUCT_NAME_SUCCESS:
+		return {
+			...state,
+			productsName: action.payload,
+			loading: false,
+			error: null
+		}
+
+	case constants.SEARCH_PRODUCT_NAME_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload
 		}
 
 	default:

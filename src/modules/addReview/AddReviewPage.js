@@ -20,6 +20,7 @@ import NavBar from 'src/modules/shares/NavBar'
 import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
+import SearchActions from 'src/redux/actions/search'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
 import { APP_FULL_WIDTH } from 'src/constants'
@@ -257,7 +258,13 @@ export class AddReviewPage extends Component {
 		}
 	}
 
+	searchProductName(text) {
+		this.setState({ name: text })
+		this.props.searchProductName(text)
+	}
+
 	render() {
+		console.log(this.props.productsName, 'names')
 		return (
 			<View
 				style={styles.container}
@@ -338,7 +345,7 @@ export class AddReviewPage extends Component {
 							<Autocomplete
 								// data={data}
 								defaultValue={this.state.name}
-								onChangeText={text => this.setState({ name: text })}
+								onChangeText={text => this.searchProductName(text)}
 								renderItem={item => (
 									<TouchableOpacity onPress={() => console.log(item)}>
 										<Text>{item}</Text>
@@ -642,7 +649,8 @@ const mapStateToProps = state => ({
 	upload_loading: state.imageReducer.loading,
 	upload_error: state.imageReducer.error,
 	review_loading: state.reviewReducer.loading,
-	currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser,
+	productsName: state.searchReducer.productsName
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -651,6 +659,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	uploadImage: image => {
 		dispatch(ImageActions.uploadImage(image))
+	},
+	searchProductName: name => {
+		dispatch(SearchActions.searchProductName(name))
 	}
 })
 
