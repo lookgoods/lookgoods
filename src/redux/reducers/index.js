@@ -5,6 +5,7 @@ import imageReducer from 'src/redux/reducers/image'
 import commentReducer from 'src/redux/reducers/comment'
 import menuReducer from 'src/redux/reducers/menu'
 import searchReducer from 'src/redux/reducers/search'
+import notificationReducer from 'src/redux/reducers/notification'
 
 export default combineReducers({
 	userReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
 	imageReducer,
 	commentReducer,
 	menuReducer,
-	searchReducer
+	searchReducer,
+	notificationReducer
 })

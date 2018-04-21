@@ -2,7 +2,8 @@ import {
 	Platform,
 	ScrollView,
 	StyleSheet,
-	View
+	View,
+	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -35,8 +36,9 @@ export class GlobalPage extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.reviews !== nextProps.reviews) || 
-		(this.props.currentPage !== nextProps.currentPage)
+		return ((this.props.reviews !== nextProps.reviews) || 
+		(this.props.loading !== nextProps.loading)) && 
+		this.props.currentPage === 'global'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
@@ -82,7 +84,13 @@ export class GlobalPage extends Component {
 				<PTRView onRefresh={() => this.refreshData()}>
 					<ScrollView>
 						<View style={styles.body}>
-							<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
+							{ this.props.reviews ?
+								<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
+								: this.props.loading && 
+								<View style={styles.loadingContainer}>
+									<ActivityIndicator size="large" />
+								</View>
+							}
 						</View>
 					</ScrollView>
 				</PTRView>
@@ -106,12 +114,16 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.white,
 		overflow: 'hidden'
+	},
+	loadingContainer: {
+		marginTop: 250
 	}
 })
 
 const mapStateToProps = state => ({
 	reviews: state.reviewReducer.reviews,
-	currentPage: state.menuReducer.currentPage
+	currentPage: state.menuReducer.currentPage,
+	loading: state.reviewReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -11,9 +11,13 @@ import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
+import NotificationActions from 'src/redux/actions/notification'
 import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 import PTRView from 'react-native-pull-to-refresh'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
+import MenuActions from 'src/redux/actions/menu'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -22,6 +26,8 @@ export class HomePage extends Component {
 			isSearch: false,
 			searchText: ''
 		}
+		this.socket = SocketIOClient(constants.AppURL)
+
 	}
 
 	fetchData() {
@@ -34,12 +40,25 @@ export class HomePage extends Component {
 
 	componentDidMount() {
 		this.fetchData()
+		this.openSocket()
+		this.props.setCurrentPage('home')
+	}
+
+	openSocket() {
+		if (this.props.currentUser) {
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+			this.socket.on('notify', (message) => {
+				console.log('notify socket', message)
+				this.props.increaseNotificationNumber()
+			})
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.currentUser !== nextProps.currentUser) || 
-		(this.props.reviews !== nextProps.reviews) || 
-		(this.props.currentPage !== nextProps.currentPage)
+		return ((this.props.currentUser !== nextProps.currentUser) || 
+		(this.props.reviews !== nextProps.reviews)) &&
+		this.props.currentPage === 'home'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
@@ -122,6 +141,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getFollowingReviews: () => {
 		dispatch(ReviewActions.getFollowingReviews())
+	},
+	increaseNotificationNumber: () => {
+		dispatch(NotificationActions.increaseNotificationNumber())
+	},
+	setCurrentPage: (page) => {
+		dispatch(MenuActions.setCurrentPage(page))
 	}
 })
 

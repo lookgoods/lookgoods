@@ -23,10 +23,13 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
 import { APP_FULL_WIDTH } from 'src/constants'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 export class AddReviewPage extends Component {
 	constructor(props) {
 		super(props)
+		this.socket = SocketIOClient(constants.AppURL)
 		this.state = {
 			coverImage: {
 				url: '',
@@ -191,8 +194,6 @@ export class AddReviewPage extends Component {
 		)
 		await this.setState({ contentList })
 		await this.checkValidate()
-
-		
 	}
 
 	async checkValidate() {
@@ -223,10 +224,16 @@ export class AddReviewPage extends Component {
 				rating: this.state.rating	
 			}
 	
-			this.props.addReview(review)
+			await this.props.addReview(review)
+			this.notify()
+
 		} else {
 			Toast.show('กรุณาเติมข้อมูลที่ * ให้ครบถ้วน', Toast.SHORT)
 		}
+	}
+
+	notify() {
+		this.socket.emit('notify', JSON.stringify({ followerList: this.props.currentUser.follower_list }))
 	}
 
 	deleteContentBox(key) {
@@ -234,7 +241,6 @@ export class AddReviewPage extends Component {
 		const contentMessage = this.state.contentMessage
 		contentList.splice(key, 1)
 		contentMessage.splice(key, 1)
-		console.log(contentList, contentMessage, 'deleteContentBox')
 		if (contentList.length === 0) {
 			this.setState({ isEditButton: !this.state.isEditButton })
 		}
@@ -623,7 +629,8 @@ const mapStateToProps = state => ({
 	thumbnail_url: state.imageReducer.thumbnail_url,
 	upload_loading: state.imageReducer.loading,
 	upload_error: state.imageReducer.error,
-	review_loading: state.reviewReducer.loading
+	review_loading: state.reviewReducer.loading,
+	currentUser: state.userReducer.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({

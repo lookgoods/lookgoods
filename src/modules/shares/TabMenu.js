@@ -11,14 +11,23 @@ import { colors } from 'src/constants/mixins'
 import MenuActions from 'src/redux/actions/menu'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
+import NotificationActions from 'src/redux/actions/notification'
 import { AccessToken } from 'react-native-fbsdk'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
 
 export class TabMenu extends Component {
-	state = {
-		selectedTab: 'home'
+
+	constructor(props) {
+		super(props)
+		this.state = {
+			selectedTab: 'home',
+			notification: null
+		}
+		this.socket = SocketIOClient(constants.AppURL)
 	}
 
 	componentDidMount() {
@@ -106,6 +115,7 @@ export class TabMenu extends Component {
 					selectedTitleStyle={{ color: colors.blue }}
 					onPress={() => {
 						this.setState({ selectedTab: 'notification' })
+						this.props.clearNotificationNumber()
 						this.props.setCurrentPage('notification')
 					}}
 					renderIcon={() => (
@@ -114,6 +124,7 @@ export class TabMenu extends Component {
 					renderSelectedIcon={() => (
 						<Icon name="bell" size={this.px2dp(22)} color={colors.blue} />
 					)}
+					badgeText={ this.props.notifyNumber !== 0 ? this.props.notifyNumber : '' }
 				>
 					<NotificationPage/>
 				</TabNavigator.Item>
@@ -140,7 +151,8 @@ export class TabMenu extends Component {
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	success: state.userReducer.success
+	success: state.userReducer.success,
+	notifyNumber: state.notificationReducer.notifyNumber
 })
 
 const styles = StyleSheet.create({
@@ -158,6 +170,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
+	},
+	clearNotificationNumber: () => {
+		dispatch(NotificationActions.clearNotificationNumber())
 	}
 })
 
