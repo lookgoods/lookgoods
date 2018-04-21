@@ -1,30 +1,57 @@
 import {
-	Image,
-	PixelRatio,
 	Platform,
 	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View
+	View,
+	TouchableOpacity
 } from 'react-native'
 import React, { Component } from 'react'
 
-import CoverImage from 'src/modules/shares/CoverImage'
 import NavBarSearch from '../shares/NavBarSearch'
-import images from 'src/constants/images'
 import SocketIOClient from 'socket.io-client'
 import constants from 'src/redux/constants'
 import { connect } from 'react-redux'
+import NotificationActions from 'src/redux/actions/notification'
+import { colors } from 'src/constants/mixins'
+import NotifyComment from 'src/modules/notification/components/NotifyComment'
+import NotifyReview from 'src/modules/notification/components/NotifyReview'
 
 export class NotificationPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			isSearch: false,
-			searchText: '',
-			notifications: null
+			searchText: ''
 		}
 		this.socket = SocketIOClient(constants.AppURL)
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return (this.props.notifications !== nextProps.notifications) || 
+		(this.props.currentPage !== nextProps.currentPage) ||
+		(this.props.notifyNumber !== nextProps.notifyNumber)
+	}
+
+	componentDidMount() {
+		this.fetchData()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		console.log('prevProps', prevProps)
+		console.log('props', this.props)
+
+		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'notification') {
+			this.clearNotifyNumber()
+			this.fetchData()
+		}
+	}
+
+	fetchData() {
+		this.props.getNotifications()
+	}
+
+	clearNotifyNumber() {
+		console.log('clear noti')
+		this.props.clearNotificationNumber()
 	}
 
 	setIsSearch() {
@@ -48,53 +75,9 @@ export class NotificationPage extends Component {
 	}
 
 	render() {
+		console.log(this.props.notifications, 'notification')
 		return (
 			<View style={styles.container}>
-				<View style={styles.body}>
-					<TouchableOpacity style={styles.list}>
-						<CoverImage size={80} url={images.profile} />
-						<View style={{ marginLeft: 13, flex: 1 }}>
-							<Text>
-								<Text style={styles.textName}>Phasin Sarunpornkul</Text>
-								<Text style={{ fontSize: 15, marginBottom: 4 }}>
-									{' '}
-									commented on a review{' '}
-								</Text>
-								<Text style={styles.textName}>
-									HyperX Cloud headset สุดยอดหูฟังเเนวหน้าของวงการ
-								</Text>
-							</Text>
-							<Text style={[styles.font15, { marginBottom: 4 }]}>
-								4 minutes ago
-							</Text>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.list}>
-						<View style={styles.containerImage}>
-							<Image
-								style={{
-									width: 85,
-									height: 85,
-									resizeMode: 'cover',
-									borderWidth: 1,
-									borderRadius: 3,
-									borderColor: '#f1f1f1'
-								}}
-								source={images.product5}
-								resizeMode="cover"
-							/>
-						</View>
-						<View style={{ marginLeft: 13, flex: 1 }}>
-							<Text style={[styles.font15, { marginBottom: 4 }]}>
-								Phasin Sarunpornkul added a review HyperX Cloud headset
-								สุดยอดหูฟังเเนวหน้าของวงการ
-							</Text>
-							<Text style={[styles.font15, { marginBottom: 4 }]}>
-								4 minutes ago
-							</Text>
-						</View>
-					</TouchableOpacity>
-				</View>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarSearch
@@ -105,6 +88,18 @@ export class NotificationPage extends Component {
 							cancelSearch={() => this.cancelSearch()}
 						/>
 					</View>
+				</View>
+				<View style={styles.body}>
+					{ this.props.notifications &&
+							this.props.notifications.map((notification, index) => (
+								<TouchableOpacity key={index}>
+									{ notification.type === 'Comment' ?
+										<NotifyComment review={notification.item} user={notification.user} />
+										:<NotifyReview review={notification.item} user={notification.user} />
+									}
+								</TouchableOpacity>
+							))
+					}
 				</View>
 			</View>
 		)
@@ -117,42 +112,32 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60
+		backgroundColor: colors.white
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		zIndex: 1
-	},
-	list: {
-		padding: 15,
-		flexDirection: 'row',
-		alignItems: 'center',
-		borderColor: '#f1f1f1',
-		borderWidth: 1 / PixelRatio.get(),
-		height: 100
-	},
-	textName: {
-		fontSize: 15,
-		fontWeight: 'bold',
-		marginBottom: 4
-	},
-	containerImage: {
-		alignItems: 'center',
-		width: 85
+		backgroundColor: colors.white,
+		overflow: 'hidden'
 	}
 })
 
 const mapStateToProps = state => ({
-	currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser,
+	notifications: state.notificationReducer.notifications,
+	notifyNumber: state.notificationReducer.notifyNumber,
+	currentPage: state.menuReducer.currentPage
 })
 
-export default connect(mapStateToProps, null)(NotificationPage)
+const mapDispatchToProps = dispatch => ({
+	getNotifications: () => {
+		dispatch(NotificationActions.getNotifications())
+	},
+	clearNotificationNumber: () => {
+		dispatch(NotificationActions.clearNotificationNumber())
+	}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage)

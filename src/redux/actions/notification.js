@@ -10,7 +10,13 @@ const NotificationActions = {
 		const [err, response ] = await to(axios.get(`${AppURL}/currentuser/notifications`))
 		if (err) dispatch(actions.getNotificationsError(err))
 		else dispatch(actions.getNotificationsSuccess(response.data))
-	}
+	},
+	increaseNotificationNumber: () => ({
+		type: constants.INCREASE_NOTIFICATION_NUMBER
+	}),
+	clearNotificationNumber: () => ({
+		type: constants.CLEAR_NOTIFICATION_NUMBER
+	})
 }
 
 const actions = {

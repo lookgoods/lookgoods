@@ -134,7 +134,7 @@ export class ViewUserPage extends Component {
 													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 													titleNumberOfLines={2}
 													subtitle={
-														<View style={{ marginLeft: 15, buttom: 0}}>
+														<View style={{ marginLeft: 15, bottom: 0}}>
 															<Text></Text>
 															{ this.replaceMarks(review.title).length <= 19 &&
 																<Text></Text>

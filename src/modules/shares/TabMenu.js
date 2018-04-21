@@ -122,6 +122,7 @@ export class TabMenu extends Component {
 					renderSelectedIcon={() => (
 						<Icon name="bell" size={this.px2dp(22)} color={colors.blue} />
 					)}
+					badgeText={ this.props.notifyNumber !== 0 ? this.props.notifyNumber : '' }
 				>
 					<NotificationPage/>
 				</TabNavigator.Item>
@@ -148,7 +149,8 @@ export class TabMenu extends Component {
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	success: state.userReducer.success
+	success: state.userReducer.success,
+	notifyNumber: state.notificationReducer.notifyNumber
 })
 
 const styles = StyleSheet.create({

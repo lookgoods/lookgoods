@@ -11,6 +11,7 @@ import ReviewList from 'src/modules/home/components/ReviewList'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
+import NotificationActions from 'src/redux/actions/notification'
 import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 import PTRView from 'react-native-pull-to-refresh'
@@ -47,6 +48,7 @@ export class HomePage extends Component {
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.socket.on('notify', (message) => {
 				console.log('notify socket', message)
+				this.props.increaseNotificationNumber()
 			})
 		}
 	}
@@ -137,6 +139,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	getFollowingReviews: () => {
 		dispatch(ReviewActions.getFollowingReviews())
+	},
+	increaseNotificationNumber: () => {
+		dispatch(NotificationActions.increaseNotificationNumber())
 	}
 })
 
