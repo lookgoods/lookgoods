@@ -266,7 +266,6 @@ export class AddReviewPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.productsName, 'names')
 		return (
 			<View
 				style={styles.container}
@@ -343,7 +342,6 @@ export class AddReviewPage extends Component {
 						<Text style={styles.label}>
 							Name<Text style={styles.fontRed}>*</Text>
 						</Text>
-						{/* <View style={styles.textBox}> */}
 						<Autocomplete
 							containerStyle={styles.textBox}
 							data={this.props.productsName === null ? [] : this.props.productsName}
@@ -351,27 +349,15 @@ export class AddReviewPage extends Component {
 							onChangeText={text => this.searchProductName(text)}
 							hideResults={this.state.showListProductName}
 							renderItem={item => (
-								<TouchableOpacity onPress={() => this.setState({ name: item.name, showListProductName: true})}>
-									<Text>{item.name}</Text>
+								<TouchableOpacity onPress={() => this.setState({ name: item.name, brand: item.brand, showListProductName: true})}>
+									<Text style={{
+										marginVertical: 5,
+										color: colors.gray6,
+										fontSize: 16
+									}}>{item.name} {item.brand}</Text>
 								</TouchableOpacity>
 							)}
 						/>
-
-							
-						{/* <TextInput
-								style={styles.textInput}
-								value={this.state.name}
-								underlineColorAndroid="transparent"
-								onChangeText={value => this.setState({ name: value })}
-								keyboardType="default"
-								onBlur={() => {
-									this.setState({
-										nameErr: validate(['name'], [this.state.name])
-									})
-								}}
-								error={this.state.nameErr}
-							/> */}
-						{/* </View> */}
 
 						<View style={{ flexDirection: 'row' }}>
 							<View style={{ flex: 1, paddingRight: 10 }}>

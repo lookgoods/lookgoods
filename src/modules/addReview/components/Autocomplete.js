@@ -186,58 +186,13 @@ render() {
 }
 }
 
-// const border = {
-// 	// borderColor: '#b9b9b9',
-// 	// borderRadius: 1,
-// 	// borderWidth: 1
-// }
-
-// const androidStyles = {
-// 	container: {
-// 		flex: 1
-// 	},
-// 	inputContainer: {
-// 		...border,
-// 		marginBottom: 0
-// 	},
-// 	list: {
-// 		...border,
-// 		backgroundColor: 'white',
-// 		borderTopWidth: 0,
-// 		margin: 10,
-// 		marginTop: 0
-// 	}
-// }
-
-// const iosStyles = {
-// 	container: {
-// 		zIndex: 1
-// 	},
-// 	inputContainer: {
-// 		...border
-// 	},
-// 	input: {
-// 		backgroundColor: 'white',
-// 		fontSize: 15,
-// 		height: 35
-// 	},
-// 	list: {
-// 		...border,
-// 		backgroundColor: 'white',
-// 		borderTopWidth: 0,
-// 		left: 0,
-// 		position: 'absolute',
-// 		right: 0
-// 	}
-// }
-
 const styles = StyleSheet.create({
 	container: {
 		zIndex: 1
 	},
 	input: {
 		flex: 1,
-		// color: colors.gray6,
+		color: colors.gray6,
 		fontSize: 15,
 		height: 35,
 		padding: 0
@@ -249,10 +204,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		right: 0
 	}
-	// ...Platform.select({
-	// 	android: { ...androidStyles },
-	// 	ios: { ...iosStyles }
-	// })
 })
 
 export default Autocomplete
