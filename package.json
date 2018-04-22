@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@ideming1990/react-native-actionsheet": "0.0.1",
-    "autosuggest": "0.0.2",
     "await-to-js": "^2.0.1",
     "axios": "^0.18.0",
     "babel-eslint": "^8.2.2",
