@@ -23,7 +23,7 @@ const SearchActions = {
 					transformData.push(item._id)
 				})
 			}
-			dispatch(actions.searchByTitleSuccess(transformData))
+			dispatch(actions.searchByTitleSuccess(transformData.reverse()))
 		} catch (err) {
 			dispatch(actions.searchByTitleError(err))
 		}
@@ -39,7 +39,7 @@ const SearchActions = {
 				body: JSON.stringify({ key: product })
 			})
 			const data = await response.json()
-			dispatch(actions.searchByProductSuccess(data))
+			dispatch(actions.searchByProductSuccess(data.reverse()))
 		} catch (err) {
 			dispatch(actions.searchByProductError(err))
 		}
@@ -86,6 +86,22 @@ const SearchActions = {
 			dispatch(actions.searchByUserSuccess(transformData))
 		} catch (err) {
 			dispatch(actions.searchByUserError(err))
+		}
+	},
+	searchProductName: (name) => async dispatch => {
+		dispatch(actions.searchProductNameRequest())
+		try {
+			const response = await fetch(`${AppURL}/search/products`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ key: name })
+			})
+			const data = await response.json()
+			dispatch(actions.searchProductNameSuccess(data.reverse()))
+		} catch (err) {
+			dispatch(actions.searchProductNameError(err))
 		}
 	},
 	viewTagReviews: (tag) => async dispatch => {
@@ -137,6 +153,17 @@ const actions = {
 	}),
 	searchByUserError: error => ({
 		type: constants.SEARCH_BY_USER_FAILURE,
+		payload: error
+	}),
+	searchProductNameRequest: () => ({
+		type: constants.SEARCH_PRODUCT_NAME_REQUEST
+	}),
+	searchProductNameSuccess: (names) => ({
+		type: constants.SEARCH_PRODUCT_NAME_SUCCESS,
+		payload: names
+	}),
+	searchProductNameError: error => ({
+		type: constants.SEARCH_PRODUCT_NAME_FAILURE,
 		payload: error
 	})
 }
