@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
-		backgroundColor: colors.blue,
+		backgroundColor: colors.orange,
 		height: 25,
 		paddingHorizontal: 10,
 		borderRadius: 15

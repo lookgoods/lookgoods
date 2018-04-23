@@ -63,6 +63,9 @@ export class EditReviewPage extends Component {
 		for (let i = 0 ; i < this.props.review.tag.length ; i++) {
 			tagsList.push({ tags: '' })
 		}
+		if (this.props.review.tag.length === 0) {
+			tagsList.push({ tags: '' })
+		}
 		const contentMessage = []
 		this.props.review.content_list.map((item, index) => {
 			if (item.type === 'text') contentMessage.push(item.value)

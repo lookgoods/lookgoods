@@ -344,6 +344,7 @@ export class AddReviewPage extends Component {
 						</Text>
 						<Autocomplete
 							containerStyle={styles.textBox}
+							underlineColorAndroid="transparent"
 							data={this.props.productsName === null ? [] : this.props.productsName}
 							defaultValue={this.state.name}
 							onChangeText={text => this.searchProductName(text)}

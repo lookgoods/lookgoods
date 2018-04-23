@@ -100,7 +100,7 @@ export class HomePage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.lightGray
+		backgroundColor: colors.white
 	},
 	body: {
 		backgroundColor: colors.lightGray

@@ -24,7 +24,7 @@ const BookMark = ({ isActive, clickBookmark }) => {
 	return (
 		<TouchableOpacity style={styles.bookmark} onPress={clickBookmark}>
 			{isActive ? (
-				<IconMaterial name="bookmark" size={36} />
+				<IconMaterial name="bookmark" color={colors.orage} size={36} />
 			) : (
 				<IconMaterial name="bookmark-border" size={36} />
 			)}
