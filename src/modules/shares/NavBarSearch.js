@@ -22,10 +22,9 @@ class NavBarSearch extends Component {
 							borderRadius: 20,
 							flexDirection: 'row',
 							alignItems: 'center',
-							backgroundColor: 'rgba(0, 0, 0, 0.16)',
+							backgroundColor: colors.gray2,
 							paddingHorizontal: 15,
-							marginHorizontal: 10,
-							marginTop: 5
+							marginHorizontal: 10
 						}}
 					>
 						<IconFontAwesome
@@ -35,7 +34,7 @@ class NavBarSearch extends Component {
 							style={styles.searchIcon}
 						/>
 						<Text
-							style={{ flex: 1, marginTop: 5, color: '#FFF', fontSize: 15 }}
+							style={{ flex: 1, marginTop: 5, color: colors.white, fontSize: 15 }}
 						>
 							Search
 						</Text>

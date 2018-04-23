@@ -62,7 +62,7 @@ export class LoginPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.orange
 	},
 	buttonContainer: {
 		paddingLeft: 10,

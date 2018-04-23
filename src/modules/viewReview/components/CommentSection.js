@@ -29,7 +29,7 @@ function RatingFrequency ({ comment_list }) {
 				<View style={styles.ratingRow} key={index}>
 					<StarBar rating={5-index} size={20} type='view' />
 					<View style={styles.progressBar}>
-						<View style={{ height: 15, width: `${rating_count/(comment_list.length)*100}%`, backgroundColor: colors.darkBlue}}/>
+						<View style={{ height: 15, width: `${rating_count/(comment_list.length)*100}%`, backgroundColor: colors.orange}}/>
 					</View>
 					<Text>{rating_count}</Text>
 				</View>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
 	progressBar: {
 		backgroundColor: colors.lightGray,
 		height: 15,
-		width: 200,
+		width: '50%',
 		marginTop: 5,
 		marginBottom: 5,
 		marginLeft: 10,

@@ -32,11 +32,11 @@ class NavBarSearchPage extends Component {
 						style={styles.searchIcon}
 					/>
 					<TextInput
-						style={{ flex: 1, marginTop: 5, color: '#FFF', fontSize: 15 }}
+						style={{ flex: 1, marginTop: 5, color: colors.white, fontSize: 15 }}
 						value={searchText}
 						autoFocus
 						placeholder="Search"
-						placeholderTextColor="rgba(255, 255, 255, 0.7)"
+						placeholderTextColor={colors.white}
 						underlineColorAndroid="transparent"
 						onChangeText={text => handleSearchText(text)}
 						onFocus={() => setIsSearch()}
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.16)',
+		backgroundColor: colors.gray2,
 		paddingHorizontal: 10, //15
 		marginHorizontal: 0, //10
 		marginTop: 5

@@ -106,7 +106,7 @@ export class TabMenu extends Component {
 						<Icon name="home" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="home" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="home" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				>
 					<HomePage/>
@@ -122,7 +122,7 @@ export class TabMenu extends Component {
 						<Icon name="globe" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="globe" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="globe" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				>
 					<GlobalPage/>
@@ -135,7 +135,7 @@ export class TabMenu extends Component {
 						<Icon name="plus" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="plus" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="plus" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				/>
 				<TabNavigator.Item
@@ -150,7 +150,7 @@ export class TabMenu extends Component {
 						<Icon name="bell" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="bell" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="bell" size={this.px2dp(22)} color={colors.orange} />
 					)}
 					badgeText={ this.props.notifyNumber !== 0 ? this.props.notifyNumber : '' }
 				>
@@ -167,7 +167,7 @@ export class TabMenu extends Component {
 						<Icon name="user" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="user" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="user" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				>
 					<UserPage/>
