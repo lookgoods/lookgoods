@@ -48,7 +48,9 @@ class CommentSection extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.comments !== nextProps.comments)
+		console.log(nextProps, 'nextProps')
+		return this.props.successChat && this.props.successComment
+		// return (this.props.comments !== nextProps.comments) && (this.props.chats !== nextProps.chats)
 	}
 
 	async showActionSheet1(index) {
@@ -80,18 +82,46 @@ class CommentSection extends Component {
 	}
 
 	render() {
+		console.log(this.props.comments, 'this.props.comments')
+		console.log(this.props.chats, 'this.props.chats')
 		const comment_list = this.props.comments
+		const chat_list = this.props.chats
 		const user = this.props.currentUser
-		if (!this.props.comments || !this.props.success || this.props.comments.length === 0) return <View/>
+		if (!comment_list || !this.props.successComment || !chat_list || !this.props.successChat || comment_list.length === 0) return <View/>
 		return (
 			<View>
 				<View>
 					<Divider style={styles.divider} />
-
 					<View style={styles.tabsContainer}>
 						<Tabs>
 							<View title="Chat">
-
+								<View style={styles.commentList}>
+									{ chat_list.map((comment, index) => (
+										<View key={index}>
+											{ user._id === comment.user._id ?
+												<TouchableOpacity 
+													delayLongPress={1000} 
+													onLongPress = {() => this.showActionSheet1(index)}>
+													<View style = {styles.commentItem} >
+														<Comment
+															comment={comment}
+														/>
+													</View>
+												</TouchableOpacity> 
+												:
+												<TouchableOpacity 
+													delayLongPress={1000} 
+													onLongPress = {() => this.showActionSheet2(index)}>
+													<View style = {styles.commentItem} >
+														<Comment
+															comment={comment}
+														/>
+													</View>
+												</TouchableOpacity>
+											}
+										</View>
+									))}
+								</View>
 							</View>
 							<View title="Review">
 								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
@@ -190,7 +220,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	comments: state.commentReducer.comments,
-	success: state.commentReducer.success,
+	chats: state.chatReducer.chats,
+	successComment: state.commentReducer.success,
+	successChat: state.chatReducer.success,
 	editCommentId: state.commentReducer.editCommentId
 })
 

@@ -7,6 +7,7 @@ import { Divider } from 'react-native-elements'
 import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
+import ChatActions from 'src/redux/actions/chat'
 import ReviewActions from 'src/redux/actions/review'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -19,13 +20,15 @@ export class ViewReviewPage extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.props.getCurrentUser()
+	async componentDidMount() {
+		await this.props.getCurrentUser()
 		if (this.props.review_id) {
-			this.fetchReview()
-			this.props.getComments(this.props.review_id)
+			await this.fetchReview()
+			await this.props.getComments(this.props.review_id)
+			await this.props.getChats(this.props.review_id)
 		} else {
-			this.props.getComments(this.props.review._id)
+			await this.props.getComments(this.props.review._id)
+			await this.props.getChats(this.props.review._id)
 		}
 	}
 
@@ -144,6 +147,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getReview: (review_id) => {
 		dispatch(ReviewActions.getReview(review_id))
+	},
+	getChats: (review_id) => {
+		dispatch(ChatActions.getChats(review_id))
 	}
 })
 
