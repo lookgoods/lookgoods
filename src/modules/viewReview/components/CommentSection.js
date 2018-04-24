@@ -12,6 +12,7 @@ import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { Divider } from 'react-native-elements'
+import Tabs from 'src/modules/shares/Tabs'
 
 function countRatingFrequency(comment_list) {
 	let rating_frequency_list = [0, 0, 0, 0, 0]
@@ -86,36 +87,44 @@ class CommentSection extends Component {
 			<View>
 				<View>
 					<Divider style={styles.divider} />
-					<View>
-						<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-						<RatingFrequency comment_list={comment_list}/>
-						<View style={styles.commentList}>
-							{ comment_list.map((comment, index) => (
-								<View key={index}>
-									{ user._id === comment.user._id ?
-										<TouchableOpacity 
-											delayLongPress={1000} 
-											onLongPress = {() => this.showActionSheet1(index)}>
-											<View style = {styles.commentItem} >
-												<Comment
-													comment={comment}
-												/>
-											</View>
-										</TouchableOpacity> 
-										:
-										<TouchableOpacity 
-											delayLongPress={1000} 
-											onLongPress = {() => this.showActionSheet2(index)}>
-											<View style = {styles.commentItem} >
-												<Comment
-													comment={comment}
-												/>
-											</View>
-										</TouchableOpacity>
-									}
+
+					<View style={styles.tabsContainer}>
+						<Tabs>
+							<View title="Chat">
+
+							</View>
+							<View title="Review">
+								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
+								<RatingFrequency comment_list={comment_list}/>
+								<View style={styles.commentList}>
+									{ comment_list.map((comment, index) => (
+										<View key={index}>
+											{ user._id === comment.user._id ?
+												<TouchableOpacity 
+													delayLongPress={1000} 
+													onLongPress = {() => this.showActionSheet1(index)}>
+													<View style = {styles.commentItem} >
+														<Comment
+															comment={comment}
+														/>
+													</View>
+												</TouchableOpacity> 
+												:
+												<TouchableOpacity 
+													delayLongPress={1000} 
+													onLongPress = {() => this.showActionSheet2(index)}>
+													<View style = {styles.commentItem} >
+														<Comment
+															comment={comment}
+														/>
+													</View>
+												</TouchableOpacity>
+											}
+										</View>
+									))}
 								</View>
-							))}
-						</View>
+							</View>
+						</Tabs>
 					</View> 
 					<ActionSheet
 						ref={o => this.ActionSheet1 = o}
@@ -142,12 +151,17 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		marginLeft: 30
 	},
+	tabsContainer: {
+		marginTop: 20,
+		paddingLeft: 12,
+		paddingRight: 12
+	},
 	ratingRow: {
 		flexDirection: 'row'
 	},
 	ratingFrequencyPanel: {
 		marginTop: 10,
-		marginLeft: 20,
+		marginLeft: 0,
 		marginBottom: 20
 	},
 	progressBar: {
