@@ -20,11 +20,21 @@ const NotificationActions = {
 			dispatch(NotificationActions.getNotifications())
 		}
 	},
+	clearNotificationNumber: () => async dispatch => {
+		dispatch(actions.clearNotificationNumberRequest())
+		const [err, response ] = await to(axios.put(`${AppURL}/currentuser/notifications`))
+		if (err) dispatch(actions.clearNotificationNumberError(err))
+		else {
+			dispatch(NotificationActions.setNotificationNumber(0))
+			dispatch(actions.clearNotificationNumberSuccess(response))
+		}
+	},
 	increaseNotificationNumber: () => ({
 		type: constants.INCREASE_NOTIFICATION_NUMBER
 	}),
-	clearNotificationNumber: () => ({
-		type: constants.CLEAR_NOTIFICATION_NUMBER
+	setNotificationNumber: (number) => ({
+		type: constants.SET_NOTIFICATION_NUMBER,
+		payload: number
 	}),
 	openSocket: () => ({
 		type: constants.OPEN_SOCKET
@@ -52,6 +62,17 @@ const actions = {
 	}),
 	deleteNotificationError: error => ({
 		type: constants.DELETE_NOTIFICATION_FAILURE,
+		payload: error
+	}),
+	clearNotificationNumberRequest: () => ({
+		type: constants.CLEAR_NOTIFICATION_REQUEST
+	}),
+	clearNotificationNumberSuccess: notifications => ({
+		type: constants.CLEAR_NOTIFICATION_SUCCESS,
+		payload: notifications
+	}),
+	clearNotificationNumberError: error => ({
+		type: constants.CLEAR_NOTIFICATION_FAILURE,
 		payload: error
 	})
 }

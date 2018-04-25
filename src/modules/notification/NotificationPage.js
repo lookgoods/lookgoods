@@ -33,7 +33,7 @@ export class NotificationPage extends Component {
 		return ((this.props.notifications !== nextProps.notifications) || 
 		(this.props.notifyNumber !== nextProps.notifyNumber) ||
 		(this.props.loading !== nextProps.loading)) && 
-		this.props.currentPage === 'notification' 
+		nextProps.currentPage === 'notification' 
 	}
 
 	componentDidMount() {
@@ -41,7 +41,9 @@ export class NotificationPage extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((this.props.currentPage !== prevProps.currentPage) && this.props.currentPage === 'notification') {
+		if (((this.props.currentPage !== prevProps.currentPage) 
+			|| (this.props.notifyNumber !== prevProps.notifyNumber))
+			&& this.props.currentPage === 'notification') {
 			this.fetchData()
 		}
 	}
@@ -86,7 +88,6 @@ export class NotificationPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.notifications, 'notification')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -107,7 +108,7 @@ export class NotificationPage extends Component {
 								key={index}
 								onPress= {() => this.goToViewReview(notification.item._id)}
 								delayLongPress={1000} 
-								onLongPress = {() => this.showActionSheet(notification.item._id)}
+								onLongPress = {() => this.showActionSheet(notification._id)}
 							>
 								{ notification.type === 'Comment' ?
 									<NotifyComment review={notification.item} user={notification.user} />
