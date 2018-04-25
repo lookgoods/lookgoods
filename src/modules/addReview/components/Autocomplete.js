@@ -199,10 +199,8 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		backgroundColor: colors.white,
-		borderTopWidth: 0,
-		left: 0,
-		position: 'absolute',
-		right: 0
+		borderTopWidth: 0.5,
+		borderColor: colors.gray6
 	}
 })
 

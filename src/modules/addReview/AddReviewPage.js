@@ -345,7 +345,7 @@ export class AddReviewPage extends Component {
 						<Autocomplete
 							containerStyle={styles.textBox}
 							underlineColorAndroid="transparent"
-							data={this.props.productsName === null ? [] : this.props.productsName}
+							data={!this.props.productsName ? [] : this.props.productsName}
 							defaultValue={this.state.name}
 							onChangeText={text => this.searchProductName(text)}
 							hideResults={this.state.showListProductName}
