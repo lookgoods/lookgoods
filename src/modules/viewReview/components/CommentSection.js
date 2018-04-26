@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import ActionSheet from 'react-native-actionsheet'
 import Comment from 'src/modules/viewReview/components/Comment'
+import CommentChat from 'src/modules/viewReview/components/CommentChat'
 import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -103,8 +104,9 @@ class CommentSection extends Component {
 													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet1(index)}>
 													<View style = {styles.commentItem} >
-														<Comment
+														<CommentChat
 															comment={comment}
+															type={'chat'}
 														/>
 													</View>
 												</TouchableOpacity> 
@@ -113,7 +115,7 @@ class CommentSection extends Component {
 													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet2(index)}>
 													<View style = {styles.commentItem} >
-														<Comment
+														<CommentChat
 															comment={comment}
 														/>
 													</View>
