@@ -7,6 +7,7 @@ import {
 	Clipboard
 } from 'react-native'
 import ActionSheet from 'react-native-actionsheet'
+import AddComment from 'src/modules/viewReview/components/AddComment'
 import Comment from 'src/modules/viewReview/components/Comment'
 import CommentChat from 'src/modules/viewReview/components/CommentChat'
 import StarBar from 'src/modules/viewReview/components/StarBar'
@@ -14,6 +15,7 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { Divider } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
+
 
 function countRatingFrequency(comment_list) {
 	let rating_frequency_list = [0, 0, 0, 0, 0]
@@ -94,7 +96,6 @@ class CommentSection extends Component {
 	render() {
 		console.log(this.props.comments, 'this.props.comments')
 		console.log(this.props.chats, 'this.props.chats')
-		console.log(!comment_list || !this.props.successComment || !chat_list || !this.props.successChat || comment_list.length === 0, 'check')
 		const comment_list = this.props.comments
 		const chat_list = this.props.chats
 		const user = this.props.currentUser
@@ -165,6 +166,16 @@ class CommentSection extends Component {
 										</View>
 									))}
 								</View>
+								{ this.props.currentUser._id !== this.props.review.user._id &&
+						<View>
+							<Divider style={styles.divider} />
+							<AddComment 
+								style={styles.addComment} 
+								user={this.props.currentUser} 
+								addComment={(comment) => this.addComment(comment)}
+							/>
+						</View>
+								}
 							</View>
 						</Tabs>
 					</View> 
