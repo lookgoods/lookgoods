@@ -69,7 +69,7 @@ export class ViewUserPage extends Component {
 								<NavBar titleName={this.props.title} />
 							</View>
 						</View>
-						<List containerStyle={{ borderBottomColor: colors.transparent, marginTop: -5 }}>
+						<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
 							{
 								this.props.users.map((user, index) => (
 									<ListItem
@@ -81,6 +81,7 @@ export class ViewUserPage extends Component {
 										hideChevron={true}
 										titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 										onPress={() => this.goToViewUser(user)}
+										containerStyle={{ borderBottomColor: colors.lightGray }}
 									/>
 								))
 							}

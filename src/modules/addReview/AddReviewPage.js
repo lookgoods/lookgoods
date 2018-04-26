@@ -293,7 +293,7 @@ export class AddReviewPage extends Component {
 							<TouchableOpacity
 								style={{
 									flex: 1,
-									height: 260,
+									height: APP_FULL_WIDTH*0.6,
 									backgroundColor: colors.gray3,
 									alignItems: 'center',
 									justifyContent: 'center'
@@ -308,7 +308,7 @@ export class AddReviewPage extends Component {
 							>
 								<Image
 									style={{
-										height: 260,
+										height: APP_FULL_WIDTH*0.6,
 										width: APP_FULL_WIDTH
 									}}
 									source={{ uri: this.state.coverImage.url }}
@@ -345,7 +345,7 @@ export class AddReviewPage extends Component {
 						<Autocomplete
 							containerStyle={styles.textBox}
 							underlineColorAndroid="transparent"
-							data={this.props.productsName === null ? [] : this.props.productsName}
+							data={!this.props.productsName ? [] : this.props.productsName}
 							defaultValue={this.state.name}
 							onChangeText={text => this.searchProductName(text)}
 							hideResults={this.state.showListProductName}

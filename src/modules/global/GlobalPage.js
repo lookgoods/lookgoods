@@ -37,8 +37,9 @@ export class GlobalPage extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return ((this.props.reviews !== nextProps.reviews) || 
-		(this.props.loading !== nextProps.loading)) && 
-		this.props.currentPage === 'global'
+		(this.props.loading !== nextProps.loading) ||
+		(this.props.currentPage !== nextProps.currentPage)) && 
+		nextProps.currentPage === 'global'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {

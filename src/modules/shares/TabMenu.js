@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import GlobalPage from 'src/modules/global/GlobalPage'
@@ -43,6 +43,7 @@ export class TabMenu extends Component {
 			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.props.openSocket()
+			this.props.setNotificationNumber(this.props.currentUser.unread)
 		}
 	}
 
@@ -51,6 +52,7 @@ export class TabMenu extends Component {
 			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.props.openSocket()
+			this.props.setNotificationNumber(this.props.currentUser.unread)
 		}
 	}
 
@@ -90,8 +92,11 @@ export class TabMenu extends Component {
 	}
 
 	render() {
-		if (!this.props.currentUser && this.props.success) {
-			Actions.loginPage()
+		if (!this.props.currentUser) {
+			if (this.props.success) {
+				Actions.loginPage()
+			}
+			return <View />
 		}
 		return (
 			<TabNavigator style={styles.container}>
@@ -143,8 +148,8 @@ export class TabMenu extends Component {
 					selectedTitleStyle={{ color: colors.blue }}
 					onPress={() => {
 						this.setState({ selectedTab: 'notification' })
-						this.props.clearNotificationNumber()
 						this.props.setCurrentPage('notification')
+						this.props.clearNotificationNumber()
 					}}
 					renderIcon={() => (
 						<Icon name="bell" size={this.px2dp(22)} color={colors.gray} />
@@ -180,8 +185,8 @@ export class TabMenu extends Component {
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	success: state.userReducer.success,
-	notifyNumber: state.notificationReducer.notifyNumber,
-	isSocketOpen: state.notificationReducer.isSocketOpen
+	isSocketOpen: state.notificationReducer.isSocketOpen,
+	notifyNumber: state.notificationReducer.notifyNumber
 })
 
 const styles = StyleSheet.create({
@@ -199,6 +204,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
+	},
+	setNotificationNumber: (number) => {
+		dispatch(NotificationActions.setNotificationNumber(number))
 	},
 	clearNotificationNumber: () => {
 		dispatch(NotificationActions.clearNotificationNumber())

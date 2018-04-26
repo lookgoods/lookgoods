@@ -2,10 +2,10 @@ import constants from 'src/redux/constants'
 
 const initialState = {
 	notifications: null,
-	notifyNumber: 0,
 	loading: false,
 	error: null,
-	isSocketOpen: false
+	isSocketOpen: false,
+	notifyNumber: 0
 }
 
 export default (state = initialState, action) => {
@@ -41,10 +41,10 @@ export default (state = initialState, action) => {
 			notifyNumber: state.notifyNumber + 1
 		}
     
-	case constants.CLEAR_NOTIFICATION_NUMBER: 
+	case constants.SET_NOTIFICATION_NUMBER:
 		return {
 			...state,
-			notifyNumber: 0
+			notifyNumber: action.payload
 		}
 		
 	case constants.OPEN_SOCKET: 

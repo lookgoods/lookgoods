@@ -14,6 +14,9 @@ import { connect } from 'react-redux'
 export class ViewReviewPage extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			scrollHeight: 0
+		}
 	}
 
 	componentDidMount() {
@@ -51,7 +54,12 @@ export class ViewReviewPage extends Component {
 						/>
 					</View>
 				</View>
-				<ScrollView>
+				<ScrollView 
+					ref={ref => this.scrollView = ref}
+					onContentSizeChange={(contentWidth, contentHeight) => {
+						this.setState({ scrollHeight: contentHeight })
+					}}
+				>
 					{ this.props.review && 
 						<ContentSection review={this.props.review} />
 					}

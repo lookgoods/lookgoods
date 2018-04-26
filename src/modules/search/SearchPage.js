@@ -112,7 +112,7 @@ export class ViewUserPage extends Component {
 						<View style={styles.tabsContainer}>
 							<Tabs>
 								<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
-									<List containerStyle={{ flex: 1, borderBottomColor: colors.transparent, marginTop: -5 }}>
+									<List containerStyle={{ flex: 1, borderColor: colors.transparent, marginTop: -5 }}>
 										{ this.props.searchTitle !== null &&
 											this.props.searchTitle.map((review, index) => (
 												<ListItem
@@ -129,6 +129,7 @@ export class ViewUserPage extends Component {
 															resizeMode="cover"
 														/>
 													}
+													containerStyle={{ borderBottomColor: colors.transparent }}
 													key={index}
 													title={review.title}
 													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
@@ -139,7 +140,6 @@ export class ViewUserPage extends Component {
 															{ this.replaceMarks(review.title).length <= 19 &&
 																<Text></Text>
 															}
-															<Text style={{ marginBottom: -5, color: colors.gray }}>{review.user.name}</Text>
 															<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 																<View style={{ flexDirection: 'row', marginRight: 15 }}>
 																	<View style={styles.productDetail}>
@@ -172,7 +172,7 @@ export class ViewUserPage extends Component {
 									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
 								</View>
 								<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
-									<List containerStyle={{ borderBottomColor: colors.transparent, marginTop: -5 }}>
+									<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
 										{ this.props.searchUser !== null &&
 											this.props.searchUser.map((user, index) => (
 												<ListItem
@@ -184,6 +184,7 @@ export class ViewUserPage extends Component {
 													hideChevron={true}
 													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 													onPress={() => this.goToViewUser(user)}
+													containerStyle={{ borderBottomColor: colors.lightGray }}
 												/>
 											))
 										}

@@ -32,7 +32,7 @@ class NavBarSearchPage extends Component {
 						style={styles.searchIcon}
 					/>
 					<TextInput
-						style={{ flex: 1, marginTop: 5, color: colors.white, fontSize: 15 }}
+						style={{ flex: 1, color: colors.white, fontSize: 15 }}
 						value={searchText}
 						autoFocus
 						placeholder="Search"
@@ -48,7 +48,7 @@ class NavBarSearchPage extends Component {
 						>
 							<IconIonicons
 								name={'ios-close-circle'}
-								size={16}
+								size={20}
 								color={colors.white}
 								style={styles.backgroundTranparent}
 							/>
