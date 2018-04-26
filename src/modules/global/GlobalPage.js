@@ -3,7 +3,8 @@ import {
 	ScrollView,
 	StyleSheet,
 	View,
-	ActivityIndicator
+	ActivityIndicator,
+	RefreshControl
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -11,7 +12,6 @@ import NavBarSearch from 'src/modules/shares/NavBarSearch'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
-import PTRView from 'react-native-pull-to-refresh'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 
 export class GlobalPage extends Component {
@@ -81,19 +81,24 @@ export class GlobalPage extends Component {
 						/>
 					</View>
 				</View>
-				<PTRView onRefresh={() => this.refreshData()}>
-					<ScrollView>
-						<View style={styles.body}>
-							{ this.props.reviews ?
-								<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
-								: this.props.loading && 
-								<View style={styles.loadingContainer}>
-									<ActivityIndicator size="large" />
-								</View>
-							}
-						</View>
-					</ScrollView>
-				</PTRView>
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={this.props.loading}
+							onRefresh={() => this.refreshData()}
+						/>
+					}
+				>
+					<View style={styles.body}>
+						{ this.props.reviews ?
+							<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
+							: this.props.loading && 
+							<View style={styles.loadingContainer}>
+								<ActivityIndicator size="large" />
+							</View>
+						}
+					</View>
+				</ScrollView>
 			</View>
 		)
 	}
