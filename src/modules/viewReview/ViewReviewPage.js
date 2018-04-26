@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
-import AddComment from 'src/modules/viewReview/components/AddComment'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
-import { Divider } from 'react-native-elements'
 import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
@@ -74,16 +72,6 @@ export class ViewReviewPage extends Component {
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>
-					{ this.props.currentUser._id !== this.props.review.user._id &&
-						<View>
-							<Divider style={styles.divider} />
-							<AddComment 
-								style={styles.addComment} 
-								user={this.props.currentUser} 
-								addComment={(comment) => this.addComment(comment)}
-							/>
-						</View>
-					}
 				</ScrollView>
 			</View>
 		)
