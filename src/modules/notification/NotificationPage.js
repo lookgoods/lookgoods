@@ -4,7 +4,8 @@ import {
 	View,
 	TouchableOpacity,
 	ActivityIndicator,
-	ScrollView
+	ScrollView,
+	RefreshControl
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -38,6 +39,10 @@ export class NotificationPage extends Component {
 	}
 
 	componentDidMount() {
+		this.fetchData()
+	}
+
+	refreshData () {
 		this.fetchData()
 	}
 
@@ -102,7 +107,15 @@ export class NotificationPage extends Component {
 						/>
 					</View>
 				</View>
-				<ScrollView style={styles.body}>
+				<ScrollView 
+					style={styles.body}
+					refreshControl={
+						<RefreshControl
+							refreshing={this.props.loading}
+							onRefresh={() => this.refreshData()}
+						/>
+					}
+				>
 					{ this.props.notifications ?
 						this.props.notifications.map((notification, index) => (
 							<TouchableOpacity 
