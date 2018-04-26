@@ -39,12 +39,22 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_CHAT_SUCCESS:
-		return {
-			...state,
-			chats: action.payload,
-			success: true,
-			error: null
+		if (action.payload.length) {
+			return {
+				...state,
+				chats: action.payload,
+				success: true,
+				error: null
+			}
+		} else {
+			return {
+				...state,
+				chats: [],
+				success: true,
+				error: null
+			}
 		}
+			
 
 	case constants.GET_CHAT_FAILURE:
 		return {
