@@ -48,11 +48,20 @@ class CommentSection extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		console.log(nextProps, 'nextProps')
-		return this.props.successChat && this.props.successComment
-		// return (this.props.comments !== nextProps.comments) && (this.props.chats !== nextProps.chats)
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	console.log(nextProps, 'nextProps')
+	// 	// return this.props.successChat && this.props.successComment
+	// 	// return (this.props.comments !== nextProps.comments) && (this.props.chats !== nextProps.chats)
+	// }
+
+	// static getDerivedStateFromProps(nextProps, prevState) {
+	// 	// Store prevId in state so we can compare when props change.
+	// 	// Clear out previously-loaded data (so we don't render stale stuff).
+	// 	console.log(nextProps, 'nextProps')
+
+	// 	// No state update necessary
+	// 	return null
+	// }
 
 	async showActionSheet1(index) {
 		await this.setState({ indexComment: index })
@@ -85,6 +94,7 @@ class CommentSection extends Component {
 	render() {
 		console.log(this.props.comments, 'this.props.comments')
 		console.log(this.props.chats, 'this.props.chats')
+		console.log(!comment_list || !this.props.successComment || !chat_list || !this.props.successChat || comment_list.length === 0, 'check')
 		const comment_list = this.props.comments
 		const chat_list = this.props.chats
 		const user = this.props.currentUser
