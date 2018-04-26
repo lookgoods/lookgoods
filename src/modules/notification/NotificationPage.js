@@ -3,7 +3,8 @@ import {
 	StyleSheet,
 	View,
 	TouchableOpacity,
-	ActivityIndicator
+	ActivityIndicator,
+	ScrollView
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -101,7 +102,7 @@ export class NotificationPage extends Component {
 						/>
 					</View>
 				</View>
-				<View style={styles.body}>
+				<ScrollView style={styles.body}>
 					{ this.props.notifications ?
 						this.props.notifications.map((notification, index) => (
 							<TouchableOpacity 
@@ -121,7 +122,7 @@ export class NotificationPage extends Component {
 							<ActivityIndicator size="large" />
 						</View>
 					}
-				</View>
+				</ScrollView>
 				<ActionSheet
 					ref={o => this.ActionSheet = o}
 					options={['Delete', 'Cancel']}

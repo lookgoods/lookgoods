@@ -97,7 +97,7 @@ function Body({ product_url, title, review, setReview, imageSize }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove, clickShare }) {
+function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove, clickShare, setReview, review }) {
 	return (
 		<View style={styles.footerContainer}>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -130,7 +130,13 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 						<Text style={styles.productDetailMoney}>{price}</Text>
 					</View>
 					}
-					<View style={styles.productDetail}>
+					<TouchableOpacity 
+						style={styles.productDetail}
+						onPress={() => {
+							setReview(review)
+							Actions.viewReviewPage({ viewComment: true })
+						}}
+					>
 						<IconMaterial
 							style={styles.iconComment}
 							name="chat-bubble-outline"
@@ -138,7 +144,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 							size={24}
 						/>
 						<Text style={styles.productDetailComment}>{numberOfComment}</Text>
-					</View>
+					</TouchableOpacity>
 				</View>
 			</View>
 
@@ -298,6 +304,8 @@ export class ReviewCard extends Component {
 					isLove={this.state.isLove}
 					clickLove={() => this.clickLove()}
 					clickShare={() => this.shareToFacebook()}
+					review={this.props.review}
+					setReview={this.props.setCurrentReview}
 				/>
 			</View>
 		)
@@ -338,7 +346,7 @@ const styles = StyleSheet.create({
 	},
 	productImage: {
 		width: APP_FULL_WIDTH,
-		height: 260
+		height: APP_FULL_WIDTH*0.6
 	},
 	bahtImage: {
 		marginTop: 3,
@@ -350,7 +358,7 @@ const styles = StyleSheet.create({
 	},
 	titleText: {
 		marginLeft: 20,
-		marginTop: 10
+		marginTop: 12
 	},
 	footerContainer: {
 		flex: 1,

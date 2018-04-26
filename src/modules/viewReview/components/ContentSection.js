@@ -204,7 +204,7 @@ export class ContentSection extends Component {
 const styles = StyleSheet.create({
 	coverImage: {
 		width: APP_FULL_WIDTH,
-		height: 260
+		height: APP_FULL_WIDTH*0.6
 	},
 	profileImage: {
 		marginLeft: 10

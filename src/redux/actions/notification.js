@@ -9,7 +9,7 @@ const NotificationActions = {
 		dispatch(actions.getNotificationsRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/currentuser/notifications`))
 		if (err) dispatch(actions.getNotificationsError(err))
-		else dispatch(actions.getNotificationsSuccess(response.data))
+		else dispatch(actions.getNotificationsSuccess(response.data.reverse()))
 	},
 	deleteNotification: (item_id) => async dispatch => {
 		dispatch(actions.deleteNotificationRequest())

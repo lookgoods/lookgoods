@@ -309,7 +309,7 @@ export class EditReviewPage extends Component {
 							<TouchableOpacity
 								style={{
 									flex: 1,
-									height: 260,
+									height: APP_FULL_WIDTH*0.6,
 									backgroundColor: colors.gray3,
 									alignItems: 'center',
 									justifyContent: 'center'
@@ -324,7 +324,7 @@ export class EditReviewPage extends Component {
 							>
 								<Image
 									style={{
-										height: 260,
+										height: APP_FULL_WIDTH*0.6,
 										width: APP_FULL_WIDTH
 									}}
 									source={{ uri: this.state.coverImage.url }}
