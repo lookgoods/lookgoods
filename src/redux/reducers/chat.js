@@ -1,6 +1,7 @@
 import constants from 'src/redux/constants'
 
 const initialState = {
+	editChatId: null,
 	chats: null,
 	success: false,
 	error: null
@@ -55,7 +56,6 @@ export default (state = initialState, action) => {
 			}
 		}
 			
-
 	case constants.GET_CHAT_FAILURE:
 		return {
 			...state,
@@ -105,6 +105,14 @@ export default (state = initialState, action) => {
 			success: false,
 			error: action.payload.error
 		}
+
+	case constants.SET_EDIT_CHAT:
+		return {
+			...state,
+			editChatId: action.payload,
+			success: false,
+			error: null
+		}	
 
 	default:
 		return state

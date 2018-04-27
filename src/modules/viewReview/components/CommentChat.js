@@ -43,7 +43,7 @@ class Comment extends Component {
 		if (!descriptionErr) {
 			const comment = {description: this.state.description, rating: rating}
 			this.props.editComment(comment, this.props.review._id, comment_id)
-			this.props.setEditComment(this.props.review._id, null)
+			this.props.setEditComment(null)
 		} else {
 			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
 		}		
@@ -87,7 +87,7 @@ class Comment extends Component {
 							</View>
 							<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
 								<View style={{alignItems: 'flex-end', flexDirection: 'row', marginRight: 15 }}>
-									<TouchableOpacity style={styles.buttonCancel} onPress={() => this.props.setEditComment(this.props.review._id, null)}>
+									<TouchableOpacity style={styles.buttonCancel} onPress={() => this.props.setEditComment(null)}>
 										<Text style={styles.fontCancel}>Cancel</Text>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditComment(this.state.rating, _id)}>
@@ -167,8 +167,8 @@ const mapDispatchToProps = dispatch => ({
 	editComment: (comment, review_id, comment_id) => {
 		dispatch(CommentActions.editComment(comment, review_id, comment_id))
 	},
-	setEditComment: (review_id, comment_id) => {
-		dispatch(CommentActions.setEditComment(review_id, comment_id))
+	setEditComment: (comment_id) => {
+		dispatch(CommentActions.setEditComment(comment_id))
 	}
 })
 

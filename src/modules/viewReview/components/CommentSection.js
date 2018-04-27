@@ -46,24 +46,14 @@ class CommentSection extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			indexComment: -1
+			indexComment: -1,
+			indexChat: -1
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		console.log(nextProps, 'nextProps')
-		// return this.props.successChat && this.props.successComment
 		return (this.props.comments !== nextProps.comments) || (this.props.chats !== nextProps.chats)
 	}
-
-	// static getDerivedStateFromProps(nextProps, prevState) {
-	// 	// Store prevId in state so we can compare when props change.
-	// 	// Clear out previously-loaded data (so we don't render stale stuff).
-	// 	console.log(nextProps, 'nextProps')
-
-	// 	// No state update necessary
-	// 	return null
-	// }
 
 	async showActionSheet1(index) {
 		await this.setState({ indexComment: index })
@@ -75,10 +65,20 @@ class CommentSection extends Component {
 		this.ActionSheet2.show()
 	}
 
+	async showActionSheet3(index) {
+		await this.setState({ indexChat: index })
+		this.ActionSheet3.show()
+	}
+
+	async showActionSheet4(index) {
+		await this.setState({ indexChat: index })
+		this.ActionSheet4.show()
+	}
+
 	optionsSelect1(index) {
 		const comment_list = this.props.comments
 		if (index === 0) {
-			this.props.setEditComment(this.props.review._id, comment_list[this.state.indexComment]._id)
+			this.props.setEditComment(comment_list[this.state.indexComment]._id)
 		} else if (index === 1) {
 			Clipboard.setString(comment_list[this.state.indexComment].description)
 		} else if (index === 2) {
@@ -106,7 +106,7 @@ class CommentSection extends Component {
 					<Divider style={styles.divider} />
 					<View style={styles.tabsContainer}>
 						<Tabs>
-							<View title="Chat">
+							<View title="Comment">
 								<View style={styles.commentList}>
 									{ chat_list.map((comment, index) => (
 										<View key={index}>
@@ -256,8 +256,7 @@ const mapStateToProps = state => ({
 	comments: state.commentReducer.comments,
 	chats: state.chatReducer.chats,
 	successComment: state.commentReducer.success,
-	successChat: state.chatReducer.success,
-	editCommentId: state.commentReducer.editCommentId
+	successChat: state.chatReducer.success
 })
 
 export default connect(mapStateToProps, null)(CommentSection)
