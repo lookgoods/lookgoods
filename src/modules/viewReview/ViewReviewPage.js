@@ -34,10 +34,6 @@ export class ViewReviewPage extends Component {
 		this.props.getReview(this.props.review_id)
 	}
 
-	// addComment(comment) {
-	// 	this.props.addComment(comment, this.props.review._id)
-	// }
-
 	render() {
 		if (!this.props.review) {
 			if (this.props.loading) {
@@ -70,9 +66,9 @@ export class ViewReviewPage extends Component {
 					<CommentSection 
 						review={this.props.review}
 						addComment={(comment) => this.props.addComment(comment, this.props.review._id)}
-						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
-						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
+						setEditComment={(comment_id) => this.props.setEditComment(comment_id)}
+						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 					/>
 				</ScrollView>
 			</View>
@@ -94,15 +90,6 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		zIndex: 1
 	},
-	divider: {
-		backgroundColor: colors.lightGray,
-		marginTop: 5,
-		height: 1.2,
-		width: '100%'
-	},
-	addComment: {
-		marginTop: 10
-	},
 	loadingContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -121,7 +108,6 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(UserActions.getCurrentUser())
 	},
 	addComment: (comment, review_id) => {
-		console.log(comment, review_id, 'comment view')
 		dispatch(CommentActions.addComment(comment, review_id))
 	},
 	getComments: (review_id) => {
@@ -130,8 +116,8 @@ const mapDispatchToProps = dispatch => ({
 	deleteComment: (review_id, comment_id) => {
 		dispatch(CommentActions.deleteComment(review_id, comment_id))
 	},
-	setEditComment: (review_id, comment_id) => {
-		dispatch(CommentActions.setEditComment(review_id, comment_id))
+	setEditComment: (comment_id) => {
+		dispatch(CommentActions.setEditComment(comment_id))
 	},
 	deleteReview: (review_id) => {
 		dispatch(ReviewActions.deleteReview(review_id))
@@ -139,13 +125,19 @@ const mapDispatchToProps = dispatch => ({
 	getReview: (review_id) => {
 		dispatch(ReviewActions.getReview(review_id))
 	},
+	addChat: (chat, review_id) => {
+		dispatch(ChatActions.addChat(chat, review_id))
+	},
 	getChats: (review_id) => {
 		dispatch(ChatActions.getChats(review_id))
 	},
-	addChat: (chat, review_id) => {
-		console.log(chat, review_id, 'chat view')
-		dispatch(ChatActions.addChat(chat, review_id))
+	deleteChat: (review_id, chat_id) => {
+		dispatch(ChatActions.deleteChatt(review_id, chat_id))
+	},
+	setEditChat: (chat_id) => {
+		dispatch(ChatActions.setEditChat(chat_id))
 	}
+	
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewReviewPage)
