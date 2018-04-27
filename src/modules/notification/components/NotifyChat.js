@@ -2,14 +2,14 @@ import {
 	StyleSheet,
 	View,
 	PixelRatio,
-	Text,
-	Image
+	Text
 } from 'react-native'
 import React, { Component } from 'react'
 import { colors } from 'src/constants/mixins'
+import CoverImage from 'src/modules/shares/CoverImage'
 import moment from 'moment'
 
-export class NotifyComment extends Component {
+export class NotifyChat extends Component {
 	constructor(props) {
 		super(props)
 	}
@@ -24,32 +24,22 @@ export class NotifyComment extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<View style={styles.containerImage}>
-					<Image
-						style={{
-							width: 85,
-							height: 85,
-							resizeMode: 'cover',
-							borderWidth: 1,
-							borderRadius: 3,
-							borderColor: colors.lightGray2
-						}}
-						source={{ uri: this.props.review.picture_cover_url }}
-						resizeMode="cover"
-					/>
-				</View>
+				<CoverImage size={80} uri={this.props.user.picture_url} />
 				<View style={{ marginLeft: 13, flex: 1 }}>
 					<Text>
 						<Text style={styles.textName}>{this.props.user.name}</Text>
 						<Text style={{ fontSize: 15, marginBottom: 4, color: colors.gray }}>
-							{' '}add a review{' '}
+							{' '}send a message on the review{' '}
 						</Text>
 						<Text style={styles.textName}>
 							{this.props.review.title}
 						</Text>
 					</Text>
 					<Text style={[styles.font15, { color: colors.gray, marginBottom: 4 }]}>
-						{ this.getTimeText(this.props.review.timestamp) }
+						{ this.props.timestamp ?
+							this.getTimeText(this.props.timestamp) 
+							: this.getTimeText(this.props.review.timestamp) 
+						}
 					</Text>
 				</View>
 			</View>
@@ -71,12 +61,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 4,
 		color: colors.gray
-	},
-	containerImage: {
-		alignItems: 'center',
-		width: 85
 	}	
 })
 
-export default NotifyComment
-
+export default NotifyChat

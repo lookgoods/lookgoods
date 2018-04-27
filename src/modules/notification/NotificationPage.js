@@ -16,6 +16,7 @@ import NotificationActions from 'src/redux/actions/notification'
 import { colors } from 'src/constants/mixins'
 import NotifyComment from 'src/modules/notification/components/NotifyComment'
 import NotifyReview from 'src/modules/notification/components/NotifyReview'
+import NotifyChat from 'src/modules/notification/components/NotifyChat'
 import { Actions } from 'react-native-router-flux'
 import ActionSheet from 'react-native-actionsheet'
 
@@ -124,8 +125,10 @@ export class NotificationPage extends Component {
 								onLongPress = {() => this.showActionSheet(notification._id)}
 							>
 								{ notification.type === 'Comment' ?
-									<NotifyComment review={notification.item} user={notification.user} />
-									:<NotifyReview review={notification.item} user={notification.user} />
+									<NotifyComment review={notification.item} timestamp={notification.timestamp} user={notification.user} />
+									: notification.type === 'Review' ?
+										<NotifyReview review={notification.item} user={notification.user} />
+										: <NotifyChat review={notification.item} timestamp={notification.timestamp} user={notification.user} />
 								}
 							</TouchableOpacity>
 						))
