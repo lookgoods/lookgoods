@@ -256,7 +256,6 @@ export class ReviewCard extends Component {
 			// 	}
 			// ]
 		}
-		console.log(this.props.review.picture_cover_url, 'cover url')
 
 		ShareDialog.canShow(shareContent).then((canShow) => {	
 			console.log(canShow, 'can show')	
