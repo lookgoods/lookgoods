@@ -30,7 +30,7 @@ export default class ContentView extends Component {
 				<View style={{ marginTop: 15 }}>
 					<View style={{ marginBottom: 5, flexDirection: 'row' }}>
 						<Text style={styles.label}>
-							Content<Text style={styles.fontRed}>*</Text>
+							Content<Text style={styles.fontRed}> *</Text>
 						</Text>
 						<View style={styles.bodyEditContent}>
 							{contentList.length === 0 ? (

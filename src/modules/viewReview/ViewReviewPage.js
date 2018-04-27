@@ -39,9 +39,12 @@ export class ViewReviewPage extends Component {
 
 	render() {
 		if (!this.props.review) {
-			return (<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" />
-			</View>)
+			if (this.props.loading) {
+				return (<View style={styles.loadingContainer}>
+					<ActivityIndicator size="large" />
+				</View>)
+			}
+			return <View/>
 		}
 		return (
 			<View style={styles.container}>
@@ -116,7 +119,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,
-	currentUser: state.userReducer.currentUser
+	currentUser: state.userReducer.currentUser,
+	loading: state.reviewReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({

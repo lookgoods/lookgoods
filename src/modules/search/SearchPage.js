@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View, Keyboard, Image, Text } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, Keyboard, Image, Text, ActivityIndicator } from 'react-native'
 import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import NavBarSearchPage from 'src/modules/search/components/NavBarSearchPage'
 import CoverImage from 'src/modules/shares/CoverImage'
@@ -13,6 +13,7 @@ import Tabs from 'src/modules/shares/Tabs'
 import { Actions } from 'react-native-router-flux'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import icons from 'src/constants/icons'
+import { APP_FULL_HEIGHT } from 'src/constants'
 
 export class ViewUserPage extends Component {
 	constructor(props) {
@@ -113,7 +114,7 @@ export class ViewUserPage extends Component {
 							<Tabs>
 								<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
 									<List containerStyle={{ flex: 1, borderColor: colors.transparent, marginTop: -5 }}>
-										{ this.props.searchTitle !== null &&
+										{ this.props.searchTitle !== null ?
 											this.props.searchTitle.map((review, index) => (
 												<ListItem
 													avatar={
@@ -146,15 +147,16 @@ export class ViewUserPage extends Component {
 																		<IconMaterial name="star-border" color={colors.gray} size={26} />
 																		<Text style={styles.productDetailRating}>{review.rating}</Text>
 																	</View>
-																	{ review.price && 
-																	<View style={styles.productDetailLeft}>
-																		<Image
-																			style={styles.bahtImage}
-																			source={icons.baht}
-																			resizeMode="cover"
-																		/>
-																		<Text style={styles.productDetailMoney}>{review.price}</Text>
-																	</View>
+																	{ (review.price && review.price !== '0') ? 
+																		<View style={styles.productDetailLeft}>
+																			<Image
+																				style={styles.bahtImage}
+																				source={icons.baht}
+																				resizeMode="cover"
+																			/>
+																			<Text style={styles.productDetailMoney}>{review.price}</Text>
+																		</View>
+																		: <View/>
 																	}
 																</View>
 															</View>
@@ -164,16 +166,26 @@ export class ViewUserPage extends Component {
 													onPress={() => this.goToViewReviewPage(review)}
 												/>
 											))
+											: this.props.loading && 
+											<View style={styles.loadingContainer}>
+												<ActivityIndicator size="large" />
+											</View>
 										}
 										<View style={{height: 100}}/>
 									</List>
 								</View>
 								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>
-									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
+									{ this.props.searchProduct ? 
+										<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
+										: this.props.loading && 
+									<View style={styles.loadingContainer}>
+										<ActivityIndicator size="large" />
+									</View>
+									}
 								</View>
 								<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
 									<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
-										{ this.props.searchUser !== null &&
+										{ this.props.searchUser !== null ?
 											this.props.searchUser.map((user, index) => (
 												<ListItem
 													avatar={
@@ -187,6 +199,10 @@ export class ViewUserPage extends Component {
 													containerStyle={{ borderBottomColor: colors.lightGray }}
 												/>
 											))
+											: this.props.loading && 
+												<View style={styles.loadingContainer}>
+													<ActivityIndicator size="large" />
+												</View>
 										}
 									</List>
 								</View>
@@ -243,6 +259,9 @@ const styles = StyleSheet.create({
 		marginTop: 4,
 		marginLeft: 1,
 		marginVertical: 1
+	},
+	loadingContainer: {
+		marginTop: APP_FULL_HEIGHT*0.2
 	}
 })
 
@@ -251,7 +270,8 @@ const mapStateToProps = state => ({
 	selectedUser: state.userReducer.selectedUser,
 	searchTitle: state.searchReducer.reviews,
 	searchProduct: state.searchReducer.products,
-	searchUser: state.searchReducer.users
+	searchUser: state.searchReducer.users,
+	loading: state.searchReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({

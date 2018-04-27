@@ -244,7 +244,7 @@ export class ReviewCard extends Component {
 	shareToFacebook() {
 		const shareContent = {
 			contentType: 'link',
-			// contentUrl: `lookgoods://viewReview/${this.props.review._id}`,
+			// contentUrl: `lookgoods://viewreview/${this.props.review._id}`,
 			contentUrl: this.props.review.picture_thumbnail_url,
 			contentDescription: this.props.review.title,
 			contentTitle: this.props.review.title
@@ -256,7 +256,6 @@ export class ReviewCard extends Component {
 			// 	}
 			// ]
 		}
-		console.log(this.props.review.picture_cover_url, 'cover url')
 
 		ShareDialog.canShow(shareContent).then((canShow) => {	
 			console.log(canShow, 'can show')	
