@@ -34,9 +34,9 @@ export class ViewReviewPage extends Component {
 		this.props.getReview(this.props.review_id)
 	}
 
-	addComment(comment) {
-		this.props.addComment(comment, this.props.review._id)
-	}
+	// addComment(comment) {
+	// 	this.props.addComment(comment, this.props.review._id)
+	// }
 
 	render() {
 		if (!this.props.review) {
@@ -69,6 +69,7 @@ export class ViewReviewPage extends Component {
 					}
 					<CommentSection 
 						review={this.props.review}
+						addComment={(comment) => this.props.addComment(comment, this.props.review._id)}
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>

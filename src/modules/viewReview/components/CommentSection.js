@@ -180,7 +180,7 @@ class CommentSection extends Component {
 							<AddComment 
 								style={styles.addComment} 
 								user={this.props.currentUser} 
-								addComment={(comment) => this.addComment(comment)}
+								addComment={(comment) => this.props.addComment(comment)}
 							/>
 						</View>
 								}
