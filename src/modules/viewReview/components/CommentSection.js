@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import ActionSheet from 'react-native-actionsheet'
 import AddComment from 'src/modules/viewReview/components/AddComment'
+import AddCommentChat from 'src/modules/viewReview/components/AddCommentChat'
 import Comment from 'src/modules/viewReview/components/Comment'
 import CommentChat from 'src/modules/viewReview/components/CommentChat'
 import StarBar from 'src/modules/viewReview/components/StarBar'
@@ -15,7 +16,6 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { Divider } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
-
 
 function countRatingFrequency(comment_list) {
 	let rating_frequency_list = [0, 0, 0, 0, 0]
@@ -134,6 +134,14 @@ class CommentSection extends Component {
 											}
 										</View>
 									))}
+									<View>
+										<Divider style={styles.divider} />
+										<AddCommentChat 
+											style={styles.addComment} 
+											user={this.props.currentUser} 
+											// addComment={(comment) => this.addComment(comment)}
+										/>
+									</View>
 								</View>
 							</View>
 							<View title="Review">
