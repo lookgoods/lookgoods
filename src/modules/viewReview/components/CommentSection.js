@@ -93,6 +93,24 @@ class CommentSection extends Component {
 		}
 	}
 
+	optionsSelect3(index) {
+		const chat_list = this.props.chats
+		if (index === 0) {
+		// 	this.props.setEditComment(comment_list[this.state.indexComment]._id)
+		} else if (index === 1) {
+		// 	Clipboard.setString(comment_list[this.state.indexComment].description)
+		} else if (index === 2) {
+			this.props.deleteChat(this.props.review._id, chat_list[this.state.indexChat]._id)
+		}
+	}
+
+	optionsSelect4(index) {
+		const comment_list = this.props.comments
+		if (index === 0) {
+			Clipboard.setString(comment_list[this.state.indexComment].description)
+		}
+	}
+
 	render() {
 		console.log(this.props.comments, 'this.props.comments')
 		console.log(this.props.chats, 'this.props.chats')
@@ -113,7 +131,7 @@ class CommentSection extends Component {
 											{ user._id === comment.user._id ?
 												<TouchableOpacity 
 													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet1(index)}>
+													onLongPress = {() => this.showActionSheet3(index)}>
 													<View style = {styles.chatItem} >
 														<CommentChat
 															comment={comment}
@@ -124,7 +142,7 @@ class CommentSection extends Component {
 												:
 												<TouchableOpacity 
 													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet2(index)}>
+													onLongPress = {() => this.showActionSheet4(index)}>
 													<View style = {styles.chatItem} >
 														<CommentChat
 															comment={comment}
@@ -199,6 +217,19 @@ class CommentSection extends Component {
 						options={['Copy', 'Cancel']}
 						cancelButtonIndex={1}
 						onPress={(index) => this.optionsSelect2(index)}
+					/>
+					<ActionSheet
+						ref={o => this.ActionSheet3 = o}
+						options={['Edit', 'Copy', 'Delete', 'Cancel']}
+						cancelButtonIndex={3}
+						destructiveButtonIndex={2}
+						onPress={(index) => this.optionsSelect3(index)}
+					/>
+					<ActionSheet
+						ref={o => this.ActionSheet4 = o}
+						options={['Copy', 'Cancel']}
+						cancelButtonIndex={1}
+						onPress={(index) => this.optionsSelect4(index)}
 					/>
 				</View>
 			</View>
