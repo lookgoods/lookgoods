@@ -32,16 +32,15 @@ class AddComment extends Component {
 		}
 	}
 
-	async addComment() {
+	async addChat() {
 		const descriptionErr = validate(['description'], [this.state.description.trim()])
 		await this.setState({ descriptionErr })
 
 		if (!descriptionErr) {
-			const comment = {
-				description: this.state.description.trim(), 
-				rating: this.state.rating
+			const chat = {
+				description: this.state.description.trim() 
 			}
-			await this.props.addComment(comment)
+			await this.props.addChat(chat)
 			this.notify()
 		} else {
 			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
@@ -49,7 +48,6 @@ class AddComment extends Component {
 	}
   
 	render() {
-		console.log(this.props.user, 'add comment user')
 		const { picture_url, name } = this.props.user
 		return (
 			this.props.success && (
@@ -75,7 +73,7 @@ class AddComment extends Component {
 									error={this.state.descriptionErr}
 								/>
 							</View>
-							<TouchableOpacity style={styles.buttonSend}>
+							<TouchableOpacity style={styles.buttonSend} onPress={() => this.addChat()}>
 								<IconIonicons name='md-send' size={25}/>
 							</TouchableOpacity>
 						</View>

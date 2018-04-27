@@ -70,6 +70,7 @@ export class ViewReviewPage extends Component {
 					<CommentSection 
 						review={this.props.review}
 						addComment={(comment) => this.props.addComment(comment, this.props.review._id)}
+						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>
@@ -120,6 +121,7 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(UserActions.getCurrentUser())
 	},
 	addComment: (comment, review_id) => {
+		console.log(comment, review_id, 'comment view')
 		dispatch(CommentActions.addComment(comment, review_id))
 	},
 	getComments: (review_id) => {
@@ -139,6 +141,10 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getChats: (review_id) => {
 		dispatch(ChatActions.getChats(review_id))
+	},
+	addChat: (chat, review_id) => {
+		console.log(chat, review_id, 'chat view')
+		dispatch(ChatActions.addChat(chat, review_id))
 	}
 })
 

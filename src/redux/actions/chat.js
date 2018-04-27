@@ -5,23 +5,24 @@ import to from 'await-to-js'
 const AppURL = constants.AppURL
 
 const ChatActions = {
-	// addComment: (comment, review_id) => async dispatch => {
-	// 	dispatch(actions.addCommentRequest())
-	// 	try {
-	// 		const response = await fetch(`${AppURL}/reviews/${review_id}/comments`, {
-	// 			method: 'post',
-	// 			headers: {
-	// 				'Content-Type': 'application/json'
-	// 			},
-	// 			body: JSON.stringify(comment)
-	// 		})
-	// 		const data = await response.json()
-	// 		dispatch(actions.addCommentSuccess(data))
-	// 		dispatch(CommentActions.getComments(review_id))
-	// 	} catch (err) {
-	// 		dispatch(actions.addCommentError(err))
-	// 	}
-	// },
+	addChat: (chat, review_id) => async dispatch => {
+		console.log(chat, review_id, 'eiei')
+		dispatch(actions.addChatRequest())
+		try {
+			const response = await fetch(`${AppURL}/reviews/${review_id}/chats`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(chat)
+			})
+			const data = await response.json()
+			dispatch(actions.addChatSuccess(data))
+			dispatch(ChatActions.getChats(review_id))
+		} catch (err) {
+			dispatch(actions.addChatError(err))
+		}
+	},
 	getChats: (review_id) => async dispatch => {
 		dispatch(actions.getChatRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}/chats`))
@@ -29,7 +30,6 @@ const ChatActions = {
 			dispatch(actions.getChatError(err))
 		} 
 		else {
-			console.log(response.data, 'data')
 			dispatch(actions.getChatSuccess(response.data))
 		}
 	}
@@ -39,9 +39,9 @@ const actions = {
 	addChatRequest: () => ({
 		type: constants.ADD_CHAT_REQUEST
 	}),
-	addChatSuccess: comments => ({
+	addChatSuccess: chats => ({
 		type: constants.ADD_CHAT_SUCCESS,
-		payload: comments 
+		payload: chats 
 	}),
 	addChatError: error => ({
 		type: constants.ADD_CHAT_FAILURE,
