@@ -120,15 +120,16 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 						<IconMaterial name="star-border" color={colors.gray} size={26} />
 						<Text style={styles.productDetailRating}>{rating}</Text>
 					</View>
-					{ price && 
-					<View style={styles.productDetail}>
-						<Image
-							style={styles.bahtImage}
-							source={icons.baht}
-							resizeMode="cover"
-						/>
-						<Text style={styles.productDetailMoney}>{price}</Text>
-					</View>
+					{ (price && price !== '0') ? 
+						<View style={styles.productDetail}>
+							<Image
+								style={styles.bahtImage}
+								source={icons.baht}
+								resizeMode="cover"
+							/>
+							<Text style={styles.productDetailMoney}>{price}</Text>
+						</View>
+						: <View/>
 					}
 					<TouchableOpacity 
 						style={styles.productDetail}

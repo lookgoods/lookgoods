@@ -16,7 +16,7 @@ export default class ReviewList extends Component {
 			<View style={styles.container}>
 				{ this.props.review_list && (
 					this.props.review_list.map((review, index) => {
-						if (!review.available) return
+						if (!review.available) return <View/>
 						return (
 							<View key={index} style={styles.reviewCard}>
 								{ review.available && (
