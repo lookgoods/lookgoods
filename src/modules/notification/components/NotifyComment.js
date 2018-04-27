@@ -29,14 +29,17 @@ export class NotifyComment extends Component {
 					<Text>
 						<Text style={styles.textName}>{this.props.user.name}</Text>
 						<Text style={{ fontSize: 15, marginBottom: 4, color: colors.gray }}>
-							{' '}commented on a review{' '}
+							{' '}commented on review{' '}
 						</Text>
 						<Text style={styles.textName}>
 							{this.props.review.title}
 						</Text>
 					</Text>
-					<Text style={[styles.font15, { marginBottom: 4 }]}>
-						{ this.getTimeText(this.props.review.timestamp) }
+					<Text style={[styles.font15, { color: colors.gray, marginBottom: 4 }]}>
+						{ this.props.timestamp ?
+							this.getTimeText(this.props.timestamp) 
+							: this.getTimeText(this.props.review.timestamp) 
+						}
 					</Text>
 				</View>
 			</View>
