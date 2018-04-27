@@ -69,6 +69,7 @@ export class ViewReviewPage extends Component {
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(comment_id) => this.props.setEditComment(comment_id)}
 						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
+						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
 					/>
 				</ScrollView>
 			</View>
@@ -132,12 +133,11 @@ const mapDispatchToProps = dispatch => ({
 		dispatch(ChatActions.getChats(review_id))
 	},
 	deleteChat: (review_id, chat_id) => {
-		dispatch(ChatActions.deleteChatt(review_id, chat_id))
+		dispatch(ChatActions.deleteChat(review_id, chat_id))
 	},
 	setEditChat: (chat_id) => {
 		dispatch(ChatActions.setEditChat(chat_id))
 	}
-	
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewReviewPage)
