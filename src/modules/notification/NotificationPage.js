@@ -3,7 +3,6 @@ import {
 	StyleSheet,
 	View,
 	TouchableOpacity,
-	ActivityIndicator,
 	ScrollView,
 	RefreshControl
 } from 'react-native'
@@ -130,10 +129,7 @@ export class NotificationPage extends Component {
 								}
 							</TouchableOpacity>
 						))
-						: this.props.loading && 
-						<View style={styles.loadingContainer}>
-							<ActivityIndicator size="large" />
-						</View>
+						: <View/>
 					}
 				</ScrollView>
 				<ActionSheet
@@ -163,9 +159,6 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.white,
 		overflow: 'hidden'
-	},
-	loadingContainer: {
-		marginTop: 250
 	}
 })
 
