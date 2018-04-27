@@ -6,7 +6,7 @@ import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import images from 'src/constants/images'
-import { APP_FULL_WIDTH, APP_FULL_HEIGHT } from 'src/constants'
+import { APP_FULL_HEIGHT } from 'src/constants'
 
 export class LoginPage extends Component {
 	constructor(props) {
