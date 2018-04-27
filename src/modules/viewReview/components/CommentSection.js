@@ -114,7 +114,7 @@ class CommentSection extends Component {
 												<TouchableOpacity 
 													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet1(index)}>
-													<View style = {styles.commentItem} >
+													<View style = {styles.chatItem} >
 														<CommentChat
 															comment={comment}
 															type={'chat'}
@@ -125,7 +125,7 @@ class CommentSection extends Component {
 												<TouchableOpacity 
 													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet2(index)}>
-													<View style = {styles.commentItem} >
+													<View style = {styles.chatItem} >
 														<CommentChat
 															comment={comment}
 														/>
@@ -238,7 +238,10 @@ const styles = StyleSheet.create({
 		marginLeft: 20
 	},
 	commentItem: {
-		marginBottom: 20
+		marginBottom: 10
+	},
+	chatItem: {
+		marginBottom: 5
 	},
 	divider: {
 		backgroundColor: colors.lightGray,
