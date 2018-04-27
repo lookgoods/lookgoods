@@ -3,7 +3,6 @@ import {
 	ScrollView,
 	StyleSheet,
 	View,
-	ActivityIndicator,
 	RefreshControl
 } from 'react-native'
 import React, { Component } from 'react'
@@ -93,10 +92,7 @@ export class GlobalPage extends Component {
 					<View style={styles.body}>
 						{ this.props.reviews ?
 							<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
-							: this.props.loading && 
-							<View style={styles.loadingContainer}>
-								<ActivityIndicator size="large" />
-							</View>
+							: <View/>
 						}
 					</View>
 				</ScrollView>
@@ -120,9 +116,6 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.white,
 		overflow: 'hidden'
-	},
-	loadingContainer: {
-		marginTop: 250
 	}
 })
 

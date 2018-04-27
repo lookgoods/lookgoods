@@ -321,7 +321,7 @@ export class AddReviewPage extends Component {
 					<View style={styles.sectionBody}>
 						<Text style={styles.label}>
 							Title
-							<Text style={styles.fontRed}>*</Text>
+							<Text style={styles.fontRed}> *</Text>
 						</Text>
 						<View style={styles.textBox}>
 							<TextInput
@@ -340,7 +340,7 @@ export class AddReviewPage extends Component {
 						</View>
 
 						<Text style={styles.label}>
-							Name<Text style={styles.fontRed}>*</Text>
+							Name<Text style={styles.fontRed}> *</Text>
 						</Text>
 						<Autocomplete
 							containerStyle={styles.textBox}
@@ -416,7 +416,7 @@ export class AddReviewPage extends Component {
 						))}
 
 						<Text style={styles.label}>
-							Rating<Text style={styles.fontRed}>*</Text>
+							Rating<Text style={styles.fontRed}> *</Text>
 						</Text>
 						<View
 							style={{

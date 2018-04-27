@@ -31,6 +31,6 @@ const scenes = Actions.create(
 	</Scene>
 )
 
-crossroads.addRoute('viewReview/{id}', id => Actions.viewReviewPage({ review_id: id }))
+crossroads.addRoute('viewreview/{id}', id => Actions.viewReviewPage({ review_id: id }))
 
 export default <LinkedRouter scenes={scenes} scheme="lookgoods"/>
