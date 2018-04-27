@@ -12,6 +12,7 @@ import {
 import React, { Component } from 'react'
 import validate from 'src/services/validate'
 import ContentView from 'src/modules/addReview/components/ContentView'
+import Autocomplete from 'src/modules/addReview/components/Autocomplete'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
@@ -20,13 +21,17 @@ import NavBar from 'src/modules/shares/NavBar'
 import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
+import SearchActions from 'src/redux/actions/search'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
 import { APP_FULL_WIDTH } from 'src/constants'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 export class AddReviewPage extends Component {
 	constructor(props) {
 		super(props)
+		this.socket = SocketIOClient(constants.AppURL)
 		this.state = {
 			coverImage: {
 				url: '',
@@ -48,6 +53,7 @@ export class AddReviewPage extends Component {
 			isAddButton: false,
 			isEditButton: false,
 			isTagsButton: false,
+			showListProductName: true,
 			numStar: ['star-o', 'star-o', 'star-o', 'star-o', 'star-o'],
 			imageSize: { width: 0, height: 0 }
 		}
@@ -191,8 +197,6 @@ export class AddReviewPage extends Component {
 		)
 		await this.setState({ contentList })
 		await this.checkValidate()
-
-		
 	}
 
 	async checkValidate() {
@@ -214,7 +218,7 @@ export class AddReviewPage extends Component {
 			const review = {
 				title: this.state.title.trim(),
 				name: this.state.name.trim(),
-				price: this.state.price.trim(),
+				price: this.state.price,
 				brand: this.state.brand.trim(),
 				tag: this.state.tagsMessage,
 				picture_cover_url: this.state.coverImage.url,
@@ -223,10 +227,16 @@ export class AddReviewPage extends Component {
 				rating: this.state.rating	
 			}
 	
-			this.props.addReview(review)
+			await this.props.addReview(review)
+			this.notify()
+
 		} else {
 			Toast.show('กรุณาเติมข้อมูลที่ * ให้ครบถ้วน', Toast.SHORT)
 		}
+	}
+
+	notify() {
+		this.socket.emit('notify', JSON.stringify({ followerList: this.props.currentUser.follower_list }))
 	}
 
 	deleteContentBox(key) {
@@ -234,7 +244,6 @@ export class AddReviewPage extends Component {
 		const contentMessage = this.state.contentMessage
 		contentList.splice(key, 1)
 		contentMessage.splice(key, 1)
-		console.log(contentList, contentMessage, 'deleteContentBox')
 		if (contentList.length === 0) {
 			this.setState({ isEditButton: !this.state.isEditButton })
 		}
@@ -247,6 +256,13 @@ export class AddReviewPage extends Component {
 		} else {
 			return null
 		}
+	}
+
+	searchProductName(text) {
+		this.setState({ name: text })
+		if (text === '') this.setState({ showListProductName: true })
+		else this.setState({ showListProductName: false })
+		this.props.searchProductName(text)
 	}
 
 	render() {
@@ -277,7 +293,7 @@ export class AddReviewPage extends Component {
 							<TouchableOpacity
 								style={{
 									flex: 1,
-									height: 260,
+									height: APP_FULL_WIDTH*0.6,
 									backgroundColor: colors.gray3,
 									alignItems: 'center',
 									justifyContent: 'center'
@@ -292,16 +308,16 @@ export class AddReviewPage extends Component {
 							>
 								<Image
 									style={{
-										height: 260,
+										height: APP_FULL_WIDTH*0.6,
 										width: APP_FULL_WIDTH
 									}}
 									source={{ uri: this.state.coverImage.url }}
 									resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
-
 								/>
 							</TouchableOpacity>
 						)}
 					</View>
+					
 					<View style={styles.sectionBody}>
 						<Text style={styles.label}>
 							Title
@@ -326,21 +342,23 @@ export class AddReviewPage extends Component {
 						<Text style={styles.label}>
 							Name<Text style={styles.fontRed}>*</Text>
 						</Text>
-						<View style={styles.textBox}>
-							<TextInput
-								style={styles.textInput}
-								value={this.state.name}
-								underlineColorAndroid="transparent"
-								onChangeText={value => this.setState({ name: value })}
-								keyboardType="default"
-								onBlur={() => {
-									this.setState({
-										nameErr: validate(['name'], [this.state.name])
-									})
-								}}
-								error={this.state.nameErr}
-							/>
-						</View>
+						<Autocomplete
+							containerStyle={styles.textBox}
+							underlineColorAndroid="transparent"
+							data={!this.props.productsName ? [] : this.props.productsName}
+							defaultValue={this.state.name}
+							onChangeText={text => this.searchProductName(text)}
+							hideResults={this.state.showListProductName}
+							renderItem={item => (
+								<TouchableOpacity onPress={() => this.setState({ name: item.name, brand: item.brand, showListProductName: true})}>
+									<Text style={{
+										marginVertical: 5,
+										color: colors.gray6,
+										fontSize: 16
+									}}>{item.name} {item.brand}</Text>
+								</TouchableOpacity>
+							)}
+						/>
 
 						<View style={{ flexDirection: 'row' }}>
 							<View style={{ flex: 1, paddingRight: 10 }}>
@@ -367,7 +385,7 @@ export class AddReviewPage extends Component {
 										onChangeText={value =>
 											this.setState({ price: value })
 										}
-										keyboardType="default"
+										keyboardType='numeric'
 									/>
 								</View>
 							</View>
@@ -623,7 +641,9 @@ const mapStateToProps = state => ({
 	thumbnail_url: state.imageReducer.thumbnail_url,
 	upload_loading: state.imageReducer.loading,
 	upload_error: state.imageReducer.error,
-	review_loading: state.reviewReducer.loading
+	review_loading: state.reviewReducer.loading,
+	currentUser: state.userReducer.currentUser,
+	productsName: state.searchReducer.productsName
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -632,6 +652,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	uploadImage: image => {
 		dispatch(ImageActions.uploadImage(image))
+	},
+	searchProductName: name => {
+		dispatch(SearchActions.searchProductName(name))
 	}
 })
 

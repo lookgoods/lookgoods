@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import ReviewPhoto from 'src/modules/user/components/ReviewPhoto'
+import ReviewPhoto from 'src/modules/shares/ReviewPhoto'
 
 export default class ReviewsGrid extends Component {
 	constructor(props) {

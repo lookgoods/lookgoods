@@ -10,6 +10,8 @@ import { APP_FULL_WIDTH } from 'src/constants'
 import ImageActions from 'src/redux/actions/image'
 import UserActions from 'src/redux/actions/user'
 import ReviewActions from 'src/redux/actions/review'
+import { ShareDialog } from 'react-native-fbsdk'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 function CoverPhoto ({ image_url, imageSize }) {
 	if (image_url) {
@@ -33,19 +35,26 @@ function goToUserPage(user, setUser) {
 	Actions.viewUserPage()
 }
 
-function ReviewerBar({ reviewer, rating, setUser }) {
+function ReviewerBar({ reviewer, rating, setUser, clickShare }) {
 	return (
 		<View style={styles.reviewerBar}>
-			<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
-				<ProfilePicture image_url={reviewer.picture_url} />
-			</TouchableOpacity>
-			<View style={styles.reviewTextWrapper}>
+			<View style={{ flexDirection: 'row' }}>
 				<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
-					<Text style={styles.reviewerName}>{reviewer.name}</Text>
+					<ProfilePicture image_url={reviewer.picture_url} />
 				</TouchableOpacity>
-				<View style={styles.starBar}>
-					<StarBar rating={rating} size={30} />
+				<View style={styles.reviewTextWrapper}>
+					<TouchableOpacity onPress={() => goToUserPage(reviewer, setUser)}>
+						<Text style={styles.reviewerName}>{reviewer.name}</Text>
+					</TouchableOpacity>
+					<View style={styles.starBar}>
+						<StarBar rating={rating} size={30} type='view'/>
+					</View>
 				</View>
+			</View>
+			<View style={{ flexDirection: 'row' }}>
+				<TouchableOpacity onPress={clickShare} style={{ marginRight: 35, marginTop: 3 }}>
+					<FontAwesome name="share-alt" color={colors.blue} size={30} />
+				</TouchableOpacity>
 			</View>
 		</View>
 	)
@@ -57,7 +66,7 @@ function getContent(content, index, showPreviewImage, hidePreviewImage) {
 			<TouchableOpacity 
 				key={index} 
 				style={styles.contentImageWrapper}
-				delayLongPress={200} 
+				delayLongPress={500} 
 				onLongPress={() => showPreviewImage(content.value)}
 				onPressOut={() => hidePreviewImage()}
 			>
@@ -83,12 +92,12 @@ function Content({ content_list, showPreviewImage, hidePreviewImage }) {
 
 const ProductDetail = ({ name, value }) => (
 	<View>
-		{value && (
+		{(value && value !== '') ? (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>{name}</Text>
 				<Text style={{ fontSize: 15, color: colors.gray6 }}>{value}</Text>
 			</View>
-		)}
+		) : <View/>}
 	</View>
 )
 
@@ -100,7 +109,7 @@ const TagButton = ({ title, viewTagReviews }) => (
 
 const TagList = ({ tags, viewTagReviews }) => (
 	<View>
-		{tags && (
+		{tags.length !== 0 && (
 			<View style={styles.productDetail}>
 				<Text style={styles.productDetailName}>Tags</Text>
 				<View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -133,6 +142,24 @@ export class ContentSection extends Component {
 		})
 	}
 
+	shareToFacebook() {
+		const shareLinkContent = {
+			contentType: 'link',
+			contentUrl: this.props.review.picture_cover_url,
+			contentDescription: this.props.review.title,
+			contentTitle: this.props.review.title
+		}
+			
+		ShareDialog.canShow(shareLinkContent).then((canShow) => {		
+			if (canShow) return ShareDialog.show(shareLinkContent)
+		}).then((result) => {
+			if (result.isCancelled) console.log('Share is cancelled')
+			else console.log('Share successfull')
+		},	function(error) { 
+			console.log('Share fail with error', error)
+		})
+	}
+
 	render() {
 		const {
 			picture_cover_url,
@@ -156,6 +183,7 @@ export class ContentSection extends Component {
 					reviewer={user}
 					rating={rating}
 					setUser={this.props.setSelectedUser}
+					clickShare={() => this.shareToFacebook()}
 				/>
 				<Text style={styles.titleText}>{title}</Text>
 				<Content 
@@ -176,20 +204,21 @@ export class ContentSection extends Component {
 const styles = StyleSheet.create({
 	coverImage: {
 		width: APP_FULL_WIDTH,
-		height: 260
+		height: APP_FULL_WIDTH*0.6
 	},
 	profileImage: {
 		marginLeft: 10
 	},
 	reviewerBar: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'space-between',
 		marginTop: 10
 	},
 	reviewTextWrapper: {
 		flexDirection: 'column',
-		marginLeft: 2,
-		flex: 1
+		marginLeft: 2
 	},
 	starBar: {
 		marginLeft: 3,
@@ -255,7 +284,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
-		backgroundColor: colors.blue,
+		backgroundColor: colors.orange,
 		height: 25,
 		paddingHorizontal: 10,
 		borderRadius: 15

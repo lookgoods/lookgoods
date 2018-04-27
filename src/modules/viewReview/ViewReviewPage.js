@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
 import AddComment from 'src/modules/viewReview/components/AddComment'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
@@ -14,11 +14,23 @@ import { connect } from 'react-redux'
 export class ViewReviewPage extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			scrollHeight: 0
+		}
 	}
 
 	componentDidMount() {
 		this.props.getCurrentUser()
-		this.props.getComments(this.props.review._id)
+		if (this.props.review_id) {
+			this.fetchReview()
+			this.props.getComments(this.props.review_id)
+		} else {
+			this.props.getComments(this.props.review._id)
+		}
+	}
+
+	fetchReview() {
+		this.props.getReview(this.props.review_id)
 	}
 
 	addComment(comment) {
@@ -26,6 +38,11 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
+		if (!this.props.review) {
+			return (<View style={styles.loadingContainer}>
+				<ActivityIndicator size="large" />
+			</View>)
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -37,19 +54,30 @@ export class ViewReviewPage extends Component {
 						/>
 					</View>
 				</View>
-				<ScrollView>
-					<ContentSection review={this.props.review} />
+				<ScrollView 
+					ref={ref => this.scrollView = ref}
+					onContentSizeChange={(contentWidth, contentHeight) => {
+						this.setState({ scrollHeight: contentHeight })
+					}}
+				>
+					{ this.props.review && 
+						<ContentSection review={this.props.review} />
+					}
 					<CommentSection 
 						review={this.props.review}
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
 						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
 					/>
-					<Divider style={styles.divider} />
-					<AddComment 
-						style={styles.addComment} 
-						user={this.props.currentUser} 
-						addComment={(comment) => this.addComment(comment)}
-					/>
+					{ this.props.currentUser._id !== this.props.review.user._id &&
+						<View>
+							<Divider style={styles.divider} />
+							<AddComment 
+								style={styles.addComment} 
+								user={this.props.currentUser} 
+								addComment={(comment) => this.addComment(comment)}
+							/>
+						</View>
+					}
 				</ScrollView>
 			</View>
 		)
@@ -78,6 +106,11 @@ const styles = StyleSheet.create({
 	},
 	addComment: {
 		marginTop: 10
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 })
 
@@ -104,6 +137,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	deleteReview: (review_id) => {
 		dispatch(ReviewActions.deleteReview(review_id))
+	},
+	getReview: (review_id) => {
+		dispatch(ReviewActions.getReview(review_id))
 	}
 })
 

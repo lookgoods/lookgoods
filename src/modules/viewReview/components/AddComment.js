@@ -1,5 +1,4 @@
 import {
-	Button,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -14,10 +13,13 @@ import IconIonicons from 'react-native-vector-icons/Ionicons'
 import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 class AddComment extends Component {
 	constructor(props) {
 		super(props)
+		this.socket = SocketIOClient(constants.AppURL)
 		this.state = {
 			description: '',
 			descriptionErr: '',
@@ -48,8 +50,8 @@ class AddComment extends Component {
 				description: this.state.description.trim(), 
 				rating: this.state.rating
 			}
-			console.log(comment, 'comment befor post')
-			this.props.addComment(comment)
+			await this.props.addComment(comment)
+			this.notify()
 		} else {
 			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
 		}
@@ -59,6 +61,16 @@ class AddComment extends Component {
 		const commentsUser = comment_list.filter((item) => item.user._id === this.props.currentUser._id)
 		if (commentsUser.length > 0) return true
 		return false
+	}
+
+	notify() {
+		const user_list = []
+		user_list.push(this.props.review.user._id)
+		this.props.comments.map((comment) => {
+			user_list.push(comment.user._id)
+		})
+
+		this.socket.emit('notify', JSON.stringify({ followerList: user_list }))
 	}
 
 	render() {
@@ -167,7 +179,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	comments: state.commentReducer.comments,
-	success: state.commentReducer.success
+	success: state.commentReducer.success,
+	review: state.reviewReducer.currentReview
 })
 
 export default connect(mapStateToProps, null)(AddComment)

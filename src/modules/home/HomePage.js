@@ -2,7 +2,8 @@ import {
 	Platform,
 	ScrollView,
 	StyleSheet,
-	View
+	View,
+	RefreshControl
 } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
@@ -13,6 +14,7 @@ import { connect } from 'react-redux'
 import ReviewActions from 'src/redux/actions/review'
 import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
+import MenuActions from 'src/redux/actions/menu'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -24,17 +26,23 @@ export class HomePage extends Component {
 	}
 
 	fetchData() {
-		this.props.getReviews()
+		this.props.getFollowingReviews()
+	}
+
+	refreshData () {
+		this.fetchData()
 	}
 
 	componentDidMount() {
+		this.props.setCurrentPage('home')
 		this.fetchData()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.currentUser !== nextProps.currentUser) || 
-		(this.props.reviews !== nextProps.reviews) || 
-		(this.props.currentPage !== nextProps.currentPage)
+		return ((this.props.currentUser !== nextProps.currentUser) || 
+		(this.props.reviews !== nextProps.reviews) ||
+		(this.props.currentPage !== nextProps.currentPage)) &&
+		nextProps.currentPage === 'home'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
@@ -75,7 +83,14 @@ export class HomePage extends Component {
 						<NavBarSearch />
 					</View>
 				</View>
-				<ScrollView>
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={this.props.loading}
+							onRefresh={() => this.refreshData()}
+						/>
+					}
+				>
 					<View style={styles.body}>
 						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
 					</View>
@@ -90,7 +105,7 @@ export class HomePage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.lightGray
+		backgroundColor: colors.white
 	},
 	body: {
 		backgroundColor: colors.lightGray
@@ -108,12 +123,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	reviews: state.reviewReducer.followingReviews,
-	currentPage: state.menuReducer.currentPage
+	currentPage: state.menuReducer.currentPage,
+	loading: state.reviewReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({
-	getReviews: () => {
+	getFollowingReviews: () => {
 		dispatch(ReviewActions.getFollowingReviews())
+	},
+	setCurrentPage: (page) => {
+		dispatch(MenuActions.setCurrentPage(page))
 	}
 })
 

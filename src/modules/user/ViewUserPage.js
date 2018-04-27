@@ -12,7 +12,7 @@ import React, { Component } from 'react'
 import CoverImage from 'src/modules/shares/CoverImage'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
-import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -226,7 +226,7 @@ const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	user: state.userReducer.user,
 	success: state.userReducer.success,
-	ownReviews: state.userReducer.ownReviews
+	ownReviews: state.userReducer.ownOtherReviews
 })
 
 const mapDispatchToProps = dispatch => ({

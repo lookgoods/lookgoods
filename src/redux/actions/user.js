@@ -20,6 +20,7 @@ const UserActions = {
 		}
 		else {
 			console.log(response, 'login success')
+			dispatch(UserActions.getCurrentUser())
 			dispatch(actions.loginFacebookSuccess(response))
 			Actions.tabMenu()
 		}
@@ -28,7 +29,9 @@ const UserActions = {
 		dispatch(actions.getCurrentUserRequest())
 		const [err, response] = await to(axios.get(`${AppURL}/currentuser`))
 		if (err) dispatch(actions.getCurrentUserError(err))
-		else dispatch(actions.getCurrentUserSuccess(response.data))
+		else {
+			dispatch(actions.getCurrentUserSuccess(response.data))
+		}
 	},
 	setSelectedUser: user => ({
 		type: constants.SET_SELECTED_USER,

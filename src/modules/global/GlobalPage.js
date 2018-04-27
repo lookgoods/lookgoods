@@ -2,7 +2,9 @@ import {
 	Platform,
 	ScrollView,
 	StyleSheet,
-	View
+	View,
+	ActivityIndicator,
+	RefreshControl
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -10,7 +12,8 @@ import NavBarSearch from 'src/modules/shares/NavBarSearch'
 import { colors } from 'src/constants/mixins'
 import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
-import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
+
 export class GlobalPage extends Component {
 	constructor(props) {
 		super(props)
@@ -24,13 +27,19 @@ export class GlobalPage extends Component {
 		this.props.getReviews()
 	}
 
+	refreshData () {
+		this.fetchData()
+	}
+
 	componentDidMount() {
 		this.fetchData()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.reviews !== nextProps.reviews) || 
-		(this.props.currentPage !== nextProps.currentPage)
+		return ((this.props.reviews !== nextProps.reviews) || 
+		(this.props.loading !== nextProps.loading) ||
+		(this.props.currentPage !== nextProps.currentPage)) && 
+		nextProps.currentPage === 'global'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
@@ -73,9 +82,22 @@ export class GlobalPage extends Component {
 						/>
 					</View>
 				</View>
-				<ScrollView>
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={this.props.loading}
+							onRefresh={() => this.refreshData()}
+						/>
+					}
+				>
 					<View style={styles.body}>
-						<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
+						{ this.props.reviews ?
+							<ReviewsGrid review_list={this.props.reviews} page={'GlobalPage'}/>
+							: this.props.loading && 
+							<View style={styles.loadingContainer}>
+								<ActivityIndicator size="large" />
+							</View>
+						}
 					</View>
 				</ScrollView>
 			</View>
@@ -98,12 +120,16 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.white,
 		overflow: 'hidden'
+	},
+	loadingContainer: {
+		marginTop: 250
 	}
 })
 
 const mapStateToProps = state => ({
 	reviews: state.reviewReducer.reviews,
-	currentPage: state.menuReducer.currentPage
+	currentPage: state.menuReducer.currentPage,
+	loading: state.reviewReducer.loading
 })
 
 const mapDispatchToProps = dispatch => ({

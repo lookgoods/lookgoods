@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import { Divider } from 'react-native-elements'
 import InfoBar from 'src/modules/user/components/InfoBar'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ReviewsGrid from 'src/modules/user/components/ReviewsGrid'
+import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import UserActions from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
@@ -23,10 +23,10 @@ export class UserPage extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.currentUser !== nextProps.currentUser) || 
+		return ((this.props.currentUser !== nextProps.currentUser) || 
 		(this.props.ownReviews !== nextProps.ownReviews) || 
-		(this.props.currentPage !== nextProps.currentPage) ||
-		(this.props.saveReviews !== nextProps.saveReviews)
+		(this.props.saveReviews !== nextProps.saveReviews)) && 
+		nextProps.currentPage === 'user'
 	}
 	
 	componentDidUpdate(prevProps, prevState) {

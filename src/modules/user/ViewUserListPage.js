@@ -6,7 +6,6 @@ import {
 	ActivityIndicator
 } from 'react-native'
 import React, { Component } from 'react'
-
 import CoverImage from 'src/modules/shares/CoverImage'
 import NavBar from 'src/modules/shares/NavBar'
 import { colors } from 'src/constants/mixins'
@@ -70,7 +69,7 @@ export class ViewUserPage extends Component {
 								<NavBar titleName={this.props.title} />
 							</View>
 						</View>
-						<List containerStyle={{ borderBottomColor: colors.transparent, marginTop: -5 }}>
+						<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
 							{
 								this.props.users.map((user, index) => (
 									<ListItem
@@ -82,6 +81,7 @@ export class ViewUserPage extends Component {
 										hideChevron={true}
 										titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 										onPress={() => this.goToViewUser(user)}
+										containerStyle={{ borderBottomColor: colors.lightGray }}
 									/>
 								))
 							}

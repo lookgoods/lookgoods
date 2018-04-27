@@ -15,7 +15,7 @@ export class ReviewPhoto extends Component {
 
 	styleImageGrid(page) {
 		if (Platform.OS === 'ios') {
-			if (page === 'GlobalPage' || page === 'SearchPage') {
+			if (page === 'GlobalPage') {
 				return styles.review_image_grid
 			} else {
 				return styles.review_image_grid_user
@@ -34,7 +34,7 @@ export class ReviewPhoto extends Component {
 							this.props.setCurrentReview(this.props.review)
 							Actions.viewReviewPage()
 						}}
-						delayLongPress={200} 
+						delayLongPress={500} 
 						onLongPress={() => this.props.showPreviewReview(this.props.review)}
 						onPressOut={() => this.props.hidePreviewReview()}
 					>

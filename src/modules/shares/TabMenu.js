@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import GlobalPage from 'src/modules/global/GlobalPage'
@@ -11,24 +11,71 @@ import { colors } from 'src/constants/mixins'
 import MenuActions from 'src/redux/actions/menu'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
+import NotificationActions from 'src/redux/actions/notification'
+import { AccessToken } from 'react-native-fbsdk'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
 
 const deviceWidth = Dimensions.get('window').width
 const basePx = 375
 
 export class TabMenu extends Component {
-	state = {
-		selectedTab: 'home'
+
+	constructor(props) {
+		super(props)
+		this.state = {
+			selectedTab: 'home',
+			notification: null
+		}
+		this.socket = SocketIOClient(constants.AppURL)
+		this.handleNotify()
 	}
 
 	componentDidMount() {
 		this.checkPage()
 		this.fetchData()
+		this.checkAccessToken()
+		this.openSocket()
+	}
+
+	openSocket() {
+		if (this.props.currentUser) {
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+			this.props.openSocket()
+			this.props.setNotificationNumber(this.props.currentUser.unread)
+		}
+	}
+
+	firstOpenSocket() {
+		if (this.props.currentUser && !this.props.isSocketOpen) {
+			console.log('send user to socket', this.props.currentUser._id)
+			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
+			this.props.openSocket()
+			this.props.setNotificationNumber(this.props.currentUser.unread)
+		}
+	}
+
+	handleNotify() {
+		this.socket.on('notify', (message) => {
+			console.log('notify socket', message)
+			this.props.increaseNotificationNumber()
+		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((this.state.selectedTab !== prevState.selectedTab)) {
+		if (this.state.selectedTab !== prevState.selectedTab) {
 			this.fetchData()
 		}
+		if (this.props.currentUser !== prevProps.currentUser) {
+			this.firstOpenSocket()
+		}
+	}
+
+	checkAccessToken() {
+		AccessToken.getCurrentAccessToken().then(data => {
+			if (!data) Actions.loginPage()
+		})
 	}
 
 	fetchData() {
@@ -45,8 +92,11 @@ export class TabMenu extends Component {
 	}
 
 	render() {
-		if (!this.props.currentUser && this.props.success) {
-			Actions.loginPage()
+		if (!this.props.currentUser) {
+			if (this.props.success) {
+				Actions.loginPage()
+			}
+			return <View />
 		}
 		return (
 			<TabNavigator style={styles.container}>
@@ -61,7 +111,7 @@ export class TabMenu extends Component {
 						<Icon name="home" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="home" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="home" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				>
 					<HomePage/>
@@ -77,7 +127,7 @@ export class TabMenu extends Component {
 						<Icon name="globe" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="globe" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="globe" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				>
 					<GlobalPage/>
@@ -90,7 +140,7 @@ export class TabMenu extends Component {
 						<Icon name="plus" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="plus" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="plus" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				/>
 				<TabNavigator.Item
@@ -99,13 +149,15 @@ export class TabMenu extends Component {
 					onPress={() => {
 						this.setState({ selectedTab: 'notification' })
 						this.props.setCurrentPage('notification')
+						this.props.clearNotificationNumber()
 					}}
 					renderIcon={() => (
 						<Icon name="bell" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="bell" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="bell" size={this.px2dp(22)} color={colors.orange} />
 					)}
+					badgeText={ this.props.notifyNumber !== 0 ? this.props.notifyNumber : '' }
 				>
 					<NotificationPage/>
 				</TabNavigator.Item>
@@ -120,7 +172,7 @@ export class TabMenu extends Component {
 						<Icon name="user" size={this.px2dp(22)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="user" size={this.px2dp(22)} color={colors.blue} />
+						<Icon name="user" size={this.px2dp(22)} color={colors.orange} />
 					)}
 				>
 					<UserPage/>
@@ -132,7 +184,9 @@ export class TabMenu extends Component {
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	success: state.userReducer.success
+	success: state.userReducer.success,
+	isSocketOpen: state.notificationReducer.isSocketOpen,
+	notifyNumber: state.notificationReducer.notifyNumber
 })
 
 const styles = StyleSheet.create({
@@ -150,6 +204,18 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getCurrentUser: () => {
 		dispatch(UserActions.getCurrentUser())
+	},
+	setNotificationNumber: (number) => {
+		dispatch(NotificationActions.setNotificationNumber(number))
+	},
+	clearNotificationNumber: () => {
+		dispatch(NotificationActions.clearNotificationNumber())
+	},
+	increaseNotificationNumber: () => {
+		dispatch(NotificationActions.increaseNotificationNumber())
+	},
+	openSocket: () => {
+		dispatch(NotificationActions.openSocket())
 	}
 })
 

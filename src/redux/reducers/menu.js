@@ -1,7 +1,7 @@
 import constants from 'src/redux/constants'
 
 const initialState = {
-	currentPage: null
+	currentPage: ''
 }
 
 export default (state = initialState, action) => {

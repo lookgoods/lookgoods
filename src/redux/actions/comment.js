@@ -60,7 +60,6 @@ const CommentActions = {
 	},
 	setEditComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.setEditComment(comment_id))
-		dispatch(CommentActions.getComments(review_id))
 	}
 }
 

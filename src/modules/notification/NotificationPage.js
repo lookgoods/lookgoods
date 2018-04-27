@@ -1,25 +1,61 @@
 import {
-	Image,
-	PixelRatio,
 	Platform,
 	StyleSheet,
-	Text,
+	View,
 	TouchableOpacity,
-	View
+	ActivityIndicator,
+	ScrollView,
+	RefreshControl
 } from 'react-native'
 import React, { Component } from 'react'
 
-import CoverImage from 'src/modules/shares/CoverImage'
 import NavBarSearch from '../shares/NavBarSearch'
-import images from 'src/constants/images'
+import SocketIOClient from 'socket.io-client'
+import constants from 'src/redux/constants'
+import { connect } from 'react-redux'
+import NotificationActions from 'src/redux/actions/notification'
+import { colors } from 'src/constants/mixins'
+import NotifyComment from 'src/modules/notification/components/NotifyComment'
+import NotifyReview from 'src/modules/notification/components/NotifyReview'
+import { Actions } from 'react-native-router-flux'
+import ActionSheet from 'react-native-actionsheet'
 
-export default class NotificationPage extends Component {
+export class NotificationPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			isSearch: false,
-			searchText: ''
+			searchText: '',
+			item_id: ''
 		}
+		this.socket = SocketIOClient(constants.AppURL)
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return ((this.props.notifications !== nextProps.notifications) || 
+		(this.props.notifyNumber !== nextProps.notifyNumber) ||
+		(this.props.loading !== nextProps.loading)) && 
+		nextProps.currentPage === 'notification' 
+	}
+
+	componentDidMount() {
+		this.fetchData()
+	}
+
+	refreshData () {
+		this.fetchData()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (((this.props.currentPage !== prevProps.currentPage) 
+			|| (this.props.notifyNumber !== prevProps.notifyNumber))
+			&& this.props.currentPage === 'notification') {
+			this.fetchData()
+		}
+	}
+
+	fetchData() {
+		this.props.getNotifications()
 	}
 
 	setIsSearch() {
@@ -35,11 +71,24 @@ export default class NotificationPage extends Component {
 		this.setState({ searchText: text })
 	}
 
+	goToViewReview(review_id) {
+		Actions.viewReviewPage({ review_id })
+	}
+
+	showActionSheet(item_id) {
+		this.setState({ item_id })
+		this.ActionSheet.show()
+	}
+
+	optionsSelect(index) {
+		if (index === 0) {
+			this.props.deleteNotification(this.state.item_id)
+		}
+	}
+
 	async cancelSearch() {
-		// Keyboard.dismiss()
 		await this.setState({
 			isSearch: false,
-			// overlaySearch: false,
 			searchText: ''
 		})
 	}
@@ -47,51 +96,6 @@ export default class NotificationPage extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<View style={styles.body}>
-					<TouchableOpacity style={styles.list}>
-						<CoverImage size={80} url={images.profile} />
-						<View style={{ marginLeft: 13, flex: 1 }}>
-							<Text>
-								<Text style={styles.textName}>Phasin Sarunpornkul</Text>
-								<Text style={{ fontSize: 15, marginBottom: 4 }}>
-									{' '}
-									commented on a review{' '}
-								</Text>
-								<Text style={styles.textName}>
-									HyperX Cloud headset สุดยอดหูฟังเเนวหน้าของวงการ
-								</Text>
-							</Text>
-							<Text style={[styles.font15, { marginBottom: 4 }]}>
-								4 minutes ago
-							</Text>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.list}>
-						<View style={styles.containerImage}>
-							<Image
-								style={{
-									width: 85,
-									height: 85,
-									resizeMode: 'cover',
-									borderWidth: 1,
-									borderRadius: 3,
-									borderColor: '#f1f1f1'
-								}}
-								source={images.product5}
-								resizeMode="cover"
-							/>
-						</View>
-						<View style={{ marginLeft: 13, flex: 1 }}>
-							<Text style={[styles.font15, { marginBottom: 4 }]}>
-								Phasin Sarunpornkul added a review HyperX Cloud headset
-								สุดยอดหูฟังเเนวหน้าของวงการ
-							</Text>
-							<Text style={[styles.font15, { marginBottom: 4 }]}>
-								4 minutes ago
-							</Text>
-						</View>
-					</TouchableOpacity>
-				</View>
 				<View style={styles.header}>
 					<View style={styles.platformHeader}>
 						<NavBarSearch
@@ -103,6 +107,42 @@ export default class NotificationPage extends Component {
 						/>
 					</View>
 				</View>
+				<ScrollView 
+					style={styles.body}
+					refreshControl={
+						<RefreshControl
+							refreshing={this.props.loading}
+							onRefresh={() => this.refreshData()}
+						/>
+					}
+				>
+					{ this.props.notifications ?
+						this.props.notifications.map((notification, index) => (
+							<TouchableOpacity 
+								key={index}
+								onPress= {() => this.goToViewReview(notification.item._id)}
+								delayLongPress={1000} 
+								onLongPress = {() => this.showActionSheet(notification._id)}
+							>
+								{ notification.type === 'Comment' ?
+									<NotifyComment review={notification.item} user={notification.user} />
+									:<NotifyReview review={notification.item} user={notification.user} />
+								}
+							</TouchableOpacity>
+						))
+						: this.props.loading && 
+						<View style={styles.loadingContainer}>
+							<ActivityIndicator size="large" />
+						</View>
+					}
+				</ScrollView>
+				<ActionSheet
+					ref={o => this.ActionSheet = o}
+					options={['Delete', 'Cancel']}
+					cancelButtonIndex={1}
+					destructiveButtonIndex={0}
+					onPress={(index) => this.optionsSelect(index)}
+				/>
 			</View>
 		)
 	}
@@ -114,47 +154,36 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	body: {
-		marginTop: Platform.OS === 'ios' ? 75 : 60
+		backgroundColor: colors.white
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		zIndex: 1
+		backgroundColor: colors.white,
+		overflow: 'hidden'
 	},
-	list: {
-		padding: 15,
-		flexDirection: 'row',
-		alignItems: 'center',
-		borderColor: '#f1f1f1',
-		borderWidth: 1 / PixelRatio.get(),
-		height: 100
-	},
-	// coverIcon: {
-	// 	height: 30,
-	// 	width: 30,
-	// 	borderWidth: 1.3,
-	// 	borderRadius: 15,
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// 	backgroundColor: '#FFF',
-	// 	borderColor: '#c8c8c8',
-	// 	marginRight: 5
-	// },
-	textName: {
-		fontSize: 15,
-		fontWeight: 'bold',
-		marginBottom: 4
-	},
-	containerImage: {
-		alignItems: 'center',
-		width: 85
+	loadingContainer: {
+		marginTop: 250
 	}
 })
+
+const mapStateToProps = state => ({
+	currentUser: state.userReducer.currentUser,
+	notifications: state.notificationReducer.notifications,
+	notifyNumber: state.notificationReducer.notifyNumber,
+	currentPage: state.menuReducer.currentPage,
+	loading: state.notificationReducer.loading
+})
+
+const mapDispatchToProps = dispatch => ({
+	getNotifications: () => {
+		dispatch(NotificationActions.getNotifications())
+	},
+	deleteNotification: (item_id) => {
+		dispatch(NotificationActions.deleteNotification(item_id))
+	} 
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage)

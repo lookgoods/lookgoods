@@ -1,14 +1,12 @@
-import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import { AccessToken, LoginManager } from 'react-native-fbsdk'
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import { Actions } from 'react-native-router-flux'
 import { Button } from 'react-native-elements'
 import UserActions from 'src/redux/actions/user'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import images from 'src/constants/images'
-
-const { AccessToken } = FBSDK
+import { APP_FULL_WIDTH, APP_FULL_HEIGHT } from 'src/constants'
 
 export class LoginPage extends Component {
 	constructor(props) {
@@ -44,11 +42,13 @@ export class LoginPage extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Image
-					source={images.logo}
-					style={styles.product_image}
-					resizeMode="contain"
-				/>
+				<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
+					<Image
+						source={images.logo}
+						style={styles.product_image}
+						resizeMode="contain"
+					/>
+				</View>
 				<View style={styles.buttonContainer}>
 					<Button
 						title="SIGN IN WITH FACEBOOK"
@@ -65,7 +65,8 @@ export class LoginPage extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.orange,
+		justifyContent: 'center'
 	},
 	buttonContainer: {
 		paddingLeft: 10,
@@ -75,8 +76,7 @@ const styles = StyleSheet.create({
 		borderRadius: 2
 	},
 	product_image: {
-		width: 400,
-		height: 550
+		height: APP_FULL_HEIGHT*0.7
 	}
 })
 

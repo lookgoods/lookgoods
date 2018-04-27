@@ -3,6 +3,7 @@ import axios from 'axios'
 import to from 'await-to-js'
 import { Actions } from 'react-native-router-flux'
 import UserActions from 'src/redux/actions/user'
+import SearchActions from 'src/redux/actions/search'
 
 const AppURL = constants.AppURL
 
@@ -29,10 +30,16 @@ const ReviewActions = {
 		}
 	},
 	getReviews: () => async dispatch => {
-		dispatch(actions.getReviewRequest())
+		dispatch(actions.getReviewsRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews`))
+		if (err) dispatch(actions.getReviewsError(err))
+		else dispatch(actions.getReviewsSuccess(response.data.reverse()))
+	},
+	getReview: (review_id) => async dispatch => {
+		dispatch(actions.getReviewRequest())
+		const [err, response ] = await to(axios.get(`${AppURL}/reviews/${review_id}`))
 		if (err) dispatch(actions.getReviewError(err))
-		else dispatch(actions.getReviewSuccess(response.data.reverse()))
+		else dispatch(actions.getReviewSuccess(response.data))
 	},
 	getFollowingReviews: () => async dispatch => {
 		dispatch(actions.getFollowingReviewRequest())
@@ -61,6 +68,7 @@ const ReviewActions = {
 			})
 			dispatch(actions.editReviewSuccess(response))
 			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(UserActions.getCurrentUserOwnReviews())
 			dispatch(ReviewActions.setCurrentReview(trasformReview))
 
@@ -75,6 +83,7 @@ const ReviewActions = {
 		else {
 			dispatch(actions.deleteReviewSuccess(response))
 			dispatch(ReviewActions.getReviews())
+			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(UserActions.getCurrentUserOwnReviews())
 		}
 	},
@@ -86,6 +95,7 @@ const ReviewActions = {
 		}
 		else {
 			dispatch(actions.saveReviewSuccess(response))
+			dispatch(UserActions.getCurrentUserSaveReviews())
 			dispatch(UserActions.getCurrentUser())
 		}
 	},
@@ -95,6 +105,7 @@ const ReviewActions = {
 		if (err) dispatch(actions.unsaveReviewError(err))
 		else {
 			dispatch(actions.unsaveReviewSuccess(response))
+			dispatch(UserActions.getCurrentUserSaveReviews())
 			dispatch(UserActions.getCurrentUser())
 		}
 	},
@@ -116,30 +127,8 @@ const ReviewActions = {
 			dispatch(ReviewActions.getFollowingReviews())
 		}
 	},
-	searchByTag: (tag) => async dispatch => {
-		dispatch(actions.searchByTagRequest())
-		try {
-			const response = await fetch(`${AppURL}/search/reviews/tag`, {
-				method: 'post',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ key: tag })
-			})
-			const data = await response.json()
-			let transformData = []
-			if	(data.length !== 0) {
-				data.map((item) => {
-					transformData.push(item._id)
-				})
-			}
-			dispatch(actions.searchByTagSuccess(transformData, tag))
-		} catch (err) {
-			dispatch(actions.searchByTagError(err))
-		}
-	},
 	viewTagReviews: (tag) => async dispatch => {
-		await dispatch(ReviewActions.searchByTag(tag))
+		await dispatch(SearchActions.searchByTag(tag))
 		Actions.viewTagReviewsPage()
 	}
 }
@@ -156,12 +145,23 @@ const actions = {
 		type: constants.ADD_REVIEW_FAILURE,
 		payload: error
 	}),
+	getReviewsRequest: () => ({
+		type: constants.GET_REVIEWS_REQUEST
+	}),
+	getReviewsSuccess: reviews => ({
+		type: constants.GET_REVIEWS_SUCCESS,
+		payload: reviews
+	}),
+	getReviewsError: error => ({
+		type: constants.GET_REVIEWS_FAILURE,
+		payload: error
+	}),
 	getReviewRequest: () => ({
 		type: constants.GET_REVIEW_REQUEST
 	}),
-	getReviewSuccess: reviews => ({
+	getReviewSuccess: review => ({
 		type: constants.GET_REVIEW_SUCCESS,
-		payload: reviews
+		payload: review
 	}),
 	getReviewError: error => ({
 		type: constants.GET_REVIEW_FAILURE,
@@ -242,17 +242,6 @@ const actions = {
 	}),
 	unlikeReviewError: error => ({
 		type: constants.UNLIKE_REVIEW_FAILURE,
-		payload: error
-	}),
-	searchByTagRequest: () => ({
-		type: constants.SEARCH_BY_TAG_REQUEST
-	}),
-	searchByTagSuccess: (reviews, tag) => ({
-		type: constants.SEARCH_BY_TAG_SUCCESS,
-		payload: { reviews, tag }
-	}),
-	searchByTagError: error => ({
-		type: constants.SEARCH_BY_TAG_FAILURE,
 		payload: error
 	})
 }

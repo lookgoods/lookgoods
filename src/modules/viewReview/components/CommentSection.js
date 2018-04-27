@@ -27,9 +27,9 @@ function RatingFrequency ({ comment_list }) {
 		<View style={styles.ratingFrequencyPanel}>
 			{ rating_frequency_list.map((rating_count, index) => (
 				<View style={styles.ratingRow} key={index}>
-					<StarBar rating={5-index} size={20}/>
+					<StarBar rating={5-index} size={20} type='view' />
 					<View style={styles.progressBar}>
-						<View style={{ height: 15, width: `${rating_count/(comment_list.length)*100}%`, backgroundColor: colors.darkBlue}}/>
+						<View style={{ height: 15, width: `${rating_count/(comment_list.length)*100}%`, backgroundColor: colors.orange}}/>
 					</View>
 					<Text>{rating_count}</Text>
 				</View>
@@ -44,6 +44,10 @@ class CommentSection extends Component {
 		this.state = {
 			indexComment: -1
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return (this.props.comments !== nextProps.comments)
 	}
 
 	async showActionSheet1(index) {
@@ -77,62 +81,57 @@ class CommentSection extends Component {
 	render() {
 		const comment_list = this.props.comments
 		const user = this.props.currentUser
+		if (!this.props.comments || !this.props.success || this.props.comments.length === 0) return <View/>
 		return (
-			this.props.success && (
+			<View>
 				<View>
-					{comment_list.length <= 0 ? <View/> :
-						<View>
-							<Divider style={styles.divider} />
-							<View>
-								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-								<RatingFrequency comment_list={comment_list}/>
-								<View style={styles.commentList}>
-									{ comment_list.map((comment, index) => (
-										<View key={index}>
-											{ user._id === comment.user._id ?
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet1(index)}>
-													<View style = {styles.commentItem} >
-														<Comment
-															comment={comment}
-															// editCommentMessage={(comment, review_id, comment_id) => this.props.editCommentView(comment, review_id, comment_id)} 
-															// setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
-														/>
-													</View>
-												</TouchableOpacity> 
-												:
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet2(index)}>
-													<View style = {styles.commentItem} >
-														<Comment
-															comment={comment}
-														/>
-													</View>
-												</TouchableOpacity>
-											}
-										</View>
-									))}
+					<Divider style={styles.divider} />
+					<View>
+						<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
+						<RatingFrequency comment_list={comment_list}/>
+						<View style={styles.commentList}>
+							{ comment_list.map((comment, index) => (
+								<View key={index}>
+									{ user._id === comment.user._id ?
+										<TouchableOpacity 
+											delayLongPress={1000} 
+											onLongPress = {() => this.showActionSheet1(index)}>
+											<View style = {styles.commentItem} >
+												<Comment
+													comment={comment}
+												/>
+											</View>
+										</TouchableOpacity> 
+										:
+										<TouchableOpacity 
+											delayLongPress={1000} 
+											onLongPress = {() => this.showActionSheet2(index)}>
+											<View style = {styles.commentItem} >
+												<Comment
+													comment={comment}
+												/>
+											</View>
+										</TouchableOpacity>
+									}
 								</View>
-							</View> 
-							<ActionSheet
-								ref={o => this.ActionSheet1 = o}
-								options={['Edit', 'Copy', 'Delete', 'Cancel']}
-								cancelButtonIndex={3}
-								destructiveButtonIndex={2}
-								onPress={(index) => this.optionsSelect1(index)}
-							/>
-							<ActionSheet
-								ref={o => this.ActionSheet2 = o}
-								options={['Copy', 'Cancel']}
-								cancelButtonIndex={1}
-								onPress={(index) => this.optionsSelect2(index)}
-							/>
+							))}
 						</View>
-					}
+					</View> 
+					<ActionSheet
+						ref={o => this.ActionSheet1 = o}
+						options={['Edit', 'Copy', 'Delete', 'Cancel']}
+						cancelButtonIndex={3}
+						destructiveButtonIndex={2}
+						onPress={(index) => this.optionsSelect1(index)}
+					/>
+					<ActionSheet
+						ref={o => this.ActionSheet2 = o}
+						options={['Copy', 'Cancel']}
+						cancelButtonIndex={1}
+						onPress={(index) => this.optionsSelect2(index)}
+					/>
 				</View>
-			)
+			</View>
 		)
 	}
 }
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
 	progressBar: {
 		backgroundColor: colors.lightGray,
 		height: 15,
-		width: 200,
+		width: '50%',
 		marginTop: 5,
 		marginBottom: 5,
 		marginLeft: 10,

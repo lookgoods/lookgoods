@@ -63,6 +63,9 @@ export class EditReviewPage extends Component {
 		for (let i = 0 ; i < this.props.review.tag.length ; i++) {
 			tagsList.push({ tags: '' })
 		}
+		if (this.props.review.tag.length === 0) {
+			tagsList.push({ tags: '' })
+		}
 		const contentMessage = []
 		this.props.review.content_list.map((item, index) => {
 			if (item.type === 'text') contentMessage.push(item.value)
@@ -73,7 +76,7 @@ export class EditReviewPage extends Component {
 			title: this.props.review.title,
 			name: this.props.review.product.name,
 			brand: this.props.review.product.brand,
-			price: this.props.review.price.toString(),
+			price: this.props.review.price ? this.props.review.price.toString() : '',
 			tagsList: tagsList,
 			tagsMessage: this.props.review.tag,
 			rating: this.props.review.rating,
@@ -243,7 +246,7 @@ export class EditReviewPage extends Component {
 			const review = {
 				title: this.state.title.trim(),
 				name: this.state.name.trim(),
-				price: this.state.price.trim(),
+				price: this.state.price,
 				brand: this.state.brand.trim(),
 				tag: this.state.tagsMessage,
 				picture_cover_url: this.state.coverImage.url,
@@ -306,7 +309,7 @@ export class EditReviewPage extends Component {
 							<TouchableOpacity
 								style={{
 									flex: 1,
-									height: 260,
+									height: APP_FULL_WIDTH*0.6,
 									backgroundColor: colors.gray3,
 									alignItems: 'center',
 									justifyContent: 'center'
@@ -321,7 +324,7 @@ export class EditReviewPage extends Component {
 							>
 								<Image
 									style={{
-										height: 260,
+										height: APP_FULL_WIDTH*0.6,
 										width: APP_FULL_WIDTH
 									}}
 									source={{ uri: this.state.coverImage.url }}
@@ -395,7 +398,7 @@ export class EditReviewPage extends Component {
 										onChangeText={value =>
 											this.setState({ price: value })
 										}
-										keyboardType="default"
+										keyboardType='numeric'
 									/>
 								</View>
 							</View>
