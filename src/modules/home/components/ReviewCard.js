@@ -14,6 +14,7 @@ import icons from 'src/constants/icons'
 import { APP_FULL_WIDTH } from 'src/constants'
 import moment from 'moment'
 import { ShareDialog } from 'react-native-fbsdk'
+import { DURATION } from 'react-native-easy-toast'
 
 const ProfilePicture = ({ image_url }) => {
 	return <CoverImage size={50} uri={image_url} />
@@ -245,11 +246,25 @@ export class ReviewCard extends Component {
 	}
 
 	clickBookmark() {
-		if (this.state.isSaved) this.props.unsaveReview(this.props.review._id)
-		else this.props.saveReview(this.props.review._id)
+		if (this.state.isSaved) {
+			this.props.unsaveReview(this.props.review._id)
+			this.showUnSavedToast()
+		}
+		else {
+			this.showSavedToast()
+			this.props.saveReview(this.props.review._id)
+		}
 		this.setState({
 			isSaved: !this.state.isSaved
 		})
+	}
+
+	showSavedToast() {
+		this.props.toast.show('Add to savelist', DURATION.LENGTH_SHORT)
+	}
+
+	showUnSavedToast() {
+		this.props.toast.show('Remove from savelist', DURATION.LENGTH_SHORT)
 	}
 
 	shareToFacebook() {

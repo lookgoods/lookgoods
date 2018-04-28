@@ -6,7 +6,7 @@ import CoverImage from 'src/modules/shares/CoverImage'
 import StarBar from 'src/modules/viewReview/components/StarBar'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import { APP_FULL_WIDTH } from 'src/constants'
+import { APP_FULL_WIDTH, APP_FULL_HEIGHT } from 'src/constants'
 import ImageActions from 'src/redux/actions/image'
 import UserActions from 'src/redux/actions/user'
 import ReviewActions from 'src/redux/actions/review'
@@ -242,8 +242,8 @@ const styles = StyleSheet.create({
 		marginTop: 5
 	},
 	contentImage: {
-		width: '90%',
-		height: 200
+		height: APP_FULL_HEIGHT*0.3,
+		width: '100%'
 	},
 	contentImageWrapper: {
 		flexDirection: 'row',
