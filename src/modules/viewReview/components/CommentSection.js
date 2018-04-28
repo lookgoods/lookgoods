@@ -139,7 +139,7 @@ class CommentSection extends Component {
 									<View style={{ marginTop: 10 }} key={index}>
 										{ user._id === chat.user._id ?
 											<TouchableOpacity 
-												delayLongPress={1000} 
+												delayLongPress={500} 
 												onLongPress = {() => this.showActionSheet3(index)}>
 												<View style = {styles.chatItem} >
 													<CommentChat
@@ -150,7 +150,7 @@ class CommentSection extends Component {
 											</TouchableOpacity> 
 											:
 											<TouchableOpacity 
-												delayLongPress={1000} 
+												delayLongPress={500} 
 												onLongPress = {() => this.showActionSheet4(index)}>
 												<View style = {styles.chatItem} >
 													<CommentChat
@@ -186,7 +186,7 @@ class CommentSection extends Component {
 									<View key={index}>
 										{ user._id === comment.user._id ?
 											<TouchableOpacity 
-												delayLongPress={1000} 
+												delayLongPress={500} 
 												onLongPress = {() => this.showActionSheet1(index)}>
 												<View style = {styles.commentItem} >
 													<Comment
@@ -196,7 +196,7 @@ class CommentSection extends Component {
 											</TouchableOpacity> 
 											:
 											<TouchableOpacity 
-												delayLongPress={1000} 
+												delayLongPress={500} 
 												onLongPress = {() => this.showActionSheet2(index)}>
 												<View style = {styles.commentItem} >
 													<Comment
