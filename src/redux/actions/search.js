@@ -23,7 +23,7 @@ const SearchActions = {
 					transformData.push(item._id)
 				})
 			}
-			dispatch(actions.searchByTitleSuccess(transformData.reverse()))
+			dispatch(actions.searchByTitleSuccess(transformData))
 		} catch (err) {
 			dispatch(actions.searchByTitleError(err))
 		}
@@ -39,7 +39,7 @@ const SearchActions = {
 				body: JSON.stringify({ key: product })
 			})
 			const data = await response.json()
-			dispatch(actions.searchByProductSuccess(data.reverse()))
+			dispatch(actions.searchByProductSuccess(data))
 		} catch (err) {
 			dispatch(actions.searchByProductError(err))
 		}
@@ -99,7 +99,7 @@ const SearchActions = {
 				body: JSON.stringify({ key: name })
 			})
 			const data = await response.json()
-			dispatch(actions.searchProductNameSuccess(data.reverse()))
+			dispatch(actions.searchProductNameSuccess(data))
 		} catch (err) {
 			dispatch(actions.searchProductNameError(err))
 		}
