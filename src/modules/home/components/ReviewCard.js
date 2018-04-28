@@ -15,7 +15,6 @@ import { APP_FULL_WIDTH } from 'src/constants'
 import moment from 'moment'
 import { ShareDialog } from 'react-native-fbsdk'
 
-
 const ProfilePicture = ({ image_url }) => {
 	return <CoverImage size={50} uri={image_url} />
 }
