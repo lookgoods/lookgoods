@@ -58,17 +58,17 @@ export class ViewUserPage extends Component {
 		else {
 			return (
 				<View style={styles.container}>
+					<View style={styles.header}>
+						<View style={styles.platformHeader}>
+							<NavBar titleName={this.props.title} />
+						</View>
+					</View>
 					<ScrollView
 						showsVerticalScrollIndicator={false}
 						scrollEventThrottle={16}
 						bounces={false}
 						style={styles.body}
 					>
-						<View style={styles.header}>
-							<View style={styles.platformHeader}>
-								<NavBar titleName={this.props.title} />
-							</View>
-						</View>
 						<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
 							{
 								this.props.users.map((user, index) => (
