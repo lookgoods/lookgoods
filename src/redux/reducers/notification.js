@@ -53,6 +53,12 @@ export default (state = initialState, action) => {
 			isSocketOpen: true
 		}
 
+	case constants.CLEAR_NOTIFICATION_SUCCESS: 
+		return {
+			...state,
+			notifications: []
+		}
+
 	default:
 		return state
 	}

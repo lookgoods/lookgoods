@@ -1,6 +1,7 @@
 import { Image, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 import Icons from 'src/constants/icons'
+import { colors } from 'src/constants/mixins'
 
 class CoverImage extends Component {
 	render() {
@@ -10,7 +11,7 @@ class CoverImage extends Component {
 				style={[
 					styles.borderCover,
 					{ height: size, width: size },
-					{ backgroundColor: '#FFF' }
+					{ backgroundColor: colors.transparent }
 				]}
 			>
 				{url !== undefined && (

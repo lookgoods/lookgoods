@@ -120,9 +120,15 @@ export class NotificationPage extends Component {
 						this.props.notifications.map((notification, index) => (
 							<TouchableOpacity 
 								key={index}
-								onPress= {() => this.goToViewReview(notification.item._id)}
+								onPress= {() => {
+									this.props.readNotification(notification._id)
+									this.goToViewReview(notification.item._id)
+								}}
 								delayLongPress={500} 
 								onLongPress = {() => this.showActionSheet(notification._id)}
+								style={{ 
+									backgroundColor: !notification.read ? colors.lightOrange : colors.white 
+								}}
 							>
 								{ notification.type === 'Comment' ?
 									<NotifyComment review={notification.item} timestamp={notification.timestamp} user={notification.user} />
@@ -179,6 +185,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	deleteNotification: (item_id) => {
 		dispatch(NotificationActions.deleteNotification(item_id))
+	},
+	readNotification: (notification_id) => {
+		dispatch(NotificationActions.readNotification(notification_id))
 	} 
 })
 
