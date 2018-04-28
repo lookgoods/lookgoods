@@ -159,8 +159,7 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-end',
 		flexDirection: 'row',
 		marginBottom: 3,
-		right: 8,
-		borderRadius: 3
+		right: 8
 	},
 	bodyTextInput: {
 		flex: 1,
