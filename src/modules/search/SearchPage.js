@@ -108,14 +108,16 @@ export class ViewUserPage extends Component {
 						/>
 					</View>
 				</View>
-				<View>
-					<ScrollView>
-						<View style={styles.tabsContainer}>
-							<Tabs>
-								<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
-									<List containerStyle={{ flex: 1, borderColor: colors.transparent, marginTop: -5 }}>
-										{ this.props.searchTitle !== null ?
-											this.props.searchTitle.map((review, index) => (
+				<ScrollView>
+					<View style={styles.tabsContainer}>
+						<Tabs>
+							<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
+								<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
+									{ this.props.searchTitle !== null ?
+										this.props.searchTitle.map((review, index) => 
+										{
+											if (!review.available) return <View/>
+											return (
 												<ListItem
 													avatar={
 														<Image
@@ -165,28 +167,30 @@ export class ViewUserPage extends Component {
 													hideChevron={true}
 													onPress={() => this.goToViewReviewPage(review)}
 												/>
-											))
-											: this.props.loading && 
+											)
+										})
+										: this.props.loading && 
 											<View style={styles.loadingContainer}>
 												<ActivityIndicator size="large" />
 											</View>
-										}
-										<View style={{height: 100}}/>
-									</List>
-								</View>
-								<View title="Product" onSelectedTab={() => this.fetchSearchProduct()}>
-									{ this.props.searchProduct ? 
-										<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
-										: this.props.loading && 
+									}
+								</List>
+							</View>
+							<View title="Product" style={{ marginBottom: 10 }} onSelectedTab={() => this.fetchSearchProduct()}>
+								{ this.props.searchProduct ? 
+									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
+									: this.props.loading && 
 									<View style={styles.loadingContainer}>
 										<ActivityIndicator size="large" />
 									</View>
-									}
-								</View>
-								<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
-									<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
-										{ this.props.searchUser !== null ?
-											this.props.searchUser.map((user, index) => (
+								}
+							</View>
+							<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
+								<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
+									{ this.props.searchUser !== null ?
+										this.props.searchUser.map((user, index) => {
+											if (user._id === this.props.currentUser._id) return <View/>
+											return (
 												<ListItem
 													avatar={
 														<CoverImage size={70} uri={user.picture_url} />
@@ -198,18 +202,18 @@ export class ViewUserPage extends Component {
 													onPress={() => this.goToViewUser(user)}
 													containerStyle={{ borderBottomColor: colors.lightGray }}
 												/>
-											))
-											: this.props.loading && 
+											)
+										})
+										: this.props.loading && 
 												<View style={styles.loadingContainer}>
 													<ActivityIndicator size="large" />
 												</View>
-										}
-									</List>
-								</View>
-							</Tabs>
-						</View>
-					</ScrollView>
-				</View>
+									}
+								</List>
+							</View>
+						</Tabs>
+					</View>
+				</ScrollView>
 			</View>
 		)
 	}
