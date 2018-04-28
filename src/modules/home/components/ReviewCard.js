@@ -115,26 +115,38 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 					</TouchableOpacity>
 				</View>
 				<View style={{ flexDirection: 'row', marginRight: 15 }}>
-					<View style={styles.productDetail}>
+					<TouchableOpacity 
+						style={styles.productDetail}
+						onPress={() => {
+							setReview(review)
+							Actions.viewReviewPage({ focus: 'review' })
+						}}
+					>
 						<IconMaterial name="star-border" color={colors.gray} size={26} />
 						<Text style={styles.productDetailRating}>{rating}</Text>
-					</View>
+					</TouchableOpacity>
 					{ (price && price !== '0') ? 
-						<View style={styles.productDetail}>
+						<TouchableOpacity 
+							style={styles.productDetail}
+							onPress={() => {
+								setReview(review)
+								Actions.viewReviewPage()
+							}}
+						>
 							<Image
 								style={styles.bahtImage}
 								source={icons.baht}
 								resizeMode="cover"
 							/>
 							<Text style={styles.productDetailMoney}>{price}</Text>
-						</View>
+						</TouchableOpacity>
 						: <View/>
 					}
 					<TouchableOpacity 
 						style={styles.productDetail}
 						onPress={() => {
 							setReview(review)
-							Actions.viewReviewPage({ viewComment: true })
+							Actions.viewReviewPage({ focus: 'comment' })
 						}}
 					>
 						<IconMaterial

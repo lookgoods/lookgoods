@@ -55,6 +55,11 @@ class CommentSection extends Component {
 		return (this.props.comments !== nextProps.comments) || (this.props.chats !== nextProps.chats)
 	}
 
+	componentDidMount() {
+		this.props.getComments()
+		this.props.getChats()
+	}
+
 	async showActionSheet1(index) {
 		await this.setState({ indexComment: index })
 		this.ActionSheet1.show()
@@ -117,119 +122,130 @@ class CommentSection extends Component {
 		const user = this.props.currentUser
 		if (!comment_list || !this.props.successComment || !chat_list || !this.props.successChat) return <View/>
 		return (
-			<View>
-				<View>
-					<Divider style={styles.divider} />
-					<View style={styles.tabsContainer}>
-						<Tabs>
-							<View title="Comment">
-								<View style={styles.commentList}>
-									{ chat_list.map((chat, index) => (
-										<View key={index}>
-											{ user._id === chat.user._id ?
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet3(index)}>
-													<View style = {styles.chatItem} >
-														<CommentChat
-															chat={chat}
-															type={'chat'}
-														/>
-													</View>
-												</TouchableOpacity> 
-												:
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet4(index)}>
-													<View style = {styles.chatItem} >
-														<CommentChat
-															chat={chat}
-														/>
-													</View>
-												</TouchableOpacity>
-											}
-										</View>
-									))}
-									<View>
-										<Divider style={styles.divider} />
-										<AddCommentChat 
-											style={styles.addComment} 
-											user={this.props.currentUser} 
-											addChat={(chat) => this.props.addChat(chat)}
-										/>
+			<View style={{ marginBottom: 20 }}>
+				<Divider style={styles.divider} />
+				<View style={styles.tabsContainer}>
+					<Tabs activeTab={this.props.onFocus}>
+						<View title="Comment">
+							<View style={styles.commentList}>
+								{ chat_list.length !== 0 ?
+									<View/>
+									: 
+									<View style={{ marginTop: 10, marginBottom: 10, alignItems: 'center' }}>
+										<Text style={{ color: colors.gray }}>No any comments yet</Text>
 									</View>
-								</View>
-							</View>
-							<View title="Review">
-								<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
-								<RatingFrequency comment_list={comment_list}/>
-								<View style={styles.commentList}>
-									{ comment_list.map((comment, index) => (
-										<View key={index}>
-											{ user._id === comment.user._id ?
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet1(index)}>
-													<View style = {styles.commentItem} >
-														<Comment
-															comment={comment}
-														/>
-													</View>
-												</TouchableOpacity> 
-												:
-												<TouchableOpacity 
-													delayLongPress={1000} 
-													onLongPress = {() => this.showActionSheet2(index)}>
-													<View style = {styles.commentItem} >
-														<Comment
-															comment={comment}
-														/>
-													</View>
-												</TouchableOpacity>
-											}
-										</View>
-									))}
-								</View>
-								{ this.props.currentUser._id !== this.props.review.user._id &&
-						<View>
-							<Divider style={styles.divider} />
-							<AddComment 
-								style={styles.addComment} 
-								user={this.props.currentUser} 
-								addComment={(comment) => this.props.addComment(comment)}
-							/>
-						</View>
 								}
+								{ chat_list.map((chat, index) => (
+									<View style={{ marginTop: 10 }} key={index}>
+										{ user._id === chat.user._id ?
+											<TouchableOpacity 
+												delayLongPress={1000} 
+												onLongPress = {() => this.showActionSheet3(index)}>
+												<View style = {styles.chatItem} >
+													<CommentChat
+														chat={chat}
+														type={'chat'}
+													/>
+												</View>
+											</TouchableOpacity> 
+											:
+											<TouchableOpacity 
+												delayLongPress={1000} 
+												onLongPress = {() => this.showActionSheet4(index)}>
+												<View style = {styles.chatItem} >
+													<CommentChat
+														chat={chat}
+													/>
+												</View>
+											</TouchableOpacity>
+										}
+									</View>
+								))}
+								<Divider style={styles.divider} />
+								<View style={{ marginTop: 10 }}>
+									<AddCommentChat 
+										user={this.props.currentUser} 
+										addChat={(chat) => this.props.addChat(chat)}
+									/>
+								</View>
 							</View>
-						</Tabs>
-					</View> 
-					<ActionSheet
-						ref={o => this.ActionSheet1 = o}
-						options={['Edit', 'Copy', 'Delete', 'Cancel']}
-						cancelButtonIndex={3}
-						destructiveButtonIndex={2}
-						onPress={(index) => this.optionsSelect1(index)}
-					/>
-					<ActionSheet
-						ref={o => this.ActionSheet2 = o}
-						options={['Copy', 'Cancel']}
-						cancelButtonIndex={1}
-						onPress={(index) => this.optionsSelect2(index)}
-					/>
-					<ActionSheet
-						ref={o => this.ActionSheet3 = o}
-						options={['Edit', 'Copy', 'Delete', 'Cancel']}
-						cancelButtonIndex={3}
-						destructiveButtonIndex={2}
-						onPress={(index) => this.optionsSelect3(index)}
-					/>
-					<ActionSheet
-						ref={o => this.ActionSheet4 = o}
-						options={['Copy', 'Cancel']}
-						cancelButtonIndex={1}
-						onPress={(index) => this.optionsSelect4(index)}
-					/>
-				</View>
+						</View>
+						<View title="Review product">
+							{ comment_list.length !== 0 ?
+								<View>
+									<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
+									<RatingFrequency comment_list={comment_list}/>
+								</View>
+								: 
+								<View style={{ marginTop: 10, marginBottom: 10, alignItems: 'center' }}>
+									<Text style={{ color: colors.gray }}>No any reviews yet</Text>
+								</View>
+							}
+							<View style={styles.commentList}>
+								{ comment_list.map((comment, index) => (
+									<View key={index}>
+										{ user._id === comment.user._id ?
+											<TouchableOpacity 
+												delayLongPress={1000} 
+												onLongPress = {() => this.showActionSheet1(index)}>
+												<View style = {styles.commentItem} >
+													<Comment
+														comment={comment}
+													/>
+												</View>
+											</TouchableOpacity> 
+											:
+											<TouchableOpacity 
+												delayLongPress={1000} 
+												onLongPress = {() => this.showActionSheet2(index)}>
+												<View style = {styles.commentItem} >
+													<Comment
+														comment={comment}
+													/>
+												</View>
+											</TouchableOpacity>
+										}
+									</View>
+								))}
+							</View>
+							{ this.props.currentUser._id !== this.props.review.user._id &&
+								<View>
+									<Divider style={styles.divider} />
+									<AddComment 
+										user={this.props.currentUser} 
+										addComment={(comment) => this.props.addComment(comment)}
+									/>
+								</View>
+							}
+						</View>
+					</Tabs>
+				</View> 
+				<ActionSheet
+					ref={o => this.ActionSheet1 = o}
+					options={['Edit', 'Copy', 'Delete', 'Cancel']}
+					cancelButtonIndex={3}
+					destructiveButtonIndex={2}
+					onPress={(index) => this.optionsSelect1(index)}
+				/>
+				<ActionSheet
+					ref={o => this.ActionSheet2 = o}
+					options={['Copy', 'Cancel']}
+					cancelButtonIndex={1}
+					onPress={(index) => this.optionsSelect2(index)}
+				/>
+				<ActionSheet
+					ref={o => this.ActionSheet3 = o}
+					options={['Edit', 'Copy', 'Delete', 'Cancel']}
+					cancelButtonIndex={3}
+					destructiveButtonIndex={2}
+					onPress={(index) => this.optionsSelect3(index)}
+				/>
+				<ActionSheet
+					ref={o => this.ActionSheet4 = o}
+					options={['Copy', 'Cancel']}
+					cancelButtonIndex={1}
+					onPress={(index) => this.optionsSelect4(index)}
+				/>
 			</View>
 		)
 	}

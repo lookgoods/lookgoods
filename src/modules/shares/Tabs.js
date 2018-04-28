@@ -5,8 +5,17 @@ import { colors } from 'src/constants/mixins'
 
 export default class Tabs extends Component {
 	
-	state = {
-		activeTab: 0
+	constructor (props) {
+		super(props)
+		this.state = {
+			activeTab: 0
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.activeTab) {
+			this.setState({ activeTab: this.props.activeTab })
+		}
 	}
 
 	onSelectedTab(index, onSelected) {
