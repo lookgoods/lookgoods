@@ -18,16 +18,11 @@ export class ViewReviewPage extends Component {
 		}
 	}
 
-	async componentDidMount() {
-		await this.props.getCurrentUser()
+	componentDidMount() {
 		if (this.props.review_id) {
-			await this.fetchReview()
-			await this.props.getComments(this.props.review_id)
-			await this.props.getChats(this.props.review_id)
-		} else {
-			await this.props.getComments(this.props.review._id)
-			await this.props.getChats(this.props.review._id)
+			this.fetchReview()
 		}
+		this.props.getCurrentUser()
 	}
 
 	fetchReview() {
@@ -35,6 +30,7 @@ export class ViewReviewPage extends Component {
 	}
 
 	render() {
+		let self = this
 		if (!this.props.review) {
 			if (this.props.loading) {
 				return (<View style={styles.loadingContainer}>
@@ -42,6 +38,18 @@ export class ViewReviewPage extends Component {
 				</View>)
 			}
 			return <View/>
+		}
+		if (this.props.focus) {
+			if (this.props.focus === 'review' && this.props.successComment) {
+				setTimeout(() => {
+					self.scrollView.scrollToEnd()
+				}, 1)
+			}
+			if (this.props.focus === 'comment' && this.props.successChat) {
+				setTimeout(() => {
+					self.scrollView.scrollToEnd()
+				}, 1)
+			}
 		}
 		return (
 			<View style={styles.container}>
@@ -71,6 +79,9 @@ export class ViewReviewPage extends Component {
 						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
 						setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
+						onFocus={ this.props.focus === 'review' ? 1 : 0 }
+						getComments={() => this.props.getComments(this.props.review._id)}
+						getChats={() => this.props.getChats(this.props.review._id)}
 					/>
 				</ScrollView>
 			</View>
@@ -102,7 +113,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,
 	currentUser: state.userReducer.currentUser,
-	loading: state.reviewReducer.loading
+	loading: state.reviewReducer.loading,
+	successChat: state.chatReducer.success,
+	successComment: state.commentReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({
