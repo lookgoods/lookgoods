@@ -121,7 +121,7 @@ export class NotificationPage extends Component {
 							<TouchableOpacity 
 								key={index}
 								onPress= {() => this.goToViewReview(notification.item._id)}
-								delayLongPress={1000} 
+								delayLongPress={500} 
 								onLongPress = {() => this.showActionSheet(notification._id)}
 							>
 								{ notification.type === 'Comment' ?

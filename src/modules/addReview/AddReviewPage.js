@@ -215,12 +215,20 @@ export class AddReviewPage extends Component {
 		})
 
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
+			const tags = this.state.tagsMessage
+			for (let i=0 ; i < tags.length ; i++) {
+				console.log(tags[i] === undefined, 'tags -')
+				if (tags[i] === undefined || tags[i].trim().length < 1) { 
+					tags.splice(i, 1)
+					i--
+				}
+			}
 			const review = {
 				title: this.state.title.trim(),
 				name: this.state.name.trim(),
 				price: this.state.price,
 				brand: this.state.brand.trim(),
-				tag: this.state.tagsMessage,
+				tag: tags,
 				picture_cover_url: this.state.coverImage.url,
 				picture_thumbnail_url: this.state.coverImage.thumbnail_url,
 				content_list: this.state.contentList,
@@ -320,7 +328,7 @@ export class AddReviewPage extends Component {
 					
 					<View style={styles.sectionBody}>
 						<Text style={styles.label}>
-							Title
+							Review Title
 							<Text style={styles.fontRed}> *</Text>
 						</Text>
 						<View style={styles.textBox}>
@@ -340,7 +348,7 @@ export class AddReviewPage extends Component {
 						</View>
 
 						<Text style={styles.label}>
-							Name<Text style={styles.fontRed}> *</Text>
+							Product Name<Text style={styles.fontRed}> *</Text>
 						</Text>
 						<Autocomplete
 							containerStyle={styles.textBox}

@@ -15,6 +15,7 @@ import ReviewActions from 'src/redux/actions/review'
 import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 import MenuActions from 'src/redux/actions/menu'
+import Toast from 'react-native-easy-toast'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -92,11 +93,16 @@ export class HomePage extends Component {
 					}
 				>
 					<View style={styles.body}>
-						<ReviewList review_list={this.props.reviews} user={this.props.currentUser}/>
+						<ReviewList 
+							review_list={this.props.reviews} 
+							user={this.props.currentUser}
+							toast={this.toast}
+						/>
 					</View>
 				</ScrollView>
 				<PreviewReviewModal />
 				<PreviewImageModal />
+				<Toast ref={ref => this.toast = ref} position='bottom'/>
 			</View>
 		)
 	}

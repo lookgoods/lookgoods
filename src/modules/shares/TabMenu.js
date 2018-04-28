@@ -32,6 +32,7 @@ export class TabMenu extends Component {
 	}
 
 	componentDidMount() {
+		console.disableYellowBox = true
 		this.checkPage()
 		this.fetchData()
 		this.checkAccessToken()
