@@ -8,7 +8,6 @@ import {
 import React, { Component } from 'react'
 import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
-import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
 import IconIonicons from 'react-native-vector-icons/Ionicons'
 import Toast from 'react-native-simple-toast'
 import { colors } from 'src/constants/mixins'
