@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
-import AddComment from 'src/modules/viewReview/components/AddComment'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
-import { Divider } from 'react-native-elements'
 import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
+import ChatActions from 'src/redux/actions/chat'
 import ReviewActions from 'src/redux/actions/review'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
@@ -20,24 +19,18 @@ export class ViewReviewPage extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getCurrentUser()
 		if (this.props.review_id) {
 			this.fetchReview()
-			this.props.getComments(this.props.review_id)
-		} else {
-			this.props.getComments(this.props.review._id)
 		}
+		this.props.getCurrentUser()
 	}
 
 	fetchReview() {
 		this.props.getReview(this.props.review_id)
 	}
 
-	addComment(comment) {
-		this.props.addComment(comment, this.props.review._id)
-	}
-
 	render() {
+		let self = this
 		if (!this.props.review) {
 			if (this.props.loading) {
 				return (<View style={styles.loadingContainer}>
@@ -45,6 +38,18 @@ export class ViewReviewPage extends Component {
 				</View>)
 			}
 			return <View/>
+		}
+		if (this.props.focus) {
+			if (this.props.focus === 'review' && this.props.successComment) {
+				setTimeout(() => {
+					self.scrollView.scrollToEnd()
+				}, 1)
+			}
+			if (this.props.focus === 'comment' && this.props.successChat) {
+				setTimeout(() => {
+					self.scrollView.scrollToEnd()
+				}, 1)
+			}
 		}
 		return (
 			<View style={styles.container}>
@@ -68,19 +73,16 @@ export class ViewReviewPage extends Component {
 					}
 					<CommentSection 
 						review={this.props.review}
+						addComment={(comment) => this.props.addComment(comment, this.props.review._id)}
 						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
-						setEditComment={(review_id, comment_id) => this.props.setEditComment(review_id, comment_id)}
+						setEditComment={(comment_id) => this.props.setEditComment(comment_id)}
+						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
+						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
+						setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
+						onFocus={ this.props.focus === 'review' ? 1 : 0 }
+						getComments={() => this.props.getComments(this.props.review._id)}
+						getChats={() => this.props.getChats(this.props.review._id)}
 					/>
-					{ this.props.currentUser._id !== this.props.review.user._id &&
-						<View>
-							<Divider style={styles.divider} />
-							<AddComment 
-								style={styles.addComment} 
-								user={this.props.currentUser} 
-								addComment={(comment) => this.addComment(comment)}
-							/>
-						</View>
-					}
 				</ScrollView>
 			</View>
 		)
@@ -101,15 +103,6 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		zIndex: 1
 	},
-	divider: {
-		backgroundColor: colors.lightGray,
-		marginTop: 5,
-		height: 1.2,
-		width: '100%'
-	},
-	addComment: {
-		marginTop: 10
-	},
 	loadingContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -120,7 +113,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,
 	currentUser: state.userReducer.currentUser,
-	loading: state.reviewReducer.loading
+	loading: state.reviewReducer.loading,
+	successChat: state.chatReducer.success,
+	successComment: state.commentReducer.success
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -136,14 +131,26 @@ const mapDispatchToProps = dispatch => ({
 	deleteComment: (review_id, comment_id) => {
 		dispatch(CommentActions.deleteComment(review_id, comment_id))
 	},
-	setEditComment: (review_id, comment_id) => {
-		dispatch(CommentActions.setEditComment(review_id, comment_id))
+	setEditComment: (comment_id) => {
+		dispatch(CommentActions.setEditComment(comment_id))
 	},
 	deleteReview: (review_id) => {
 		dispatch(ReviewActions.deleteReview(review_id))
 	},
 	getReview: (review_id) => {
 		dispatch(ReviewActions.getReview(review_id))
+	},
+	addChat: (chat, review_id) => {
+		dispatch(ChatActions.addChat(chat, review_id))
+	},
+	getChats: (review_id) => {
+		dispatch(ChatActions.getChats(review_id))
+	},
+	deleteChat: (review_id, chat_id) => {
+		dispatch(ChatActions.deleteChat(review_id, chat_id))
+	},
+	setEditChat: (chat_id) => {
+		dispatch(ChatActions.setEditChat(chat_id))
 	}
 })
 

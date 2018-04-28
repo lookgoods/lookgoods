@@ -33,7 +33,7 @@ const ReviewActions = {
 		dispatch(actions.getReviewsRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/reviews`))
 		if (err) dispatch(actions.getReviewsError(err))
-		else dispatch(actions.getReviewsSuccess(response.data.reverse()))
+		else dispatch(actions.getReviewsSuccess(response.data))
 	},
 	getReview: (review_id) => async dispatch => {
 		dispatch(actions.getReviewRequest())
@@ -45,7 +45,7 @@ const ReviewActions = {
 		dispatch(actions.getFollowingReviewRequest())
 		const [err, response ] = await to(axios.get(`${AppURL}/currentuser/following/reviews`))
 		if (err) dispatch(actions.getFollowingReviewError(err))
-		else dispatch(actions.getFollowingReviewSuccess(response.data.reverse()))
+		else dispatch(actions.getFollowingReviewSuccess(response.data))
 	},
 	editReview: (review, review_id) => async dispatch => {
 		const trasformReview = {

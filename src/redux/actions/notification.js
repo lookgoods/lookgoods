@@ -29,6 +29,23 @@ const NotificationActions = {
 			dispatch(actions.clearNotificationNumberSuccess(response))
 		}
 	},
+	clearNotifications: () => async dispatch => {
+		dispatch(actions.clearNotificationRequest())
+		const [err, response ] = await to(axios.delete(`${AppURL}/currentuser/notifications`))
+		if (err) dispatch(actions.clearNotificationError(err))
+		else {
+			dispatch(actions.clearNotificationSuccess(response))
+		}
+	},
+	readNotification: (notification_id) => async dispatch => {
+		dispatch(actions.readNotificationRequest())
+		const [err, response ] = await to(axios.put(`${AppURL}/currentuser/notifications/${notification_id}`))
+		if (err) dispatch(actions.readNotificationError(err))
+		else {
+			dispatch(actions.readNotificationSuccess(response))
+			dispatch(NotificationActions.getNotifications())
+		}
+	},
 	increaseNotificationNumber: () => ({
 		type: constants.INCREASE_NOTIFICATION_NUMBER
 	}),
@@ -65,14 +82,36 @@ const actions = {
 		payload: error
 	}),
 	clearNotificationNumberRequest: () => ({
-		type: constants.CLEAR_NOTIFICATION_REQUEST
+		type: constants.CLEAR_NOTIFICATION_NUMBER_REQUEST
 	}),
 	clearNotificationNumberSuccess: notifications => ({
-		type: constants.CLEAR_NOTIFICATION_SUCCESS,
+		type: constants.CLEAR_NOTIFICATION_NUMBER_SUCCESS,
 		payload: notifications
 	}),
 	clearNotificationNumberError: error => ({
+		type: constants.CLEAR_NOTIFICATION_NUMBER_FAILURE,
+		payload: error
+	}),
+	clearNotificationRequest: () => ({
+		type: constants.CLEAR_NOTIFICATION_REQUEST
+	}),
+	clearNotificationSuccess: notifications => ({
+		type: constants.CLEAR_NOTIFICATION_SUCCESS,
+		payload: notifications
+	}),
+	clearNotificationError: error => ({
 		type: constants.CLEAR_NOTIFICATION_FAILURE,
+		payload: error
+	}),
+	readNotificationRequest: () => ({
+		type: constants.READ_NOTIFICATION_REQUEST
+	}),
+	readNotificationSuccess: notifications => ({
+		type: constants.READ_NOTIFICATION_SUCCESS,
+		payload: notifications
+	}),
+	readNotificationError: error => ({
+		type: constants.READ_NOTIFICATION_FAILURE,
 		payload: error
 	})
 }

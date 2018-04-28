@@ -11,7 +11,6 @@ class NavBarSearchPage extends Component {
 			searchText,
 			isSearch,
 			handleSearchText,
-			cancelSearch,
 			setIsSearch
 		} = this.props
 		return (
@@ -44,7 +43,7 @@ class NavBarSearchPage extends Component {
 					{isSearch && (
 						<TouchableOpacity
 							style={styles.boxIcon}
-							onPress={() => cancelSearch()}
+							onPress={() => this.props.cancelSearch()}
 						>
 							<IconIonicons
 								name={'ios-close-circle'}

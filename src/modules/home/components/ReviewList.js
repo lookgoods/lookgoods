@@ -20,7 +20,12 @@ export default class ReviewList extends Component {
 						return (
 							<View key={index} style={styles.reviewCard}>
 								{ review.available && (
-									<ReviewCard key={index} review={review} user={this.props.user}/>
+									<ReviewCard 
+										key={index} 
+										review={review} 
+										user={this.props.user}
+										toast={this.props.toast}
+									/>
 								)}
 							</View>
 						) })

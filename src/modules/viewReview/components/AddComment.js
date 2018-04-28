@@ -80,7 +80,7 @@ class AddComment extends Component {
 				<View>
 					{ this.checkUserComment(this.props.comments) ? 
 						<View/> :
-						<View style={{ marginTop: 10, marginBottom: 50 }}>
+						<View style={{ marginTop: 10, marginBottom: 20 }}>
 							<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 								<CoverImage uri={picture_url} size={80} />
 							</View>
@@ -159,8 +159,7 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-end',
 		flexDirection: 'row',
 		marginBottom: 3,
-		right: 8,
-		borderRadius: 3
+		right: 8
 	},
 	bodyTextInput: {
 		flex: 1,
