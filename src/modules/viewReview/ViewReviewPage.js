@@ -70,6 +70,7 @@ export class ViewReviewPage extends Component {
 						setEditComment={(comment_id) => this.props.setEditComment(comment_id)}
 						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
+						setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
 					/>
 				</ScrollView>
 			</View>

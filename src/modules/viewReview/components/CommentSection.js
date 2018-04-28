@@ -96,24 +96,22 @@ class CommentSection extends Component {
 	optionsSelect3(index) {
 		const chat_list = this.props.chats
 		if (index === 0) {
-		// 	this.props.setEditComment(comment_list[this.state.indexComment]._id)
+			this.props.setEditChat(chat_list[this.state.indexChat]._id)
 		} else if (index === 1) {
-		// 	Clipboard.setString(comment_list[this.state.indexComment].description)
+			Clipboard.setString(chat_list[this.state.indexChat].description)
 		} else if (index === 2) {
 			this.props.deleteChat(this.props.review._id, chat_list[this.state.indexChat]._id)
 		}
 	}
 
 	optionsSelect4(index) {
-		const comment_list = this.props.comments
+		const chat_list = this.props.chats
 		if (index === 0) {
-			Clipboard.setString(comment_list[this.state.indexComment].description)
+			Clipboard.setString(chat_list[this.state.indexChat].description)
 		}
 	}
 
 	render() {
-		console.log(this.props.comments, 'this.props.comments')
-		console.log(this.props.chats, 'this.props.chats')
 		const comment_list = this.props.comments
 		const chat_list = this.props.chats
 		const user = this.props.currentUser
@@ -126,15 +124,15 @@ class CommentSection extends Component {
 						<Tabs>
 							<View title="Comment">
 								<View style={styles.commentList}>
-									{ chat_list.map((comment, index) => (
+									{ chat_list.map((chat, index) => (
 										<View key={index}>
-											{ user._id === comment.user._id ?
+											{ user._id === chat.user._id ?
 												<TouchableOpacity 
 													delayLongPress={1000} 
 													onLongPress = {() => this.showActionSheet3(index)}>
 													<View style = {styles.chatItem} >
 														<CommentChat
-															comment={comment}
+															chat={chat}
 															type={'chat'}
 														/>
 													</View>
@@ -145,7 +143,7 @@ class CommentSection extends Component {
 													onLongPress = {() => this.showActionSheet4(index)}>
 													<View style = {styles.chatItem} >
 														<CommentChat
-															comment={comment}
+															chat={chat}
 														/>
 													</View>
 												</TouchableOpacity>

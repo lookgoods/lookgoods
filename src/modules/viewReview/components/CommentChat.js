@@ -10,7 +10,7 @@ import { colors } from 'src/constants/mixins'
 import validate from 'src/services/validate'
 import CoverImage from 'src/modules/shares/CoverImage'
 import { connect } from 'react-redux'
-import CommentActions from 'src/redux/actions/comment'
+import ChatActions from 'src/redux/actions/chat'
 import Toast from 'react-native-simple-toast'
 
 const ProfilePicture = ({ image_url }) => (
@@ -19,11 +19,10 @@ const ProfilePicture = ({ image_url }) => (
 	</View>
 )
 
-class Comment extends Component {
+class CommentChat extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			rating: 0,
 			description: '',
 			descriptionErr: ''
 		}
@@ -31,37 +30,31 @@ class Comment extends Component {
 
 	async componentDidMount() {
 		await this.setState({
-			rating: this.props.comment.rating,
-			description: this.props.comment.description
+			description: this.props.chat.description
 		})
 	}
 
-	async saveEditComment(rating, comment_id) {
+	async saveEditChat(chat_id) {
 		const descriptionErr = validate(['description'], [this.state.description.trim()])
 		await this.setState({ descriptionErr })
 
 		if (!descriptionErr) {
-			const comment = {description: this.state.description, rating: rating}
-			this.props.editComment(comment, this.props.review._id, comment_id)
-			this.props.setEditComment(null)
+			const chat = {description: this.state.description}
+			this.props.editChat(chat, this.props.review._id, chat_id)
+			this.props.setEditChat(null)
 		} else {
 			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
 		}		
 	}
-
-	async handleChangeRating(rating) {
-		await this.setState({ rating })
-	}
 	
 	render() {
-		const { user, _id } = this.props.comment
+		const { user, _id } = this.props.chat
 		return (
 			<View style={styles.container}>
 				<ProfilePicture image_url={user.picture_url}/>
 				<View style={styles.content}>
 					<Text style={styles.username}>{user.name}</Text>
-					
-					{ _id !== this.props.editCommentId ?
+					{ _id !== this.props.editChatId ?
 						<View>
 							<Text style={styles.textLabel}>{this.state.description}</Text>
 						</View> :
@@ -87,10 +80,10 @@ class Comment extends Component {
 							</View>
 							<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
 								<View style={{alignItems: 'flex-end', flexDirection: 'row', marginRight: 15 }}>
-									<TouchableOpacity style={styles.buttonCancel} onPress={() => this.props.setEditComment(null)}>
+									<TouchableOpacity style={styles.buttonCancel} onPress={() => this.props.setEditChat(null)}>
 										<Text style={styles.fontCancel}>Cancel</Text>
 									</TouchableOpacity>
-									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditComment(this.state.rating, _id)}>
+									<TouchableOpacity style={styles.buttonSave} onPress={() => this.saveEditChat(_id)}>
 										<Text style={styles.fontSave}>Save</Text>
 									</TouchableOpacity>
 								</View>
@@ -160,16 +153,16 @@ const styles = StyleSheet.create({
  
 const mapStateToProps = state => ({
 	review: state.reviewReducer.currentReview,   
-	editCommentId: state.commentReducer.editCommentId
+	editChatId: state.chatReducer.editChatId
 })
 
 const mapDispatchToProps = dispatch => ({
-	editComment: (comment, review_id, comment_id) => {
-		dispatch(CommentActions.editComment(comment, review_id, comment_id))
+	editChat: (chat, review_id, chat_id) => {
+		dispatch(ChatActions.editChat(chat, review_id, chat_id))
 	},
-	setEditComment: (comment_id) => {
-		dispatch(CommentActions.setEditComment(comment_id))
+	setEditChat: (chat_id) => {
+		dispatch(ChatActions.setEditChat(chat_id))
 	}
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comment)
+export default connect(mapStateToProps, mapDispatchToProps)(CommentChat)
