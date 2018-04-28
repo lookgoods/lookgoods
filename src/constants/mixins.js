@@ -18,5 +18,6 @@ export const colors = {
 	lightGray: '#E5E5E5',
 	lightGray2: '#f2f2f2',
 	darkBlue: '#415D87',
+	lightOrange: '#fff0e6',
 	transparent: 'transparent'
 }

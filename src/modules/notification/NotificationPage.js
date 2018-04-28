@@ -4,7 +4,9 @@ import {
 	View,
 	TouchableOpacity,
 	ScrollView,
-	RefreshControl
+	RefreshControl,
+	Text,
+	Alert
 } from 'react-native'
 import React, { Component } from 'react'
 
@@ -16,6 +18,7 @@ import NotificationActions from 'src/redux/actions/notification'
 import { colors } from 'src/constants/mixins'
 import NotifyComment from 'src/modules/notification/components/NotifyComment'
 import NotifyReview from 'src/modules/notification/components/NotifyReview'
+import EmptyNotification from 'src/modules/notification/components/EmptyNotification'
 import NotifyChat from 'src/modules/notification/components/NotifyChat'
 import { Actions } from 'react-native-router-flux'
 import ActionSheet from 'react-native-actionsheet'
@@ -93,6 +96,19 @@ export class NotificationPage extends Component {
 		})
 	}
 
+	clearNotifications() {
+		Alert.alert(
+			'Clear Notifications',
+			'Are you sure to clear all notifications?',
+			[
+				{text: 'Cancel', style: 'cancel'},
+				{text: 'OK', onPress: () => {
+					this.props.clearNotifications()
+				}}
+			]
+		)
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -116,22 +132,36 @@ export class NotificationPage extends Component {
 						/>
 					}
 				>
+					<TouchableOpacity 
+						style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20, marginTop: 5, marginBottom: 5 }}
+						onPress={() => this.clearNotifications()}
+					>
+						<Text style={{ color: colors.orange }}>Clear</Text>
+					</TouchableOpacity>
 					{ this.props.notifications ?
-						this.props.notifications.map((notification, index) => (
-							<TouchableOpacity 
-								key={index}
-								onPress= {() => this.goToViewReview(notification.item._id)}
-								delayLongPress={500} 
-								onLongPress = {() => this.showActionSheet(notification._id)}
-							>
-								{ notification.type === 'Comment' ?
-									<NotifyComment review={notification.item} timestamp={notification.timestamp} user={notification.user} />
-									: notification.type === 'Review' ?
-										<NotifyReview review={notification.item} user={notification.user} />
-										: <NotifyChat review={notification.item} timestamp={notification.timestamp} user={notification.user} />
-								}
-							</TouchableOpacity>
-						))
+						this.props.notifications.length !== 0 ?
+							this.props.notifications.map((notification, index) => (
+								<TouchableOpacity 
+									key={index}
+									onPress= {() => {
+										this.props.readNotification(notification._id)
+										this.goToViewReview(notification.item._id)
+									}}
+									delayLongPress={500} 
+									onLongPress = {() => this.showActionSheet(notification._id)}
+									style={{ 
+										backgroundColor: !notification.read ? colors.lightOrange : colors.white 
+									}}
+								>
+									{ notification.type === 'Comment' ?
+										<NotifyComment review={notification.item} timestamp={notification.timestamp} user={notification.user} />
+										: notification.type === 'Review' ?
+											<NotifyReview review={notification.item} user={notification.user} />
+											: <NotifyChat review={notification.item} timestamp={notification.timestamp} user={notification.user} />
+									}
+								</TouchableOpacity>
+							))
+							: <EmptyNotification/>
 						: <View/>
 					}
 				</ScrollView>
@@ -179,7 +209,13 @@ const mapDispatchToProps = dispatch => ({
 	},
 	deleteNotification: (item_id) => {
 		dispatch(NotificationActions.deleteNotification(item_id))
-	} 
+	},
+	readNotification: (notification_id) => {
+		dispatch(NotificationActions.readNotification(notification_id))
+	},
+	clearNotifications: () => {
+		dispatch(NotificationActions.clearNotifications())
+	}  
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage)
