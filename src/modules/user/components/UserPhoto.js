@@ -20,7 +20,7 @@ export default class UserPhoto extends Component {
 				<View style={styles.descriptionContainer}>
 					<View style={{ width: '80%' }}>
 						{ (description !== '' && description)
-							?<Text style={{ lineHeight: 22, textAlign: 'center' }}>{description}</Text>
+							?<Text style={{ lineHeight: 22, color: colors.gray2, textAlign: 'center' }}>{description}</Text>
 							:<Text style={{ lineHeight: 22, color: colors.gray2, textAlign: 'center' }}>{'You can change your status in settings.'}</Text>
 						}
 					</View>
