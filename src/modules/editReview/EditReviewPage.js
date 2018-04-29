@@ -24,6 +24,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { connect } from 'react-redux'
 import ImageActions from 'src/redux/actions/image'
 import { APP_FULL_WIDTH } from 'src/constants'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export class EditReviewPage extends Component {
 	constructor(props) {
@@ -290,234 +291,240 @@ export class EditReviewPage extends Component {
 
 	render() {
 		return (
-			<View
-				style={styles.container}
-				pointerEvents={
-					this.props.upload_loading || this.props.review_loading
-						? 'none'
-						: 'box-none'
-				}
+			<KeyboardAwareScrollView
+				style={{ backgroundColor: colors.white }}
+				resetScrollToCoords={{ x: 0, y: 0 }}
+				scrollEnabled={true}
 			>
-				<ScrollView
-					showsVerticalScrollIndicator={false}
-					scrollEventThrottle={16}
-					bounces={false}
-					style={styles.body}
+				<View
+					style={styles.container}
+					pointerEvents={
+						this.props.upload_loading || this.props.review_loading
+							? 'none'
+							: 'box-none'
+					}
 				>
-					<View
-						style={{
-							alignItems: 'center',
-							justifyContent: 'center',
-							flexDirection: 'row',
-							backgroundColor: colors.lightGray2
-						}}
+					<ScrollView
+						showsVerticalScrollIndicator={false}
+						scrollEventThrottle={16}
+						bounces={false}
+						style={styles.body}
 					>
-						{this.state.coverImage.url === '' ? (
-							<TouchableOpacity
-								style={{
-									flex: 1,
-									height: APP_FULL_WIDTH*0.6,
-									backgroundColor: colors.gray3,
-									alignItems: 'center',
-									justifyContent: 'center'
-								}}
-								onPress={() => this.addCoverImage()}
-							>
-								<IconMaterial name="add-a-photo" size={100} />
-							</TouchableOpacity>
-						) : (
-							<TouchableOpacity
-								onPress={() => this.addCoverImage()}
-							>
-								<Image
-									style={{
-										height: APP_FULL_WIDTH*0.6,
-										width: APP_FULL_WIDTH
-									}}
-									source={{ uri: this.state.coverImage.url }}
-									resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
-								/>
-							</TouchableOpacity>
-						)}
-					</View>
-					<View style={styles.sectionBody}>
-						<Text style={styles.label}>
-							Review Title
-							<Text style={styles.fontRed}> *</Text>
-						</Text>
-						<View style={styles.textBox}>
-							<TextInput
-								style={styles.textInput}
-								value={this.state.title}
-								underlineColorAndroid="transparent"
-								onChangeText={value => this.setState({ title: value })}
-								keyboardType="default"
-								onBlur={() => {
-									this.setState({
-										titleErr: validate(['title'], [this.state.title])
-									})
-								}}
-								error={this.state.titleErr}
-							/>
-						</View>
-
-						<Text style={styles.label}>
-							Product Name<Text style={styles.fontRed}> *</Text>
-						</Text>
-						<View style={styles.textBox}>
-							<TextInput
-								style={styles.textInput}
-								value={this.state.name}
-								underlineColorAndroid="transparent"
-								onChangeText={value => this.setState({ name: value })}
-								keyboardType="default"
-								onBlur={() => {
-									this.setState({
-										nameErr: validate(['name'], [this.state.name])
-									})
-								}}
-								error={this.state.nameErr}
-							/>
-						</View>
-
-						<View style={{ flexDirection: 'row' }}>
-							<View style={{ flex: 1, paddingRight: 10 }}>
-								<Text style={styles.label}>Brand</Text>
-								<View style={styles.textBox}>
-									<TextInput
-										style={styles.textInput}
-										value={this.state.brand}
-										underlineColorAndroid="transparent"
-										onChangeText={value =>
-											this.setState({ brand: value })
-										}
-										keyboardType="default"
-									/>
-								</View>
-							</View>
-							<View style={{ flex: 1, paddingLeft: 10 }}>
-								<Text style={styles.label}>Price</Text>
-								<View style={styles.textBox}>
-									<TextInput
-										style={styles.textInput}
-										value={this.state.price}
-										underlineColorAndroid="transparent"
-										onChangeText={value =>
-											this.setState({ price: value })
-										}
-										keyboardType='numeric'
-									/>
-								</View>
-							</View>
-						</View>
-
-						<Text style={styles.label}>Tags</Text>
-						{this.state.tagsList.map((item, key) => (
-							<View key={key} style={{ flexDirection: 'row' }}>
-								<View style={styles.textBox}>
-									<TextInput
-										style={styles.textInput}
-										value={this.state.tagsMessage[key]}
-										underlineColorAndroid="transparent"
-										onChangeText={text => this.handleChangeTags(key, text)}
-										keyboardType="default"
-									/>
-								</View>
-								{this.state.tagsList.length - 1 === key &&
-									this.state.isTagsButton && (
-									<TouchableOpacity
-										style={styles.buttonAddTag}
-										onPress={() => this.addTagsBox()}
-									>
-										<IconMaterial name="add-circle" size={20} />
-									</TouchableOpacity>
-								)}
-							</View>
-						))}
-
-						<Text style={styles.label}>
-							Rating<Text style={styles.fontRed}> *</Text>
-						</Text>
 						<View
 							style={{
-								flex: 1,
-								marginLeft: 15,
-								marginTop: 10,
-								marginBottom: 10,
-								flexDirection: 'row'
+								alignItems: 'center',
+								justifyContent: 'center',
+								flexDirection: 'row',
+								backgroundColor: colors.lightGray2
 							}}
 						>
-							{this.state.numStar.map((item, key) => (
+							{this.state.coverImage.url === '' ? (
 								<TouchableOpacity
-									key={key}
-									onPress={() => this.setAmountRating(key + 1)}
+									style={{
+										flex: 1,
+										height: APP_FULL_WIDTH*0.6,
+										backgroundColor: colors.gray3,
+										alignItems: 'center',
+										justifyContent: 'center'
+									}}
+									onPress={() => this.addCoverImage()}
 								>
-									<IconFontAwesome
-										style={{ marginRight: 12 }}
-										name={item}
-										size={35}
-										color={colors.yellow_star}
+									<IconMaterial name="add-a-photo" size={100} />
+								</TouchableOpacity>
+							) : (
+								<TouchableOpacity
+									onPress={() => this.addCoverImage()}
+								>
+									<Image
+										style={{
+											height: APP_FULL_WIDTH*0.6,
+											width: APP_FULL_WIDTH
+										}}
+										source={{ uri: this.state.coverImage.url }}
+										resizeMode={ this.state.imageSize.width > this.state.imageSize.height ? 'cover' : 'contain' }
 									/>
 								</TouchableOpacity>
+							)}
+						</View>
+						<View style={styles.sectionBody}>
+							<Text style={styles.label}>
+							Review Title
+								<Text style={styles.fontRed}> *</Text>
+							</Text>
+							<View style={styles.textBox}>
+								<TextInput
+									style={styles.textInput}
+									value={this.state.title}
+									underlineColorAndroid="transparent"
+									onChangeText={value => this.setState({ title: value })}
+									keyboardType="default"
+									onBlur={() => {
+										this.setState({
+											titleErr: validate(['title'], [this.state.title])
+										})
+									}}
+									error={this.state.titleErr}
+								/>
+							</View>
+
+							<Text style={styles.label}>
+							Product Name<Text style={styles.fontRed}> *</Text>
+							</Text>
+							<View style={styles.textBox}>
+								<TextInput
+									style={styles.textInput}
+									value={this.state.name}
+									underlineColorAndroid="transparent"
+									onChangeText={value => this.setState({ name: value })}
+									keyboardType="default"
+									onBlur={() => {
+										this.setState({
+											nameErr: validate(['name'], [this.state.name])
+										})
+									}}
+									error={this.state.nameErr}
+								/>
+							</View>
+
+							<View style={{ flexDirection: 'row' }}>
+								<View style={{ flex: 1, paddingRight: 10 }}>
+									<Text style={styles.label}>Brand</Text>
+									<View style={styles.textBox}>
+										<TextInput
+											style={styles.textInput}
+											value={this.state.brand}
+											underlineColorAndroid="transparent"
+											onChangeText={value =>
+												this.setState({ brand: value })
+											}
+											keyboardType="default"
+										/>
+									</View>
+								</View>
+								<View style={{ flex: 1, paddingLeft: 10 }}>
+									<Text style={styles.label}>Price</Text>
+									<View style={styles.textBox}>
+										<TextInput
+											style={styles.textInput}
+											value={this.state.price}
+											underlineColorAndroid="transparent"
+											onChangeText={value =>
+												this.setState({ price: value })
+											}
+											keyboardType='numeric'
+										/>
+									</View>
+								</View>
+							</View>
+
+							<Text style={styles.label}>Tags</Text>
+							{this.state.tagsList.map((item, key) => (
+								<View key={key} style={{ flexDirection: 'row' }}>
+									<View style={styles.textBox}>
+										<TextInput
+											style={styles.textInput}
+											value={this.state.tagsMessage[key]}
+											underlineColorAndroid="transparent"
+											onChangeText={text => this.handleChangeTags(key, text)}
+											keyboardType="default"
+										/>
+									</View>
+									{this.state.tagsList.length - 1 === key &&
+									this.state.isTagsButton && (
+										<TouchableOpacity
+											style={styles.buttonAddTag}
+											onPress={() => this.addTagsBox()}
+										>
+											<IconMaterial name="add-circle" size={20} />
+										</TouchableOpacity>
+									)}
+								</View>
 							))}
-						</View>
 
-						<ContentView
-							contentList={this.state.contentList}
-							contentMessage={this.state.contentMessage}
-							isEditButton={this.state.isEditButton}
-							setEditButton={() => this.setEditButton()}
-							handleChangeTextBox={(index, text) =>
-								this.handleChangeTextBox(index, text)
-							}
-							deleteContentBox={index => this.deleteContentBox(index)}
-						/>
-
-						{this.state.isAddButton && (
-							<View style={styles.blockAdd}>
-								<TouchableOpacity
-									style={styles.buttonAdd}
-									onPress={() => this.setAddButton()}
-								>
-									<IconMaterial name="add-circle" size={40} />
-								</TouchableOpacity>
-							</View>
-						)}
-
-						{!this.state.isAddButton && (
-							<View style={styles.blockOption}>
-								<TouchableOpacity
-									style={styles.buttonOptionLeft}
-									onPress={() => this.addContentBox()}
-								>
-									<IconEntypo name="text" size={40} />
-								</TouchableOpacity>
-								<TouchableOpacity
-									style={styles.buttonOptionRight}
-									onPress={() => this.attachPhotos()}
-								>
-									<IconFontAwesome name="picture-o" size={40} />
-								</TouchableOpacity>
-							</View>
-						)}
-
-						<View style={styles.blockSave}>
-							<TouchableOpacity
-								style={styles.buttonSave}
-								onPress={() => this.saveReview()}
+							<Text style={styles.label}>
+							Rating<Text style={styles.fontRed}> *</Text>
+							</Text>
+							<View
+								style={{
+									flex: 1,
+									marginLeft: 15,
+									marginTop: 10,
+									marginBottom: 10,
+									flexDirection: 'row'
+								}}
 							>
-								<Text style={{ fontSize: 18, color: '#FFF' }}>SAVE REVIEW</Text>
-							</TouchableOpacity>
+								{this.state.numStar.map((item, key) => (
+									<TouchableOpacity
+										key={key}
+										onPress={() => this.setAmountRating(key + 1)}
+									>
+										<IconFontAwesome
+											style={{ marginRight: 12 }}
+											name={item}
+											size={35}
+											color={colors.yellow_star}
+										/>
+									</TouchableOpacity>
+								))}
+							</View>
+
+							<ContentView
+								contentList={this.state.contentList}
+								contentMessage={this.state.contentMessage}
+								isEditButton={this.state.isEditButton}
+								setEditButton={() => this.setEditButton()}
+								handleChangeTextBox={(index, text) =>
+									this.handleChangeTextBox(index, text)
+								}
+								deleteContentBox={index => this.deleteContentBox(index)}
+							/>
+
+							{this.state.isAddButton && (
+								<View style={styles.blockAdd}>
+									<TouchableOpacity
+										style={styles.buttonAdd}
+										onPress={() => this.setAddButton()}
+									>
+										<IconMaterial name="add-circle" size={40} />
+									</TouchableOpacity>
+								</View>
+							)}
+
+							{!this.state.isAddButton && (
+								<View style={styles.blockOption}>
+									<TouchableOpacity
+										style={styles.buttonOptionLeft}
+										onPress={() => this.addContentBox()}
+									>
+										<IconEntypo name="text" size={40} />
+									</TouchableOpacity>
+									<TouchableOpacity
+										style={styles.buttonOptionRight}
+										onPress={() => this.attachPhotos()}
+									>
+										<IconFontAwesome name="picture-o" size={40} />
+									</TouchableOpacity>
+								</View>
+							)}
+
+							<View style={styles.blockSave}>
+								<TouchableOpacity
+									style={styles.buttonSave}
+									onPress={() => this.saveReview()}
+								>
+									<Text style={{ fontSize: 18, color: '#FFF' }}>SAVE REVIEW</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
-					</View>
-				</ScrollView>
-				{this.renderLoading()}
-				<View style={styles.header}>
-					<View style={styles.platformHeader}>
-						<NavBar titleName="Edit Review" />
+					</ScrollView>
+					{this.renderLoading()}
+					<View style={styles.header}>
+						<View style={styles.platformHeader}>
+							<NavBar titleName="Edit Review" />
+						</View>
 					</View>
 				</View>
-			</View>
+			</KeyboardAwareScrollView>
 		)
 	}
 }
