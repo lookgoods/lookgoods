@@ -277,10 +277,9 @@ export class AddReviewPage extends Component {
 	render() {
 		return (
 			<KeyboardAwareScrollView
-				style={{ backgroundColor: '#4c69a5' }}
+				style={{ backgroundColor: colors.white }}
 				resetScrollToCoords={{ x: 0, y: 0 }}
-				// contentContainerStyle={styles.container}
-				scrollEnabled={false}
+				scrollEnabled={true}
 			>
 				<View
 					style={styles.container}
