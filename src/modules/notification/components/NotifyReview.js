@@ -27,12 +27,10 @@ export class NotifyComment extends Component {
 				<View style={styles.containerImage}>
 					<Image
 						style={{
-							width: 85,
-							height: 85,
+							width: 80,
+							height: 80,
 							resizeMode: 'cover',
-							borderWidth: 1,
-							borderRadius: 3,
-							borderColor: colors.lightGray2
+							borderRadius: 3
 						}}
 						source={{ uri: this.props.review.picture_cover_url }}
 						resizeMode="cover"
@@ -48,7 +46,7 @@ export class NotifyComment extends Component {
 							{this.props.review.title}
 						</Text>
 					</Text>
-					<Text style={[styles.font15, { color: colors.gray, marginBottom: 4 }]}>
+					<Text style={{ color: colors.gray2, marginBottom: 4, fontSize: 13 }}>
 						{ this.getTimeText(this.props.review.timestamp) }
 					</Text>
 				</View>
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderColor: colors.lightGray2,
 		borderWidth: 1 / PixelRatio.get(),
-		height: 100
+		height: 85
 	},
 	textName: {
 		fontSize: 15,

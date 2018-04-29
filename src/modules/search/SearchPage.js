@@ -207,6 +207,7 @@ export class ViewUserPage extends Component {
 													}
 													key={index}
 													title={user.name}
+													// subtitle={`${user.own_post_list.length} reviews`}
 													hideChevron={true}
 													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
 													onPress={() => this.goToViewUser(user)}
