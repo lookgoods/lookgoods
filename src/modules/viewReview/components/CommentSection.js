@@ -135,7 +135,7 @@ class CommentSection extends Component {
 									</View>
 								}
 								{ chat_list.map((chat, index) => (
-									<View style={{ marginTop: 10 }} key={index}>
+									<View key={index}>
 										{ user._id === chat.user._id ?
 											<TouchableOpacity 
 												delayLongPress={500} 
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	commentList: {
-		marginLeft: 20
+		marginLeft: 10
 	},
 	commentItem: {
 		marginBottom: 10

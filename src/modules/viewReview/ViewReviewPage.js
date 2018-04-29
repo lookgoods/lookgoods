@@ -13,6 +13,7 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Divider } from 'react-native-elements'
+import DeletedReview from 'src/modules/viewReview/components/DeletedReview'
 
 export class ViewReviewPage extends Component {
 	constructor(props) {
@@ -54,6 +55,9 @@ export class ViewReviewPage extends Component {
 					self.scrollView.scrollToEnd()
 				}, 1)
 			}
+		}
+		if (!this.props.review.available) {
+			return <DeletedReview/>
 		}
 		return (
 			<KeyboardAwareScrollView
