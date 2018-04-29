@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
-import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
+import { Platform, StyleSheet, View, ActivityIndicator } from 'react-native'
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
 import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
+import SameProductSection from 'src/modules/viewReview/components/SameProductSection'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
+import SearchActions from 'src/redux/actions/search'
 import ChatActions from 'src/redux/actions/chat'
 import ReviewActions from 'src/redux/actions/review'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Divider } from 'react-native-elements'
+import DeletedReview from 'src/modules/viewReview/components/DeletedReview'
 
 export class ViewReviewPage extends Component {
 	constructor(props) {
@@ -51,25 +56,34 @@ export class ViewReviewPage extends Component {
 				}, 1)
 			}
 		}
+		if (!this.props.review.available) {
+			return <DeletedReview/>
+		}
 		return (
-			<View style={styles.container}>
-				<View style={styles.header}>
-					<View style={styles.platformHeader}>
-						<NavBarViewReview 
-							review={this.props.review}
-							currentUser={this.props.currentUser}
-							deleteReview={(review_id) => this.props.deleteReview(review_id)}
-						/>
+			<KeyboardAwareScrollView
+				style={{ backgroundColor: colors.white }}
+				resetScrollToCoords={{ x: 0, y: 0 }}
+				scrollEnabled={true}
+				ref={ref => this.scrollView = ref}
+			>
+				<View style={styles.container}>
+					<View style={styles.header}>
+						<View style={styles.platformHeader}>
+							<NavBarViewReview 
+								review={this.props.review}
+								currentUser={this.props.currentUser}
+								deleteReview={(review_id) => this.props.deleteReview(review_id)}
+							/>
+						</View>
 					</View>
-				</View>
-				<ScrollView 
-					ref={ref => this.scrollView = ref}
-					onContentSizeChange={(contentWidth, contentHeight) => {
-						this.setState({ scrollHeight: contentHeight })
-					}}
-				>
 					{ this.props.review && 
-						<ContentSection review={this.props.review} />
+							<View>
+								<ContentSection review={this.props.review} />
+								<Divider style={styles.divider} />
+								<SameProductSection 
+									searchByProduct={() => this.props.searchByProductExceptMe(this.props.review.product.name, this.props.review._id)}
+								/>
+							</View>
 					}
 					<CommentSection 
 						review={this.props.review}
@@ -83,8 +97,8 @@ export class ViewReviewPage extends Component {
 						getComments={() => this.props.getComments(this.props.review._id)}
 						getChats={() => this.props.getChats(this.props.review._id)}
 					/>
-				</ScrollView>
-			</View>
+				</View>
+			</KeyboardAwareScrollView>
 		)
 	}
 }
@@ -107,6 +121,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	divider: {
+		backgroundColor: colors.lightGray,
+		marginTop: 5,
+		height: 1.2,
+		width: '100%'
 	}
 })
 
@@ -151,6 +171,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	setEditChat: (chat_id) => {
 		dispatch(ChatActions.setEditChat(chat_id))
+	},
+	searchByProductExceptMe: (product_name, review_id) => {
+		dispatch(SearchActions.searchByProductExceptMe(product_name, review_id))
 	}
 })
 

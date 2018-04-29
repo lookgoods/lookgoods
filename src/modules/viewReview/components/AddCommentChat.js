@@ -21,7 +21,7 @@ const ProfilePicture = ({ image_url }) => (
 	</View>
 )
 
-class AddComment extends Component {
+class AddCommentChat extends Component {
 	constructor(props) {
 		super(props)
 		this.socket = SocketIOClient(constants.AppURL)
@@ -44,6 +44,16 @@ class AddComment extends Component {
 		} else {
 			Toast.show('กรุณาแสดงความคิดเห็น', Toast.SHORT)
 		}
+	}
+	
+	notify() {
+		const user_list = []
+		user_list.push(this.props.review.user._id)
+		this.props.chats.map((chat) => {
+			user_list.push(chat.user._id)
+		})
+
+		this.socket.emit('notify', JSON.stringify({ followerList: user_list }))
 	}
   
 	render() {
@@ -120,33 +130,13 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		right: 8
 	}
-	// fontCancel: {
-	// 	fontSize: 15,
-	// 	fontWeight: 'bold',
-	// 	color: colors.gray2
-	// },
-	// fontSave: {
-	// 	fontSize: 15,
-	// 	fontWeight: 'bold',
-	// 	color: colors.blue
-	// },
-	// buttonCancel: {
-	// 	marginTop: 5,
-	// 	marginRight: 10,
-	// 	borderRadius: 3
-	// },
-	// buttonSave: {
-	// 	marginTop: 5,
-	// 	marginRight: 0,
-	// 	borderRadius: 3
-	// }
 })
 
 const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
-	comments: state.commentReducer.comments,
+	chats: state.chatReducer.chats,
 	success: state.commentReducer.success,
 	review: state.reviewReducer.currentReview
 })
 
-export default connect(mapStateToProps, null)(AddComment)
+export default connect(mapStateToProps, null)(AddCommentChat)

@@ -56,6 +56,28 @@ export default (state = initialState, action) => {
 			loading: false,
 			error: action.payload
 		}
+
+	case constants.SEARCH_BY_PRODUCT_EXCEPT_ME_REQUEST:
+		return {
+			...state,
+			loading: true,
+			error: null
+		}
+
+	case constants.SEARCH_BY_PRODUCT_EXCEPT_ME_SUCCESS:
+		return {
+			...state,
+			products: action.payload,
+			loading: false,
+			error: null
+		}
+
+	case constants.SEARCH_BY_PRODUCT_EXCEPT_ME_FAILURE:
+		return {
+			...state,
+			loading: false,
+			error: action.payload
+		}
     
 	case constants.SEARCH_BY_USER_REQUEST:
 		return {

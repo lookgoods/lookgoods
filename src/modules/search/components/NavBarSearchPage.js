@@ -19,7 +19,7 @@ class NavBarSearchPage extends Component {
 					<IconIonicons
 						name={'ios-arrow-back'}
 						size={30}
-						color={colors.gray}
+						color={colors.orange}
 						style={styles.backgroundTranparent}
 					/>
 				</TouchableOpacity>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.orange,
 		paddingHorizontal: 10, //15
 		marginHorizontal: 0, //10
 		marginTop: 5

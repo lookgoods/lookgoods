@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	logoutText: {
-		color: colors.blueFacebook,
+		color: colors.gray,
 		fontSize: 16
 	}
 })

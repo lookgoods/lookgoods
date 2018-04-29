@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 2,
 		paddingHorizontal: 1,
 		width: '33.33%',
-		aspectRatio: 1
+		aspectRatio: 1,
+		borderRadius: 3
 	}
 })

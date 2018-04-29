@@ -300,7 +300,7 @@ export class ReviewCard extends Component {
 			user,
 			picture_cover_url,
 			price,
-			comment_list,
+			chat_list,
 			rating,
 			timestamp,
 			like_by_list
@@ -325,7 +325,7 @@ export class ReviewCard extends Component {
 				<Footer
 					rating={rating}
 					price={price}
-					numberOfComment={comment_list.length}
+					numberOfComment={chat_list ? chat_list.length : 0}
 					numberOfLike={like_by_list.length}
 					isLove={this.state.isLove}
 					clickLove={() => this.clickLove()}

@@ -35,7 +35,7 @@ export class NotifyChat extends Component {
 							{this.props.review.title}
 						</Text>
 					</Text>
-					<Text style={[styles.font15, { color: colors.gray, marginBottom: 4 }]}>
+					<Text style={{ color: colors.gray2, marginBottom: 4, fontSize: 13 }}>
 						{ this.props.timestamp ?
 							this.getTimeText(this.props.timestamp) 
 							: this.getTimeText(this.props.review.timestamp) 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderColor: colors.lightGray2,
 		borderWidth: 1 / PixelRatio.get(),
-		height: 100
+		height: 85
 	},
 	textName: {
 		fontSize: 15,
