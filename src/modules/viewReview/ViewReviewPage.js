@@ -9,6 +9,7 @@ import ChatActions from 'src/redux/actions/chat'
 import ReviewActions from 'src/redux/actions/review'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export class ViewReviewPage extends Component {
 	constructor(props) {
@@ -52,39 +53,45 @@ export class ViewReviewPage extends Component {
 			}
 		}
 		return (
-			<View style={styles.container}>
-				<View style={styles.header}>
-					<View style={styles.platformHeader}>
-						<NavBarViewReview 
-							review={this.props.review}
-							currentUser={this.props.currentUser}
-							deleteReview={(review_id) => this.props.deleteReview(review_id)}
-						/>
+			<KeyboardAwareScrollView
+				style={{ backgroundColor: colors.white }}
+				resetScrollToCoords={{ x: 0, y: 0 }}
+				scrollEnabled={true}
+			>
+				<View style={styles.container}>
+					<View style={styles.header}>
+						<View style={styles.platformHeader}>
+							<NavBarViewReview 
+								review={this.props.review}
+								currentUser={this.props.currentUser}
+								deleteReview={(review_id) => this.props.deleteReview(review_id)}
+							/>
+						</View>
 					</View>
-				</View>
-				<ScrollView 
-					ref={ref => this.scrollView = ref}
-					onContentSizeChange={(contentWidth, contentHeight) => {
-						this.setState({ scrollHeight: contentHeight })
-					}}
-				>
-					{ this.props.review && 
+					<ScrollView 
+						ref={ref => this.scrollView = ref}
+						onContentSizeChange={(contentWidth, contentHeight) => {
+							this.setState({ scrollHeight: contentHeight })
+						}}
+					>
+						{ this.props.review && 
 						<ContentSection review={this.props.review} />
-					}
-					<CommentSection 
-						review={this.props.review}
-						addComment={(comment) => this.props.addComment(comment, this.props.review._id)}
-						deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
-						setEditComment={(comment_id) => this.props.setEditComment(comment_id)}
-						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
-						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
-						setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
-						onFocus={ this.props.focus === 'review' ? 1 : 0 }
-						getComments={() => this.props.getComments(this.props.review._id)}
-						getChats={() => this.props.getChats(this.props.review._id)}
-					/>
-				</ScrollView>
-			</View>
+						}
+						<CommentSection 
+							review={this.props.review}
+							addComment={(comment) => this.props.addComment(comment, this.props.review._id)}
+							deleteComment={(review_id, comment_id) => this.props.deleteComment(review_id, comment_id)}
+							setEditComment={(comment_id) => this.props.setEditComment(comment_id)}
+							addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
+							deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
+							setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
+							onFocus={ this.props.focus === 'review' ? 1 : 0 }
+							getComments={() => this.props.getComments(this.props.review._id)}
+							getChats={() => this.props.getChats(this.props.review._id)}
+						/>
+					</ScrollView>
+				</View>
+			</KeyboardAwareScrollView>
 		)
 	}
 }
