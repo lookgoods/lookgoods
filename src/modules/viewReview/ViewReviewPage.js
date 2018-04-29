@@ -3,6 +3,7 @@ import { Platform, ScrollView, StyleSheet, View, ActivityIndicator } from 'react
 import CommentSection from 'src/modules/viewReview/components/CommentSection'
 import ContentSection from 'src/modules/viewReview/components/ContentSection'
 import NavBarViewReview from 'src/modules/viewReview/components/NavBarViewReview'
+import SameProductSection from 'src/modules/viewReview/components/SameProductSection'
 import UserActions from 'src/redux/actions/user'
 import CommentActions from 'src/redux/actions/comment'
 import ChatActions from 'src/redux/actions/chat'
@@ -10,6 +11,7 @@ import ReviewActions from 'src/redux/actions/review'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Divider } from 'react-native-elements'
 
 export class ViewReviewPage extends Component {
 	constructor(props) {
@@ -74,6 +76,8 @@ export class ViewReviewPage extends Component {
 							this.setState({ scrollHeight: contentHeight })
 						}}
 					>
+						<SameProductSection />
+						<Divider style={styles.divider} />
 						{ this.props.review && 
 						<ContentSection review={this.props.review} />
 						}
@@ -114,6 +118,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	divider: {
+		backgroundColor: colors.lightGray,
+		marginTop: 5,
+		height: 1.2,
+		width: '100%'
 	}
 })
 

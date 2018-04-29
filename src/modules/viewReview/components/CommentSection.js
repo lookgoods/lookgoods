@@ -123,7 +123,6 @@ class CommentSection extends Component {
 		if (!comment_list || !this.props.successComment || !chat_list || !this.props.successChat) return <View/>
 		return (
 			<View style={{ marginBottom: 20 }}>
-				<Divider style={styles.divider} />
 				<View style={styles.tabsContainer}>
 					<Tabs activeTab={this.props.onFocus}>
 						<View title="Comment">
