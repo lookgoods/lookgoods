@@ -9,6 +9,8 @@ import ReviewsGrid from 'src/modules/shares/ReviewsGrid'
 import Tabs from 'src/modules/shares/Tabs'
 import UserActions from 'src/redux/actions/user'
 import UserPhoto from 'src/modules/user/components/UserPhoto'
+import NoOwnReview from 'src/modules/user/components/NoOwnReview'
+import NoSaveReview from 'src/modules/user/components/NoSaveReview'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import { APP_FULL_HEIGHT } from 'src/constants'
@@ -101,9 +103,15 @@ export class UserPage extends Component {
 							<Tabs>
 								<View title="Reviews">
 									<ReviewsGrid review_list={this.props.ownReviews} page={'UserPage'}/>
+									{ this.props.ownReviews.length === 0 &&
+										<NoOwnReview/>
+									}
 								</View>
 								<View title="Saved" onSelectedTab={() => this.fetchSaveReviews()}>
 									<ReviewsGrid review_list={this.props.saveReviews} page={'UserPage'}/>
+									{ (this.props.saveReviews && this.props.saveReviews.length) === 0 &&
+										<NoSaveReview/>
+									}
 								</View>
 							</Tabs>
 						</View>
