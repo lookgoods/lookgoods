@@ -22,7 +22,7 @@ class NavBarSearch extends Component {
 							borderRadius: 20,
 							flexDirection: 'row',
 							alignItems: 'center',
-							backgroundColor: colors.gray2,
+							backgroundColor: colors.orange,
 							paddingHorizontal: 15,
 							marginHorizontal: 10
 						}}

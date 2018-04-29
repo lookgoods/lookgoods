@@ -16,6 +16,7 @@ import PreviewReviewModal from 'src/modules/shares/PreviewReviewModal'
 import PreviewImageModal from 'src/modules/shares/PreviewImageModal'
 import MenuActions from 'src/redux/actions/menu'
 import Toast from 'react-native-easy-toast'
+import NoFollowingReview from 'src/modules/home/components/NoFollowingReview'
 
 export class HomePage extends Component {
 	constructor(props) {
@@ -93,11 +94,18 @@ export class HomePage extends Component {
 					}
 				>
 					<View style={styles.body}>
-						<ReviewList 
-							review_list={this.props.reviews} 
-							user={this.props.currentUser}
-							toast={this.toast}
-						/>
+						{ this.props.reviews &&
+							<View>
+								<ReviewList 
+									review_list={this.props.reviews} 
+									user={this.props.currentUser}
+									toast={this.toast}
+								/>
+								{ this.props.reviews.length === 0 &&
+									<NoFollowingReview/>
+								}
+							</View>
+						}
 					</View>
 				</ScrollView>
 				<PreviewReviewModal />
