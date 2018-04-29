@@ -24,7 +24,7 @@ class DeletedReview extends Component {
 						<IconFontAwesome name="exclamation-circle" size={APP_FULL_WIDTH * 0.5} color={colors.gray} />
 					</View>
 					<Text style={{ color: colors.gray, fontSize: 18, marginTop: 20 }}>
-                        This review has already deleted.
+                        Sorry, this review was deleted.
 					</Text>
 				</View>
 			</View>
