@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	reviewCard: {
-		marginBottom: 10
+		marginBottom: 15
 	}
 })
