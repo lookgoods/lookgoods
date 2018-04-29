@@ -55,7 +55,6 @@ export class ViewReviewPage extends Component {
 				}, 1)
 			}
 		}
-		console.log(this.props.review, 'this review')
 		return (
 			<KeyboardAwareScrollView
 				style={{ backgroundColor: colors.white }}
