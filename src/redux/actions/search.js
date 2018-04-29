@@ -1,6 +1,4 @@
 import constants from 'src/redux/constants'
-import axios from 'axios'
-import to from 'await-to-js'
 import { Actions } from 'react-native-router-flux'
 
 const AppURL = constants.AppURL
@@ -42,6 +40,28 @@ const SearchActions = {
 			dispatch(actions.searchByProductSuccess(data))
 		} catch (err) {
 			dispatch(actions.searchByProductError(err))
+		}
+	},
+	searchByProductExceptMe: (product, review_id) => async dispatch => {
+		dispatch(actions.searchByProductExceptMeRequest())
+		try {
+			const response = await fetch(`${AppURL}/search/reviews/products`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ key: product })
+			})
+			const data = await response.json()
+			const exceptData = []
+			data.map((review) => {
+				if (review._id !== review_id) {
+					exceptData.push(review)
+				}
+			})
+			dispatch(actions.searchByProductExceptMeSuccess(exceptData))
+		} catch (err) {
+			dispatch(actions.searchByProductExceptMeError(err))
 		}
 	},
 	searchByTag: (tag) => async dispatch => {
@@ -131,6 +151,17 @@ const actions = {
 	}),
 	searchByProductError: error => ({
 		type: constants.SEARCH_BY_PRODUCT_FAILURE,
+		payload: error
+	}),
+	searchByProductExceptMeRequest: () => ({
+		type: constants.SEARCH_BY_PRODUCT_EXCEPT_ME_REQUEST
+	}),
+	searchByProductExceptMeSuccess: (product) => ({
+		type: constants.SEARCH_BY_PRODUCT_EXCEPT_ME_SUCCESS,
+		payload: product
+	}),
+	searchByProductExceptMeError: error => ({
+		type: constants.SEARCH_BY_PRODUCT_EXCEPT_ME_FAILURE,
 		payload: error
 	}),
 	searchByTagRequest: () => ({
