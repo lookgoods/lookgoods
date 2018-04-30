@@ -6,7 +6,7 @@ const ImageActions = {
 	uploadImage: (image) => async dispatch => {
 		dispatch(actions.uploadImageRequest())
 		const formData = new FormData()
-		formData.append('file', {uri: image.uri, name: image.fileName, type: image.type})
+		formData.append('file', { uri: image.uri, name: image.fileName || 'image.jpg', type: image.type || 'image/jpeg' })
 		try {
 			const response = await fetch(`${AppURL}/uploadImage`, {
 				method: 'post',
