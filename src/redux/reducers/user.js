@@ -62,7 +62,6 @@ export default (state = initialState, action) => {
 
 	case constants.GET_USER_SUCCESS:
 		state.userHistory.push(action.payload)
-		console.log('set user history', state.userHistory)
 		return {
 			...state,
 			success: true,

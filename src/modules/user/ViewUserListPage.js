@@ -40,10 +40,10 @@ export class ViewUserPage extends Component {
 	}
 
 	fetchData() {
-		if (this.props.title === 'Followers') {
-			this.props.getUserFollower(this.props.user_id)
-		} else if (this.props.title === 'Following') {
-			this.props.getUserFollowing(this.props.user_id)
+		if (this.props.title === 'Followers' && this.props.user) {
+			this.props.getUserFollower(this.props.user._id)
+		} else if (this.props.title === 'Following' && this.props.user) {
+			this.props.getUserFollowing(this.props.user._id)
 		} else {
 			this.props.getUsers()
 		}
