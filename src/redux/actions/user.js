@@ -37,6 +37,9 @@ const UserActions = {
 		type: constants.SET_SELECTED_USER,
 		payload: user
 	}),
+	popHistoryUser: () => ({
+		type: constants.POP_HISTORY_USER
+	}),
 	changeUserDescription: (description) => async dispatch => {
 		dispatch(actions.changeUserDescriptionRequest())
 		const [err, response] = await to(
