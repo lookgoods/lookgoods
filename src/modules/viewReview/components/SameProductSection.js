@@ -13,7 +13,7 @@ import { Divider } from 'react-native-elements'
 import { PICTURE_GRID_SIZE } from 'src/constants'
 import { Actions } from 'react-native-router-flux'
 
-const ProductCard = ({ review, setCurrentReview }) => (
+const ProductCard = ({ review }) => (
 	<TouchableOpacity 
 		style={{ marginLeft: 10, width: PICTURE_GRID_SIZE }}
 		onPress={ () => {
@@ -39,23 +39,19 @@ class SameProductSection extends Component {
 		super(props)
 	}
 
-	componentDidMount() {
-		this.props.searchByProduct()
-	}
-
 	render() {
 		if (!this.props.reviews || (this.props.reviews && this.props.reviews.length === 0)) return <View/>
 		return (
 			<View style={styles.container}>
 				<Text style={{ fontWeight: 'bold', color: colors.gray, marginLeft: 10, marginBottom: 15 }}>Reviews which same product</Text>
 				<ScrollView style={styles.wrapper} horizontal={true}>
-					{ this.props.reviews.map((review, index) => (
-						<ProductCard 
+					{ this.props.reviews.map((review, index) => {
+						if (review.available) return (<ProductCard 
 							review={review} 
 							key={index} 
-							setCurrentReview={this.props.setCurrentReview}
-						/>
-					))}
+						/>)
+						else return <View key={index}/>
+					})}
 				</ScrollView>
 				<Divider style={styles.divider} />
 			</View>

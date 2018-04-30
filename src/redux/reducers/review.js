@@ -7,7 +7,8 @@ const initialState = {
 	reviews: null,
 	followingReviews: null,
 	tagReviews: null,
-	tagName: ''
+	tagName: '',
+	reviewHistory: []
 }
 
 export default (state = initialState, action) => {
@@ -70,11 +71,12 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_REVIEW_SUCCESS:
+		state.reviewHistory.push(action.payload)
 		return {
 			...state,
 			loading: false,
 			error: null,
-			currentReview: action.payload
+			currentReview: state.reviewHistory[state.reviewHistory.length-1]
 		}
 
 	case constants.GET_REVIEW_FAILURE:
@@ -82,6 +84,13 @@ export default (state = initialState, action) => {
 			...state,
 			loading: false,
 			error: action.payload
+		}
+
+	case constants.POP_HISTORY_REVIEW:
+		state.reviewHistory.pop()
+		return {
+			...state,
+			currentReview: state.reviewHistory[state.reviewHistory.length-1]
 		}
 	
 	case constants.GET_FOLLOWING_REVIEW_REQUEST:
