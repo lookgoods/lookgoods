@@ -80,8 +80,7 @@ export class ViewUserPage extends Component {
 		return str
 	}
 	goToViewReviewPage(review) {
-		this.props.setCurrentReview(review)
-		Actions.viewReviewPage()
+		Actions.viewReviewPage({ review_id: review._id })
 	}
 
 	goToViewUser(user) {
@@ -292,9 +291,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
-	},
-	setCurrentReview: review => {
-		dispatch(ReviewActions.setCurrentReview(review))
 	},
 	searchByTitle: title => {
 		dispatch(SearchActions.searchByTitle(title))

@@ -48,15 +48,15 @@ const ReviewActions = {
 		else dispatch(actions.getFollowingReviewSuccess(response.data))
 	},
 	editReview: (review, review_id) => async dispatch => {
-		const trasformReview = {
+		const transformReview = {
 			...review,
 			product: {
 				name: review.name,
 				brand: review.brand
 			}
 		}
-		delete trasformReview.name
-		delete trasformReview.brand
+		delete transformReview.name
+		delete transformReview.brand
 		dispatch(actions.editReviewRequest())
 		try {
 			const response = await fetch(`${AppURL}/reviews/${review_id}`, {
@@ -70,7 +70,7 @@ const ReviewActions = {
 			dispatch(ReviewActions.getReviews())
 			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(UserActions.getCurrentUserOwnReviews())
-			dispatch(ReviewActions.setCurrentReview(trasformReview))
+			dispatch(ReviewActions.setCurrentReview(transformReview))
 
 		} catch (err) {
 			dispatch(actions.editReviewError(err))
@@ -130,7 +130,10 @@ const ReviewActions = {
 	viewTagReviews: (tag) => async dispatch => {
 		await dispatch(SearchActions.searchByTag(tag))
 		Actions.viewTagReviewsPage()
-	}
+	},
+	popHistoryReview: () => ({
+		type: constants.POP_HISTORY_REVIEW
+	})
 }
 
 const actions = {

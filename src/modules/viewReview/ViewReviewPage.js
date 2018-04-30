@@ -30,6 +30,18 @@ export class ViewReviewPage extends Component {
 		this.props.getCurrentUser()
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.review !== prevProps.review) {
+			if (this.props.review) {
+				this.props.searchByProductExceptMe(this.props.review.product.name, this.props.review._id)	
+			}
+		}
+	}
+
+	componentWillUnmount() {
+		this.props.popHistoryReview()
+	}
+
 	fetchReview() {
 		this.props.getReview(this.props.review_id)
 	}
@@ -80,9 +92,7 @@ export class ViewReviewPage extends Component {
 							<View>
 								<ContentSection review={this.props.review} />
 								<Divider style={styles.divider} />
-								<SameProductSection 
-									searchByProduct={() => this.props.searchByProductExceptMe(this.props.review.product.name, this.props.review._id)}
-								/>
+								<SameProductSection />
 							</View>
 					}
 					<CommentSection 
@@ -174,6 +184,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	searchByProductExceptMe: (product_name, review_id) => {
 		dispatch(SearchActions.searchByProductExceptMe(product_name, review_id))
+	},
+	popHistoryReview: () => {
+		dispatch(ReviewActions.popHistoryReview())
 	}
 })
 
