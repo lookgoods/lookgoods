@@ -28,8 +28,14 @@ export class ViewUserPage extends Component {
 
 	componentDidMount() {
 		this.props.getCurrentUser()
-		this.props.getUser(this.props.selectedUser._id)
-		this.props.getUserOwnReviews(this.props.selectedUser._id)
+		if (this.props.selectedUser) {
+			this.props.getUser(this.props.selectedUser._id)
+			this.props.getUserOwnReviews(this.props.selectedUser._id)
+		}
+	}
+
+	componentWillUnmount() {
+		this.props.popHistoryUser()
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -77,8 +83,8 @@ export class ViewUserPage extends Component {
 				<View style={styles.container}>
 					<View style={styles.header}>
 						<View style={styles.platformHeader}>
-							{ this.props.selectedUser ? 
-								<NavBar titleName={this.props.selectedUser.name} /> :
+							{ this.props.user ? 
+								<NavBar titleName={this.props.user.name}/> :
 								<NavBar />
 							} 
 						</View>
@@ -247,6 +253,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getUserSaveReviews: (user_id) => {
 		dispatch(UserActions.getUserSaveReviews(user_id))
+	},
+	popHistoryUser: () => {
+		dispatch(UserActions.popHistoryUser())
 	}
 })
 

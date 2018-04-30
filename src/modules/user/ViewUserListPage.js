@@ -22,7 +22,7 @@ export class ViewUserPage extends Component {
 	componentDidMount() {
 		this.fetchData()
 	}
-    
+
 	goToViewUser(user) {
 		this.props.setSelectedUser(user)
 		Actions.viewUserPage()

@@ -41,7 +41,6 @@ export class TabMenu extends Component {
 
 	openSocket() {
 		if (this.props.currentUser) {
-			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.props.openSocket()
 			this.props.setNotificationNumber(this.props.currentUser.unread)
@@ -50,7 +49,6 @@ export class TabMenu extends Component {
 
 	firstOpenSocket() {
 		if (this.props.currentUser && !this.props.isSocketOpen) {
-			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.props.openSocket()
 			this.props.setNotificationNumber(this.props.currentUser.unread)
@@ -59,7 +57,6 @@ export class TabMenu extends Component {
 
 	handleNotify() {
 		this.socket.on('notify', (message) => {
-			console.log('notify socket', message)
 			this.props.increaseNotificationNumber()
 		})
 	}

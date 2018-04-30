@@ -11,7 +11,9 @@ class InfoBar extends Component {
 	}
 
 	goToViewUser (viewUser, number, user_id) {
-		if (number !== 0) viewUser(user_id)
+		if (number !== 0) {
+			viewUser(user_id)
+		}
 	}
 
 	render() {
