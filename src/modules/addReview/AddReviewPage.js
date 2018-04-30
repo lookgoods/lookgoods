@@ -113,7 +113,7 @@ export class AddReviewPage extends Component {
 				console.log('ImagePicker Error: ', response.error)
 			} else {
 				console.log('ImagePicker Success: ', response)
-				await this.props.uploadImage(response)
+				this.props.uploadImage(response)
 				await this.waitForUpload()
 				const coverImage = {
 					url: this.props.picture_url,
