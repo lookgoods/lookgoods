@@ -107,7 +107,6 @@ export class ViewUserPage extends Component {
 	}
 
 	render() {
-		console.log(this.state, 'search state')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>

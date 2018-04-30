@@ -6,7 +6,6 @@ const AppURL = constants.AppURL
 
 const ChatActions = {
 	addChat: (chat, review_id) => async dispatch => {
-		console.log(chat, review_id, 'eiei')
 		dispatch(actions.addChatRequest())
 		try {
 			const response = await fetch(`${AppURL}/reviews/${review_id}/chats`, {
