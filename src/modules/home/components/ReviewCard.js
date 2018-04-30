@@ -64,13 +64,12 @@ function Header({ user, time, isSaved, setUser, clickBookmark, showBookmark }) {
 	)
 }
 
-const ProductPicture = ({ image_url, review, setReview, imageSize }) => {
+const ProductPicture = ({ image_url, review, imageSize }) => {
 	return (
 		<View style={{ backgroundColor: colors.lightGray2 }}>
 			<TouchableOpacity
 				onPress={() => {
-					setReview(review)
-					Actions.viewReviewPage()
+					Actions.viewReviewPage({ review_id: review._id })
 				}}
 			>
 				<Image
@@ -83,13 +82,12 @@ const ProductPicture = ({ image_url, review, setReview, imageSize }) => {
 	)
 }
 
-function Body({ product_url, title, review, setReview, imageSize }) {
+function Body({ product_url, title, review, imageSize }) {
 	return (
 		<View>
 			<ProductPicture
 				image_url={product_url}
 				review={review}
-				setReview={setReview}
 				imageSize={imageSize}
 			/>
 			<Text style={styles.titleText}>{title}</Text>
@@ -97,7 +95,7 @@ function Body({ product_url, title, review, setReview, imageSize }) {
 	)
 }
 
-function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove, clickShare, setReview, review }) {
+function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLove, clickShare, review }) {
 	return (
 		<View style={styles.footerContainer}>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -119,8 +117,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 					<TouchableOpacity 
 						style={styles.productDetail}
 						onPress={() => {
-							setReview(review)
-							Actions.viewReviewPage({ focus: 'review' })
+							Actions.viewReviewPage({ focus: 'review', review_id: review._id })
 						}}
 					>
 						<IconMaterial name="star-border" color={colors.gray} size={26} />
@@ -130,8 +127,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 						<TouchableOpacity 
 							style={styles.productDetail}
 							onPress={() => {
-								setReview(review)
-								Actions.viewReviewPage()
+								Actions.viewReviewPage({ review_id: review._id })
 							}}
 						>
 							<Image
@@ -146,8 +142,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 					<TouchableOpacity 
 						style={styles.productDetail}
 						onPress={() => {
-							setReview(review)
-							Actions.viewReviewPage({ focus: 'comment' })
+							Actions.viewReviewPage({ focus: 'comment', review_id: review._id })
 						}}
 					>
 						<IconMaterial
@@ -319,7 +314,6 @@ export class ReviewCard extends Component {
 					product_url={picture_cover_url}
 					title={title}
 					review={this.props.review}
-					setReview={this.props.setCurrentReview}
 					imageSize={this.state.imageSize}
 				/>
 				<Footer
@@ -331,7 +325,6 @@ export class ReviewCard extends Component {
 					clickLove={() => this.clickLove()}
 					clickShare={() => this.shareToFacebook()}
 					review={this.props.review}
-					setReview={this.props.setCurrentReview}
 				/>
 			</View>
 		)
@@ -425,9 +418,6 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => ({
-	setCurrentReview: review => {
-		dispatch(ReviewActions.setCurrentReview(review))
-	},
 	setSelectedUser: user => {
 		dispatch(UserActions.setSelectedUser(user))
 	},

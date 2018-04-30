@@ -50,7 +50,6 @@ const CommentActions = {
 	},
 	deleteComment: (review_id, comment_id) => async dispatch => {
 		dispatch(actions.deleteCommentRequest())
-		console.log(review_id, comment_id, 'delete')
 		const [err, response ] = await to(axios.delete(`${AppURL}/reviews/${review_id}/comments/${comment_id}`))
 		if (err) dispatch(actions.deleteCommentError(err))
 		else {

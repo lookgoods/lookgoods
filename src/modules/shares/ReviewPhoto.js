@@ -31,8 +31,7 @@ export class ReviewPhoto extends Component {
 				{this.props.review.picture_thumbnail_url ? (
 					<TouchableOpacity
 						onPress={() => {
-							this.props.setCurrentReview(this.props.review)
-							Actions.viewReviewPage()
+							Actions.viewReviewPage({ review_id: this.props.review._id })
 						}}
 						delayLongPress={500} 
 						onLongPress={() => this.props.showPreviewReview(this.props.review)}
@@ -73,9 +72,7 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => ({
-	setCurrentReview: review => {
-		dispatch(ReviewActions.setCurrentReview(review))
-	},
+	
 	showPreviewReview: review => {
 		dispatch(ImageActions.showPreviewReviewModal(review))
 	},

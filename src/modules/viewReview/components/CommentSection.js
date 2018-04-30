@@ -125,8 +125,8 @@ class CommentSection extends Component {
 			<View style={{ marginBottom: 20 }}>
 				<View style={styles.tabsContainer}>
 					<Tabs activeTab={this.props.onFocus}>
-						<View title="Comment">
-							<View style={styles.commentList}>
+						<View title="Comment" onSelectedTab={() => this.props.setFocusState('comment')}>
+							<View style={styles.chatList}>
 								{ chat_list.length !== 0 ?
 									<View/>
 									: 
@@ -169,7 +169,7 @@ class CommentSection extends Component {
 								</View>
 							</View>
 						</View>
-						<View title="Review product">
+						<View title="Review product" onSelectedTab={() => this.props.setFocusState('review')}>
 							{ comment_list.length !== 0 ?
 								<View>
 									<Text style={styles.totalText}>{comment_list.length} Reviews</Text>
@@ -280,6 +280,10 @@ const styles = StyleSheet.create({
 	},
 	commentList: {
 		marginLeft: 10
+	},
+	chatList: {
+		marginLeft: 10,
+		marginTop: 10
 	},
 	commentItem: {
 		marginBottom: 10

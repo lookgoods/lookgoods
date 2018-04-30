@@ -19,7 +19,8 @@ export class ViewReviewPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			scrollHeight: 0
+			scrollHeight: 0,
+			focus: 'comment'
 		}
 	}
 
@@ -28,10 +29,29 @@ export class ViewReviewPage extends Component {
 			this.fetchReview()
 		}
 		this.props.getCurrentUser()
+		if (this.props.focus) {
+			this.setState({ focus: this.props.focus })
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.review !== prevProps.review) {
+			if (this.props.review) {
+				this.props.searchByProductExceptMe(this.props.review.product.name, this.props.review._id)	
+			}
+		}
+	}
+
+	componentWillUnmount() {
+		this.props.popHistoryReview()
 	}
 
 	fetchReview() {
 		this.props.getReview(this.props.review_id)
+	}
+
+	setFocusState(focus) {
+		this.setState({ focus })
 	}
 
 	render() {
@@ -80,9 +100,7 @@ export class ViewReviewPage extends Component {
 							<View>
 								<ContentSection review={this.props.review} />
 								<Divider style={styles.divider} />
-								<SameProductSection 
-									searchByProduct={() => this.props.searchByProductExceptMe(this.props.review.product.name, this.props.review._id)}
-								/>
+								<SameProductSection />
 							</View>
 					}
 					<CommentSection 
@@ -93,9 +111,10 @@ export class ViewReviewPage extends Component {
 						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
 						setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
-						onFocus={ this.props.focus === 'review' ? 1 : 0 }
+						onFocus={ this.state.focus === 'review' ? 1 : 0 }
 						getComments={() => this.props.getComments(this.props.review._id)}
 						getChats={() => this.props.getChats(this.props.review._id)}
+						setFocusState={(focus) => this.setFocusState(focus)}
 					/>
 				</View>
 			</KeyboardAwareScrollView>
@@ -174,6 +193,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	searchByProductExceptMe: (product_name, review_id) => {
 		dispatch(SearchActions.searchByProductExceptMe(product_name, review_id))
+	},
+	popHistoryReview: () => {
+		dispatch(ReviewActions.popHistoryReview())
 	}
 })
 

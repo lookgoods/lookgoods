@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View, BackHandler, Platform } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import GlobalPage from 'src/modules/global/GlobalPage'
@@ -37,11 +37,29 @@ export class TabMenu extends Component {
 		this.fetchData()
 		this.checkAccessToken()
 		this.openSocket()
+		if (Platform.OS === 'android') {
+			this.backHandler()
+		}
+	}
+
+	backHandler() {
+		let self = this
+		BackHandler.addEventListener('hardwareBackPress', function() {
+			if (self.state.selectedTab !== 'home') {
+				self.setState({ selectedTab: 'home' })
+				return true
+			}
+		})
+	}
+
+	componentWillUnmount() {
+		if (Platform.OS === 'android') {
+			BackHandler.removeEventListener('hardwareBackPress', function() {})
+		}
 	}
 
 	openSocket() {
 		if (this.props.currentUser) {
-			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.props.openSocket()
 			this.props.setNotificationNumber(this.props.currentUser.unread)
@@ -50,7 +68,6 @@ export class TabMenu extends Component {
 
 	firstOpenSocket() {
 		if (this.props.currentUser && !this.props.isSocketOpen) {
-			console.log('send user to socket', this.props.currentUser._id)
 			this.socket.emit('authenUser', JSON.stringify({ userId: this.props.currentUser._id }))
 			this.props.openSocket()
 			this.props.setNotificationNumber(this.props.currentUser.unread)
@@ -59,7 +76,6 @@ export class TabMenu extends Component {
 
 	handleNotify() {
 		this.socket.on('notify', (message) => {
-			console.log('notify socket', message)
 			this.props.increaseNotificationNumber()
 		})
 	}
@@ -138,10 +154,10 @@ export class TabMenu extends Component {
 					selectedTitleStyle={{ color: colors.blue }}
 					onPress={() => Actions.addReviewPage()}
 					renderIcon={() => (
-						<Icon name="plus" size={this.px2dp(22)} color={colors.gray} />
+						<Icon name="plus" size={this.px2dp(28)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="plus" size={this.px2dp(22)} color={colors.orange} />
+						<Icon name="plus" size={this.px2dp(28)} color={colors.orange} />
 					)}
 				/>
 				<TabNavigator.Item

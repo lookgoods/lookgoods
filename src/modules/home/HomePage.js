@@ -43,7 +43,8 @@ export class HomePage extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return ((this.props.currentUser !== nextProps.currentUser) || 
 		(this.props.reviews !== nextProps.reviews) ||
-		(this.props.currentPage !== nextProps.currentPage)) &&
+		(this.props.currentPage !== nextProps.currentPage) ||
+		(this.props.loading !== nextProps.loading)) &&
 		nextProps.currentPage === 'home'
 	}
 	

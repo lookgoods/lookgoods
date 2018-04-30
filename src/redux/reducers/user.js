@@ -10,6 +10,8 @@ const initialState = {
 	saveReviews: null,
 	ownOtherReviews: null,
 	saveOtherReviews: null,
+	userHistory: [],
+	ownReviewsHistory: [],
 	users: []
 }
 
@@ -59,10 +61,11 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_USER_SUCCESS:
+		state.userHistory.push(action.payload)
 		return {
 			...state,
 			success: true,
-			user: action.payload
+			user: state.userHistory[state.userHistory.length-1]
 		}
 
 	case constants.GET_USER_FAILURE:
@@ -70,6 +73,16 @@ export default (state = initialState, action) => {
 			...state,
 			success: false,
 			error: action.payload
+		}
+
+	case constants.POP_HISTORY_USER:
+		state.userHistory.pop()
+		state.ownReviewsHistory.pop()
+		return {
+			...state,
+			success: true,
+			user: state.userHistory[state.userHistory.length-1],
+			ownOtherReviews: state.ownReviewsHistory[state.ownReviewsHistory.length-1]
 		}
 
 	case constants.GET_USER_OWN_REVIEWS_REQUEST:
@@ -81,10 +94,11 @@ export default (state = initialState, action) => {
 		}
 
 	case constants.GET_USER_OWN_REVIEWS_SUCCESS:
+		state.ownReviewsHistory.push(action.payload)
 		return {
 			...state,
 			success: true,
-			ownOtherReviews: action.payload
+			ownOtherReviews: state.ownReviewsHistory[state.ownReviewsHistory.length-1]
 		}
 
 	case constants.GET_USER_OWN_REVIEWS_FAILURE:

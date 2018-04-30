@@ -37,6 +37,9 @@ const UserActions = {
 		type: constants.SET_SELECTED_USER,
 		payload: user
 	}),
+	popHistoryUser: () => ({
+		type: constants.POP_HISTORY_USER
+	}),
 	changeUserDescription: (description) => async dispatch => {
 		dispatch(actions.changeUserDescriptionRequest())
 		const [err, response] = await to(
@@ -75,7 +78,6 @@ const UserActions = {
 		if (err) dispatch(actions.followUserError(err))
 		else {
 			dispatch(UserActions.getCurrentUser())
-			dispatch(UserActions.getUser(user_id))
 			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(actions.followUserSuccess(response))
 		}
@@ -86,7 +88,6 @@ const UserActions = {
 		if (err) dispatch(actions.unfollowUserError(err))
 		else {
 			dispatch(UserActions.getCurrentUser())
-			dispatch(UserActions.getUser(user_id))
 			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(actions.unfollowUserSuccess(response))
 		}
@@ -164,10 +165,10 @@ const UserActions = {
 		}
 	},
 	viewFollower: (user_id) => async dispatch => {
-		Actions.viewUserListPage({ title: 'Followers', user_id: user_id })
+		Actions.viewUserListPage({ title: 'Followers' })
 	},
 	viewFollowing: (user_id) => async dispatch => {
-		Actions.viewUserListPage({ title: 'Following', user_id: user_id })
+		Actions.viewUserListPage({ title: 'Following' })
 	},
 	viewReviewer: () => async dispatch => {
 		Actions.viewUserListPage({ title: 'People' })
