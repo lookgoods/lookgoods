@@ -39,6 +39,9 @@ export class UserPage extends Component {
 
 	fetchData() {
 		this.props.getCurrentUserOwnReviews()
+		if (this.props.currentUser) {
+			this.props.getUser(this.props.currentUser._id)
+		}
 	}
 
 	goToSettingPage() {
@@ -167,6 +170,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	getCurrentUserSaveReviews: () => {
 		dispatch(UserActions.getCurrentUserSaveReviews())
+	},
+	getUser: (user_id) => {
+		dispatch(UserActions.getUser(user_id))
 	}
 })
 

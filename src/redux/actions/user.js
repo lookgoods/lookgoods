@@ -167,10 +167,10 @@ const UserActions = {
 		}
 	},
 	viewFollower: (user_id) => async dispatch => {
-		Actions.viewUserListPage({ title: 'Followers', user_id: user_id })
+		Actions.viewUserListPage({ title: 'Followers' })
 	},
 	viewFollowing: (user_id) => async dispatch => {
-		Actions.viewUserListPage({ title: 'Following', user_id: user_id })
+		Actions.viewUserListPage({ title: 'Following' })
 	},
 	viewReviewer: () => async dispatch => {
 		Actions.viewUserListPage({ title: 'People' })
