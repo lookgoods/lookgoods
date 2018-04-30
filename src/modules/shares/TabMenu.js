@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View, BackHandler, Platform } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import GlobalPage from 'src/modules/global/GlobalPage'
@@ -37,6 +37,25 @@ export class TabMenu extends Component {
 		this.fetchData()
 		this.checkAccessToken()
 		this.openSocket()
+		if (Platform.OS === 'android') {
+			this.backHandler()
+		}
+	}
+
+	backHandler() {
+		let self = this
+		BackHandler.addEventListener('hardwareBackPress', function() {
+			if (self.state.selectedTab !== 'home') {
+				self.setState({ selectedTab: 'home' })
+				return true
+			}
+		})
+	}
+
+	componentWillUnmount() {
+		if (Platform.OS === 'android') {
+			BackHandler.removeEventListener('hardwareBackPress', function() {})
+		}
 	}
 
 	openSocket() {
@@ -135,10 +154,10 @@ export class TabMenu extends Component {
 					selectedTitleStyle={{ color: colors.blue }}
 					onPress={() => Actions.addReviewPage()}
 					renderIcon={() => (
-						<Icon name="plus" size={this.px2dp(22)} color={colors.gray} />
+						<Icon name="plus" size={this.px2dp(28)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="plus" size={this.px2dp(22)} color={colors.orange} />
+						<Icon name="plus" size={this.px2dp(28)} color={colors.orange} />
 					)}
 				/>
 				<TabNavigator.Item

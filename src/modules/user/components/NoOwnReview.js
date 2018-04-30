@@ -5,7 +5,6 @@ import {
 import React, { Component } from 'react'
 import { colors } from 'src/constants/mixins'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
-import { APP_FULL_WIDTH } from 'src/constants'
 
 export class NoOwnReview extends Component {
 	constructor(props) {
@@ -19,7 +18,7 @@ export class NoOwnReview extends Component {
 					{'You do not have any review yet.\nYou create own review by touch add icon below.'}
 				</Text>
 				<View style={{ marginTop: 30 }}>
-					<IconFontAwesome name="arrow-down" size={APP_FULL_WIDTH * 0.2} color={colors.gray} />
+					<IconFontAwesome name="arrow-down" size={60} color={colors.gray} />
 				</View>
 			</View>
 		)
