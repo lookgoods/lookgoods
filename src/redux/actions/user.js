@@ -78,7 +78,6 @@ const UserActions = {
 		if (err) dispatch(actions.followUserError(err))
 		else {
 			dispatch(UserActions.getCurrentUser())
-			dispatch(UserActions.getUser(user_id))
 			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(actions.followUserSuccess(response))
 		}
@@ -89,7 +88,6 @@ const UserActions = {
 		if (err) dispatch(actions.unfollowUserError(err))
 		else {
 			dispatch(UserActions.getCurrentUser())
-			dispatch(UserActions.getUser(user_id))
 			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(actions.unfollowUserSuccess(response))
 		}

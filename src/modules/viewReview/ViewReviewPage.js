@@ -19,7 +19,8 @@ export class ViewReviewPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			scrollHeight: 0
+			scrollHeight: 0,
+			focus: 'comment'
 		}
 	}
 
@@ -28,6 +29,9 @@ export class ViewReviewPage extends Component {
 			this.fetchReview()
 		}
 		this.props.getCurrentUser()
+		if (this.props.focus) {
+			this.setState({ focus: this.props.focus })
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -44,6 +48,10 @@ export class ViewReviewPage extends Component {
 
 	fetchReview() {
 		this.props.getReview(this.props.review_id)
+	}
+
+	setFocusState(focus) {
+		this.setState({ focus })
 	}
 
 	render() {
@@ -103,9 +111,10 @@ export class ViewReviewPage extends Component {
 						addChat={(chat) => this.props.addChat(chat, this.props.review._id)}
 						deleteChat={(review_id, chat_id) => this.props.deleteChat(review_id, chat_id)}
 						setEditChat={(chat_id) => this.props.setEditChat(chat_id)}
-						onFocus={ this.props.focus === 'review' ? 1 : 0 }
+						onFocus={ this.state.focus === 'review' ? 1 : 0 }
 						getComments={() => this.props.getComments(this.props.review._id)}
 						getChats={() => this.props.getChats(this.props.review._id)}
+						setFocusState={(focus) => this.setFocusState(focus)}
 					/>
 				</View>
 			</KeyboardAwareScrollView>

@@ -7,13 +7,13 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import UserActions from 'src/redux/actions/user'
 import SearchActions from 'src/redux/actions/search'
-import ReviewActions from 'src/redux/actions/review'
 import { List, ListItem } from 'react-native-elements'
 import Tabs from 'src/modules/shares/Tabs'
 import { Actions } from 'react-native-router-flux'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import icons from 'src/constants/icons'
 import { APP_FULL_HEIGHT } from 'src/constants'
+import EmptySearch from 'src/modules/search/components/EmptySearch'
 
 export class ViewUserPage extends Component {
 	constructor(props) {
@@ -27,6 +27,9 @@ export class ViewUserPage extends Component {
 
 	componentDidMount() {
 		if (this.props.searchTitle === null) this.props.searchByTitle('')
+		if (this.props.onFocus && this.props.onFocus === 2) {
+			this.fetchSearchPeople()
+		}
 	}
 
 	setIsSearch() {
@@ -104,6 +107,7 @@ export class ViewUserPage extends Component {
 	}
 
 	render() {
+		console.log(this.state, 'search state')
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -119,65 +123,67 @@ export class ViewUserPage extends Component {
 				</View>
 				<ScrollView>
 					<View style={styles.tabsContainer}>
-						<Tabs>
+						<Tabs activeTab={this.props.onFocus || 0}>
 							<View title="Review" onSelectedTab={() => this.fetchSearchTitle()}>
 								<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
-									{ this.props.searchTitle !== null ?
-										this.props.searchTitle.map((review, index) => 
-										{
-											if (!review.available) return <View/>
-											return (
-												<ListItem
-													avatar={
-														<Image
-															style={{
-																width: 150,
-																height: 100,
-																borderWidth: 1,
-																borderRadius: 3,
-																borderColor: '#f1f1f1'
-															}}
-															source={{uri: review.picture_cover_url}}
-															resizeMode="cover"
-														/>
-													}
-													containerStyle={{ borderBottomColor: colors.transparent }}
-													key={index}
-													title={review.title}
-													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
-													titleNumberOfLines={2}
-													subtitle={
-														<View style={{ marginLeft: 15, bottom: 0}}>
-															<Text></Text>
-															{ this.replaceMarks(review.title).length <= 19 &&
+									{ this.props.searchTitle ?
+										this.props.searchTitle.length === 0 ?
+											<EmptySearch/>
+											: this.props.searchTitle.map((review, index) => 
+											{
+												if (!review.available) return <View/>
+												return (
+													<ListItem
+														avatar={
+															<Image
+																style={{
+																	width: 150,
+																	height: 100,
+																	borderWidth: 1,
+																	borderRadius: 3,
+																	borderColor: '#f1f1f1'
+																}}
+																source={{uri: review.picture_cover_url}}
+																resizeMode="cover"
+															/>
+														}
+														containerStyle={{ borderBottomColor: colors.transparent }}
+														key={index}
+														title={review.title}
+														titleStyle={{ fontWeight: 'bold', color: colors.gray }}
+														titleNumberOfLines={2}
+														subtitle={
+															<View style={{ marginLeft: 15, bottom: 0}}>
 																<Text></Text>
-															}
-															<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-																<View style={{ flexDirection: 'row', marginRight: 15 }}>
-																	<View style={styles.productDetail}>
-																		<IconMaterial name="star-border" color={colors.gray} size={26} />
-																		<Text style={styles.productDetailRating}>{review.rating}</Text>
-																	</View>
-																	{ (review.price && review.price !== '0') ? 
-																		<View style={styles.productDetailLeft}>
-																			<Image
-																				style={styles.bahtImage}
-																				source={icons.baht}
-																				resizeMode="cover"
-																			/>
-																			<Text style={styles.productDetailMoney}>{review.price}</Text>
+																{ this.replaceMarks(review.title).length <= 19 &&
+																<Text></Text>
+																}
+																<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+																	<View style={{ flexDirection: 'row', marginRight: 15 }}>
+																		<View style={styles.productDetail}>
+																			<IconMaterial name="star-border" color={colors.gray} size={26} />
+																			<Text style={styles.productDetailRating}>{review.rating}</Text>
 																		</View>
-																		: <View/>
-																	}
+																		{ (review.price && review.price !== '0') ? 
+																			<View style={styles.productDetailLeft}>
+																				<Image
+																					style={styles.bahtImage}
+																					source={icons.baht}
+																					resizeMode="cover"
+																				/>
+																				<Text style={styles.productDetailMoney}>{review.price}</Text>
+																			</View>
+																			: <View/>
+																		}
+																	</View>
 																</View>
 															</View>
-														</View>
-													}
-													hideChevron={true}
-													onPress={() => this.goToViewReviewPage(review)}
-												/>
-											)
-										})
+														}
+														hideChevron={true}
+														onPress={() => this.goToViewReviewPage(review)}
+													/>
+												)
+											})
 										: this.props.loading && 
 											<View style={styles.loadingContainer}>
 												<ActivityIndicator size="large" />
@@ -187,7 +193,11 @@ export class ViewUserPage extends Component {
 							</View>
 							<View title="Product" style={{ marginBottom: 10 }} onSelectedTab={() => this.fetchSearchProduct()}>
 								{ this.props.searchProduct ? 
-									<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
+									this.props.searchProduct.length === 0 ?
+										<View style={{ marginTop: -5 }}>
+											<EmptySearch/>
+										</View>
+										:<ReviewsGrid review_list={this.props.searchProduct} page={'SearchPage'}/>
 									: this.props.loading && 
 									<View style={styles.loadingContainer}>
 										<ActivityIndicator size="large" />
@@ -197,23 +207,25 @@ export class ViewUserPage extends Component {
 							<View title="People" onSelectedTab={() => this.fetchSearchPeople()}>
 								<List containerStyle={{ borderColor: colors.transparent, marginTop: -5 }}>
 									{ this.props.searchUser !== null ?
-										this.props.searchUser.map((user, index) => {
-											if (user._id === this.props.currentUser._id) return <View/>
-											return (
-												<ListItem
-													avatar={
-														<CoverImage size={70} uri={user.picture_url} />
-													}
-													key={index}
-													title={user.name}
-													// subtitle={`${user.own_post_list.length} reviews`}
-													hideChevron={true}
-													titleStyle={{ fontWeight: 'bold', color: colors.gray }}
-													onPress={() => this.goToViewUser(user)}
-													containerStyle={{ borderBottomColor: colors.lightGray }}
-												/>
-											)
-										})
+										this.props.searchUser.length === 0 ?
+											<EmptySearch/>
+											: this.props.searchUser.map((user, index) => {
+												if (user._id === this.props.currentUser._id) return <View/>
+												return (
+													<ListItem
+														avatar={
+															<CoverImage size={70} uri={user.picture_url} />
+														}
+														key={index}
+														title={user.name}
+														// subtitle={`${user.own_post_list.length} reviews`}
+														hideChevron={true}
+														titleStyle={{ fontWeight: 'bold', color: colors.gray }}
+														onPress={() => this.goToViewUser(user)}
+														containerStyle={{ borderBottomColor: colors.lightGray }}
+													/>
+												)
+											})
 										: this.props.loading && 
 												<View style={styles.loadingContainer}>
 													<ActivityIndicator size="large" />

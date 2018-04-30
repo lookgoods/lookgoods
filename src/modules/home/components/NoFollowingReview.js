@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import { colors } from 'src/constants/mixins'
 import UserActions from 'src/redux/actions/user'
 import { connect } from 'react-redux'
+import { Actions } from 'react-native-router-flux'
 
 export class NoFollowingReview extends Component {
 	constructor(props) {
@@ -25,9 +26,9 @@ export class NoFollowingReview extends Component {
 				</Text>
 				<TouchableOpacity
 					style={{ backgroundColor: colors.orange, borderRadius: 3, marginTop: 30, padding: 10 }}
-					onPress={ () => this.props.viewReviewer() }
+					onPress={ () => Actions.SearchPage({ onFocus: 2 }) }
 				>
-					<Text style={{ color: colors.white }}>Follow People</Text>
+					<Text style={{ color: colors.white }}>Find People</Text>
 				</TouchableOpacity>
 			</View>
 		)
