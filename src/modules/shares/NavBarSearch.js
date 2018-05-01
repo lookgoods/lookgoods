@@ -22,7 +22,7 @@ class NavBarSearch extends Component {
 							borderRadius: 20,
 							flexDirection: 'row',
 							alignItems: 'center',
-							backgroundColor: colors.gray2,
+							backgroundColor: colors.white,
 							paddingHorizontal: 15,
 							marginHorizontal: 10
 						}}
@@ -30,11 +30,11 @@ class NavBarSearch extends Component {
 						<IconFontAwesome
 							name={'search'}
 							size={15}
-							color="#fff"
+							color={colors.gray}
 							style={styles.searchIcon}
 						/>
 						<Text
-							style={{ flex: 1, marginTop: 5, color: colors.white, fontSize: 15 }}
+							style={{ flex: 1, marginTop: 5, color: colors.gray, fontSize: 15 }}
 						>
 							Search
 						</Text>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		zIndex: 1,
 		paddingHorizontal: 5,
-		backgroundColor: colors.white,
+		backgroundColor: colors.orange,
 		shadowColor: '#808080',
 		shadowOffset: { width: 0, height: 5 },
 		shadowOpacity: 0.5
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		zIndex: 1,
 		paddingHorizontal: 5,
-		backgroundColor: colors.white,
+		backgroundColor: colors.orange,
 		borderBottomColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		shadowColor: '#808080',

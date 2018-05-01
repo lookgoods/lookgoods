@@ -76,7 +76,7 @@ export class ViewReviewPage extends Component {
 				}, 1)
 			}
 		}
-		if (!this.props.review.available) {
+		if (this.props.review && !this.props.review.available) {
 			return <DeletedReview/>
 		}
 		return (

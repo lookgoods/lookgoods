@@ -102,7 +102,7 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 				<View style={{ flex: 1, flexDirection: 'row', marginLeft: 8 }}>
 					{isLove ? (
 						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
-							<Ionicons name="md-heart" color={colors.red} size={30} />
+							<Ionicons name="md-heart" color={colors.orange} size={30} />
 						</TouchableOpacity>
 					) : (
 						<TouchableOpacity onPress={clickLove} style={styles.heartIcon}>
@@ -120,8 +120,8 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 							Actions.viewReviewPage({ focus: 'review', review_id: review._id })
 						}}
 					>
-						<IconMaterial name="star-border" color={colors.gray} size={26} />
-						<Text style={styles.productDetailRating}>{rating}</Text>
+						<IconMaterial name="star" color={colors.yellow} size={28} />
+						<Text style={[styles.productDetailRating, { marginRight: 1 }]}>{rating}</Text>
 					</TouchableOpacity>
 					{ (price && price !== '0') ? 
 						<TouchableOpacity 
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
 	reviewerName: {
 		fontWeight: 'bold',
 		color: colors.gray,
-		fontSize: 12
+		fontSize: 14
 	},
 	timeText: {
 		fontSize: 12,

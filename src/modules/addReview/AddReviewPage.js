@@ -582,12 +582,13 @@ const styles = StyleSheet.create({
 	buttonAdd: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: colors.white,
+		backgroundColor: colors.lightGray3,
 		height: 50,
 		borderRadius: 3,
 		zIndex: 2,
 		borderColor: '#dfdfdf',
-		borderWidth: 1
+		borderWidth: 1,
+		marginBottom: 5
 	},
 	blockAdd: {
 		paddingTop: 20,
@@ -619,7 +620,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.lightGray3,
 		height: 50,
 		borderBottomLeftRadius: 3,
 		borderTopLeftRadius: 3
@@ -628,7 +629,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.lightGray3,
 		height: 50,
 		borderBottomRightRadius: 3,
 		borderTopRightRadius: 3

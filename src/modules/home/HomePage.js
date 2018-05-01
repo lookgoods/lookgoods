@@ -123,14 +123,14 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.white
 	},
 	body: {
-		backgroundColor: colors.lightGray
+		backgroundColor: '#D5D5D5'
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		backgroundColor: colors.white,
+		backgroundColor: colors.orange,
 		overflow: 'hidden'
 	}
 })

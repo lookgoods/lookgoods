@@ -245,7 +245,6 @@ export class EditReviewPage extends Component {
 		if (!titleErr && !nameErr && !ratingErr && !contentMeassageErr) {
 			const tags = this.state.tagsMessage
 			for (let i=0 ; i < tags.length ; i++) {
-				console.log(tags[i] === undefined, 'tags -')
 				if (tags[i] === undefined || tags[i].trim().length < 1) { 
 					tags.splice(i, 1)
 					i--
@@ -261,7 +260,8 @@ export class EditReviewPage extends Component {
 				picture_thumbnail_url: this.state.coverImage.thumbnail_url,
 				content_list: this.state.contentList,
 				rating: this.state.rating,
-				user: this.props.review.user
+				user: this.props.review.user,
+				available: true
 			}
 			await this.props.editReview(review, this.props.review._id)
 			await Actions.pop()
