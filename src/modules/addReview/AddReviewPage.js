@@ -314,7 +314,7 @@ export class AddReviewPage extends Component {
 									}}
 									onPress={() => this.addCoverImage()}
 								>
-									<IconMaterial name="add-a-photo" size={100} />
+									<IconMaterial name="add-a-photo" size={100} color={colors.gray} />
 								</TouchableOpacity>
 							) : (
 								<TouchableOpacity
@@ -450,7 +450,7 @@ export class AddReviewPage extends Component {
 											style={{ marginRight: 12 }}
 											name={item}
 											size={35}
-											color={colors.yellow_star}
+											color={colors.yellow}
 										/>
 									</TouchableOpacity>
 								))}

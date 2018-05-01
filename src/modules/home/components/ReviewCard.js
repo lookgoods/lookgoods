@@ -120,8 +120,10 @@ function Footer({ rating, price, numberOfComment, numberOfLike, isLove, clickLov
 							Actions.viewReviewPage({ focus: 'review', review_id: review._id })
 						}}
 					>
-						<IconMaterial name="star" color={colors.yellow} size={28} />
-						<Text style={[styles.productDetailRating, { marginRight: 1 }]}>{rating}</Text>
+						<View style={{ marginRight: 2, marginTop: 2 }}>
+							<FontAwesome name="star" color={colors.yellow} size={24} />
+						</View>
+						<Text style={styles.productDetailRating}>{rating}</Text>
 					</TouchableOpacity>
 					{ (price && price !== '0') ? 
 						<TouchableOpacity 
