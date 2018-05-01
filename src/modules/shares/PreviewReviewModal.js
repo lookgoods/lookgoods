@@ -8,9 +8,9 @@ import {
 import Modal from 'react-native-modal'
 import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
-import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import icons from 'src/constants/icons'
 import StarBar from 'src/modules/viewReview/components/StarBar'
+import CoverImage from 'src/modules/shares/CoverImage'
 
 class PreviewReviewModal extends Component {
 	render () {
@@ -24,9 +24,14 @@ class PreviewReviewModal extends Component {
 				backdropTransitionOutTiming={100}
 			>
 				<View style={styles.container}>
-					<Text style={styles.productName}>
-						{this.props.review.product.name}
-					</Text>
+					<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+						<View style={{ position: 'absolute', left: 10 }}>
+							<CoverImage size={50} uri={this.props.review.user.picture_url}/>
+						</View>
+						<Text style={styles.productName}>
+							{this.props.review.product.name}
+						</Text>
+					</View>
 					<Image
 						style={styles.imageStyle}
 						source={{ uri: this.props.review.picture_cover_url }}
@@ -60,8 +65,7 @@ const mapStateToProps = state => ({
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.white, 
-		borderRadius: 5, 
-		alignItems: 'center'
+		borderRadius: 5 
 	},
 	imageStyle: {
 		width: '100%',
