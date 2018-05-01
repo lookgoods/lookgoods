@@ -49,8 +49,8 @@ const UserActions = {
 		)
 		if (err) dispatch(actions.changeUserDescriptionError(err))
 		else {
-			dispatch(actions.changeUserDescriptionSuccess(response))
 			dispatch(UserActions.getCurrentUser())
+			dispatch(actions.changeUserDescriptionSuccess(response))
 			Actions.tabMenu({ page: 'user' })
 		}
 	},

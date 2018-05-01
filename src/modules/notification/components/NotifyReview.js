@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		borderColor: colors.lightGray2,
-		borderWidth: 1 / PixelRatio.get(),
-		height: 85
+		borderWidth: 1 / PixelRatio.get()
 	},
 	textName: {
 		fontSize: 15,

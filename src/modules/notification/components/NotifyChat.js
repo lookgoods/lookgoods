@@ -29,7 +29,7 @@ export class NotifyChat extends Component {
 					<Text>
 						<Text style={styles.textName}>{this.props.user.name}</Text>
 						<Text style={{ fontSize: 15, marginBottom: 4, color: colors.gray }}>
-							{' '}send a message on the review{' '}
+							{' '}commented on review{' '}
 						</Text>
 						<Text style={styles.textName}>
 							{this.props.review.title}
@@ -53,8 +53,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		borderColor: colors.lightGray2,
-		borderWidth: 1 / PixelRatio.get(),
-		height: 85
+		borderWidth: 1 / PixelRatio.get()
 	},
 	textName: {
 		fontSize: 15,

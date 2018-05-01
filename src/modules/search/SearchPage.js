@@ -247,10 +247,10 @@ const styles = StyleSheet.create({
 	},
 	platformHeader: {
 		height: Platform.OS === 'ios' ? 75 : 60,
-		paddingTop: Platform.OS === 'ios' ? 25 : 8
+		paddingTop: Platform.OS === 'ios' ? 25 : 5
 	},
 	header: {
-		backgroundColor: 'transparent',
+		backgroundColor: colors.orange,
 		overflow: 'hidden'
 	},
 	tabsContainer: {

@@ -22,6 +22,7 @@ import EmptyNotification from 'src/modules/notification/components/EmptyNotifica
 import NotifyChat from 'src/modules/notification/components/NotifyChat'
 import { Actions } from 'react-native-router-flux'
 import ActionSheet from 'react-native-actionsheet'
+import { APP_FULL_HEIGHT } from 'src/constants'
 
 export class NotificationPage extends Component {
 	constructor(props) {
@@ -132,36 +133,41 @@ export class NotificationPage extends Component {
 						/>
 					}
 				>
-					<TouchableOpacity 
-						style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20, marginTop: 5, marginBottom: 5 }}
-						onPress={() => this.clearNotifications()}
-					>
-						<Text style={{ color: colors.orange }}>Clear</Text>
-					</TouchableOpacity>
 					{ this.props.notifications ?
 						this.props.notifications.length !== 0 ?
-							this.props.notifications.map((notification, index) => (
+							<View>
 								<TouchableOpacity 
-									key={index}
-									onPress= {() => {
-										this.props.readNotification(notification._id)
-										this.goToViewReview(notification.item._id)
-									}}
-									delayLongPress={500} 
-									onLongPress = {() => this.showActionSheet(notification._id)}
-									style={{ 
-										backgroundColor: !notification.read ? colors.lightOrange : colors.white 
-									}}
+									style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20, marginTop: 5, marginBottom: 5 }}
+									onPress={() => this.clearNotifications()}
 								>
-									{ notification.type === 'Comment' ?
-										<NotifyComment review={notification.item} timestamp={notification.timestamp} user={notification.user} />
-										: notification.type === 'Review' ?
-											<NotifyReview review={notification.item} user={notification.user} />
-											: <NotifyChat review={notification.item} timestamp={notification.timestamp} user={notification.user} />
-									}
+									<Text style={{ color: colors.orange, marginTop: 5, marginBottom: 5 }}>Clear</Text>
 								</TouchableOpacity>
-							))
-							: <EmptyNotification/>
+								{ this.props.notifications.map((notification, index) => (
+									<TouchableOpacity 
+										key={index}
+										onPress= {() => {
+											this.props.readNotification(notification._id)
+											this.goToViewReview(notification.item._id)
+										}}
+										delayLongPress={500} 
+										onLongPress = {() => this.showActionSheet(notification._id)}
+										style={{ 
+											backgroundColor: !notification.read ? colors.lightOrange : colors.white 
+										}}
+									>
+										{ notification.type === 'Comment' ?
+											<NotifyComment review={notification.item} timestamp={notification.timestamp} user={notification.user} />
+											: notification.type === 'Review' ?
+												<NotifyReview review={notification.item} user={notification.user} />
+												: <NotifyChat review={notification.item} timestamp={notification.timestamp} user={notification.user} />
+										}
+									</TouchableOpacity>
+								)
+								)}
+							</View>
+							: <View style={{ marginTop: (APP_FULL_HEIGHT*0.2) }}>
+								<EmptyNotification/>
+							</View>
 						: <View/>
 					}
 				</ScrollView>
@@ -190,7 +196,7 @@ const styles = StyleSheet.create({
 		paddingTop: Platform.OS === 'ios' ? 25 : 8
 	},
 	header: {
-		backgroundColor: colors.white,
+		backgroundColor: colors.orange,
 		overflow: 'hidden'
 	}
 })

@@ -27,7 +27,8 @@ export class UserPage extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return ((this.props.currentUser !== nextProps.currentUser) || 
 		(this.props.ownReviews !== nextProps.ownReviews) || 
-		(this.props.saveReviews !== nextProps.saveReviews)) && 
+		(this.props.saveReviews !== nextProps.saveReviews) ||
+		(this.props.currentUser !== nextProps.currentUser)) && 
 		nextProps.currentPage === 'user'
 	}
 	
