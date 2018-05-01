@@ -75,8 +75,14 @@ export class NotificationPage extends Component {
 		this.setState({ searchText: text })
 	}
 
-	goToViewReview(review_id) {
-		Actions.viewReviewPage({ review_id })
+	goToViewReview(review_id, type) {
+		if (type === 'Comment') {
+			Actions.viewReviewPage({ focus: 'review', review_id })
+		} else if (type === 'Chat') {
+			Actions.viewReviewPage({ focus: 'comment', review_id })
+		} else {
+			Actions.viewReviewPage({ review_id })
+		}
 	}
 
 	showActionSheet(item_id) {
@@ -147,7 +153,7 @@ export class NotificationPage extends Component {
 										key={index}
 										onPress= {() => {
 											this.props.readNotification(notification._id)
-											this.goToViewReview(notification.item._id)
+											this.goToViewReview(notification.item._id, notification.type)
 										}}
 										delayLongPress={500} 
 										onLongPress = {() => this.showActionSheet(notification._id)}
