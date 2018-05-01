@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		zIndex: 1,
 		paddingHorizontal: 5,
-		backgroundColor: colors.orange,
-		borderBottomColor: '#f1f1f1',
-		borderBottomWidth: 1,
-		shadowColor: '#808080',
-		shadowOffset: { width: 0, height: 5 },
-		shadowOpacity: 0.5
+		backgroundColor: colors.orange
+		// borderBottomColor: '#f1f1f1',
+		// borderBottomWidth: 1,
+		// shadowColor: '#808080',
+		// shadowOffset: { width: 0, height: 5 },
+		// shadowOpacity: 0.5
 	},
 	backgroundTranparent: {
 		backgroundColor: 'transparent'
@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		backgroundColor: colors.white,
-		paddingHorizontal: 10, //15
-		marginHorizontal: 0, //10
-		marginTop: 5
+		paddingHorizontal: 10 //15
+		// marginHorizontal: 0, //10
+		// marginTop: 5
 	},
 	searchIcon: {
 		backgroundColor: 'transparent',

@@ -14,7 +14,7 @@ class NavBarSearch extends Component {
 	render() {
 		return (
 			<TouchableOpacity onPress={() => Actions.SearchPage()}>
-				<View style={Platform.OS === 'ios' ? styles.navBarIOS : styles.navBar}>
+				<View style={styles.navBar}>
 					<View
 						style={{
 							flex: 1,
@@ -51,23 +51,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		zIndex: 1,
 		paddingHorizontal: 5,
-		backgroundColor: colors.orange,
-		shadowColor: '#808080',
-		shadowOffset: { width: 0, height: 5 },
-		shadowOpacity: 0.5
-	},
-	navBarIOS: {
-		flex: 1,
-		justifyContent: 'center',
-		flexDirection: 'row',
-		zIndex: 1,
-		paddingHorizontal: 5,
-		backgroundColor: colors.orange,
-		borderBottomColor: '#f1f1f1',
-		borderBottomWidth: 1,
-		shadowColor: '#808080',
-		shadowOffset: { width: 0, height: 5 },
-		shadowOpacity: 0.5
+		backgroundColor: colors.orange
+		// shadowColor: '#808080',
+		// shadowOffset: { width: 0, height: 5 },
+		// shadowOpacity: 0.5
 	},
 	searchIcon: {
 		backgroundColor: 'transparent',
