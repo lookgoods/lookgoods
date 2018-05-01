@@ -19,7 +19,7 @@ class NavBarSearchPage extends Component {
 					<IconIonicons
 						name={'ios-arrow-back'}
 						size={30}
-						color={colors.orange}
+						color={colors.white}
 						style={styles.backgroundTranparent}
 					/>
 				</TouchableOpacity>
