@@ -17,7 +17,7 @@ import { ShareDialog } from 'react-native-fbsdk'
 import { DURATION } from 'react-native-easy-toast'
 
 const ProfilePicture = ({ image_url }) => {
-	return <CoverImage size={50} uri={image_url} />
+	return <CoverImage size={55} uri={image_url} />
 }
 
 const BookMark = ({ isActive, clickBookmark }) => {
