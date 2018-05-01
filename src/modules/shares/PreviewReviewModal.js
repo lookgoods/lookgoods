@@ -10,6 +10,7 @@ import { colors } from 'src/constants/mixins'
 import { connect } from 'react-redux'
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import icons from 'src/constants/icons'
+import StarBar from 'src/modules/viewReview/components/StarBar'
 
 class PreviewReviewModal extends Component {
 	render () {
@@ -33,12 +34,11 @@ class PreviewReviewModal extends Component {
 					/>
 					<View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
 						<View style={{ flex: 1, flexDirection: 'row', marginLeft: 10 }}>
-							<IconMaterial name="star-border" color={colors.yellow} size={40} />
-							<Text style={{ fontSize: 20, marginLeft: 5, marginTop: 5 }}>{this.props.review.rating}</Text>
+							<StarBar rating={this.props.review.rating} size={30} type='view'/>
 						</View>
 						{ this.props.review.price &&
-							<View style={{ flexDirection: 'row', marginRight: 10, marginTop: 5 }}>
-								<Text style={{ fontSize: 20, marginRight: 5 }}>{this.props.review.price}</Text>
+							<View style={{ flexDirection: 'row', marginRight: 10 }}>
+								<Text style={{ fontSize: 20, marginRight: 5, color: colors.gray }}>{this.props.review.price}</Text>
 								<Image
 									source={icons.baht}
 									resizeMode="cover"
@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		marginBottom: 10,
 		fontSize: 20,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		color: colors.gray
 	},
 	priceIcon: {
 		width: 30,
