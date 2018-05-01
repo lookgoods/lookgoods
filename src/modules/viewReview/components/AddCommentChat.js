@@ -50,9 +50,10 @@ class AddCommentChat extends Component {
 		const user_list = []
 		user_list.push(this.props.review.user._id)
 		this.props.chats.map((chat) => {
-			user_list.push(chat.user._id)
+			if (!user_list.includes(chat.user._id) && (chat.user._id !== this.props.currentUser._id)) {
+				user_list.push(chat.user._id)
+			}
 		})
-
 		this.socket.emit('notify', JSON.stringify({ followerList: user_list }))
 	}
   
@@ -83,7 +84,7 @@ class AddCommentChat extends Component {
 								/>
 							</View>
 							<TouchableOpacity style={styles.buttonSend} onPress={() => this.addChat()}>
-								<IconIonicons name='md-send' size={25}/>
+								<IconIonicons name='md-send' size={25} color={colors.orange}/>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -127,7 +128,8 @@ const styles = StyleSheet.create({
 	buttonSend: {
 		alignItems: 'flex-end',
 		flexDirection: 'row',
-		marginBottom: 5,
+		marginBottom: 10,
+		marginLeft: 10,
 		right: 8
 	}
 })

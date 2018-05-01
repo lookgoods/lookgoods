@@ -19,7 +19,7 @@ class NavBarSearchPage extends Component {
 					<IconIonicons
 						name={'ios-arrow-back'}
 						size={30}
-						color={colors.gray}
+						color={colors.orange}
 						style={styles.backgroundTranparent}
 					/>
 				</TouchableOpacity>
@@ -27,15 +27,15 @@ class NavBarSearchPage extends Component {
 					<IconFontAwesome
 						name={'search'}
 						size={15}
-						color="#fff"
+						color={colors.gray}
 						style={styles.searchIcon}
 					/>
 					<TextInput
-						style={{ flex: 1, color: colors.white, fontSize: 15 }}
+						style={{ flex: 1, color: colors.gray, fontSize: 15 }}
 						value={searchText}
 						autoFocus
 						placeholder="Search"
-						placeholderTextColor={colors.white}
+						placeholderTextColor={colors.gray}
 						underlineColorAndroid="transparent"
 						onChangeText={text => handleSearchText(text)}
 						onFocus={() => setIsSearch()}
@@ -48,7 +48,7 @@ class NavBarSearchPage extends Component {
 							<IconIonicons
 								name={'ios-close-circle'}
 								size={20}
-								color={colors.white}
+								color={colors.gray}
 								style={styles.backgroundTranparent}
 							/>
 						</TouchableOpacity>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		zIndex: 1,
 		paddingHorizontal: 5,
-		backgroundColor: colors.white,
+		backgroundColor: colors.orange,
 		borderBottomColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		shadowColor: '#808080',
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: colors.gray2,
+		backgroundColor: colors.white,
 		paddingHorizontal: 10, //15
 		marginHorizontal: 0, //10
 		marginTop: 5

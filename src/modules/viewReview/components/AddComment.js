@@ -67,9 +67,10 @@ class AddComment extends Component {
 		const user_list = []
 		user_list.push(this.props.review.user._id)
 		this.props.comments.map((comment) => {
-			user_list.push(comment.user._id)
+			if (comment.user._id !== this.props.currentUser._id) {
+				user_list.push(comment.user._id)
+			}
 		})
-
 		this.socket.emit('notify', JSON.stringify({ followerList: user_list }))
 	}
 

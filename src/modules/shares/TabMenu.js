@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View, BackHandler, Platform } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import React, { Component } from 'react'
 import { Actions } from 'react-native-router-flux'
 import GlobalPage from 'src/modules/global/GlobalPage'
@@ -37,25 +37,6 @@ export class TabMenu extends Component {
 		this.fetchData()
 		this.checkAccessToken()
 		this.openSocket()
-		if (Platform.OS === 'android') {
-			this.backHandler()
-		}
-	}
-
-	backHandler() {
-		let self = this
-		BackHandler.addEventListener('hardwareBackPress', function() {
-			if (self.state.selectedTab !== 'home') {
-				self.setState({ selectedTab: 'home' })
-				return true
-			}
-		})
-	}
-
-	componentWillUnmount() {
-		if (Platform.OS === 'android') {
-			BackHandler.removeEventListener('hardwareBackPress', function() {})
-		}
 	}
 
 	openSocket() {
@@ -100,7 +81,10 @@ export class TabMenu extends Component {
 	}
 
 	checkPage() {
-		if (this.props.page) this.setState({ selectedTab: this.props.page })
+		if (this.props.page) {
+			this.setState({ selectedTab: this.props.page })
+			this.props.setCurrentPage(this.props.page)
+		}
 		else this.setState({ selectedTab: 'home' })
 	}
 
@@ -157,7 +141,7 @@ export class TabMenu extends Component {
 						<Icon name="plus" size={this.px2dp(28)} color={colors.gray} />
 					)}
 					renderSelectedIcon={() => (
-						<Icon name="plus" size={this.px2dp(28)} color={colors.orange} />
+						<Icon name="plus" size={this.px2dp(28)} color={colors.gray} />
 					)}
 				/>
 				<TabNavigator.Item
@@ -203,7 +187,8 @@ const mapStateToProps = state => ({
 	currentUser: state.userReducer.currentUser,
 	success: state.userReducer.success,
 	isSocketOpen: state.notificationReducer.isSocketOpen,
-	notifyNumber: state.notificationReducer.notifyNumber
+	notifyNumber: state.notificationReducer.notifyNumber,
+	currentPage: state.menuReducer.currentPage
 })
 
 const styles = StyleSheet.create({
