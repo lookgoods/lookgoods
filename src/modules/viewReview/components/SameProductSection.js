@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-	reviews: state.searchReducer.products
+	reviews: state.searchReducer.products,
+	review: state.reviewReducer.currentReview
 })
 
 export default connect(mapStateToProps, null)(SameProductSection)

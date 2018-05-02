@@ -48,15 +48,6 @@ const ReviewActions = {
 		else dispatch(actions.getFollowingReviewSuccess(response.data))
 	},
 	editReview: (review, review_id) => async dispatch => {
-		const transformReview = {
-			...review,
-			product: {
-				name: review.name,
-				brand: review.brand
-			}
-		}
-		delete transformReview.name
-		delete transformReview.brand
 		dispatch(actions.editReviewRequest())
 		try {
 			const response = await fetch(`${AppURL}/reviews/${review_id}`, {
@@ -70,8 +61,7 @@ const ReviewActions = {
 			dispatch(ReviewActions.getReviews())
 			dispatch(ReviewActions.getFollowingReviews())
 			dispatch(UserActions.getCurrentUserOwnReviews())
-			dispatch(ReviewActions.setCurrentReview(transformReview))
-
+			dispatch(ReviewActions.getReview(review_id))
 		} catch (err) {
 			dispatch(actions.editReviewError(err))
 		}
